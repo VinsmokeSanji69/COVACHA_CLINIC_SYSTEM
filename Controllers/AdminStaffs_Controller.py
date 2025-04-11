@@ -1,10 +1,8 @@
-from  PyQt5 import QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox
 from Views.Admin_Staffs import Ui_MainWindow as AdminStaffsUI
 from PyQt5 import QtCore
 from Controllers.AdminAddUser_Controller import AdminAddUserController
-from Controllers.AdminDashboard_Controller import AdminDashboardController
-from Controllers.AdminCharges_Controller import AdminChargesController
 from Models.StaffAccount import StaffAccount
 
 class AdminStaffsController(QMainWindow):
@@ -15,6 +13,7 @@ class AdminStaffsController(QMainWindow):
 
         print("Admin Staffs UI initialized!")
 
+        # Connect buttons
         if hasattr(self.ui, 'AddUserButton'):
             print("AddUserButton exists")
             self.ui.AddUserButton.clicked.connect(self.open_add_user_form)
@@ -23,28 +22,27 @@ class AdminStaffsController(QMainWindow):
             print("AddUserButton is missing!")
 
         if hasattr(self.ui, 'DashboardButton'):
-            print("DashboardButton exist")
+            print("DashboardButton exists")
             self.ui.DashboardButton.clicked.connect(self.ViewDashboard)
         else:
             print('DashboardButton is missing')
 
         if hasattr(self.ui, 'ChargesButton'):
-            print("ChargesButton exist")
-            self.ui.DashboardButton.clicked.connect(self.ViewCharges)
+            print("ChargesButton exists")
+            self.ui.ChargesButton.clicked.connect(self.ViewCharges)
         else:
             print('ChargesButton is missing')
-
-
 
         # Apply styles to the tables
         self.apply_table_styles()
         self.refresh_tables()
 
-    def ViewDasboard(self):
+    def ViewDashboard(self):
         print("DashboardButton clicked!")
         try:
-            # Instantiate and show the AdminDashboardController window
-            self.admin_dashboard_controller = AdminDashboardController
+            # Lazy import to avoid circular dependency
+            from Controllers.AdminDashboard_Controller import AdminDashboardController
+            self.admin_dashboard_controller = AdminDashboardController()
             self.admin_dashboard_controller.show()
             self.hide()  # Hide the current dashboard window
         except Exception as e:
@@ -54,8 +52,9 @@ class AdminStaffsController(QMainWindow):
     def ViewCharges(self):
         print("ChargesButton clicked!")
         try:
-            # Instantiate and show the AdminDashboardController window
-            self.admin_charges_controller = AdminChargesController
+            # Lazy import to avoid circular dependency
+            from Controllers.AdminCharges_Controller import AdminChargesController
+            self.admin_charges_controller = AdminChargesController()
             self.admin_charges_controller.show()
             self.hide()  # Hide the current dashboard window
         except Exception as e:
@@ -96,7 +95,7 @@ class AdminStaffsController(QMainWindow):
                    background-color: #2E6E65;
                    color: white;
                    padding: 5px;
-                   font: 16px "Lexend Meduim";
+                   font: 16px "Lexend Medium";
                    border: 2px solid #2E6E65;
                }
            """)
@@ -124,7 +123,7 @@ class AdminStaffsController(QMainWindow):
                    background-color: #2E6E65;
                    color: white;
                    padding: 5px;
-                   font: 16px "Lexend Meduim";
+                   font: 16px "Lexend Medium";
                    border: 2px solid #2E6E65;
                }
            """)
@@ -146,7 +145,7 @@ class AdminStaffsController(QMainWindow):
                 background-color: #2E6E65;
                 color: white;
                 padding: 5px;
-                font: 14px "Lexend Meduim";
+                font: 14px "Lexend Medium";
                 border: 2px solid #2E6E65;
             }
             """
@@ -177,7 +176,7 @@ class AdminStaffsController(QMainWindow):
                 background-color: #2E6E65;
                 color: white;
                 padding: 5px;
-                font: 14px "Lexend Meduim";
+                font: 14px "Lexend Medium";
                 border: 2px solid #2E6E65;
             }
             """
