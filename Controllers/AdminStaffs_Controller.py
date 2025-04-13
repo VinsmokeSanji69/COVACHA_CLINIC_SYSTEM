@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox
 from Views.Admin_Staffs import Ui_MainWindow as AdminStaffsUI
 from PyQt5 import QtCore
 from Controllers.AdminAddUser_Controller import AdminAddUserController
-from Models.StaffAccount import StaffAccount
+from Models.Staff import Staff
+from Models.Doctor import Doctor
 
 class AdminStaffsController(QMainWindow):
     def __init__(self):
@@ -40,11 +41,10 @@ class AdminStaffsController(QMainWindow):
     def ViewDashboard(self):
         print("DashboardButton clicked!")
         try:
-            # Lazy import to avoid circular dependency
             from Controllers.AdminDashboard_Controller import AdminDashboardController
             self.admin_dashboard_controller = AdminDashboardController()
             self.admin_dashboard_controller.show()
-            self.hide()  # Hide the current dashboard window
+            self.hide()
         except Exception as e:
             print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
@@ -52,11 +52,10 @@ class AdminStaffsController(QMainWindow):
     def ViewCharges(self):
         print("ChargesButton clicked!")
         try:
-            # Lazy import to avoid circular dependency
             from Controllers.AdminCharges_Controller import AdminChargesController
             self.admin_charges_controller = AdminChargesController()
             self.admin_charges_controller.show()
-            self.hide()  # Hide the current dashboard window
+            self.hide()
         except Exception as e:
             print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
@@ -131,7 +130,7 @@ class AdminStaffsController(QMainWindow):
 
     def load_doctor_table(self):
         """Load doctor data into the DoctorTable"""
-        doctors = StaffAccount.get_all_doctors()
+        doctors = Doctor.get_all_doctors()
         self.ui.DoctorTable.setRowCount(len(doctors))
 
         # Remove row numbering
@@ -162,7 +161,7 @@ class AdminStaffsController(QMainWindow):
 
     def load_staff_table(self):
         """Load staff data into the StaffTable"""
-        staff_list = StaffAccount.get_all_staff()
+        staff_list = Staff.get_all_staff()
         self.ui.StaffTable.setRowCount(len(staff_list))
 
         # Remove row numbering
@@ -192,7 +191,7 @@ class AdminStaffsController(QMainWindow):
     def open_add_user_form(self):
         print("Opening Add User Form...")
         try:
-            self.add_user_window = AdminAddUserController(parent=self)  # Pass parent reference
+            self.add_user_window = AdminAddUserController(parent=self)
             self.add_user_window.show()
             print("Add User Form shown successfully!")
         except Exception as e:

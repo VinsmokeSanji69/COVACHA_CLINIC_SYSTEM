@@ -12,12 +12,9 @@ class LogIn(QMainWindow):
         self.ui = LOGIN()
         self.ui.setupUi(self)
 
-        print("Login window initialized!")  # Check if this is printed
+        print("Login window initialized!")
 
-        # Password hidden
-        self.ui.PasswordInput.setEchoMode(QLineEdit.Password)  # Adjusted for PyQt5
-
-        # Initialize login controller with reference to this window
+        self.ui.PasswordInput.setEchoMode(QLineEdit.Password)
         self.controller = LoginController(self)
 
 

@@ -1,10 +1,9 @@
 import psycopg2
-from PyQt5.QtWidgets import QMessageBox  # Updated for PyQt5
+from PyQt5.QtWidgets import QMessageBox
 
 class DBConnection:
     @staticmethod
     def get_db_connection():
-        """Establish and return a database connection"""
         try:
             conn = psycopg2.connect(
                 dbname="ClinicSystem",

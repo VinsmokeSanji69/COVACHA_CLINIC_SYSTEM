@@ -1,6 +1,6 @@
-from Models.DB_Connection import DBConnection  # Assuming this file exists for PyQt5
+from Models.DB_Connection import DBConnection
 
-class AdminDashboardModel:
+class Admin:
     @staticmethod
     def count_doctor():
         """Count the number of doctors in the database"""

@@ -1,11 +1,12 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QMessageBox, QDialog, QLabel, QVBoxLayout, QDialogButtonBox
-from PyQt5.QtCore import Qt, QDate, QRegExp
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QLabel, QVBoxLayout, QDialogButtonBox
+from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-from Views.Admin_AddStaff import Ui_MainWindow as AdminAddUserUI  # Ensure this is generated with pyuic5
+from Views.Admin_AddStaff import Ui_MainWindow as AdminAddUserUI
 import hashlib
-from Models.StaffAccount import StaffAccount
+from Models.Staff import Staff
+from Models.Doctor import Doctor
 
 # Add this to make other controllers work
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
@@ -15,7 +16,7 @@ class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Confirm Account Creation")
-        self.setFixedSize(400, 100)  # Set fixed size for the dialog
+        self.setFixedSize(400, 150)
         # Main layout
         layout = QVBoxLayout()
         # Add message label
@@ -51,7 +52,7 @@ class AdminAddUserController(QMainWindow):
         self.ui.setupUi(self)
         # Window settings
         self.setWindowTitle("Staff Registration")
-        self.setFixedSize(800, 640)  # Fixed window size
+        self.setFixedSize(800, 700)
         # Initialize UI components
         self.initialize_ui()
         # Connect signals
@@ -95,7 +96,7 @@ class AdminAddUserController(QMainWindow):
         self.ui.Gender.setStyleSheet("QComboBox QAbstractItemView { color: black; }")
         # Set default dates
         self.ui.DateJoined.setDate(QDate.currentDate())
-        self.ui.Dob.setDate(QDate(1990, 1, 1))  # Default to reasonable birth date
+        self.ui.Dob.setDate(QDate(1990, 1, 1))  # Default to reasonable
         # Set up contact number validation (exactly 10 digits, including leading zero)
         contact_validator = QRegExpValidator(QRegExp("[0-9]{10}"))
         self.ui.Contact.setValidator(contact_validator)
@@ -126,14 +127,18 @@ class AdminAddUserController(QMainWindow):
     def prefill_id_based_on_staff_type(self):
         """Prefill the ID field based on the selected staff type"""
         staff_type = self.ui.StaffType.currentText()
-        # Use the StaffAccount model to fetch the next ID
-        next_id = StaffAccount.get_next_id(staff_type)
+
+        if staff_type == "Doctor":
+            next_id = Doctor.get_next_doctor_id()
+        elif staff_type == "Staff":
+            next_id = Staff.get_next_staff_id()
+
         if next_id is not None:
-            print(f"Prefilling ID for {staff_type}: {next_id}")
             self.ui.ID.setText(str(next_id))
         else:
             print(f"Failed to fetch next ID for {staff_type}")
             QMessageBox.critical(self, "Database Error", f"Failed to fetch next ID for {staff_type}")
+
 
     def validate_and_submit(self):
         """Validate form, generate password, and submit data"""
@@ -142,25 +147,30 @@ class AdminAddUserController(QMainWindow):
         try:
             # Collect data
             staff_data = self.collect_form_data()
+
             # Generate temporary password
-            temp_password = f"{staff_data['last_name']}"  # Use only last name for simplicity
+            temp_password = f"{staff_data['last_name']}"
             hashed_password = hashlib.sha256(temp_password.encode()).hexdigest()
             staff_data["password"] = hashed_password
 
             # Show confirmation dialog
             confirmation_dialog = ConfirmationDialog(self)
-            result = confirmation_dialog.exec()  # Show dialog and wait for user response
+            result = confirmation_dialog.exec()
 
             if result == QDialog.Accepted:  # User clicked "Yes"
                 # Save to database
-                success = StaffAccount.save_to_database(staff_data)
+                if self.ui.StaffType.currentText() == "Staff":
+                    success = Staff.save_staff(staff_data)
+                elif self.ui.StaffType.currentText() == "Doctor":
+                    success = Doctor.save_doctor(staff_data)
+
                 if success:
                     QMessageBox.information(self, "Success", "Account created successfully!")
                     self.clear_form()
 
                     # Notify parent to refresh tables
                     if self.parent and hasattr(self.parent, 'refresh_tables'):
-                        self.parent.refresh_tables()  # Call refresh method on parent window
+                        self.parent.refresh_tables()
                 else:
                     QMessageBox.critical(self, "Error", "Failed to save data to the database.")
             else:  # User clicked "Cancel"
@@ -180,6 +190,10 @@ class AdminAddUserController(QMainWindow):
             errors.append("Last name is required")
             if not errors:  # Only set focus if first name is valid
                 self.ui.Lname.setFocus()
+        if not self.ui.Mname.text().strip():
+            errors.append("Mast name is required")
+            if not errors:  # Only set focus if first name is valid
+                self.ui.Mname.setFocus()
         # Email validation
         email = self.ui.Email.text().strip()
         if not email:
@@ -216,7 +230,6 @@ class AdminAddUserController(QMainWindow):
     def collect_form_data(self):
         """Collect all form data into a dictionary"""
         return {
-            'staff_type': self.ui.StaffType.currentText(),
             'first_name': self.ui.Fname.text().strip(),
             'last_name': self.ui.Lname.text().strip(),
             "middle_name": self.ui.Mname.text().strip(),
@@ -241,7 +254,7 @@ class AdminAddUserController(QMainWindow):
         self.ui.Contact.clear()
         self.ui.StaffType.setCurrentIndex(0)
         self.ui.Specialty.setCurrentIndex(-1)
-        self.ui.License.clear()  # Updated from lineEdit_5 to License
+        self.ui.License.clear()
         # Reset to today's date for joined date
         self.ui.DateJoined.setDate(QDate.currentDate())
         # Set focus back to first field

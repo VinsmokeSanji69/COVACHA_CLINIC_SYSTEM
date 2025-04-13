@@ -9,54 +9,753 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from Images import resources
 
-
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(400, 300)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setGeometry(QtCore.QRect(290, 20, 81, 241))
-        self.buttonBox.setOrientation(QtCore.Qt.Vertical)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.UserID = QtWidgets.QLineEdit(Dialog)
-        self.UserID.setGeometry(QtCore.QRect(30, 30, 201, 41))
-        self.UserID.setStyleSheet("QLineEdit {\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 15px;\n"
-"    font-size: 24px;\n"
-"    padding-left: 10px;\n"
-"    color: rgb(0, 0, 0);\n"
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1173, 821)
+        MainWindow.setStyleSheet("*{\n"
+"    padding: 0px;\n"
+"    margin: 0px;\n"
+"    border: 0px;\n"
+"}\n"
+"QPushButton {\n"
+"    font: 900 10pt \"Satoshi Black\";\n"
+"    background-color: transparent;\n"
+"     border-radius: 10px;\n"
+"    font-weight: bold;\n"
+"    font-size: 25px;\n"
+"    color: #F4F7ED;\n"
+"    text-align: left;\n"
+"    padding: 5px 5px;\n"
+"}\n"
+"#NavBar {\n"
+"    background-color: #2E6E65;\n"
+"}\n"
+"QLabel {\n"
+"    font: 900 10pt \"Satoshi Black\";\n"
+"    font-size: 20px;\n"
+"    font-weight: bold;\n"
+"    color: #2E6E65;\n"
+"    qproperty-alignment: \'AlignLeft\';\n"
+"    qproperty-wordWrap: true;\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"#MainBodyContainer {\n"
+"    background-color: #f0f0f0;\n"
+"}\n"
+"")
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.NavBar = QtWidgets.QWidget(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.NavBar.sizePolicy().hasHeightForWidth())
+        self.NavBar.setSizePolicy(sizePolicy)
+        self.NavBar.setObjectName("NavBar")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.NavBar)
+        self.verticalLayout_3.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_3.setSpacing(6)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.DashBoardButton_2 = QtWidgets.QPushButton(self.NavBar)
+        self.DashBoardButton_2.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.DashBoardButton_2.setIcon(icon)
+        self.DashBoardButton_2.setIconSize(QtCore.QSize(30, 30))
+        self.DashBoardButton_2.setObjectName("DashBoardButton_2")
+        self.verticalLayout_3.addWidget(self.DashBoardButton_2)
+        spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout_3.addItem(spacerItem)
+        self.MainButtons_2 = QtWidgets.QVBoxLayout()
+        self.MainButtons_2.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
+        self.MainButtons_2.setSpacing(20)
+        self.MainButtons_2.setObjectName("MainButtons_2")
+        self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
+        self.DashboardButton.setStyleSheet("QPushButton{\n"
+"border: 2px solid white;\n"
 "}")
-        self.UserID.setObjectName("UserID")
-        self.UserName = QtWidgets.QLineEdit(Dialog)
-        self.UserName.setGeometry(QtCore.QRect(30, 90, 351, 41))
-        self.UserName.setStyleSheet("QLineEdit {\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 15px;\n"
-"    font-size: 24px;\n"
-"    padding-left: 10px;\n"
-"    color: rgb(0, 0, 0);\n"
-"}")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.DashboardButton.setIcon(icon1)
+        self.DashboardButton.setIconSize(QtCore.QSize(30, 30))
+        self.DashboardButton.setObjectName("DashboardButton")
+        self.MainButtons_2.addWidget(self.DashboardButton)
+        self.RecordsButton = QtWidgets.QPushButton(self.NavBar)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.RecordsButton.setIcon(icon2)
+        self.RecordsButton.setIconSize(QtCore.QSize(30, 30))
+        self.RecordsButton.setObjectName("RecordsButton")
+        self.MainButtons_2.addWidget(self.RecordsButton)
+        self.TransactionButton = QtWidgets.QPushButton(self.NavBar)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.TransactionButton.setIcon(icon3)
+        self.TransactionButton.setIconSize(QtCore.QSize(30, 30))
+        self.TransactionButton.setObjectName("TransactionButton")
+        self.MainButtons_2.addWidget(self.TransactionButton)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.MainButtons_2.addItem(spacerItem1)
+        self.verticalLayout_3.addLayout(self.MainButtons_2)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.pushButton_9 = QtWidgets.QPushButton(self.NavBar)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_9.setIcon(icon4)
+        self.pushButton_9.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.verticalLayout_4.addWidget(self.pushButton_9)
+        self.pushButton_10 = QtWidgets.QPushButton(self.NavBar)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_10.setIcon(icon5)
+        self.pushButton_10.setIconSize(QtCore.QSize(30, 30))
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.verticalLayout_4.addWidget(self.pushButton_10)
+        self.verticalLayout_3.addLayout(self.verticalLayout_4)
+        self.horizontalLayout.addWidget(self.NavBar)
+        self.MainBodyContainer = QtWidgets.QWidget(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.MainBodyContainer.sizePolicy().hasHeightForWidth())
+        self.MainBodyContainer.setSizePolicy(sizePolicy)
+        self.MainBodyContainer.setStyleSheet("#MainBodyContainer {\n"
+"    background-color: #f0f0f0;\n"
+"}\n"
+"\n"
+"#Header {\n"
+"    padding: 20px 20px;\n"
+"}\n"
+"QLabel {\n"
+"    padding: 0px;\n"
+"}\n"
+"#UserType {\n"
+"    font: 300 10pt \"Lexend Light\";\n"
+"    font-size: 15px;\n"
+"    color: #2B3752;\n"
+"}\n"
+"#UserName {\n"
+"    font: 600 10pt \"Lexend SemiBold\";\n"
+"    font-size: 20px;\n"
+"    color: #2B3752;\n"
+"}\n"
+"#InterfaceTitle{\n"
+"    font-size: 35px;\n"
+"}\n"
+"QGraphicsView {\n"
+"    border: 2px solid #ccc;\n"
+"    border-radius: 25px;\n"
+"    background: white;\n"
+"}\n"
+"\n"
+"QComboBox {\n"
+"    background-color: #2E6E65;\n"
+"    font-size: 15px;\n"
+"    color: #1b3b3a;\n"
+"    border-radius: 10px;\n"
+"    padding: 5px 10px;\n"
+"    border: 1px solid #2E6E65;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down {\n"
+"    background: transparent;\n"
+"    border: none;\n"
+"    width: 20px;\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    background-color: #2e6e65;\n"
+"    font-size: 20px;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"")
+        self.MainBodyContainer.setObjectName("MainBodyContainer")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.MainBodyContainer)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.Header = QtWidgets.QFrame(self.MainBodyContainer)
+        self.Header.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Header.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Header.setObjectName("Header")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.Header)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.InterfaceTitle = QtWidgets.QLabel(self.Header)
+        self.InterfaceTitle.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.InterfaceTitle.setAlignment(QtCore.Qt.AlignLeading)
+        self.InterfaceTitle.setObjectName("InterfaceTitle")
+        self.horizontalLayout_2.addWidget(self.InterfaceTitle)
+        self.UserPanel = QtWidgets.QHBoxLayout()
+        self.UserPanel.setContentsMargins(-1, -1, 0, -1)
+        self.UserPanel.setObjectName("UserPanel")
+        self.UserInfo = QtWidgets.QVBoxLayout()
+        self.UserInfo.setSpacing(0)
+        self.UserInfo.setObjectName("UserInfo")
+        self.UserName = QtWidgets.QLabel(self.Header)
+        self.UserName.setAlignment(QtCore.Qt.AlignLeading)
         self.UserName.setObjectName("UserName")
-        self.textEdit = QtWidgets.QTextEdit(Dialog)
-        self.textEdit.setGeometry(QtCore.QRect(80, 160, 121, 71))
-        self.textEdit.setObjectName("textEdit")
+        self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight)
+        self.UserPanel.addLayout(self.UserInfo)
+        self.Profile = QtWidgets.QFrame(self.Header)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Profile.sizePolicy().hasHeightForWidth())
+        self.Profile.setSizePolicy(sizePolicy)
+        self.Profile.setMinimumSize(QtCore.QSize(50, 50))
+        self.Profile.setMaximumSize(QtCore.QSize(50, 50))
+        self.Profile.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Profile.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Profile.setObjectName("Profile")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.Profile)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_5.setSpacing(0)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.ProfilePic = QtWidgets.QGraphicsView(self.Profile)
+        self.ProfilePic.setEnabled(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ProfilePic.sizePolicy().hasHeightForWidth())
+        self.ProfilePic.setSizePolicy(sizePolicy)
+        self.ProfilePic.setMinimumSize(QtCore.QSize(0, 0))
+        self.ProfilePic.setObjectName("ProfilePic")
+        self.verticalLayout_5.addWidget(self.ProfilePic)
+        self.UserPanel.addWidget(self.Profile)
+        self.horizontalLayout_2.addLayout(self.UserPanel)
+        self.verticalLayout.addWidget(self.Header)
+        self.widget = QtWidgets.QWidget(self.MainBodyContainer)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setObjectName("widget")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout_2.setContentsMargins(-1, -1, -1, 30)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.TopOverview = QtWidgets.QWidget(self.widget)
+        self.TopOverview.setStyleSheet("#TotalPatient, #DayFrame {\n"
+"    border: 2px solid  #2e6e65;\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"#Review {\n"
+"    color: #2b3752;\n"
+"    font-weight: 300;\n"
+"    font-size: 12px;\n"
+"}\n"
+"\n"
+"#Total, #Time {\n"
+"    color: #2b3752;\n"
+"    font-size: 33px;\n"
+"}\n"
+"\n"
+"#Day {\n"
+"    color: #2e6e65;\n"
+"    font-weight: 300;\n"
+"    font-size: 12px\n"
+"}\n"
+"\n"
+"")
+        self.TopOverview.setObjectName("TopOverview")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.TopOverview)
+        self.horizontalLayout_3.setSpacing(15)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.AddCheckUp = QtWidgets.QPushButton(self.TopOverview)
+        self.AddCheckUp.setMinimumSize(QtCore.QSize(0, 60))
+        self.AddCheckUp.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.AddCheckUp.setObjectName("AddCheckUp")
+        self.horizontalLayout_3.addWidget(self.AddCheckUp, 0, QtCore.Qt.AlignBottom)
+        self.pushButton_2 = QtWidgets.QPushButton(self.TopOverview)
+        self.pushButton_2.setMinimumSize(QtCore.QSize(0, 60))
+        self.pushButton_2.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout_3.addWidget(self.pushButton_2, 0, QtCore.Qt.AlignBottom)
+        self.TotalPatient = QtWidgets.QFrame(self.TopOverview)
+        self.TotalPatient.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.TotalPatient.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.TotalPatient.setObjectName("TotalPatient")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.TotalPatient)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.label_9 = QtWidgets.QLabel(self.TotalPatient)
+        self.label_9.setObjectName("label_9")
+        self.verticalLayout_8.addWidget(self.label_9)
+        self.TotalPatient_2 = QtWidgets.QLabel(self.TotalPatient)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.TotalPatient_2.sizePolicy().hasHeightForWidth())
+        self.TotalPatient_2.setSizePolicy(sizePolicy)
+        self.TotalPatient_2.setObjectName("TotalPatient_2")
+        self.verticalLayout_8.addWidget(self.TotalPatient_2)
+        self.Review = QtWidgets.QLabel(self.TotalPatient)
+        self.Review.setObjectName("Review")
+        self.verticalLayout_8.addWidget(self.Review, 0, QtCore.Qt.AlignTop)
+        self.horizontalLayout_3.addWidget(self.TotalPatient)
+        self.DayFrame = QtWidgets.QFrame(self.TopOverview)
+        self.DayFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.DayFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.DayFrame.setObjectName("DayFrame")
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.DayFrame)
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.Time = QtWidgets.QLabel(self.DayFrame)
+        self.Time.setObjectName("Time")
+        self.verticalLayout_9.addWidget(self.Time, 0, QtCore.Qt.AlignRight)
+        self.Day = QtWidgets.QLabel(self.DayFrame)
+        self.Day.setObjectName("Day")
+        self.verticalLayout_9.addWidget(self.Day, 0, QtCore.Qt.AlignRight)
+        self.Month = QtWidgets.QLabel(self.DayFrame)
+        self.Month.setObjectName("Month")
+        self.verticalLayout_9.addWidget(self.Month, 0, QtCore.Qt.AlignRight)
+        self.horizontalLayout_3.addWidget(self.DayFrame)
+        self.verticalLayout_2.addWidget(self.TopOverview)
+        self.frame_3 = QtWidgets.QFrame(self.widget)
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.frame_3)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 9, 0)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.TableFrame = QtWidgets.QFrame(self.frame_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.TableFrame.sizePolicy().hasHeightForWidth())
+        self.TableFrame.setSizePolicy(sizePolicy)
+        self.TableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.TableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.TableFrame.setObjectName("TableFrame")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.TableFrame)
+        self.verticalLayout_7.setContentsMargins(-1, -1, 20, 0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.label_2 = QtWidgets.QLabel(self.TableFrame)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_7.addWidget(self.label_2)
+        self.tableWidget = QtWidgets.QTableWidget(self.TableFrame)
+        self.tableWidget.setStyleSheet("QTableWidget {\n"
+"    border: 2px solid white;\n"
+"    border-radius: 15px;\n"
+"    background-color: white;\n"
+"    border-color: #2e6e65;\n"
+"}\n"
+"\n"
+"QHeaderView {\n"
+"    border: none;\n"
+"    font: 700 16pt \"Arial\";\n"
+"    background-color: #2e6e65;\n"
+"    color: #f4f7ed;\n"
+"    padding: 0px;\n"
+"    margin: 0px;\n"
+"    border-top-left-radius: 10px;\n"
+"    border-top-right-radius: 10px;\n"
+"}\n"
+"\n"
+"QHeaderView::section {\n"
+"    border: none;\n"
+"    text-align: left;\n"
+"    font: 700 16pt \"Arial\";\n"
+"    background-color: #2e6e65;\n"
+"    color: #f4f7ed;\n"
+"    padding: 5px;\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QHeaderView::section:first {\n"
+"    border-top-left-radius: 10px;\n"
+"}\n"
+"\n"
+"QHeaderView::section:last {\n"
+"    border-top-right-radius: 10px;\n"
+"}\n"
+"")
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(3, item)
+        self.verticalLayout_7.addWidget(self.tableWidget)
+        self.LowerOverview = QtWidgets.QFrame(self.TableFrame)
+        self.LowerOverview.setStyleSheet("#DiagnosisOverview {\n"
+"    border: 2px solid  #2e6e65;\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"#AgeStageOverview{\n"
+"    border: 2px solid  #2e6e65;\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"#ByDiagnosisLabel, #ByAgeStageLabel {\n"
+"    color: #2b3752;\n"
+"    font-weight: 300;\n"
+"    font-size: 12px;\n"
+"}\n"
+"\n"
+"#ChildLabel, #AdultLabel, #ElderlyLabel, #TotalLabel {\n"
+"    color: #2b3752;\n"
+"    font-weight: 300;\n"
+"    font-size: 20px;\n"
+"}\n"
+"\n"
+"#ChildPercentage, #AdultPercentage, #ElderlyPercentage, #TotalPercentage {\n"
+"    color: #2b3752;\n"
+"}\n"
+"\n"
+"#Diagnosis1, #Diagnosis2, #Diagnosis3, #Diagnosis4 {\n"
+"    color: #2b3752;\n"
+"    font-weight: 300;\n"
+"    font-size: 20px;\n"
+"}\n"
+"\n"
+"#DiagnosisPercentage1, #DiagnosisPercentage2, #DiagnosisPercentage3, #DiagnosisPercentage4 {\n"
+"    color: #2b3752\n"
+"}\n"
+"\n"
+"#frame, #frame_2, #frame_5, #frame_7, #frame_8, #frame_9, #frame_10 {\n"
+"    background-color: #b9cec4;\n"
+"    border-radius: 13px;\n"
+"}")
+        self.LowerOverview.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.LowerOverview.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.LowerOverview.setObjectName("LowerOverview")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.LowerOverview)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.PatientOverview = QtWidgets.QFrame(self.LowerOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.PatientOverview.sizePolicy().hasHeightForWidth())
+        self.PatientOverview.setSizePolicy(sizePolicy)
+        self.PatientOverview.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.PatientOverview.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.PatientOverview.setObjectName("PatientOverview")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.PatientOverview)
+        self.horizontalLayout_6.setContentsMargins(0, 10, 0, 0)
+        self.horizontalLayout_6.setSpacing(15)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.DiagnosisOverview = QtWidgets.QWidget(self.PatientOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.DiagnosisOverview.sizePolicy().hasHeightForWidth())
+        self.DiagnosisOverview.setSizePolicy(sizePolicy)
+        self.DiagnosisOverview.setObjectName("DiagnosisOverview")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.DiagnosisOverview)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.label_4 = QtWidgets.QLabel(self.DiagnosisOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_10.addWidget(self.label_4)
+        self.ByDiagnosisLabel = QtWidgets.QLabel(self.DiagnosisOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ByDiagnosisLabel.sizePolicy().hasHeightForWidth())
+        self.ByDiagnosisLabel.setSizePolicy(sizePolicy)
+        self.ByDiagnosisLabel.setObjectName("ByDiagnosisLabel")
+        self.verticalLayout_10.addWidget(self.ByDiagnosisLabel, 0, QtCore.Qt.AlignTop)
+        self.frame = QtWidgets.QFrame(self.DiagnosisOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy)
+        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.Diagnosis1 = QtWidgets.QLabel(self.frame)
+        self.Diagnosis1.setObjectName("Diagnosis1")
+        self.horizontalLayout_7.addWidget(self.Diagnosis1)
+        self.DiagnosisPercentage1 = QtWidgets.QLabel(self.frame)
+        self.DiagnosisPercentage1.setObjectName("DiagnosisPercentage1")
+        self.horizontalLayout_7.addWidget(self.DiagnosisPercentage1, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_10.addWidget(self.frame, 0, QtCore.Qt.AlignTop)
+        self.frame_2 = QtWidgets.QFrame(self.DiagnosisOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
+        self.frame_2.setSizePolicy(sizePolicy)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.frame_2)
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        self.Diagnosis2 = QtWidgets.QLabel(self.frame_2)
+        self.Diagnosis2.setObjectName("Diagnosis2")
+        self.horizontalLayout_8.addWidget(self.Diagnosis2)
+        self.DiagnosisPercentage2 = QtWidgets.QLabel(self.frame_2)
+        self.DiagnosisPercentage2.setObjectName("DiagnosisPercentage2")
+        self.horizontalLayout_8.addWidget(self.DiagnosisPercentage2, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_10.addWidget(self.frame_2, 0, QtCore.Qt.AlignTop)
+        self.frame_5 = QtWidgets.QFrame(self.DiagnosisOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
+        self.frame_5.setSizePolicy(sizePolicy)
+        self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_5.setObjectName("frame_5")
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.frame_5)
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.Diagnosis3 = QtWidgets.QLabel(self.frame_5)
+        self.Diagnosis3.setObjectName("Diagnosis3")
+        self.horizontalLayout_9.addWidget(self.Diagnosis3)
+        self.DiagnosisPercentage3 = QtWidgets.QLabel(self.frame_5)
+        self.DiagnosisPercentage3.setObjectName("DiagnosisPercentage3")
+        self.horizontalLayout_9.addWidget(self.DiagnosisPercentage3, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_10.addWidget(self.frame_5, 0, QtCore.Qt.AlignTop)
+        self.frame_7 = QtWidgets.QFrame(self.DiagnosisOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
+        self.frame_7.setSizePolicy(sizePolicy)
+        self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_7.setObjectName("frame_7")
+        self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.frame_7)
+        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
+        self.Diagnosis4 = QtWidgets.QLabel(self.frame_7)
+        self.Diagnosis4.setObjectName("Diagnosis4")
+        self.horizontalLayout_10.addWidget(self.Diagnosis4)
+        self.DiagnosisPercentage4 = QtWidgets.QLabel(self.frame_7)
+        self.DiagnosisPercentage4.setObjectName("DiagnosisPercentage4")
+        self.horizontalLayout_10.addWidget(self.DiagnosisPercentage4, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_10.addWidget(self.frame_7, 0, QtCore.Qt.AlignTop)
+        self.horizontalLayout_6.addWidget(self.DiagnosisOverview)
+        self.AgeStageOverview = QtWidgets.QWidget(self.PatientOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.AgeStageOverview.sizePolicy().hasHeightForWidth())
+        self.AgeStageOverview.setSizePolicy(sizePolicy)
+        self.AgeStageOverview.setObjectName("AgeStageOverview")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.AgeStageOverview)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.label_3 = QtWidgets.QLabel(self.AgeStageOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
+        self.label_3.setObjectName("label_3")
+        self.verticalLayout_11.addWidget(self.label_3)
+        self.ByAgeStageLabel = QtWidgets.QLabel(self.AgeStageOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ByAgeStageLabel.sizePolicy().hasHeightForWidth())
+        self.ByAgeStageLabel.setSizePolicy(sizePolicy)
+        self.ByAgeStageLabel.setObjectName("ByAgeStageLabel")
+        self.verticalLayout_11.addWidget(self.ByAgeStageLabel, 0, QtCore.Qt.AlignTop)
+        self.frame_8 = QtWidgets.QFrame(self.AgeStageOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_8.sizePolicy().hasHeightForWidth())
+        self.frame_8.setSizePolicy(sizePolicy)
+        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_8.setObjectName("frame_8")
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.frame_8)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.ChildLabel = QtWidgets.QLabel(self.frame_8)
+        self.ChildLabel.setObjectName("ChildLabel")
+        self.horizontalLayout_11.addWidget(self.ChildLabel)
+        self.ChildPercentage = QtWidgets.QLabel(self.frame_8)
+        self.ChildPercentage.setObjectName("ChildPercentage")
+        self.horizontalLayout_11.addWidget(self.ChildPercentage, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_11.addWidget(self.frame_8, 0, QtCore.Qt.AlignTop)
+        self.frame_9 = QtWidgets.QFrame(self.AgeStageOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
+        self.frame_9.setSizePolicy(sizePolicy)
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.frame_9)
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        self.AdultLabel = QtWidgets.QLabel(self.frame_9)
+        self.AdultLabel.setObjectName("AdultLabel")
+        self.horizontalLayout_12.addWidget(self.AdultLabel)
+        self.AdultPercentage = QtWidgets.QLabel(self.frame_9)
+        self.AdultPercentage.setObjectName("AdultPercentage")
+        self.horizontalLayout_12.addWidget(self.AdultPercentage, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_11.addWidget(self.frame_9, 0, QtCore.Qt.AlignTop)
+        self.frame_10 = QtWidgets.QFrame(self.AgeStageOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_10.sizePolicy().hasHeightForWidth())
+        self.frame_10.setSizePolicy(sizePolicy)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.frame_10)
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        self.ElderlyLabel = QtWidgets.QLabel(self.frame_10)
+        self.ElderlyLabel.setObjectName("ElderlyLabel")
+        self.horizontalLayout_13.addWidget(self.ElderlyLabel)
+        self.ElderlyPercentage = QtWidgets.QLabel(self.frame_10)
+        self.ElderlyPercentage.setObjectName("ElderlyPercentage")
+        self.horizontalLayout_13.addWidget(self.ElderlyPercentage, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_11.addWidget(self.frame_10, 0, QtCore.Qt.AlignTop)
+        self.frame_12 = QtWidgets.QFrame(self.AgeStageOverview)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_12.sizePolicy().hasHeightForWidth())
+        self.frame_12.setSizePolicy(sizePolicy)
+        self.frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_12.setObjectName("frame_12")
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.frame_12)
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.TotalLabel = QtWidgets.QLabel(self.frame_12)
+        self.TotalLabel.setObjectName("TotalLabel")
+        self.horizontalLayout_14.addWidget(self.TotalLabel)
+        self.TotalPercentage = QtWidgets.QLabel(self.frame_12)
+        self.TotalPercentage.setObjectName("TotalPercentage")
+        self.horizontalLayout_14.addWidget(self.TotalPercentage, 0, QtCore.Qt.AlignRight)
+        self.verticalLayout_11.addWidget(self.frame_12, 0, QtCore.Qt.AlignTop)
+        self.horizontalLayout_6.addWidget(self.AgeStageOverview)
+        self.horizontalLayout_5.addWidget(self.PatientOverview)
+        self.verticalLayout_7.addWidget(self.LowerOverview)
+        self.horizontalLayout_4.addWidget(self.TableFrame)
+        self.RecentFrame = QtWidgets.QFrame(self.frame_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.RecentFrame.sizePolicy().hasHeightForWidth())
+        self.RecentFrame.setSizePolicy(sizePolicy)
+        self.RecentFrame.setMinimumSize(QtCore.QSize(250, 0))
+        self.RecentFrame.setMaximumSize(QtCore.QSize(70, 16777215))
+        self.RecentFrame.setStyleSheet("#RecentFrame {\n"
+"    border: 2px solid  #2e6e65;\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"#RecentFrame QFrame {\n"
+"    background-color: #b9cec4;\n"
+"    border-radius: 20px;\n"
+"}\n"
+"\n"
+"#RecentFrame QLabel {\n"
+"    background-color: transparent;\n"
+"}\n"
+"")
+        self.RecentFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.RecentFrame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.RecentFrame.setObjectName("RecentFrame")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.RecentFrame)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.label = QtWidgets.QLabel(self.RecentFrame)
+        self.label.setObjectName("label")
+        self.verticalLayout_6.addWidget(self.label)
+        self.frame_4 = QtWidgets.QFrame(self.RecentFrame)
+        self.frame_4.setMinimumSize(QtCore.QSize(0, 100))
+        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_4.setObjectName("frame_4")
+        self.verticalLayout_6.addWidget(self.frame_4)
+        self.frame_6 = QtWidgets.QFrame(self.RecentFrame)
+        self.frame_6.setMinimumSize(QtCore.QSize(0, 100))
+        self.frame_6.setMaximumSize(QtCore.QSize(16777215, 100))
+        self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_6.setObjectName("frame_6")
+        self.verticalLayout_6.addWidget(self.frame_6)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_6.addItem(spacerItem2)
+        self.horizontalLayout_4.addWidget(self.RecentFrame)
+        self.verticalLayout_2.addWidget(self.frame_3)
+        self.verticalLayout.addWidget(self.widget)
+        self.horizontalLayout.addWidget(self.MainBodyContainer)
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(Dialog)
-        self.buttonBox.accepted.connect(Dialog.accept) # type: ignore
-        self.buttonBox.rejected.connect(Dialog.reject) # type: ignore
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.textEdit.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:\'Segoe UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:26pt; font-weight:700;\">STAFF</span></p></body></html>"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.DashboardButton.setText(_translate("MainWindow", "Dashboard"))
+        self.RecordsButton.setText(_translate("MainWindow", "Records"))
+        self.TransactionButton.setText(_translate("MainWindow", "Transactions"))
+        self.pushButton_9.setText(_translate("MainWindow", "Profile"))
+        self.pushButton_10.setText(_translate("MainWindow", "Logout"))
+        self.InterfaceTitle.setText(_translate("MainWindow", "Records"))
+        self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
+        self.AddCheckUp.setText(_translate("MainWindow", "Add Check Up"))
+        self.pushButton_2.setText(_translate("MainWindow", "Add Transaction"))
+        self.label_9.setText(_translate("MainWindow", "Total Patient"))
+        self.TotalPatient_2.setText(_translate("MainWindow", "0000"))
+        self.Review.setText(_translate("MainWindow", "20 more than yesterday"))
+        self.Time.setText(_translate("MainWindow", "00:00 AM"))
+        self.Day.setText(_translate("MainWindow", "Sunday"))
+        self.Month.setText(_translate("MainWindow", "Month 00, 2025"))
+        self.label_2.setText(_translate("MainWindow", "Pending Check Ups"))
+        item = self.tableWidget.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Patient ID"))
+        item = self.tableWidget.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Patient Name"))
+        item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Check Up Type"))
+        item = self.tableWidget.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "Priority No."))
+        self.label_4.setText(_translate("MainWindow", "Patient Overview"))
+        self.ByDiagnosisLabel.setText(_translate("MainWindow", "By Diagnosis"))
+        self.Diagnosis1.setText(_translate("MainWindow", "Fever"))
+        self.DiagnosisPercentage1.setText(_translate("MainWindow", "0%"))
+        self.Diagnosis2.setText(_translate("MainWindow", "Ingrown"))
+        self.DiagnosisPercentage2.setText(_translate("MainWindow", "0%"))
+        self.Diagnosis3.setText(_translate("MainWindow", "Cough"))
+        self.DiagnosisPercentage3.setText(_translate("MainWindow", "0%"))
+        self.Diagnosis4.setText(_translate("MainWindow", "Emergency"))
+        self.DiagnosisPercentage4.setText(_translate("MainWindow", "0%"))
+        self.label_3.setText(_translate("MainWindow", "Patient Overview"))
+        self.ByAgeStageLabel.setText(_translate("MainWindow", "By Age Stage"))
+        self.ChildLabel.setText(_translate("MainWindow", "Child"))
+        self.ChildPercentage.setText(_translate("MainWindow", "0"))
+        self.AdultLabel.setText(_translate("MainWindow", "Adult"))
+        self.AdultPercentage.setText(_translate("MainWindow", "0"))
+        self.ElderlyLabel.setText(_translate("MainWindow", "Elderly"))
+        self.ElderlyPercentage.setText(_translate("MainWindow", "0"))
+        self.TotalLabel.setText(_translate("MainWindow", "Total:"))
+        self.TotalPercentage.setText(_translate("MainWindow", "0"))
+        self.label.setText(_translate("MainWindow", "Recent Activity"))

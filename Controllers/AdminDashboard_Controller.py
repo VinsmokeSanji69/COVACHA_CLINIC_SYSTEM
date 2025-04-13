@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from Views.Admin_Dashboard import Ui_MainWindow as AdminDashboardUI
-from Models.AdminDashboardModel import AdminDashboardModel
+from Models.Admin import Admin
 from Controllers.AdminStaffs_Controller import AdminStaffsController
 from Controllers.AdminCharges_Controller import AdminChargesController
 
@@ -23,7 +23,7 @@ class AdminDashboardController(QMainWindow):
         else:
             print("StaffButton is missing!")
 
-        #connect button to charges views
+        # Connect button to charges views
         if hasattr(self.ui, 'ChargesButton'):
             print("ChargesButton exists")
             self.ui.ChargesButton.clicked.connect(self.ViewCharges)
@@ -34,11 +34,11 @@ class AdminDashboardController(QMainWindow):
     def load_counts(self):
         try:
             # Count doctors
-            doctor_count = AdminDashboardModel.count_doctor()
+            doctor_count = Admin.count_doctor()
             self.ui.TotalDoctor.setText(str(doctor_count))
 
             # Count staff
-            staff_count = AdminDashboardModel.count_staff()
+            staff_count = Admin.count_staff()
             self.ui.TotalStaff.setText(str(staff_count))
 
             print(f"Loaded counts - Doctors: {doctor_count}, Staff: {staff_count}")
@@ -58,9 +58,9 @@ class AdminDashboardController(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def ViewCharges(self):
-        print("StaffButton clicked!")
+        print("ChargesButton clicked!")
         try:
-            # Instantiate and show the AdminStaffsController window
+            # Instantiate and show the AdminChargesController window
             self.admin_charges_controller = AdminChargesController()
             self.admin_charges_controller.show()
             self.hide()  # Hide the current dashboard window
