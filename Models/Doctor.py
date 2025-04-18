@@ -36,13 +36,13 @@ class Doctor:
                     INSERT INTO doctor (
                     doc_password, doc_license, doc_doc_specialty, doc_gender, doc_dob,
                                doc_address, doc_contact, doc_joined_date, doc_lname, doc_fname,
-                               doctor_mname, doctor_email
+                               doc_mname, doc_email
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
 
                 cursor.execute(query,(
                     doctor_data["password"],
-                    doctor_data["licnese"],
+                    doctor_data["license"],
                     doctor_data["specailty"],
                     doctor_data["gender"],
                     doctor_data["dob"],
@@ -64,6 +64,33 @@ class Doctor:
             if Conn:
                 Conn.close()
 
+    @staticmethod
+    def get_doctor_by_id(doc_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return None
+
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                            SELECT doc_lname, doc_fname, doc_mname
+                            FROM doctor
+                            WHERE doc_id = %s;
+                        """, (doc_id,))
+                result = cursor.fetchone()
+                if result:
+                    return {
+                        'doc_lname': result[0],
+                        'doc_fname': result[1],
+                        'doc_mname': result[2],
+                    }
+                return None
+        except Exception as e:
+            print(f"Error fetching doctor details: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
 
     @staticmethod
     def get_all_doctors():

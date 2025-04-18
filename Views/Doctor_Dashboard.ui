@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1244</width>
+    <width>1218</width>
     <height>791</height>
    </rect>
   </property>
@@ -34,7 +34,7 @@ QPushButton {
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
@@ -105,13 +105,13 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
-           <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
+          <iconset resource="../Images/resources.qrc">
+           <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>30</width>
-           <height>30</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -142,6 +142,11 @@ QLabel {
          </property>
          <item>
           <widget class="QPushButton" name="pushButton_3">
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	border: 2px solid white;
+}</string>
+           </property>
            <property name="text">
             <string>Dashboard</string>
            </property>
@@ -151,14 +156,14 @@ QLabel {
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="RecordButton">
            <property name="text">
             <string>Records</string>
            </property>
@@ -168,14 +173,14 @@ QLabel {
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="PatienButton">
            <property name="text">
             <string>Patients</string>
            </property>
@@ -185,8 +190,8 @@ QLabel {
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -225,8 +230,8 @@ QLabel {
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -242,8 +247,8 @@ QLabel {
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -285,7 +290,7 @@ QGraphicsView {
 }
 
 #InterfaceTitle  {
-	font-size: 35px;
+	font-size: 40px;
 }
 
 #DoctorSidePanel {
@@ -322,15 +327,25 @@ QFrame#Histories QFrame {
     background-color: #8fb1a8;
 }
 
+#TotalLabel {
+	font-size: 25px;
+}
+
 #TotalInfo {
 	color: #2b3752;
-	font-size: 33px;
+	font-size: 40px;
 }
 
 #TotalDescription {
 	color: #2b3752;
 	font-weight: 300;
 	font-size: 12px;
+}
+
+#AddCheckUpButton {
+	text-align: center;
+	background-color: #2e6e65;
+	font-size: 20px;
 }
 </string>
       </property>
@@ -421,15 +436,21 @@ QFrame#Histories QFrame {
               <layout class="QHBoxLayout" name="horizontalLayout_6">
                <item>
                 <widget class="QFrame" name="TotalPatientOverview">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
-                   <width>450</width>
+                   <width>0</width>
                    <height>0</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>500</width>
+                   <width>16777215</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -464,7 +485,7 @@ QFrame#Histories QFrame {
                      <property name="bottomMargin">
                       <number>0</number>
                      </property>
-                     <item alignment="Qt::AlignLeft">
+                     <item>
                       <widget class="QPushButton" name="pushButton_6">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -482,12 +503,12 @@ QFrame#Histories QFrame {
                        </property>
                        <property name="icon">
                         <iconset>
-                         <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
+                         <normaloff>:/icons/icons/file-user.svg</normaloff>:/icons/icons/file-user.svg</iconset>
                        </property>
                        <property name="iconSize">
                         <size>
-                         <width>30</width>
-                         <height>30</height>
+                         <width>40</width>
+                         <height>40</height>
                         </size>
                        </property>
                       </widget>
@@ -502,6 +523,9 @@ QFrame#Histories QFrame {
                        </property>
                        <property name="text">
                         <string>Total Patient</string>
+                       </property>
+                       <property name="wordWrap">
+                        <bool>true</bool>
                        </property>
                       </widget>
                      </item>
@@ -533,7 +557,7 @@ QFrame#Histories QFrame {
                       <number>0</number>
                      </property>
                      <item>
-                      <widget class="QLabel" name="TotalInfo">
+                      <widget class="QLabel" name="TotalPatient">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                          <horstretch>0</horstretch>
@@ -552,12 +576,12 @@ QFrame#Histories QFrame {
                        </property>
                        <property name="icon">
                         <iconset>
-                         <normaloff>:/icons/icons/chevron-down.svg</normaloff>:/icons/icons/chevron-down.svg</iconset>
+                         <normaloff>:/icons/icons/chart-no-axes-combined(green).svg</normaloff>:/icons/icons/chart-no-axes-combined(green).svg</iconset>
                        </property>
                        <property name="iconSize">
                         <size>
-                         <width>30</width>
-                         <height>30</height>
+                         <width>40</width>
+                         <height>40</height>
                         </size>
                        </property>
                       </widget>
@@ -576,6 +600,42 @@ QFrame#Histories QFrame {
                 </widget>
                </item>
               </layout>
+             </item>
+             <item alignment="Qt::AlignBottom">
+              <widget class="QPushButton" name="AcceptCheckUp">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton{
+	text-align: center;
+	background-color: #2e6e65;
+	font-size: 20px;
+}</string>
+               </property>
+               <property name="text">
+                <string>Accept Check Up</string>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>:/icons/icons/file-plus-2.svg</normaloff>:/icons/icons/file-plus-2.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item>
               <spacer name="horizontalSpacer">
@@ -618,7 +678,7 @@ QFrame#Histories QFrame {
               <number>10</number>
              </property>
              <property name="rightMargin">
-              <number>9</number>
+              <number>0</number>
              </property>
              <property name="bottomMargin">
               <number>30</number>
@@ -634,7 +694,7 @@ QFrame#Histories QFrame {
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Patient Records</string>
+                  <string>Check Ups</string>
                  </property>
                 </widget>
                </item>
@@ -670,7 +730,7 @@ QFrame#Histories QFrame {
               </spacer>
              </item>
              <item>
-              <widget class="QTableWidget" name="tableWidget">
+              <widget class="QTableWidget" name="PatientDetails">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -699,7 +759,7 @@ QHeaderView {
 QHeaderView::section {
     border: none;
 	text-align: left;
-    font: 700 16pt &quot;Arial&quot;;
+    font: 700 12pt &quot;Arial&quot;;
     background-color: #2e6e65;
     color: #f4f7ed;
     padding: 5px;
@@ -715,9 +775,12 @@ QHeaderView::section:last {
 }
 </string>
                </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
                <column>
                 <property name="text">
-                 <string>Name</string>
+                 <string>Check Up ID</string>
                 </property>
                </column>
                <column>
@@ -727,12 +790,7 @@ QHeaderView::section:last {
                </column>
                <column>
                 <property name="text">
-                 <string>Gender</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Diagnosis</string>
+                 <string>Name</string>
                 </property>
                </column>
               </widget>
@@ -750,6 +808,11 @@ QHeaderView::section:last {
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">#User {
+	qproperty-alignment: 'AlignCenter';
+}</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
@@ -844,7 +907,7 @@ QHeaderView::section:last {
             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
              <widget class="QLabel" name="User">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -865,7 +928,7 @@ QHeaderView::section:last {
                <string>Jayson Gabriel L. Limosnero</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignLeading</set>
+               <set>Qt::AlignCenter</set>
               </property>
               <property name="wordWrap">
                <bool>true</bool>

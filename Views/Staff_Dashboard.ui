@@ -186,6 +186,13 @@ border: 2px solid white;
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="LabRequestButton">
+           <property name="text">
+            <string>Lab Request</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer_4">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -352,7 +359,7 @@ QPushButton {
              <enum>Qt::LeftToRight</enum>
             </property>
             <property name="text">
-             <string>Records</string>
+             <string>Dashboard</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading</set>
@@ -659,7 +666,7 @@ QPushButton {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QTableWidget" name="tableWidget">
+                 <widget class="QTableWidget" name="PendingTable">
                   <property name="styleSheet">
                    <string notr="true">QTableWidget {
     border: 2px solid white;
@@ -700,7 +707,7 @@ QHeaderView::section:last {
                   </property>
                   <column>
                    <property name="text">
-                    <string>Patient ID</string>
+                    <string>Check up ID</string>
                    </property>
                   </column>
                   <column>
@@ -711,11 +718,6 @@ QHeaderView::section:last {
                   <column>
                    <property name="text">
                     <string>Check Up Type</string>
-                   </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Priority No.</string>
                    </property>
                   </column>
                  </widget>

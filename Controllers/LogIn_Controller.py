@@ -175,6 +175,36 @@ class LoginController:
             if conn:
                 conn.close()
 
+    def _handle_admin_login(self, conn, password):
+        """Special handling for admin login with plaintext password"""
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT staff_id, staff_fname, staff_lname, staff_password FROM staff WHERE staff_id = %s",
+            (self.ADMIN_ID,)
+        )
+        admin = cursor.fetchone()
+
+        if not admin:
+            QMessageBox.warning(
+                self.login_window,
+                "Login Failed",
+                "Admin account not found"
+            )
+            return
+
+        if password == admin[3]:  # Plaintext comparison
+            # Show the admin dashboard modally
+            self.admin_dashboard = AdminDashboardController()
+            self.admin_dashboard.show()
+            self.login_window.close()
+
+        else:
+            QMessageBox.warning(
+                self.login_window,
+                "Login Failed",
+                "Incorrect admin password"
+            )
+
     def _get_user(self, conn, table, user_id):
         """Generic user retrieval from database"""
         cursor = conn.cursor()
@@ -211,7 +241,13 @@ class LoginController:
 
     def _show_dashboard(self, dashboard_controller, user):
         if dashboard_controller == DoctorDashboardController:
-            self.dashboard = dashboard_controller(user[1], user[2], user[3])
+            # Pass doc_id, fname, lname, and specialty to DoctorDashboardController
+            self.dashboard = dashboard_controller(
+                doc_id=user[0],
+                fname=user[1],
+                lname=user[2],
+                specialty=user[3]
+            )
         elif dashboard_controller == StaffDashboardController:
             # Pass only the staff_id to the StaffDashboardController
             self.dashboard = dashboard_controller(staff_id=user[0])

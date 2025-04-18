@@ -163,7 +163,8 @@ class StaffAddCheckUp(QMainWindow):
             "height": self.ui.Height.text().strip(),
             "weight": self.ui.Weight.text().strip(),
             "temperature": self.ui.Temp.text().strip(),
-            "staff_id": int(self.staff_id)
+            "staff_id": int(self.staff_id),
+            "checkup_type" : self.ui.CheckType.currentText()
         }
         print(f"Collected data: {data}")
         return data
@@ -192,6 +193,10 @@ class StaffAddCheckUp(QMainWindow):
         if CheckUp.save_checkup(data):
             QMessageBox.information(self, "Success", "Check-up added successfully!")
             self.clear_form()
+
+            # Notify the parent window to refresh the PendingTable
+            if hasattr(self, 'refresh_callback') and callable(self.refresh_callback):
+                self.refresh_callback()
         else:
             QMessageBox.critical(self, "Error", "Failed to add check-up. Please try again.")
 
@@ -204,6 +209,7 @@ class StaffAddCheckUp(QMainWindow):
         self.ui.Mname.clear()
         self.ui.ID.clear()
         self.ui.Gender.setCurrentIndex(0)
+        self.ui.CheckType.setCurrentIndex(0)
         self.ui.Dob.setDate(QDate(1990, 1, 1))
         self.ui.Address.clear()
         self.ui.Contact.clear()

@@ -35,11 +35,10 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
+	font: 900 16pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;
-	font-size: 25px;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
@@ -101,7 +100,7 @@ QLabel {
       </property>
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
+        <width>280</width>
         <height>16777215</height>
        </size>
       </property>
@@ -125,7 +124,7 @@ QLabel {
         <number>10</number>
        </property>
        <item>
-        <widget class="QPushButton" name="DashboardButton_2">
+        <widget class="QPushButton" name="NavBarButton">
          <property name="toolTip">
           <string>View Main Dashboard</string>
          </property>
@@ -160,7 +159,7 @@ QLabel {
          <property name="sizeHint" stdset="0">
           <size>
            <width>10</width>
-           <height>20</height>
+           <height>10</height>
           </size>
          </property>
         </spacer>
@@ -271,14 +270,17 @@ QLabel {
             <string>View Reports and Overviews</string>
            </property>
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">QPushButton{
+	font: 900 16pt &quot;Satoshi Black&quot;;
+	border: 2px solid white;
+}</string>
            </property>
            <property name="text">
             <string>  Charges</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/hand-coins.svg</normaloff>:/lucide/icons/hand-coins.svg</iconset>
+            <iconset resource="../Images/resources.qrc">
+             <normaloff>:/lucide/icons/chart-no-axes-combined.svg</normaloff>:/lucide/icons/chart-no-axes-combined.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -309,7 +311,7 @@ QLabel {
           <number>15</number>
          </property>
          <item>
-          <widget class="QPushButton" name="OverviewsButton_3">
+          <widget class="QPushButton" name="ProfileButton">
            <property name="toolTip">
             <string>View Profile Settings</string>
            </property>
@@ -332,7 +334,7 @@ QLabel {
           </widget>
          </item>
          <item alignment="Qt::AlignVCenter">
-          <widget class="QPushButton" name="OverviewsButton_2">
+          <widget class="QPushButton" name="LogOutButton">
            <property name="toolTip">
             <string>Log Out from your Account</string>
            </property>
@@ -860,6 +862,17 @@ padding: 0px 20px;
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+	font: 900 10pt &quot;Satoshi Black&quot;;
+	background-color:  #2E6E65;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 20px;
+	color: #F4F7ED;
+	text-align: center;
+}</string>
+               </property>
                <layout class="QHBoxLayout" name="horizontalLayout_5">
                 <property name="spacing">
                  <number>10</number>
@@ -903,6 +916,16 @@ padding: 0px 20px;
                    </item>
                    <item>
                     <widget class="QTableWidget" name="DoctorTable">
+                     <property name="styleSheet">
+                      <string notr="true">QTableWidget QHeaderView::section {
+                  background-color: #2E6E65;
+                  color: white;
+                  padding: 5px;
+                  font: 16px &quot;Lexend Medium&quot;;
+                  border: 2px solid #2E6E65;
+                  text-align: left;
+              }</string>
+                     </property>
                      <property name="sizeAdjustPolicy">
                       <enum>QAbstractScrollArea::AdjustToContents</enum>
                      </property>
@@ -910,7 +933,7 @@ padding: 0px 20px;
                       <bool>true</bool>
                      </property>
                      <property name="columnCount">
-                      <number>3</number>
+                      <number>2</number>
                      </property>
                      <attribute name="horizontalHeaderHighlightSections">
                       <bool>true</bool>
@@ -926,11 +949,6 @@ padding: 0px 20px;
                      <column>
                       <property name="text">
                        <string>Rate</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Actions</string>
                       </property>
                      </column>
                     </widget>
@@ -965,6 +983,16 @@ padding: 0px 20px;
                    </item>
                    <item>
                     <widget class="QTableWidget" name="LaboratoryTestTable">
+                     <property name="styleSheet">
+                      <string notr="true">QTableWidget QHeaderView::section {
+                  background-color: #2E6E65;
+                  color: white;
+                  padding: 5px;
+                  font: 16px &quot;Satoshi Black&quot;;
+                  border: 2px solid #2E6E65;
+                  text-align: left;
+              }</string>
+                     </property>
                      <property name="sizeAdjustPolicy">
                       <enum>QAbstractScrollArea::AdjustToContents</enum>
                      </property>
@@ -972,7 +1000,7 @@ padding: 0px 20px;
                       <bool>true</bool>
                      </property>
                      <property name="columnCount">
-                      <number>4</number>
+                      <number>3</number>
                      </property>
                      <attribute name="horizontalHeaderHighlightSections">
                       <bool>true</bool>
@@ -995,11 +1023,54 @@ padding: 0px 20px;
                        <string>Charge</string>
                       </property>
                      </column>
-                     <column>
-                      <property name="text">
-                       <string>Actions</string>
-                      </property>
-                     </column>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item alignment="Qt::AlignTop">
+                 <widget class="QWidget" name="widget_3" native="true">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
+                   <property name="spacing">
+                    <number>5</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>30</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="View">
+                     <property name="text">
+                      <string>View</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="Modify">
+                     <property name="text">
+                      <string>Modify</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="Delete">
+                     <property name="text">
+                      <string>Delete</string>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -1023,7 +1094,6 @@ padding: 0px 20px;
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
   <include location="../Images/resources.qrc"/>
  </resources>
  <connections/>

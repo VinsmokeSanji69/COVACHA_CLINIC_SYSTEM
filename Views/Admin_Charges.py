@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from socket import fromfd
 
 # Form implementation generated from reading ui file 'Admin_Charges.ui'
 #
@@ -28,11 +29,10 @@ class Ui_MainWindow(object):
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 10pt \"Satoshi Black\";\n"
+"    font: 900 16pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
 "    font-weight: bold;\n"
-"    font-size: 25px;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
@@ -70,25 +70,25 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.NavBar.sizePolicy().hasHeightForWidth())
         self.NavBar.setSizePolicy(sizePolicy)
         self.NavBar.setMinimumSize(QtCore.QSize(0, 0))
-        self.NavBar.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.NavBar.setMaximumSize(QtCore.QSize(280, 16777215))
         self.NavBar.setAutoFillBackground(False)
         self.NavBar.setStyleSheet("")
         self.NavBar.setObjectName("NavBar")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.NavBar)
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.DashboardButton_2 = QtWidgets.QPushButton(self.NavBar)
-        self.DashboardButton_2.setStyleSheet("QPushButton {\n"
+        self.NavBarButton = QtWidgets.QPushButton(self.NavBar)
+        self.NavBarButton.setStyleSheet("QPushButton {\n"
 "    padding: 10px 8px;\n"
 "}")
-        self.DashboardButton_2.setText("")
+        self.NavBarButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DashboardButton_2.setIcon(icon)
-        self.DashboardButton_2.setIconSize(QtCore.QSize(35, 35))
-        self.DashboardButton_2.setObjectName("DashboardButton_2")
-        self.verticalLayout.addWidget(self.DashboardButton_2)
-        spacerItem = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        self.NavBarButton.setIcon(icon)
+        self.NavBarButton.setIconSize(QtCore.QSize(35, 35))
+        self.NavBarButton.setObjectName("NavBarButton")
+        self.verticalLayout.addWidget(self.NavBarButton)
+        spacerItem = QtWidgets.QSpacerItem(10, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         self.verticalLayout.addItem(spacerItem)
         self.MainButtons = QtWidgets.QVBoxLayout()
         self.MainButtons.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
@@ -128,10 +128,11 @@ class Ui_MainWindow(object):
         self.MainButtons.addWidget(self.TransactionsButton)
         self.ChargesButton = QtWidgets.QPushButton(self.NavBar)
         self.ChargesButton.setStyleSheet("QPushButton{\n"
+"    font: 900 16pt \"Satoshi Black\";\n"
 "    border: 2px solid white;\n"
 "}")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/hand-coins.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/chart-no-axes-combined.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ChargesButton.setIcon(icon5)
         self.ChargesButton.setIconSize(QtCore.QSize(40, 40))
         self.ChargesButton.setObjectName("ChargesButton")
@@ -142,22 +143,22 @@ class Ui_MainWindow(object):
         self.SettingButtons = QtWidgets.QVBoxLayout()
         self.SettingButtons.setSpacing(15)
         self.SettingButtons.setObjectName("SettingButtons")
-        self.OverviewsButton_3 = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton_3.setStyleSheet("")
+        self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
+        self.ProfileButton.setStyleSheet("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton_3.setIcon(icon6)
-        self.OverviewsButton_3.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton_3.setObjectName("OverviewsButton_3")
-        self.SettingButtons.addWidget(self.OverviewsButton_3)
-        self.OverviewsButton_2 = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton_2.setStyleSheet("")
+        self.ProfileButton.setIcon(icon6)
+        self.ProfileButton.setIconSize(QtCore.QSize(40, 40))
+        self.ProfileButton.setObjectName("ProfileButton")
+        self.SettingButtons.addWidget(self.ProfileButton)
+        self.LogOutButton = QtWidgets.QPushButton(self.NavBar)
+        self.LogOutButton.setStyleSheet("")
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton_2.setIcon(icon7)
-        self.OverviewsButton_2.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton_2.setObjectName("OverviewsButton_2")
-        self.SettingButtons.addWidget(self.OverviewsButton_2, 0, QtCore.Qt.AlignVCenter)
+        self.LogOutButton.setIcon(icon7)
+        self.LogOutButton.setIconSize(QtCore.QSize(40, 40))
+        self.LogOutButton.setObjectName("LogOutButton")
+        self.SettingButtons.addWidget(self.LogOutButton, 0, QtCore.Qt.AlignVCenter)
         self.verticalLayout.addLayout(self.SettingButtons)
         self.horizontalLayout_4.addWidget(self.NavBar)
         self.MainBodyContainer = QtWidgets.QFrame(self.centralwidget)
@@ -428,6 +429,15 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Charges.sizePolicy().hasHeightForWidth())
         self.Charges.setSizePolicy(sizePolicy)
+        self.Charges.setStyleSheet("QPushButton {\n"
+"    font: 900 10pt \"Satoshi Black\";\n"
+"    background-color:  #2E6E65;\n"
+"    border-radius: 6px;\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    color: #F4F7ED;\n"
+"    text-align: center;\n"
+"}")
         self.Charges.setObjectName("Charges")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.Charges)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
@@ -443,17 +453,23 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.verticalLayout_6.addWidget(self.label)
         self.DoctorTable = QtWidgets.QTableWidget(self.widget)
+        self.DoctorTable.setStyleSheet("QTableWidget QHeaderView::section {\n"
+"                  background-color: #2E6E65;\n"
+"                  color: white;\n"
+"                  padding: 5px;\n"
+"                  font: 16px \"Lexend Medium\";\n"
+"                  border: 2px solid #2E6E65;\n"
+"                  text-align: left;\n"
+"              }")
         self.DoctorTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.DoctorTable.setCornerButtonEnabled(True)
-        self.DoctorTable.setColumnCount(3)
+        self.DoctorTable.setColumnCount(2)
         self.DoctorTable.setObjectName("DoctorTable")
         self.DoctorTable.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.DoctorTable.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         self.DoctorTable.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.DoctorTable.setHorizontalHeaderItem(2, item)
         self.DoctorTable.horizontalHeader().setHighlightSections(True)
         self.DoctorTable.horizontalHeader().setStretchLastSection(True)
         self.verticalLayout_6.addWidget(self.DoctorTable)
@@ -468,9 +484,17 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.verticalLayout_7.addWidget(self.label_2)
         self.LaboratoryTestTable = QtWidgets.QTableWidget(self.widget_2)
+        self.LaboratoryTestTable.setStyleSheet("QTableWidget QHeaderView::section {\n"
+"                  background-color: #2E6E65;\n"
+"                  color: white;\n"
+"                  padding: 5px;\n"
+"                  font: 16px \"Satoshi Black\";\n"
+"                  border: 2px solid #2E6E65;\n"
+"                  text-align: left;\n"
+"              }")
         self.LaboratoryTestTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.LaboratoryTestTable.setCornerButtonEnabled(True)
-        self.LaboratoryTestTable.setColumnCount(4)
+        self.LaboratoryTestTable.setColumnCount(3)
         self.LaboratoryTestTable.setObjectName("LaboratoryTestTable")
         self.LaboratoryTestTable.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
@@ -479,12 +503,27 @@ class Ui_MainWindow(object):
         self.LaboratoryTestTable.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.LaboratoryTestTable.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.LaboratoryTestTable.setHorizontalHeaderItem(3, item)
         self.LaboratoryTestTable.horizontalHeader().setHighlightSections(True)
         self.LaboratoryTestTable.horizontalHeader().setStretchLastSection(True)
         self.verticalLayout_7.addWidget(self.LaboratoryTestTable)
         self.horizontalLayout_5.addWidget(self.widget_2)
+        self.widget_3 = QtWidgets.QWidget(self.Charges)
+        self.widget_3.setMinimumSize(QtCore.QSize(110, 0))
+        self.widget_3.setObjectName("widget_3")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.widget_3)
+        self.verticalLayout_8.setContentsMargins(0, 30, 0, 0)
+        self.verticalLayout_8.setSpacing(5)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.View = QtWidgets.QPushButton(self.widget_3)
+        self.View.setObjectName("View")
+        self.verticalLayout_8.addWidget(self.View)
+        self.Modify = QtWidgets.QPushButton(self.widget_3)
+        self.Modify.setObjectName("Modify")
+        self.verticalLayout_8.addWidget(self.Modify)
+        self.Delete = QtWidgets.QPushButton(self.widget_3)
+        self.Delete.setObjectName("Delete")
+        self.verticalLayout_8.addWidget(self.Delete)
+        self.horizontalLayout_5.addWidget(self.widget_3, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_5.addWidget(self.Charges)
         self.verticalLayout_4.addWidget(self.BodyLayout)
         self.verticalLayout_2.addWidget(self.Body)
@@ -499,7 +538,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.DashboardButton_2.setToolTip(_translate("MainWindow", "View Main Dashboard"))
+        self.NavBarButton.setToolTip(_translate("MainWindow", "View Main Dashboard"))
         self.DashboardButton.setToolTip(_translate("MainWindow", "View Main Dashboard"))
         self.DashboardButton.setText(_translate("MainWindow", "  Dashboard"))
         self.StaffsButton.setToolTip(_translate("MainWindow", "View Staff Record"))
@@ -510,10 +549,10 @@ class Ui_MainWindow(object):
         self.TransactionsButton.setText(_translate("MainWindow", "  Transactions"))
         self.ChargesButton.setToolTip(_translate("MainWindow", "View Reports and Overviews"))
         self.ChargesButton.setText(_translate("MainWindow", "  Charges"))
-        self.OverviewsButton_3.setToolTip(_translate("MainWindow", "View Profile Settings"))
-        self.OverviewsButton_3.setText(_translate("MainWindow", "  Profile"))
-        self.OverviewsButton_2.setToolTip(_translate("MainWindow", "Log Out from your Account"))
-        self.OverviewsButton_2.setText(_translate("MainWindow", "  Log Out"))
+        self.ProfileButton.setToolTip(_translate("MainWindow", "View Profile Settings"))
+        self.ProfileButton.setText(_translate("MainWindow", "  Profile"))
+        self.LogOutButton.setToolTip(_translate("MainWindow", "Log Out from your Account"))
+        self.LogOutButton.setText(_translate("MainWindow", "  Log Out"))
         self.InterfaceTitle.setText(_translate("MainWindow", "System Charges"))
         self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("MainWindow", "Admin"))
@@ -523,8 +562,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Doctor Name"))
         item = self.DoctorTable.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Rate"))
-        item = self.DoctorTable.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Actions"))
         self.label_2.setText(_translate("MainWindow", "Laboratory Tests"))
         item = self.LaboratoryTestTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Test Code"))
@@ -532,5 +569,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Laboratory Test"))
         item = self.LaboratoryTestTable.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Charge"))
-        item = self.LaboratoryTestTable.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Actions"))
+        self.View.setText(_translate("MainWindow", "View"))
+        self.Modify.setText(_translate("MainWindow", "Modify"))
+        self.Delete.setText(_translate("MainWindow", "Delete"))

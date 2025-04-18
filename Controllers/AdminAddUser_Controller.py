@@ -7,7 +7,6 @@ from Views.Admin_AddStaff import Ui_MainWindow as AdminAddUserUI
 import hashlib
 from Models.Staff import Staff
 from Models.Doctor import Doctor
-
 # Add this to make other controllers work
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
@@ -185,7 +184,8 @@ class AdminAddUserController(QMainWindow):
         # Name validation
         if not self.ui.Fname.text().strip():
             errors.append("First name is required")
-            self.ui.Fname.setFocus()
+            if not errors:
+                self.ui.Fname.setFocus()
         if not self.ui.Lname.text().strip():
             errors.append("Last name is required")
             if not errors:  # Only set focus if first name is valid

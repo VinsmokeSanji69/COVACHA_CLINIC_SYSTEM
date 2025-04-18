@@ -90,13 +90,13 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../Images/resources.qrc">
-           <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+          <iconset>
+           <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
-           <width>30</width>
-           <height>30</height>
+           <width>40</width>
+           <height>40</height>
           </size>
          </property>
         </widget>
@@ -126,57 +126,52 @@ QLabel {
           <enum>QLayout::SetNoConstraint</enum>
          </property>
          <item>
-          <widget class="QPushButton" name="DashboardButton">
+          <widget class="QPushButton" name="pushButton_6">
            <property name="text">
             <string>Dashboard</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="RecordButton">
+          <widget class="QPushButton" name="pushButton_7">
            <property name="text">
             <string>Records</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_8">
-           <property name="styleSheet">
-            <string notr="true">QPushButton{
-	border: 2px solid white;
-}</string>
-           </property>
            <property name="text">
             <string>Transactions</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -205,35 +200,35 @@ QLabel {
           <enum>QLayout::SetNoConstraint</enum>
          </property>
          <item>
-          <widget class="QPushButton" name="ProfileButton">
+          <widget class="QPushButton" name="pushButton_9">
            <property name="text">
-            <string>Profile</string>
+            <string>Settings</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="LogoutButton">
+          <widget class="QPushButton" name="pushButton_10">
            <property name="text">
             <string>Logout</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -263,11 +258,11 @@ QLabel {
 }
 #UserName {
 	font: 600 10pt &quot;Lexend SemiBold&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	color: #2B3752;
 }
 #InterfaceTitle{
-	font-size: 35px;
+	font-size: 40px;
 }
 QGraphicsView {
     border: 2px solid #ccc;
@@ -345,9 +340,19 @@ QGraphicsView {
                <number>0</number>
               </property>
               <item alignment="Qt::AlignRight">
-               <widget class="QLabel" name="UserName">
+               <widget class="QLabel" name="User">
                 <property name="text">
                  <string>Roy Adrian Rondina</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading</set>
+                </property>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignRight">
+               <widget class="QLabel" name="ID">
+                <property name="text">
+                 <string>Nurse</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>
@@ -522,8 +527,8 @@ QGraphicsView {
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../Images/resources.qrc">
-                    <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
+                   <iconset>
+                    <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -687,7 +692,7 @@ QHeaderView {
 QHeaderView::section {
     border: none;
 	text-align: left;
-    font: 700 16pt &quot;Arial&quot;;
+    font: 700 12pt &quot;Arial&quot;;
     background-color: #2e6e65;
     color: #f4f7ed;
     padding: 5px;

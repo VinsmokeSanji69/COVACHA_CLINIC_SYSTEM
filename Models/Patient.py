@@ -9,8 +9,17 @@ class Patient:
 
         try:
             with conn.cursor() as cursor:
-                query = "SELECT pat_id FROM patient WHERE pat_fname = %s AND pat_lname = %s;"
-                cursor.execute(query, (fname, lname))
+                # Standardize input names to lowercase for comparison
+                fname_lower = fname.strip().lower()
+                lname_lower = lname.strip().lower()
+
+                # Query the database using LOWER() to standardize case
+                query = """
+                    SELECT pat_id 
+                    FROM patient 
+                    WHERE LOWER(pat_fname) = %s AND LOWER(pat_lname) = %s;
+                """
+                cursor.execute(query, (fname_lower, lname_lower))
                 result = cursor.fetchone()
 
                 if result:
@@ -70,6 +79,63 @@ class Patient:
             conn.rollback()
             return None
 
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def get_patient_by_id(pat_id):
+        """Fetch patient details by pat_id."""
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return None
+
+        try:
+            with conn.cursor() as cursor:
+                query = """
+                       SELECT pat_lname, pat_fname FROM patient WHERE pat_id = %s
+                   """
+                cursor.execute(query, (pat_id,))
+                result = cursor.fetchone()
+
+                if result:
+                    return {"pat_lname": result[0], "pat_fname": result[1]}
+                return None
+
+        except Exception as e:
+            print(f"Database error while fetching patient details: {e}")
+            return None
+
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def get_patient_details(pat_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return None
+
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    SELECT pat_lname, pat_fname, pat_mname, pat_dob, pat_gender
+                    FROM patient
+                    WHERE pat_id = %s;
+                """, (pat_id,))
+                result = cursor.fetchone()
+                if result:
+                    return {
+                        'pat_lname': result[0],
+                        'pat_fname': result[1],
+                        'pat_mname': result[2],
+                        'pat_dob': result[3],
+                        'pat_gender': result[4]
+                    }
+                return None
+        except Exception as e:
+            print(f"Error fetching patient details: {e}")
+            return None
         finally:
             if conn:
                 conn.close()
