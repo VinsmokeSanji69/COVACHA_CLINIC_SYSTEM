@@ -4,6 +4,7 @@ from PyQt5.QtCore import QTimer
 from Views.Staff_Dashboard import Ui_MainWindow as StaffDashboardUi
 from Controllers.StaffAddCheckUp_Controller import StaffAddCheckUp
 from Controllers.StaffLabRequest_Controller import StaffLabRequest
+from Controllers.StaffTransactionModal_Controller import StaffTransactionModal
 from Models.CheckUp import CheckUp
 from  Models.Patient import Patient
 import datetime
@@ -42,6 +43,11 @@ class StaffDashboardController(QMainWindow):
             print("AddCheckUp connected to open_add_user_form!")
         else:
             print("AddUserButton is missing!")
+
+         # Connect AddTransaction button
+        if hasattr(self.ui, 'AddTransac'):
+            print("AddTransac Exists")
+            self.ui.AddTransac.clicked.connect(self.open_transaction_modal)
 
         # Populate the PatientDetails table with pending check-ups
         self.load_pending_checkups()
@@ -168,6 +174,18 @@ class StaffDashboardController(QMainWindow):
             print("Add Check-Up Form shown successfully!")
         except Exception as e:
             print(f"Error opening Add Check-Up Form: {e}")
+
+    def open_transaction_modal(self):
+        """Open the StaffTransaction modal."""
+        print("Opening Add Transaction Modal...")
+        try:
+            # Open the modal window with a reference to the parent (dashboard)
+            self.add_transaction_window = StaffTransactionModal(parent=self, staff_dashboard=self)
+            self.add_transaction_window.show()
+            print("Add Transaction Modal shown successfully!")
+        except Exception as e:
+            print(f"Error opening Add Transaction Modal: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open Add Transaction Modal: {e}")
 
     def ViewStaffLabRequest(self):
         print("Opening staff lab request feature")

@@ -520,7 +520,16 @@ QComboBox::drop-down {
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <property name="leftMargin">
-              <number>0</number>
+              <number>11</number>
+             </property>
+             <property name="topMargin">
+              <number>11</number>
+             </property>
+             <property name="rightMargin">
+              <number>11</number>
+             </property>
+             <property name="bottomMargin">
+              <number>11</number>
              </property>
              <item>
               <widget class="QWidget" name="SearchBar" native="true">
@@ -555,7 +564,10 @@ QComboBox::drop-down {
                  <number>5</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="Icon">
+                 <widget class="QLineEdit" name="Search"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="SearchButton">
                   <property name="text">
                    <string/>
                   </property>
@@ -570,9 +582,6 @@ QComboBox::drop-down {
                    </size>
                   </property>
                  </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="Search"/>
                 </item>
                </layout>
               </widget>
@@ -629,6 +638,46 @@ QComboBox QAbstractItemView {
                <item>
                 <property name="text">
                  <string>Sort By:</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="SortOrderBox">
+               <property name="styleSheet">
+                <string notr="true">QComboBox {
+    background-color: #D9E4DC;
+    border: 2px solid #2E6E65;
+    border-radius: 10px;
+    padding: 5px 10px;
+	font: 300 12pt &quot;Lexend Light&quot;;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border-left: 1px solid #2E6E65;
+    background-color: #D9E4DC;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+QComboBox::down-arrow {
+    image: url(:/icons/icons/chevron-down.svg);
+    width: 20px;
+    height: 20px;
+}
+QComboBox QAbstractItemView {
+    background-color: #F4F7ED;
+    selection-background-color: #CCE3D0;
+    border: 1px solid #2E6E65;
+    border-radius: 2px;
+    outline: 0;
+	font: 300 12pt &quot;Lexend Light&quot;;
+}</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Sort Order:</string>
                 </property>
                </item>
               </widget>

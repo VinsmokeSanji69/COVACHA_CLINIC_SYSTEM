@@ -1,11 +1,12 @@
+import sys
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from Views.Admin_AddLabTest import Ui_MainWindow as AdminLabTestUI
 from Models.LaboratoryTest import Laboratory
 
-
 class ConfirmationDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, modify=False):
         super().__init__(parent)
+        self.modify = modify
         self.setWindowTitle("Confirm Add Laboratory")
         self.setFixedSize(400, 150)
 
@@ -13,7 +14,9 @@ class ConfirmationDialog(QDialog):
         layout = QVBoxLayout()
 
         # Add message label
-        self.message_label = QLabel("Are you sure you want to add this laboratory test?")
+        msg = "update" if self.modify else "add"
+
+        self.message_label = QLabel(f"Are you sure you want to {msg} this laboratory test?")
         layout.addWidget(self.message_label)
 
         # Add button box
@@ -41,84 +44,115 @@ class ConfirmationDialog(QDialog):
 
 
 class AdminAddLabTest(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, lab_test=None, modify=False):
         super().__init__(parent)
-        self.parent = parent  # Store reference to the parent (AdminChargesController)
+        self.lab_test = lab_test
+        self.modify_mode = modify
         self.ui = AdminLabTestUI()
         self.ui.setupUi(self)
-        self.ui.LabName.setFocus()
 
-        # Set window properties
-        self.setWindowTitle("Add Laboratory Test")
+        # Window properties
+        self.setWindowTitle("Modify Laboratory Test" if modify else "Add Laboratory Test")
         self.setFixedSize(650, 450)
 
-        print("AdminAddLabTest initialized successfully!")
+        # Initialize UI
+        self.initialize_ui()
 
-        # Prefill the Lab ID
-        self.prefilled_lab_id()
-
-        # Connect buttons
+        # Connect signals
         self.ui.AddLabTest.clicked.connect(self.validate_and_save_lab)
-        if hasattr(self.ui, 'Cancel'):
-            self.ui.Cancel.clicked.connect(self.close)
+        self.ui.Cancel.clicked.connect(self.close)
 
-    def prefilled_lab_id(self):
-        """Prefill the Lab ID field with the next available sequence."""
-        next_lab_id = Laboratory.get_next_lab_id()
-        self.ui.LabID.setText(next_lab_id)
+    def initialize_ui(self):
+        """Initialize UI components"""
+        if self.modify_mode and self.lab_test:
+            # Populate fields for modification
+            self.ui.LabID.setText(self.lab_test.get("lab_code", ""))
+            self.ui.LabID.setReadOnly(True)
+            self.ui.LabName.setText(self.lab_test.get("lab_test_name", ""))
+            self.ui.Price.setText(str(self.lab_test.get("lab_price", "")))
+            self.ui.AddLabTest.setText("Update Test")
+        else:
+            # New test - generate next ID
+            self.prefill_lab_id()
+
+    def prefill_lab_id(self):
+        next_id = Laboratory.get_next_lab_id()
+        if next_id:
+            self.ui.LabID.setText(next_id)
+        else:
+            QMessageBox.warning(self, "Error", "Could not generate lab test ID")
 
     def validate_form(self):
-        """Validate the form fields."""
         errors = []
-        # Validate Lab Name
+
+        # Lab Name validation
         lab_name = self.ui.LabName.text().strip()
         if not lab_name:
-            errors.append("Laboratory Name is required.")
-        elif Laboratory.lab_name_exists(lab_name.lower()):
-            errors.append("Laboratory Name already exists.")
+            errors.append("Laboratory name is required")
+        elif len(lab_name) > 100:
+            errors.append("Laboratory name is too long (max 100 characters)")
 
-        # Validate Price
+        # Price validation
         price = self.ui.Price.text().strip()
         if not price:
-            errors.append("Price is required.")
-        elif not price.isdigit():
-            errors.append("Price must be a number.")
+            errors.append("Price is required")
+        else:
+            try:
+                price_val = float(price)
+                if price_val <= 0:
+                    errors.append("Price must be greater than 0")
+            except ValueError:
+                errors.append("Price must be a valid number")
+
+        # For new tests, check if name exists
+        if not self.modify_mode and lab_name:
+            if Laboratory.lab_name_exists(lab_name.lower()):
+                errors.append("Laboratory name already exists")
 
         return errors
 
     def validate_and_save_lab(self):
-        """Validate the form and save the lab test data."""
+        """Validate and save/update lab test"""
         errors = self.validate_form()
         if errors:
             QMessageBox.warning(self, "Validation Error", "\n".join(errors))
             return
 
-        # Show confirmation dialog
-        confirmation_dialog = ConfirmationDialog(self)
-        if confirmation_dialog.exec_() == QDialog.Rejected:
-            return
-
-        # Collect data
+        # Prepare data
         lab_data = {
             "lab_code": self.ui.LabID.text().strip(),
-            "lab_name": self.ui.LabName.text().strip(),
-            "price": float(self.ui.Price.text().strip()),
+            "lab_test_name": self.ui.LabName.text().strip(),
+            "lab_price": float(self.ui.Price.text().strip())
         }
 
-        # Save data to the database
-        success = Laboratory.save_lab_test(lab_data)
-        if success:
-            QMessageBox.information(self, "Success", "Laboratory test added successfully!")
-            self.clear_form()
-            self.prefilled_lab_id()  # Update Lab ID for the next entry
+        confirmation_dialog = ConfirmationDialog(self, self.modify_mode)
+        result = confirmation_dialog.exec()
 
-            # Notify the parent to refresh the table
-            if self.parent:
-                self.parent.refresh_tables()
-        else:
-            QMessageBox.critical(self, "Error", "Failed to add laboratory test.")
+        if result == QDialog.Accepted:
+
+            # Save or update based on mode
+            if self.modify_mode:
+                success = Laboratory.update_lab_test(lab_data)
+            else:
+                success = Laboratory.save_lab_test(lab_data)
+
+            if success:
+                msg = "updated" if self.modify_mode else "added"
+                QMessageBox.information(self, "Success", f"Lab Test {msg} successfully!")
+                self.clear_form()
+
+                # Notify parent to refresh tables
+                if self.parent and hasattr(self.parent, 'refresh_tables'):
+                    self.parent.refresh_tables()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to save data to the database.")
+        else:  # User clicked "Cancel"
+            msg = "update" if self.modify_mode else "creation"
+            QMessageBox.information(self, "Cancelled", f"Lab Test {msg} cancelled.\n( Press any key to close )")
 
     def clear_form(self):
-        """Clear the form fields."""
-        self.ui.LabName.clear()
-        self.ui.Price.clear()
+        """Clear form fields (for new entries)"""
+        if not self.modify_mode:
+            self.ui.LabName.clear()
+            self.ui.Price.clear()
+            self.prefill_lab_id()

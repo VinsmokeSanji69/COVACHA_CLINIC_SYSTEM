@@ -160,7 +160,7 @@ class AdminStaffsController(QMainWindow):
 
     def load_doctor_table(self):
         """Load doctor data into the DoctorTable"""
-        doctors = Doctor.get_all_doctors()
+        doctors = Doctor.get_all_doctors_()
         self.ui.DoctorTable.setRowCount(len(doctors))
 
         # Remove row numbering

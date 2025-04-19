@@ -163,10 +163,20 @@ class StaffLabRequest(QMainWindow):
                 QMessageBox.warning(self, "Selection Error", "Please select a row from the table.")
                 return
 
-            # Retrieve data from the selected row
-            chk_id = self.ui.LabRequestTable.item(selected_row, 0).text()  # Check-Up ID (Column 0)
-            patient_name = self.ui.LabRequestTable.item(selected_row, 1).text()  # Patient Name (Column 1)
-            doctor_name = self.ui.LabRequestTable.item(selected_row, 2).text()  # Doctor Name (Column 2)
+            # Retrieve data from the selected row with proper validation
+            chk_id_item = self.ui.LabRequestTable.item(selected_row, 0)  # Check-Up ID (Column 0)
+            patient_name_item = self.ui.LabRequestTable.item(selected_row, 1)  # Patient Name (Column 1)
+            doctor_name_item = self.ui.LabRequestTable.item(selected_row, 2)  # Doctor Name (Column 2)
+
+            # Validate that all required cells are populated
+            if not chk_id_item or not patient_name_item or not doctor_name_item:
+                QMessageBox.critical(self, "Data Error", "Selected row contains missing data.")
+                return
+
+            # Extract text from QTableWidgetItem objects
+            chk_id = chk_id_item.text().strip()  # Strip whitespace
+            patient_name = patient_name_item.text().strip()
+            doctor_name = doctor_name_item.text().strip()
 
             # Open the StaffAddAttachment form with the retrieved parameters
             self.staff_attach_window = StaffAddAttachment(

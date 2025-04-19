@@ -200,7 +200,6 @@ class DoctorDiagnosis(QMainWindow):
             self.ViewRecords()
 
     def open_doctor_lab_result_modal(self):
-        """Open the DoctorLabResult modal."""
         try:
             # Instantiate and show the DoctorLabResult modal
             self.doctor_lab_result = DoctorLabResult(checkup_id=self.checkup_id)

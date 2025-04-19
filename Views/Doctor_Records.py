@@ -270,7 +270,7 @@ class Ui_MainWindow(object):
         self.SearchBarContainer.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SearchBarContainer.setObjectName("SearchBarContainer")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.SearchBarContainer)
-        self.horizontalLayout_3.setContentsMargins(0, -1, -1, -1)
+        self.horizontalLayout_3.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.SearchBar = QtWidgets.QWidget(self.SearchBarContainer)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -292,17 +292,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setContentsMargins(-1, 5, 0, 5)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.Icon = QtWidgets.QPushButton(self.SearchBar)
-        self.Icon.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Icon.setIcon(icon6)
-        self.Icon.setIconSize(QtCore.QSize(40, 40))
-        self.Icon.setObjectName("Icon")
-        self.horizontalLayout_4.addWidget(self.Icon)
         self.Search = QtWidgets.QLineEdit(self.SearchBar)
         self.Search.setObjectName("Search")
         self.horizontalLayout_4.addWidget(self.Search)
+        self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
+        self.SearchButton.setText("")
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.SearchButton.setIcon(icon6)
+        self.SearchButton.setIconSize(QtCore.QSize(40, 40))
+        self.SearchButton.setObjectName("SearchButton")
+        self.horizontalLayout_4.addWidget(self.SearchButton)
         self.horizontalLayout_3.addWidget(self.SearchBar)
         spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
@@ -339,6 +339,39 @@ class Ui_MainWindow(object):
         self.SortByBox.setObjectName("SortByBox")
         self.SortByBox.addItem("")
         self.horizontalLayout_3.addWidget(self.SortByBox)
+        self.SortOrderBox = QtWidgets.QComboBox(self.SearchBarContainer)
+        self.SortOrderBox.setStyleSheet("QComboBox {\n"
+"    background-color: #D9E4DC;\n"
+"    border: 2px solid #2E6E65;\n"
+"    border-radius: 10px;\n"
+"    padding: 5px 10px;\n"
+"    font: 300 12pt \"Lexend Light\";\n"
+"}\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: top right;\n"
+"    width: 30px;\n"
+"    border-left: 1px solid #2E6E65;\n"
+"    background-color: #D9E4DC;\n"
+"    border-top-right-radius: 8px;\n"
+"    border-bottom-right-radius: 8px;\n"
+"}\n"
+"QComboBox::down-arrow {\n"
+"    image: url(:/icons/icons/chevron-down.svg);\n"
+"    width: 20px;\n"
+"    height: 20px;\n"
+"}\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #F4F7ED;\n"
+"    selection-background-color: #CCE3D0;\n"
+"    border: 1px solid #2E6E65;\n"
+"    border-radius: 2px;\n"
+"    outline: 0;\n"
+"    font: 300 12pt \"Lexend Light\";\n"
+"}")
+        self.SortOrderBox.setObjectName("SortOrderBox")
+        self.SortOrderBox.addItem("")
+        self.horizontalLayout_3.addWidget(self.SortOrderBox)
         spacerItem3 = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem3)
         self.verticalLayout_6.addWidget(self.SearchBarContainer)
@@ -510,6 +543,7 @@ class Ui_MainWindow(object):
         self.User.setText(_translate("MainWindow", "Roy Adrian Rondina"))
         self.ID.setText(_translate("MainWindow", "Doctor"))
         self.SortByBox.setItemText(0, _translate("MainWindow", "Sort By:"))
+        self.SortOrderBox.setItemText(0, _translate("MainWindow", "Sort Order:"))
         self.CheckUpLabel.setText(_translate("MainWindow", "Check Ups"))
         item = self.AcceptedCheckUp.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Check Up ID"))

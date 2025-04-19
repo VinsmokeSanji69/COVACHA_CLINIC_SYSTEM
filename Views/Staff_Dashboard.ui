@@ -520,7 +520,7 @@ QPushButton {
               </widget>
              </item>
              <item alignment="Qt::AlignBottom">
-              <widget class="QPushButton" name="pushButton_2">
+              <widget class="QPushButton" name="AddTransac">
                <property name="minimumSize">
                 <size>
                  <width>0</width>

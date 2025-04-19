@@ -271,8 +271,7 @@ QLabel {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{
-	font: 900 16pt &quot;Satoshi Black&quot;;
-	border: 2px solid white;
+	font: 900 20pt &quot;Satoshi Black&quot;;
 }</string>
            </property>
            <property name="text">
@@ -891,7 +890,7 @@ padding: 0px 20px;
                 </property>
                 <item>
                  <widget class="QWidget" name="widget" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_6">
+                  <layout class="QVBoxLayout" name="verticalLayout_9">
                    <property name="spacing">
                     <number>5</number>
                    </property>
@@ -915,42 +914,111 @@ padding: 0px 20px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QTableWidget" name="DoctorTable">
+                    <widget class="QScrollArea" name="scrollArea">
                      <property name="styleSheet">
-                      <string notr="true">QTableWidget QHeaderView::section {
-                  background-color: #2E6E65;
-                  color: white;
-                  padding: 5px;
-                  font: 16px &quot;Lexend Medium&quot;;
-                  border: 2px solid #2E6E65;
-                  text-align: left;
-              }</string>
+                      <string notr="true">QScrollBar:vertical {
+     background: transparent;
+     width: 10px;
+	border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    	background: #C0C0C0;
+    	border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    	background: #A0A0A0;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical{
+    	background: none;
+    	border: none;
+}
+
+</string>
                      </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QAbstractScrollArea::AdjustToContents</enum>
-                     </property>
-                     <property name="cornerButtonEnabled">
+                     <property name="widgetResizable">
                       <bool>true</bool>
                      </property>
-                     <property name="columnCount">
-                      <number>2</number>
-                     </property>
-                     <attribute name="horizontalHeaderHighlightSections">
-                      <bool>true</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderStretchLastSection">
-                      <bool>true</bool>
-                     </attribute>
-                     <column>
-                      <property name="text">
-                       <string>Doctor Name</string>
+                     <widget class="QWidget" name="scrollAreaWidgetContents">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>396</width>
+                        <height>607</height>
+                       </rect>
                       </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Rate</string>
-                      </property>
-                     </column>
+                      <layout class="QVBoxLayout" name="verticalLayout_6">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QTableWidget" name="DoctorTable">
+                         <property name="styleSheet">
+                          <string notr="true">QTableWidget {
+	background-color: #F4F7ED;
+	gridline-color: transparent;
+	border-radius: 8px;
+	border: 2px solid #2E6E65;
+}
+QTableWidget::item {
+	border: none;
+	font:500 16pt &quot;Satoshi&quot;;
+	color: #2B3752;
+}
+QTableWidget::item:selected {
+	background-color: rgba(46, 110, 101, 0.3);
+}
+QTableWidget QHeaderView::section {
+	background-color: #2E6E65;
+	color: white;
+	padding: 5px;
+	font: 700 15pt &quot;Satoshi&quot;;
+	border: 2px solid #2E6E65;
+}
+</string>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QAbstractScrollArea::AdjustToContents</enum>
+                         </property>
+                         <property name="cornerButtonEnabled">
+                          <bool>true</bool>
+                         </property>
+                         <property name="columnCount">
+                          <number>2</number>
+                         </property>
+                         <attribute name="horizontalHeaderHighlightSections">
+                          <bool>true</bool>
+                         </attribute>
+                         <attribute name="horizontalHeaderStretchLastSection">
+                          <bool>true</bool>
+                         </attribute>
+                         <column>
+                          <property name="text">
+                           <string>Doctor Name</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Rate</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
                     </widget>
                    </item>
                   </layout>
@@ -958,7 +1026,7 @@ padding: 0px 20px;
                 </item>
                 <item>
                  <widget class="QWidget" name="widget_2" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_7">
+                  <layout class="QVBoxLayout" name="verticalLayout_10">
                    <property name="spacing">
                     <number>5</number>
                    </property>
@@ -982,47 +1050,95 @@ padding: 0px 20px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QTableWidget" name="LaboratoryTestTable">
-                     <property name="styleSheet">
-                      <string notr="true">QTableWidget QHeaderView::section {
-                  background-color: #2E6E65;
-                  color: white;
-                  padding: 5px;
-                  font: 16px &quot;Satoshi Black&quot;;
-                  border: 2px solid #2E6E65;
-                  text-align: left;
-              }</string>
-                     </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QAbstractScrollArea::AdjustToContents</enum>
-                     </property>
-                     <property name="cornerButtonEnabled">
+                    <widget class="QScrollArea" name="scrollArea_2">
+                     <property name="widgetResizable">
                       <bool>true</bool>
                      </property>
-                     <property name="columnCount">
-                      <number>3</number>
-                     </property>
-                     <attribute name="horizontalHeaderHighlightSections">
-                      <bool>true</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderStretchLastSection">
-                      <bool>true</bool>
-                     </attribute>
-                     <column>
-                      <property name="text">
-                       <string>Test Code</string>
+                     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>369</width>
+                        <height>607</height>
+                       </rect>
                       </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Laboratory Test</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Charge</string>
-                      </property>
-                     </column>
+                      <layout class="QVBoxLayout" name="verticalLayout_7">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QTableWidget" name="LaboratoryTestTable">
+                         <property name="styleSheet">
+                          <string notr="true">QTableWidget {
+	background-color: #F4F7ED;
+	gridline-color: transparent;
+	border-radius: 8px;
+	border: 2px solid #2E6E65;
+}
+QTableWidget::item {
+	border: none;
+	font:500 16pt &quot;Satoshi&quot;;
+	color: #2B3752;
+}
+QTableWidget::item:selected {
+	background-color: rgba(46, 110, 101, 0.3);
+}
+QTableWidget QHeaderView::section {
+	background-color: #2E6E65;
+	color: white;
+	padding: 5px;
+	font: 700 15pt &quot;Satoshi&quot;;
+	border: 2px solid #2E6E65;
+}
+</string>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QAbstractScrollArea::AdjustToContents</enum>
+                         </property>
+                         <property name="cornerButtonEnabled">
+                          <bool>true</bool>
+                         </property>
+                         <property name="columnCount">
+                          <number>3</number>
+                         </property>
+                         <attribute name="horizontalHeaderHighlightSections">
+                          <bool>true</bool>
+                         </attribute>
+                         <attribute name="horizontalHeaderStretchLastSection">
+                          <bool>true</bool>
+                         </attribute>
+                         <column>
+                          <property name="text">
+                           <string>Test Code</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Laboratory Test</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Charge</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
                     </widget>
                    </item>
                   </layout>
@@ -1052,13 +1168,6 @@ padding: 0px 20px;
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
-                   <item>
-                    <widget class="QPushButton" name="View">
-                     <property name="text">
-                      <string>View</string>
-                     </property>
-                    </widget>
-                   </item>
                    <item>
                     <widget class="QPushButton" name="Modify">
                      <property name="text">

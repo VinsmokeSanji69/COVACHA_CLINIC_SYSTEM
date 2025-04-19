@@ -1,5 +1,4 @@
 from Models.DB_Connection import DBConnection
-from Models.LaboratoryTest import Laboratory
 
 class CheckUp:
     @staticmethod
@@ -163,24 +162,26 @@ class CheckUp:
         try:
             with conn.cursor() as cursor:
                 cursor.execute("""
-                    SELECT chck_bp, chck_height, chck_weight, chck_temp, pat_id,
-                     chck_status, doc_id, chckup_type, chck_date, chck_diagnoses
+                    SELECT chck_id, chck_bp, chck_height, chck_weight, chck_temp, pat_id,
+                           chck_status, doc_id, chckup_type, chck_date, chck_diagnoses, chck_notes
                     FROM checkup
                     WHERE chck_id = %s;
                 """, (checkup_id,))
                 result = cursor.fetchone()
                 if result:
                     return {
-                        'chck_bp': result[0],
-                        'chck_height': result[1],
-                        'chck_weight': result[2],
-                        'chck_temp': result[3],
-                        'pat_id': result[4],
-                        'chck_status': result[5],
-                        'doc_id': result[6],
-                        'chckup_type': result[7],
-                        'chck_date': result[8],
-                        'chck_diagnoses': result[9]
+                        'chck_id': result[0],
+                        'chck_bp': result[1],
+                        'chck_height': result[2],
+                        'chck_weight': result[3],
+                        'chck_temp': result[4],
+                        'pat_id': result[5],
+                        'chck_status': result[6],
+                        'doc_id': result[7],
+                        'chckup_type': result[8],
+                        'chck_date': result[9],
+                        'chck_diagnoses': result[10],
+                        'chck_notes': result[11]
                     }
                 return None
         except Exception as e:
@@ -226,6 +227,48 @@ class CheckUp:
         finally:
             if conn:
                 conn.close()
+
+    @staticmethod
+    def get_all_checkups():
+        """Fetch all check-ups with chck_status = 'Completed'."""
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return []
+
+        try:
+            with conn.cursor() as cursor:
+                # Fetch all check-ups where chck_status is "Completed"
+                cursor.execute("""
+                    SELECT chck_id, chck_status, chckup_type, pat_id, chck_diagnoses, chck_date, doc_id
+                    FROM checkup
+                    WHERE chck_status = %s;
+                """, ("Completed",))
+
+                results = cursor.fetchall()
+
+                # Convert results to a list of dictionaries
+                checkups = []
+                for row in results:
+                    checkups.append({
+                        'chck_id': row[0],
+                        'chck_status': row[1],
+                        'chckup_type': row[2],
+                        'pat_id': row[3],
+                        'chck_diagnoses': row[4],
+                        'chck_date': row[5],
+                        'doc_id': row[6]
+                    })
+                print(f"Fetched check-ups: {checkups}")
+                return checkups
+
+        except Exception as e:
+            print(f"Error fetching check-ups: {e}")
+            return []
+
+        finally:
+            if conn:
+                conn.close()
+
 
     @staticmethod
     def update_doc_id(chck_id, doc_id):

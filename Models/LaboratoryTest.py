@@ -136,13 +136,13 @@ class Laboratory:
         try:
             with conn.cursor() as cursor:
                 cursor.execute("""
-                    SELECT lab_test_name
+                    SELECT lab_test_name, lab_price
                     FROM laboratory_test
                     WHERE lab_code = %s;
                 """, (lab_code,))
                 result = cursor.fetchone()
                 if result:
-                    return {'lab_test_name': result[0]}
+                    return {'lab_test_name': result[0]}, {'lab_price':result[1]}
                 return None
         except Exception as e:
             print(f"Error fetching laboratory test details: {e}")
@@ -223,6 +223,70 @@ class Laboratory:
 
         except Exception as e:
             print(f"Database error while checking lab code existence: {e}")
+            return False
+
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def get_lab_test(lab_id):
+        conn = None
+        try:
+            conn = DBConnection.get_db_connection()
+            if not conn:
+                raise ConnectionError("Database connection failed")
+
+            with conn.cursor() as cursor:
+                query = """
+                        SELECT lab_code, lab_test_name, lab_price
+                        FROM laboratory_test 
+                        WHERE lab_code = %s
+                    """
+                cursor.execute(query, (lab_id,))
+                row = cursor.fetchone()
+
+                if row:
+                    lab_code, lab_test_name, lab_price = row
+                    return {
+                        "lab_code": lab_code,
+                        "lab_test_name": lab_test_name.capitalize(),
+                        "lab_price": float(lab_price) if lab_price is not None else 0.0
+                    }
+                return None
+
+        except Exception as e:
+            print(f"Error fetching lab test: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def update_lab_test(lab_test):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return False
+
+        try:
+            with conn.cursor() as cursor:
+                query = """
+                                UPDATE laboratory_test 
+                                SET lab_test_name = %s , lab_price = %s
+                                WHERE lab_code = %s;
+                            """
+                cursor.execute(query, (
+                    lab_test["lab_test_name"],
+                    lab_test["lab_price"],
+                    lab_test["lab_code"]
+                ))
+
+                conn.commit()
+                return True
+
+        except Exception as e:
+            print(f"Database error while saving lab test: {e}")
+            conn.rollback()
             return False
 
         finally:
