@@ -306,7 +306,7 @@ class DoctorRecords(QMainWindow):
             self.doctor_lab_result = DoctorLabResult(
                 checkup_id=chck_id,
                 parent=self,
-                refresh_callback=self.display_check_up
+                refresh_callback=self.refresh_tables
             )
             self.doctor_lab_result.show()
             print("DoctorLabResult modal opened successfully!")

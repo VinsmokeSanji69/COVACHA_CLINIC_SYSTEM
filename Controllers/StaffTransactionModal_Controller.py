@@ -85,7 +85,7 @@ class StaffTransactionModal(QMainWindow):
         try:
             # Fetch all transactions to determine which check-ups are already completed
             transactions = Transaction.get_all_transaction()
-            transaction_chck_ids = {tran['chck_id'] for tran in transactions}  # Set of chck_id from transactions
+            transaction_chck_ids = {tran['chck_id'] for tran in transactions}
 
             # Debug: Log fetched transactions
             print(f"Fetched transactions with chck_id: {transaction_chck_ids}")

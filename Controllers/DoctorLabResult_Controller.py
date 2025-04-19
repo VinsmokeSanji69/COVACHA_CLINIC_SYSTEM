@@ -199,15 +199,49 @@ class DoctorLabResult(QMainWindow):
 
             # Populate the table with lab test details
             for lab_test in lab_tests:
-                lab_code = lab_test['lab_code']
-                lab_attachment = lab_test['lab_attachment']
+                # Debug: Log the type and contents of lab_test
+                print(f"Processing lab_test: {lab_test}, Type: {type(lab_test)}")
+
+                # Handle both dictionaries and tuples
+                if isinstance(lab_test, dict):
+                    lab_code = lab_test.get('lab_code')
+                    lab_attachment = lab_test.get('lab_attachment')
+                elif isinstance(lab_test, tuple):
+                    # Assume the tuple structure is (lab_code, lab_attachment)
+                    if len(lab_test) < 2:
+                        print(f"Invalid tuple structure: {lab_test}, Skipping...")
+                        continue
+                    lab_code, lab_attachment = lab_test[:2]
+                else:
+                    print(f"Unexpected data type for lab_test: {type(lab_test)}, Skipping...")
+                    continue
+
+                # Validate lab_code
+                if not lab_code:
+                    print(f"Missing lab_code in lab_test: {lab_test}")
+                    continue
 
                 # Fetch the lab test name using the lab code
                 lab_test_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_test_details:
+                    print(f"No lab test details found for lab_code: {lab_code}")
                     continue
 
-                lab_test_name = lab_test_details['lab_test_name'].capitalize()
+                # Handle the case where get_test_by_labcode returns a tuple
+                if isinstance(lab_test_details, tuple):
+                    # Assume the first element of the tuple contains 'lab_test_name'
+                    if len(lab_test_details) > 0 and isinstance(lab_test_details[0], dict):
+                        lab_test_details = lab_test_details[0]
+                    else:
+                        print(f"Invalid tuple structure for lab_code '{lab_code}', Skipping...")
+                        continue
+
+                # Validate lab_test_details
+                if not isinstance(lab_test_details, dict):
+                    print(f"Unexpected return type from get_test_by_labcode: {type(lab_test_details)}, Skipping...")
+                    continue
+
+                lab_test_name = lab_test_details.get('lab_test_name', 'Unknown').capitalize()
 
                 # Determine attachment status
                 if lab_attachment:

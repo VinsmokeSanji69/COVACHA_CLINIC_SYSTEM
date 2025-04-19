@@ -299,36 +299,49 @@ class CheckUp:
 
     @staticmethod
     def update_lab_codes(checkup_id, lab_codes):
-        """Update the lab_codes field in the checkup table."""
+        """Insert each lab_code as a separate row in the checkup_lab_tests table."""
         conn = DBConnection.get_db_connection()
         if not conn:
+            print("Failed to connect to the database.")
             return False
 
         try:
             with conn.cursor() as cursor:
-                if lab_codes:
-                    # Update the lab_code column only if lab_codes is not empty
+                # Validate checkup_id
+                if not checkup_id:
+                    print("Invalid checkup_id provided.")
+                    return False
+
+                # Delete existing lab codes for the given checkup_id
+                cursor.execute("""
+                    DELETE FROM checkup_lab_tests
+                    WHERE chck_id = %s;
+                """, (checkup_id,))
+
+                # Insert each lab_code as a new row
+                for lab_code in lab_codes:
+                    if len(lab_code) > 20:  # Validate lab_code length
+                        print(f"Lab code '{lab_code}' exceeds the maximum length of 20 characters.")
+                        continue
+
                     cursor.execute("""
-                        UPDATE checkup_lab_tests
-                        SET lab_code = %s
-                        WHERE chck_id = %s;
-                    """, (lab_codes, checkup_id))
-                else:
-                    # Skip updating the lab_code column if lab_codes is empty
-                    cursor.execute("""
-                        UPDATE checkup_lab_tests
-                        SET lab_code = lab_code  -- No change
-                        WHERE chck_id = %s;
-                    """, (checkup_id,))
+                        INSERT INTO checkup_lab_tests (chck_id, lab_code)
+                        VALUES (%s, %s);
+                    """, (checkup_id, lab_code))
+
+                # Commit the transaction
                 conn.commit()
                 return True
+
         except Exception as e:
             print(f"Database error while updating lab codes: {e}")
             conn.rollback()
             return False
+
         finally:
             if conn:
                 conn.close()
+
 
     @staticmethod
     def get_test_names_by_chckid(chck_id):

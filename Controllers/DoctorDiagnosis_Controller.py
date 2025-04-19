@@ -172,7 +172,10 @@ class DoctorDiagnosis(QMainWindow):
                     widget = layout.itemAt(i).widget()
                     if isinstance(widget, QCheckBox) and widget.isChecked():
                         lab_code = widget.property("lab_code")
-                        selected_lab_codes.append(lab_code)
+                        if lab_code:  # Ensure lab_code is valid
+                            selected_lab_codes.append(lab_code)
+                        else:
+                            print(f"Warning: Checkbox at index {i} has no lab_code property.")
 
         # Check if OtherText has a value
         other_text_value = self.ui.OtherText.text().strip()  # Get the value and remove extra spaces
@@ -181,22 +184,19 @@ class DoctorDiagnosis(QMainWindow):
         if other_text_value:
             selected_lab_codes.append(other_text_value)
 
-        # Join selected lab codes with a comma (empty string if no selections)
-        selected_lab_codes_str = ", ".join(selected_lab_codes) if selected_lab_codes else ""
-
-        # Update the checkup table with the selected lab codes
-        success = CheckUp.update_lab_codes(self.checkup_id, selected_lab_codes_str)
-        if not success:
-            QMessageBox.critical(self, "Error", "Failed to update lab codes.")
-            return
-
         # Check if no checkboxes are selected and OtherText is empty
         if not selected_lab_codes and not other_text_value:
             # Open the DoctorLabResult modal
             self.open_doctor_lab_result_modal()
         else:
+            # Update the database with the selected lab codes
+            success = CheckUp.update_lab_codes(self.checkup_id, selected_lab_codes)
+            if not success:
+                QMessageBox.critical(self, "Error", "Failed to update lab codes.")
+                return
+
             # Proceed to ViewRecords
-            QMessageBox.information(self, "Success", f"Selected Lab Codes: {selected_lab_codes_str}")
+            QMessageBox.information(self, "Success", f"Selected Lab Codes: {', '.join(selected_lab_codes)}")
             self.ViewRecords()
 
     def open_doctor_lab_result_modal(self):

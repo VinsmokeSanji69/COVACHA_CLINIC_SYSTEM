@@ -133,6 +133,34 @@ class StaffLabRequest(QMainWindow):
                 # Format doctor name (lname, fname)
                 doctor_name = f"{doctor_details['doc_lname'].capitalize()}, {doctor_details['doc_fname'].capitalize()}"
 
+                # Fetch all lab attachments for this chck_id
+                query = """
+                    SELECT lab_attachment
+                    FROM checkup_lab_tests
+                    WHERE chck_id = %s;
+                """
+                with conn.cursor() as cursor:
+                    cursor.execute(query, (checkup_id,))
+                    lab_attachments = cursor.fetchall()
+
+                # Determine the status based on lab_attachment values
+                if not lab_attachments:
+                    status = "No Results Yet"
+                else:
+                    # Separate NULL and non-NULL lab_attachment values
+                    null_count = sum(1 for lab_attachment in lab_attachments if lab_attachment[0] is None)
+                    total_count = len(lab_attachments)
+
+                    if null_count == total_count:
+                        # All lab_attachment values are NULL
+                        status = "No Results Yet"
+                    elif null_count > 0:
+                        # Some lab_attachment values are NULL
+                        status = "Incomplete"
+                    else:
+                        # All lab_attachment values are non-NULL
+                        status = "Completed"
+
                 # Add a new row to the table
                 row_position = self.ui.LabRequestTable.rowCount()
                 self.ui.LabRequestTable.insertRow(row_position)
@@ -141,7 +169,7 @@ class StaffLabRequest(QMainWindow):
                 self.ui.LabRequestTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(str(checkup_id)))
                 self.ui.LabRequestTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(patient_name))
                 self.ui.LabRequestTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(doctor_name))
-                self.ui.LabRequestTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem("Incomplete"))
+                self.ui.LabRequestTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem(status))
 
             print("Lab Request Table loaded successfully!")
 
@@ -183,7 +211,8 @@ class StaffLabRequest(QMainWindow):
                 parent=self,
                 chck_id=chk_id,
                 doctorname=doctor_name,
-                patientname=patient_name
+                patientname=patient_name,
+                refresh_table = self.refresh_table
             )
             self.staff_attach_window.show()
             print("Staff Attach Form shown successfully!")

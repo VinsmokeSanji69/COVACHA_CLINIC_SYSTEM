@@ -2,6 +2,8 @@ import os
 import subprocess
 import sys
 from PyQt5 import QtCore, QtWidgets
+from pkg_resources import non_empty_lines
+
 from Views.Staff_AddLabAttachment import Ui_MainWindow as StaffAddAttachmentUI
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFileDialog
 from Models.CheckUp import CheckUp
@@ -45,12 +47,13 @@ class ConfirmationDialog(QDialog):
 
 
 class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or QWidget
-    def __init__(self, parent=None, chck_id=None, doctorname=None, patientname=None):
+    def __init__(self, parent=None, chck_id=None, doctorname=None, patientname=None , refresh_table = None):
         super().__init__(parent)  # Properly initialize the parent class
         self.parent = parent
         self.chck_id = chck_id
         self.doctorname = doctorname
         self.patientname = patientname
+        self.refresh_table1 = refresh_table
 
         # Initialize the UI
         self.ui = StaffAddAttachmentUI()
@@ -72,6 +75,34 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
         # Connect the "Attach" button to the attach_file method
         self.ui.Attach.clicked.connect(self.attach_file)
         self.ui.View.clicked.connect(self.view_file)
+        self.ui.Cancel.clicked.connect(self.close_modal)  # Close modal on Cancel
+        self.ui.UpdateButton.clicked.connect(self.handle_update_button)  # Handle UpdateButton action
+
+    def close_modal(self):
+        """Close the modal when Cancel is clicked."""
+        print("Cancel button clicked. Closing modal...")
+        self.close()
+
+    def handle_update_button(self):
+        """Handle the UpdateButton click event."""
+        print("UpdateButton clicked. Showing confirmation dialog...")
+
+        # Show the ConfirmationDialog
+        confirmation_dialog = ConfirmationDialog(self)
+        result = confirmation_dialog.exec_()  # Show the dialog and wait for user response
+
+        if result == QDialog.Accepted:  # User clicked "Yes"
+            print("User confirmed. Refreshing parent table and closing modal...")
+            if callable(self.refresh_table1):  # Ensure refresh_table1 is a valid function
+                try:
+                    self.refresh_table1()  # Call the parent's refresh_table function
+                    print("Parent table refreshed successfully.")
+                except Exception as e:
+                    print(f"Error refreshing parent table: {e}")
+                    QMessageBox.critical(self, "Error", f"Failed to refresh parent table: {e}")
+            self.close()  # Close the modal after refreshing the table
+        else:  # User clicked "No"
+            print("User canceled. Modal remains open.")
 
     def refresh_table(self):
         """Reload data into the tables"""
@@ -219,7 +250,7 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
         """Handle file attachment for the selected lab test."""
         print("Attach button clicked!")
 
-        # Get the currently selected row in the LabTable
+        # Get the currently selected row in the LabTableattach
         selected_row = self.ui.LabTable.currentRow()
         if selected_row == -1:  # No row selected
             QMessageBox.warning(self, "Selection Error", "Please select a lab test from the table.")
