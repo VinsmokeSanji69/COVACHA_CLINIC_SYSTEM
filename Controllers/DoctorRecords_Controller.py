@@ -2,6 +2,8 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from Views.Doctor_Records import Ui_MainWindow as DoctorRecordsUI
 from Controllers.DoctorLabResult_Controller import DoctorLabResult
+from Controllers.DoctorModifyCheckUp_Controller import DoctorDiagnosisModify
+from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 
@@ -11,6 +13,7 @@ class DoctorRecords(QMainWindow):
         super().__init__()
         self.ui = DoctorRecordsUI()
         self.ui.setupUi(self)
+        self.checkuplist_window = None
 
         # Store the doc_id
         self.doc_id = str(doc_id)
@@ -37,6 +40,8 @@ class DoctorRecords(QMainWindow):
 
         # Connect buttons
         self.ui.DiagnoseButton.clicked.connect(self.open_doctor_lab_result_modal)
+        self.ui.ModifyCheckUp.clicked.connect(self.ModifyCheckUp)
+        self.ui.SeeAllButton.clicked.connect(lambda: self.see_all_checkup_list(self.doc_id))
 
         # Search functionality
         self.ui.SearchButton.clicked.connect(self.filter_tables)
@@ -44,7 +49,7 @@ class DoctorRecords(QMainWindow):
         # Initialize SortBy and SortOrder combo boxes
         SortBy = ["Date", "Name", "Diagnosis"]
         SortOrder = ["Ascending", "Descending"]
-        self.ui.SortByBox.addItems(SortBy)  # Add items to the SortBy combo box
+        self.ui.SortByBox.addItems(SortBy)
         self.ui.SortByBox.setCurrentIndex(0)
         self.ui.SortOrderBox.addItems(SortOrder)
         self.ui.SortOrderBox.setCurrentIndex(0)
@@ -315,6 +320,18 @@ class DoctorRecords(QMainWindow):
             print(f"Error opening DoctorLabResult modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")
 
+    def see_all_checkup_list(self, doc_id):
+        print(f"Opening DoctorCheckUp list form with CheckUp ID: {doc_id}")
+        try:
+            if self.checkuplist_window is None or not self.checkuplist_window.isVisible():
+                self.checkuplist_window = DoctorCheckUpList(doc_id=doc_id)  # Create the window
+            self.checkuplist_window.show()  # Show the window
+            self.close()
+            print("DoctorCheckUp window opened successfully.")
+        except Exception as e:
+            print(f"Error opening DoctorCheckUp list window: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
+
     def filter_tables(self):
         """Filter rows in both tables based on the search input and sort them."""
         try:
@@ -403,11 +420,30 @@ class DoctorRecords(QMainWindow):
             print(f"Error filtering tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to filter tables: {e}")
 
-    def ViewCheckUp(self):
-        """View info of the selected Check up"""
-
     def ModifyCheckUp(self):
-        """modify the selected check up"""
+        # Get the currently selected row in the AcceptedCheckUp table
+        selected_row = self.ui.AcceptedCheckUp.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self, "Selection Error", "Please select a row in the Accepted Check-Up table.")
+            return
 
-    def DeleteCheckUp(self):
-        """delete selected check up in the database"""
+        # Retrieve the check-up ID (chck_id) from the selected row
+        chck_id_item = self.ui.AcceptedCheckUp.item(selected_row, 0)  # Assuming chck_id is in the first column
+        if not chck_id_item:
+            QMessageBox.critical(self, "Error", "Failed to retrieve check-up ID from the selected row.")
+            return
+
+        # Extract the check-up ID as an integer
+        try:
+            chck_id = chck_id_item.text().strip()
+        except ValueError:
+            QMessageBox.critical(self, "Error", "Invalid check-up ID format.")
+            return
+
+        # Open the DoctorDiagnosisModify modal with the selected check-up ID
+        try:
+            self.doctor_diagnosis_modify = DoctorDiagnosisModify(checkup_id=chck_id, doc_id=self.doc_id, parent=self)
+            self.doctor_diagnosis_modify.show()
+        except Exception as e:
+            print(f"Error opening DoctorDiagnosisModify modal: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open the modify check-up modal: {e}")

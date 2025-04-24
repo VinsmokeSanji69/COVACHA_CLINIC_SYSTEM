@@ -1,3 +1,5 @@
+import datetime
+
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
@@ -71,43 +73,97 @@ class StaffAddCheckUp(QMainWindow):
         self.ui.Age.setText(str(age))
 
     def connect_signals(self):
+        """
+        Connect signals to their respective slots.
+        """
         self.ui.AddCheckUp.clicked.connect(self.validate_and_submit)
         self.ui.Cancel.clicked.connect(self.close)
 
-    def prefill_patient_id(self):
+        # Use editingFinished instead of textChanged to avoid premature checks
+        self.ui.Fname.editingFinished.connect(self.check_patient_existence)
+        self.ui.Lname.editingFinished.connect(self.check_patient_existence)
+
+        # Listen for changes in the Dob field to calculate age
+        self.ui.Dob.dateChanged.connect(self.calculate_age)
+
+    def check_patient_existence(self):
+        """
+        Check if a patient exists based on Fname and Lname and prefill the form if they do.
+        If the patient does not exist, generate a new patient ID.
+        """
         fname = self.ui.Fname.text().strip()
         lname = self.ui.Lname.text().strip()
 
+        # Log input values for debugging
+        print(f"Checking for patient: {fname}, {lname}")
+
+        # Do nothing if either Fname or Lname is empty
         if not fname or not lname:
-            QMessageBox.warning(self, "Input Error", "First name and last name are required.")
-            return False
+            print("One or both fields are empty. Skipping check.")
+            return
 
-        # Check if the patient already exists
-        pat_id = Patient.get_patient_id(fname, lname)
-        if pat_id:
-            self.ui.ID.setText(str(pat_id))  # Prefill the ID field
-            print(f"Prefilled existing patient ID: {pat_id}")
-            return True
-        else:
-            # Create a new patient record
-            data = {
-                "last_name": lname,
-                "first_name": fname,
-                "middle_name": self.ui.Mname.text().strip(),
-                "address": self.ui.Address.text().strip(),
-                "contact": self.ui.Contact.text().strip(),
-                "dob": self.ui.Dob.date().toString("yyyy-MM-dd"),
-                "gender": self.ui.Gender.currentText()
-            }
+        try:
+            # Check if the patient already exists in the database
+            patient = Patient.get_patient_by_name(fname, lname)
+            print(f"Query result: {patient}")  # Debug: Log the query result
 
-            new_pat_id = Patient.create_new_patient(data)
-            if new_pat_id:
-                self.ui.ID.setText(str(new_pat_id))  # Prefill the ID field
-                print(f"Generated new patient ID: {new_pat_id}")
-                return True
+            if patient:
+                print("Patient found. Prefilling form...")
+                # Temporarily disconnect editingFinished signals to prevent recursion
+                self.ui.Fname.editingFinished.disconnect(self.check_patient_existence)
+                self.ui.Lname.editingFinished.disconnect(self.check_patient_existence)
+
+                # Prefill all patient information
+                self.ui.ID.setText(str(patient["id"]))
+                self.ui.Mname.setText(patient["middle_name"])
+                self.ui.Gender.setCurrentText(patient["gender"])
+
+                # Ensure dob is properly formatted as a string
+                dob_str = patient["dob"].strftime("%Y-%m-%d") if isinstance(patient["dob"], datetime.date) else patient[
+                    "dob"]
+                self.ui.Dob.setDate(QDate.fromString(dob_str, "yyyy-MM-dd"))
+
+                self.ui.Address.setText(patient["address"])
+                self.ui.Contact.setText(patient["contact"])
+                self.calculate_age()  # Update age based on DOB
+
+                # Reconnect editingFinished signals
+                self.ui.Fname.editingFinished.connect(self.check_patient_existence)
+                self.ui.Lname.editingFinished.connect(self.check_patient_existence)
+
+                QMessageBox.information(self, "Patient Found",
+                                        "Patient already exists. Information has been prefilled.")
             else:
-                QMessageBox.critical(self, "Error", "Failed to create new patient.")
-                return False
+                # Clear fields for a new patient
+                print("Patient not found. Generating new patient ID...")
+                self.ui.Mname.clear()
+                self.ui.Gender.setCurrentIndex(-1)
+                self.ui.Dob.setDate(QDate(1990, 1, 1))
+                self.ui.Address.clear()
+                self.ui.Contact.clear()
+                self.ui.Age.clear()
+
+                # Generate a new patient ID
+                new_pat_id = Patient.create_new_patient({
+                    "first_name": fname,
+                    "last_name": lname,
+                    "middle_name": "",
+                    "gender": "",
+                    "dob": QDate(1990, 1, 1).toString("yyyy-MM-dd"),
+                    "address": "",
+                    "contact": ""
+                })
+                if new_pat_id:
+                    self.ui.ID.setText(str(new_pat_id))
+                    print(f"Generated new patient ID: {new_pat_id}")
+                    QMessageBox.information(self, "New Patient", "A new patient ID has been generated.")
+                else:
+                    QMessageBox.critical(self, "Error", "Failed to generate a new patient ID.")
+
+        except Exception as e:
+            print(f"Error in check_patient_existence: {e}")
+            QMessageBox.critical(self, "Error", "An error occurred while checking patient existence.")
+
 
     def validate_form(self):
         errors = []
@@ -170,10 +226,9 @@ class StaffAddCheckUp(QMainWindow):
         return data
 
     def validate_and_submit(self):
-        # Prefill the patient ID
-        if not self.prefill_patient_id():
-            return
-
+        """
+        Validate the form and submit the data. Update the patient record if it exists.
+        """
         # Validate the form
         if not self.validate_form():
             return
@@ -189,16 +244,20 @@ class StaffAddCheckUp(QMainWindow):
         # Debug: Print collected data before saving
         print(f"Data to be saved: {data}")
 
-        # Save check-up data
-        if CheckUp.save_checkup(data):
-            QMessageBox.information(self, "Success", "Check-up added successfully!")
-            self.clear_form()
+        # Save or update patient information
+        if Patient.update_or_create_patient(data):
+            # Save check-up data
+            if CheckUp.save_checkup(data):
+                QMessageBox.information(self, "Success", "Check-up added successfully!")
+                self.clear_form()
 
-            # Notify the parent window to refresh the PendingTable
-            if hasattr(self, 'refresh_callback') and callable(self.refresh_callback):
-                self.refresh_callback()
+                # Notify the parent window to refresh the PendingTable
+                if hasattr(self, 'refresh_callback') and callable(self.refresh_callback):
+                    self.refresh_callback()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to add check-up. Please try again.")
         else:
-            QMessageBox.critical(self, "Error", "Failed to add check-up. Please try again.")
+            QMessageBox.critical(self, "Error", "Failed to save or update patient information.")
 
     def clear_form(self):
         """

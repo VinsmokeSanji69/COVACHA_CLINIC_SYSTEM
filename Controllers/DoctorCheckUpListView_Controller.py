@@ -2,84 +2,36 @@ import os
 import subprocess
 import sys
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDialog, QDialogButtonBox, \
-    QApplication
-from Models import Prescription
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from Views.Doctor_LabResult import Ui_MainWindow as DoctorLabResultUI
-from Controllers.DoctorAddPrescription_Controller import DoctorAddPrescription
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from Models.Prescription import Prescription
 from datetime import datetime, date
 
-class ConfirmationDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Confirm Diagnose")
-        self.setFixedSize(400, 150)
-
-        # Main layout
-        layout = QVBoxLayout()
-
-        # Add message label
-        self.message_label = QLabel("Are you sure you want to proceed ?")
-        layout.addWidget(self.message_label)
-
-        # Add button box
-        self.button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
-        self.button_box.accepted.connect(self.accept)
-        self.button_box.rejected.connect(self.reject)
-
-        # Apply stylesheet to the button box
-        self.button_box.setStyleSheet("""
-            QPushButton {
-                background-color: #2E6E65;
-                color: white;
-                border-radius: 10px;
-                padding: 5px 10px;
-                margin-top: 5px
-            }
-            QPushButton:hover {
-                background-color: #235C5A;
-            }
-        """)
-        layout.addWidget(self.button_box)
-
-        # Set layout
-        self.setLayout(layout)
-
-
-class DoctorLabResult(QMainWindow):
-    def __init__(self, checkup_id=None, parent=None, refresh_callback=None):
+class DoctorCheckUpListView(QMainWindow):
+    def __init__(self, checkup_id=None, parent=None):
         super().__init__(parent)
         self.ui = DoctorLabResultUI()
         self.ui.setupUi(self)
         self.checkup_id = checkup_id
-        self.refresh_callback = refresh_callback
         print(f"Check_Up Id: {self.checkup_id}")
 
         # Load and display data related to the checkup ID
         self.load_data()
         self.apply_table_styles()
         self.refresh_all_tables()
+        # Hide unnecessary buttons
+        self.hide_buttons()
 
-        # Connect buttons
+        # Modify the DiagnoseButton to act as a Close button
+        self.ui.DiagnoseButton.setText("Close")
+        self.ui.DiagnoseButton.clicked.connect(self.close_this)
         self.ui.ViewLabResult.clicked.connect(self.view_file)
-        self.ui.AddPrescription.clicked.connect(self.open_add_prescription_form)
-        self.ui.DiagnoseButton.clicked.connect(self.confirm_and_add_diagnosis)
-        self.ui.Cancel.clicked.connect(self.return_to_dashboard)
 
-    def return_to_dashboard(self):
-        try:
-            if hasattr(self, 'refresh_callback') and callable(self.refresh_callback):
-                self.refresh_callback()
-
-            # Close the modal
-            self.close()
-        except Exception as e:
-            print(f"Error while closing the modal: {e}")
-            QMessageBox.critical(self, "Error", f"An error occurred while closing the modal: {e}")
+    def close_this(self):
+        self.close()
 
     def refresh_all_tables(self):
         try:
@@ -316,6 +268,14 @@ class DoctorLabResult(QMainWindow):
             print(f"Error loading prescription table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load prescription table: {e}")
 
+    def hide_buttons(self):
+        """Hide unnecessary buttons."""
+        self.ui.AddPrescription.hide()  # Hide AddPrescription button
+        self.ui.EditPrescription.hide()  # Hide EditPrescription button
+        self.ui.ViewLabResult_4.hide()  # Hide ViewLabResult_4 button
+        self.ui.Cancel.hide()
+
+
     def load_data(self):
         """Load both check-up and patient details and populate the UI."""
         try:
@@ -330,6 +290,8 @@ class DoctorLabResult(QMainWindow):
             chck_temp = checkup_details['chck_temp']
             chck_height = checkup_details['chck_height' ]
             chck_weight = checkup_details['chck_weight']
+            chck_diagnose = checkup_details['chck_diagnoses']
+            chck_notes = checkup_details ['chck_notes']
 
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
@@ -351,7 +313,7 @@ class DoctorLabResult(QMainWindow):
 
             # Step 3: Populate the UI
             self.populate_patient_info(pat_id,pat_lname, pat_fname, pat_mname, Birthday, age , pat_gender)
-            self.populate_checkup_info(chck_bp, chck_temp, chck_height, chck_weight)
+            self.populate_checkup_info(chck_bp, chck_temp, chck_height, chck_weight, chck_diagnose, chck_notes)
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load data: {e}")
@@ -373,13 +335,15 @@ class DoctorLabResult(QMainWindow):
         self.ui.PatAge.setText(str(age))
         self.ui.PatGender.setText(gender)
 
-    def populate_checkup_info(self, chck_bp, chck_temp, chck_height, chck_weight):
+    def populate_checkup_info(self, chck_bp, chck_temp, chck_height, chck_weight, chck_diagnose, chck_notes):
         """Populate the check-up information fields."""
         self.ui.BloodPressure.setText(str(chck_bp + " bpm"))
         self.ui.Temperature.setText(str(chck_temp  + " °C"))
         self.ui.Heights.setText(str(chck_height + " cm"))
         self.ui.Weight.setText(str(chck_weight + " kg"))
         self.ui.CheckUpID.setText(self.checkup_id)
+        self.ui.DiagnoseText.setText(chck_diagnose)
+        self.ui.DiagnoseNotes.setText(chck_notes)
 
     def view_file(self):
         """Handle viewing the attached file for the selected lab test."""
@@ -428,93 +392,4 @@ class DoctorLabResult(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open file: {e}")
 
-    def open_add_prescription_form(self):
-        print("Opening Add Lab Test Form...")
-        try:
-            self.add_prescription_window = DoctorAddPrescription(
-                chck_id=self.checkup_id,
-                parent=self,
-                refresh_callback=self.refresh_all_tables
-            )
-            self.add_prescription_window.show()
-            print("Add Lab Test Form shown successfully!")
-        except Exception as e:
-            print(f"Error opening Add Lab Test Form: {e}")
 
-    def confirm_and_add_diagnosis(self):
-        try:
-            # Get the diagnosis text and notes from the UI
-            chck_diagnoses = self.ui.DiagnoseText.text().strip()
-            chck_notes = self.ui.DiagnoseNotes.text().strip() or None
-
-            # Validate the diagnosis text
-            if not chck_diagnoses:
-                QMessageBox.warning(self, "Validation Error", "Diagnosis text is required.")
-                return
-
-            # Show confirmation dialog
-            confirmation_dialog = ConfirmationDialog(self)
-            if confirmation_dialog.exec_() == QDialog.Rejected:
-                print("Diagnosis confirmation cancelled by the user.")
-                return
-
-            print("User confirmed diagnosis.")
-
-            # Update the check-up status to "Completed"
-            success = CheckUp.change_status_completed(self.checkup_id)
-            if not success:
-                raise ValueError("Failed to change check-up status to Completed.")
-
-            # Save the diagnosis notes
-            success = CheckUp.add_diagnosis_notes(
-                chck_id=self.checkup_id,
-                chck_diagnoses=chck_diagnoses,
-                chck_notes=chck_notes
-            )
-            if not success:
-                raise ValueError("Failed to save diagnosis notes.")
-
-            # Notify the user of success
-            QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
-            print("Diagnosis saved successfully!")
-
-            # Refresh the tables in the parent window
-            if self.refresh_callback:
-                self.refresh_callback()
-
-            # Close the modal
-            self.close()
-
-            # Open or focus the DoctorRecords window
-            self.open_or_focus_doctor_records()
-
-        except Exception as e:
-            print(f"Error during diagnosis: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to save diagnosis: {e}")
-
-    def open_or_focus_doctor_records(self):
-        from Controllers.DoctorRecords_Controller import DoctorRecords
-        app = QApplication.instance()  # Get the current application instance
-
-        # Check if any DoctorRecords window is already active
-        for widget in app.topLevelWidgets():
-            if isinstance(widget, DoctorRecords):
-                doctor_records_window = widget
-                doctor_records_window.activateWindow()
-                doctor_records_window.show()
-                print("DoctorRecords window is already active. Bringing it to focus.")
-                return  # Exit early since the window is already open
-
-        # If no existing window is found, create a new one
-        checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-        if not checkup_details or 'doc_id' not in checkup_details:
-            print("Error: Invalid or missing check-up details.")
-            return
-
-        doc_id = checkup_details['doc_id']
-        print(f"Creating new DoctorRecords window for doc_id={doc_id}")
-
-        # Create a new DoctorRecords window and store it as an instance variable
-        self.doctor_records_window = DoctorRecords(doc_id=doc_id)
-        self.doctor_records_window.show()
-        print("New DoctorRecords window opened successfully.")

@@ -1,13 +1,12 @@
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox
 from Controllers.DoctorLabResult_Controller import DoctorLabResult
 from Views.Doctor_Diagnosis import Ui_MainWindow as DoctorDiagnosisUI
-from Controllers.DoctorRecords_Controller import DoctorRecords
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
 
-class DoctorDiagnosis(QMainWindow):
+class DoctorDiagnosisModify(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
         super().__init__(parent)
         self.ui = DoctorDiagnosisUI()
@@ -24,6 +23,7 @@ class DoctorDiagnosis(QMainWindow):
 
         # Display lab tests in two frames
         self.display_lab_tests()
+        self.ui.ProceedButton.setText("Update")
 
     def load_data(self):
         """Load both check-up and patient details and populate the UI."""
@@ -96,15 +96,21 @@ class DoctorDiagnosis(QMainWindow):
         self.ui.Type.setText(chckup_type)
 
     def display_lab_tests(self):
-        """Display lab tests in two frames."""
+        """Display lab tests in two frames with pre-checked boxes for existing records."""
         try:
             # Fetch all lab tests
             tests = Laboratory.get_all_test()
+            # Fetch lab codes already associated with the current check-up
+            existing_lab_codes = CheckUp.get_lab_codes_by_chckid(self.checkup_id)
+
+            # Debug: Log existing_lab_codes
+            print(f"Existing lab codes for chck_id {self.checkup_id}: {existing_lab_codes}")
+
+            # Convert existing_lab_codes to set for faster lookup
+            existing_lab_codes_set = set(existing_lab_codes)
 
             # Count the total number of lab tests
-            total_tests = Laboratory.count_all_test()
-
-            # Divide the tests into two groups
+            total_tests = len(tests)
             half = (total_tests + 1) // 2
             first_group = tests[:half]
             second_group = tests[half:]
@@ -114,21 +120,21 @@ class DoctorDiagnosis(QMainWindow):
             self.clear_layout(self.ui.SecondFrame.layout())
 
             # Add checkboxes to the first frame
-            self.add_checkboxes_to_frame(first_group, self.ui.FirstFrame)
+            self.add_checkboxes_to_frame(first_group, self.ui.FirstFrame, existing_lab_codes_set)
 
             # Add checkboxes to the second frame
-            self.add_checkboxes_to_frame(second_group, self.ui.SecondFrame)
+            self.add_checkboxes_to_frame(second_group, self.ui.SecondFrame, existing_lab_codes_set)
 
             # Connect the ProceedButton to process_selected_tests
             if hasattr(self.ui, 'ProceedButton'):
                 self.ui.ProceedButton.clicked.connect(self.process_selected_tests)
             else:
                 QMessageBox.warning(self, "Missing Button", "ProceedButton is missing in the UI.")
-
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to display lab tests: {e}")
 
     def ViewRecords(self):
+        from Controllers.DoctorRecords_Controller import DoctorRecords
         print("Opening Doctor Records...")
         try:
             # Close the current DoctorDiagnosis window
@@ -148,8 +154,8 @@ class DoctorDiagnosis(QMainWindow):
                 if child.widget():
                     child.widget().deleteLater()
 
-    def add_checkboxes_to_frame(self, tests, frame):
-        """Add checkboxes for the given tests to the specified frame."""
+    def add_checkboxes_to_frame(self, tests, frame, existing_lab_codes_set):
+        """Add checkboxes for the given tests to the specified frame and pre-check existing ones."""
         layout = frame.layout()
         if layout is None:
             layout = QVBoxLayout(frame)
@@ -162,53 +168,59 @@ class DoctorDiagnosis(QMainWindow):
             # Create a QCheckBox for each test
             checkbox = QCheckBox(f"{lab_name}")
             checkbox.setProperty("lab_code", lab_code)
+
+            # Pre-check the checkbox if the lab_code exists in the existing_lab_codes_set
+            if lab_code in existing_lab_codes_set:
+                checkbox.setChecked(True)
+
             layout.addWidget(checkbox)
 
     def process_selected_tests(self):
-        """Process the selected checkboxes and store the lab codes."""
-        # Collect selected lab codes from both frames
-        selected_lab_codes = []
-
-        for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
-            layout = frame.layout()
-            if layout:
-                for i in range(layout.count()):
-                    widget = layout.itemAt(i).widget()
-                    if isinstance(widget, QCheckBox) and widget.isChecked():
-                        lab_code = widget.property("lab_code")
-                        if lab_code:  # Ensure lab_code is valid
-                            selected_lab_codes.append(lab_code)
-                        else:
-                            print(f"Warning: Checkbox at index {i} has no lab_code property.")
-
-        # Check if OtherText has a value
-        other_text_value = self.ui.OtherText.text().strip()  # Get the value and remove extra spaces
-
-        # Add the OtherText value to the list if it exists
-        if other_text_value:
-            selected_lab_codes.append(other_text_value)
-
-        # Check if no checkboxes are selected and OtherText is empty
-        if not selected_lab_codes and not other_text_value:
-            # Open the DoctorLabResult modal
-            self.open_doctor_lab_result_modal()
-        else:
-            # Update the database with the selected lab codes
-            success = CheckUp.update_lab_codes(self.checkup_id, selected_lab_codes)
-            if not success:
-                QMessageBox.critical(self, "Error", "Failed to update lab codes.")
-                return
-
-            # Proceed to ViewRecords
-            QMessageBox.information(self, "Success", f"Selected Lab Codes: {', '.join(selected_lab_codes)}")
-            self.ViewRecords()
-
-    def open_doctor_lab_result_modal(self):
+        """Process the selected checkboxes and update the database."""
         try:
-            # Instantiate and show the DoctorLabResult modal
-            self.doctor_lab_result = DoctorLabResult(checkup_id=self.checkup_id)
-            self.doctor_lab_result.show()
+            # Collect selected lab codes from both frames
+            selected_lab_codes = []
+            for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
+                layout = frame.layout()
+                if layout:
+                    for i in range(layout.count()):
+                        widget = layout.itemAt(i).widget()
+                        if isinstance(widget, QCheckBox) and widget.isChecked():
+                            lab_code = widget.property("lab_code")
+                            if lab_code:  # Ensure lab_code is valid
+                                selected_lab_codes.append(lab_code)
+                            else:
+                                print(f"Warning: Checkbox at index {i} has no lab_code property.")
+
+            # Add the OtherText value to the list if it exists
+            other_text_value = self.ui.OtherText.text().strip()
+            if other_text_value:
+                selected_lab_codes.append(other_text_value)
+
+            # Fetch existing lab codes for the check-upget_all_test
+            existing_lab_codes = CheckUp.get_lab_codes_by_chckid(self.checkup_id)
+
+            # Determine which lab codes to add and which to delete
+            lab_codes_to_add = set(selected_lab_codes) - set(existing_lab_codes)
+            lab_codes_to_delete = set(existing_lab_codes) - set(selected_lab_codes)
+
+            # Add new lab codes
+            for lab_code in lab_codes_to_add:
+                success = CheckUp.add_lab_code(self.checkup_id, lab_code)
+                if not success:
+                    QMessageBox.critical(self, "Error", f"Failed to add lab code: {lab_code}")
+                    return
+
+            # Delete removed lab codes
+            for lab_code in lab_codes_to_delete:
+                success = CheckUp.delete_lab_code(self.checkup_id, lab_code)
+                if not success:
+                    QMessageBox.critical(self, "Error", f"Failed to delete lab code: {lab_code}")
+                    return
+
+            # Notify the user of success
+            QMessageBox.information(self, "Success", "Lab tests updated successfully!")
+
             self.close()
         except Exception as e:
-            print(f"Error opening DoctorLabResult modal: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to process selected tests: {e}")

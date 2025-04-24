@@ -491,3 +491,91 @@ class CheckUp:
             if conn:
                 conn.close()
                 print("Database connection closed.")
+
+    @staticmethod
+    def get_lab_codes_by_chckid(chck_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return []
+        try:
+            with conn.cursor() as cursor:
+                query = """
+                    SELECT lab_code
+                    FROM checkup_lab_tests
+                    WHERE chck_id = %s;
+                """
+                cursor.execute(query, (chck_id,))
+                results = cursor.fetchall()
+
+                # Extract lab_code values from the results
+                if results:
+                    return [row[0] for row in results]  # Extract the first element (lab_code) from each tuple
+                return []
+        except Exception as e:
+            print(f"Error retrieving lab codes for chck_id {chck_id}: {e}")
+            return []
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def add_lab_code(chck_id, lab_code):
+        conn = None
+        try:
+            # Establish a database connection
+            conn = DBConnection.get_db_connection()
+            if not conn:
+                raise ConnectionError("Failed to establish a database connection.")
+
+            # SQL query to insert a new lab code
+            query = "INSERT INTO checkup_lab_tests (chck_id, lab_code) VALUES (%s, %s)"
+            cursor = conn.cursor()
+            cursor.execute(query, (chck_id, lab_code))
+            conn.commit()
+
+            print(f"Added lab code {lab_code} for chck_id: {chck_id}")
+            return True
+
+        except Exception as e:
+            print(f"Error adding lab code {lab_code} for chck_id {chck_id}: {e}")
+            if conn:
+                conn.rollback()  # Roll back in case of failure
+            return False
+
+        finally:
+            if conn:
+                conn.close()
+                print("Database connection closed.")
+
+    @staticmethod
+    def delete_lab_code(chck_id, lab_code):
+        """
+        Delete a lab code for the given check-up ID.
+        Returns True if successful, False otherwise.
+        """
+        conn = None
+        try:
+            # Establish a database connection
+            conn = DBConnection.get_db_connection()
+            if not conn:
+                raise ConnectionError("Failed to establish a database connection.")
+
+            # SQL query to delete a lab code
+            query = "DELETE FROM checkup_lab_tests WHERE chck_id = %s AND lab_code = %s"
+            cursor = conn.cursor()
+            cursor.execute(query, (chck_id, lab_code))
+            conn.commit()
+
+            print(f"Deleted lab code {lab_code} for chck_id: {chck_id}")
+            return True
+
+        except Exception as e:
+            print(f"Error deleting lab code {lab_code} for chck_id {chck_id}: {e}")
+            if conn:
+                conn.rollback()  # Roll back in case of failure
+            return False
+
+        finally:
+            if conn:
+                conn.close()
+                print("Database connection closed.")

@@ -239,8 +239,7 @@ class DoctorDashboardController(QMainWindow):
             diagnosis_window = DoctorDiagnosis(
                 checkup_id=checkup_id,
                 doc_id=self.doc_id,
-                parent=self,
-                doctor_dashboard=self
+                parent=self
             )
             diagnosis_window.show()
             print("DoctorDiagnosis window opened successfully.")

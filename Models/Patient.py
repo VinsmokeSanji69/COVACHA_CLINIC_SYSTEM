@@ -1,7 +1,7 @@
 from Models.DB_Connection import DBConnection
 class Patient:
     @staticmethod
-    def get_patient_id(fname, lname):
+    def get_patient_by_name(fname, lname):
         conn = DBConnection.get_db_connection()
         if not conn:
             print("Failed to establish database connection.")
@@ -15,7 +15,7 @@ class Patient:
 
                 # Query the database using LOWER() to standardize case
                 query = """
-                    SELECT pat_id 
+                    SELECT pat_id, pat_lname, pat_fname, pat_mname, pat_gender, pat_dob, pat_address, pat_contact 
                     FROM patient 
                     WHERE LOWER(pat_fname) = %s AND LOWER(pat_lname) = %s;
                 """
@@ -23,15 +23,26 @@ class Patient:
                 result = cursor.fetchone()
 
                 if result:
-                    print(f"Found existing patient ID: {result[0]}")
-                    return result[0]
+                    # Map the result to a dictionary for easier access
+                    patient_details = {
+                        "id": result[0],
+                        "first_name": result[1],
+                        "last_name": result[2],
+                        "middle_name": result[3],
+                        "gender": result[4],
+                        "dob": result[5],
+                        "address": result[6],
+                        "contact": result[7]
+                    }
+                    print(f"Found existing patient: {patient_details}")
+                    return patient_details
 
                 # Patient does not exist
                 print("Patient does not exist in the database.")
                 return None
 
         except Exception as e:
-            print(f"Error fetching patient ID: {e}")
+            print(f"Error fetching patient details: {e}")
             return None
 
         finally:
@@ -136,6 +147,68 @@ class Patient:
         except Exception as e:
             print(f"Error fetching patient details: {e}")
             return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def update_or_create_patient(data):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            print("Failed to establish database connection.")
+            return None
+
+        try:
+            with conn.cursor() as cursor:
+                pat_id = data.get("id")
+
+                if pat_id:
+                    # Update existing patient
+                    query = """
+                        UPDATE patient 
+                        SET 
+                            pat_mname = %s, pat_gender = %s, pat_dob = %s, pat_address = %s, pat_contact = %s
+                        WHERE pat_id = %s
+                    """
+                    params = (
+                        data["middle_name"], data["gender"], data["dob"], data["address"], data["contact"], pat_id
+                    )
+                else:
+                    # Create new patient
+                    query = """
+                        INSERT INTO patient (pat_lname, pat_fname, pat_mname, pat_gender, pat_dob, pat_address, pat_contact)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        RETURNING pat_id
+                    """
+                    params = (
+                        data["last_name"],
+                        data["first_name"],
+                        data["middle_name"],
+                        data["gender"],
+                        data["dob"],
+                        data["address"],
+                        data["contact"]
+                    )
+
+                # Execute the query
+                cursor.execute(query, params)
+
+                if not pat_id:
+                    # If creating a new patient, fetch the generated ID
+                    pat_id = cursor.fetchone()[0]
+
+                # Commit the transaction
+                conn.commit()
+
+                print(f"Patient {'updated' if pat_id else 'created'} successfully. ID: {pat_id}")
+                return pat_id
+
+        except Exception as e:
+            print(f"Error updating/creating patient: {e}")
+            if conn:
+                conn.rollback()  # Rollback in case of error
+            return None
+
         finally:
             if conn:
                 conn.close()
