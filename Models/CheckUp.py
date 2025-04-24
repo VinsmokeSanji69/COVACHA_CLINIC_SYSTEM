@@ -1,3 +1,5 @@
+import psycopg2
+
 from Models.DB_Connection import DBConnection
 
 class CheckUp:
@@ -190,6 +192,63 @@ class CheckUp:
         finally:
             if conn:
                 conn.close()
+
+    @staticmethod
+    def get_checkup_by_pat_id(pat_id):
+        conn = None
+        try:
+            conn = DBConnection.get_db_connection()
+            if not conn:
+                raise ConnectionError("Failed to establish database connection")
+
+            with conn.cursor() as cursor:
+                query = """
+                            SELECT 
+                                chck_id, chck_date, chck_diagnoses, 
+                                chck_bp, chck_height, chck_weight, chck_temp,
+                                doc_id, staff_id
+                            FROM checkup 
+                            WHERE chck_status = 'Completed' AND pat_id = %s
+                            ORDER BY chck_date DESC
+                            """
+                cursor.execute(query, (pat_id,))
+                rows = cursor.fetchall()
+
+                checkups = []
+                for row in rows:
+                    try:
+                        (chck_id, chck_date, chck_diagnosis,
+                         chck_bp, chck_height, chck_weight, chck_temp,
+                         doc_id, staff_id) = row
+
+                        checkups.append({
+                            "id": chck_id,
+                            "date": chck_date,
+                            "diagnosis": chck_diagnosis or "N/A",
+                            "bp": chck_bp or "N/A",
+                            "height": f"{chck_height} cm" if chck_height else "N/A",
+                            "weight": f"{chck_weight} kg" if chck_weight else "N/A",
+                            "temp": f"{chck_temp} °C" if chck_temp else "N/A",
+                            "staff": staff_id,
+                            "doctor": doc_id
+                        })
+                    except (ValueError, TypeError) as row_error:
+                        print(f"Error processing row {row}: {row_error}")
+                        continue
+                return checkups
+
+        except psycopg2.Error as db_error:
+            print(f"Database error fetching checkups: {db_error}")
+            return []
+        except Exception as e:
+            print(f"Unexpected error fetching checkups: {str(e)}")
+            return []
+        finally:
+            if conn:
+                try:
+                    conn.close()
+                except Exception as close_error:
+                    print(f"Error closing connection: {close_error}")
 
     @staticmethod
     def get_all_checkups_by_doc_id(doc_id):

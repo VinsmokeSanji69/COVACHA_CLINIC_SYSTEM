@@ -51,7 +51,7 @@ class ConfirmationDialog(QDialog):
 
 
 class DoctorLabResult(QMainWindow):
-    def __init__(self, checkup_id=None, parent=None, refresh_callback=None):
+    def __init__(self, checkup_id=None, parent=None, refresh_callback=None, view = False):
         super().__init__(parent)
         self.ui = DoctorLabResultUI()
         self.ui.setupUi(self)
@@ -63,12 +63,36 @@ class DoctorLabResult(QMainWindow):
         self.load_data()
         self.apply_table_styles()
         self.refresh_all_tables()
+        self.view = view
 
         # Connect buttons
         self.ui.ViewLabResult.clicked.connect(self.view_file)
-        self.ui.AddPrescription.clicked.connect(self.open_add_prescription_form)
-        self.ui.DiagnoseButton.clicked.connect(self.confirm_and_add_diagnosis)
-        self.ui.Cancel.clicked.connect(self.return_to_dashboard)
+
+
+        if self.view is True:
+            self.setup_view()
+            self.initialize_diagnosis()
+        else:
+            self.ui.AddPrescription.clicked.connect(self.open_add_prescription_form)
+            self.ui.DiagnoseButton.clicked.connect(self.confirm_and_add_diagnosis)
+            self.ui.Cancel.clicked.connect(self.return_to_dashboard)
+
+    def setup_view(self):
+        self.ui.AddPrescription.setVisible(False)
+        self.ui.EditPrescription.setVisible(False)
+        self.ui.DiagnoseButton.setVisible(False)
+        self.ui.Cancel.setVisible(False)
+        self.ui.DiagnoseText.setReadOnly(True)
+        self.ui.DiagnoseNotes.setReadOnly(True)
+
+    def initialize_diagnosis(self):
+        checkup = CheckUp.get_checkup_details(self.checkup_id)
+        if not checkup:
+            print('No checkup for checkup id: ' + self.checkup_id)
+        diagnosis = checkup.get("chck_diagnoses")
+        notes = checkup.get("chck_notes")
+        self.ui.DiagnoseText.setText(diagnosis)
+        self.ui.DiagnoseNotes.setText(notes)
 
     def return_to_dashboard(self):
         try:

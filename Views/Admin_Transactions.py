@@ -532,3 +532,4 @@ class Ui_MainWindow(object):
         self.ViewTransaction.setText(_translate("MainWindow", "View"))
         self.ModifyTransaction.setText(_translate("MainWindow", "Modify"))
         self.DeleteTransaction.setText(_translate("MainWindow", "Delete"))
+

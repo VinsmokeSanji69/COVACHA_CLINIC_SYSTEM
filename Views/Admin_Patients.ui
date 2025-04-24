@@ -38,13 +38,13 @@ QPushButton {
 	font: 900 16pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
@@ -225,7 +225,7 @@ QLabel {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{
-	font: 900 20pt &quot;Satoshi Black&quot;;	
+	font: 900 20pt &quot;Satoshi Black&quot;;
 }</string>
            </property>
            <property name="text">
@@ -377,7 +377,7 @@ QLabel {
 padding-top: 15px;
 }
 QLabel {
-    padding: 0px; 
+    padding: 0px;
 }
 #UserType {
 	font: 300 10pt &quot;Lexend Light&quot;;
@@ -393,9 +393,9 @@ QLabel {
 	font-size: 35px;
 }
 QGraphicsView {
-    border: 2px solid #ccc; 
+    border: 2px solid #ccc;
     border-radius: 25px;
-    background: white; 
+    background: white;
 }
 
 </string>
@@ -594,7 +594,7 @@ QGraphicsView {
     background-color: #F4F7ED;
     gridline-color: #D9E4DC;
     border: 2px solid #2E6E65;
-    border-radius: 9px; 
+    border-radius: 9px;
 }
 
 QTableWidget::item {
@@ -602,7 +602,7 @@ QTableWidget::item {
 }
 
 QTableWidget::item:alternate {
-    background-color: #E0E0E0;  
+    background-color: #E0E0E0;
 }
 
 QTableWidget QHeaderView::section {
@@ -673,7 +673,7 @@ QTableWidget::item:selected {
                <property name="styleSheet">
                 <string notr="true">#SearchBar {
 	background-color: #F4F7ED;
-	border: 2px solid #2E6E65; 
+	border: 2px solid #2E6E65;
     border-radius: 15px;
 }
 #Search{
@@ -710,7 +710,7 @@ QComboBox QAbstractItemView {
     selection-background-color: #CCE3D0;
     border: 1px solid #2E6E65;
     border-radius: 2px;
-    outline: 0;  
+    outline: 0;
 	font: 300 12pt &quot;Lexend Light&quot;;
 }
 
@@ -895,7 +895,7 @@ QComboBox QAbstractItemView {
 	font: 900 10pt &quot;Satoshi Black&quot;;
 	background-color:  #2E6E65;
 	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	font-size: 20px;
 	color: #F4F7ED;
 	text-align: center;

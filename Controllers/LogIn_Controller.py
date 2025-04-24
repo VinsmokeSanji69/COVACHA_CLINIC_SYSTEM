@@ -13,6 +13,8 @@ class LoginController:
     def __init__(self, login_window):
         self.login_window = login_window
         self.login_window.ui.SignInButton.clicked.connect(self.handle_login)
+        self.login_window.ui.UserIDInput.setPlaceholderText("User ID")
+        self.login_window.ui.PasswordInput.setPlaceholderText("Password")
 
         # Debugging print to confirm the connection
         print("SignInButton connected to handle_login method!")

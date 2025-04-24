@@ -60,7 +60,7 @@ QPushButton:hover {
 }
 QLineEdit {
 	border: 2px solid #2E6E65;
-	border-radius: 15px;
+	border-radius: 10px;
 	text-align: center;
 	font-size: 20px;
 	background-color: #F4F7ED;
@@ -98,37 +98,43 @@ QLineEdit {
     </size>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item alignment="Qt::AlignHCenter">
+    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
      <widget class="QWidget" name="Login" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
-        <width>400</width>
-        <height>410</height>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>400</width>
-        <height>410</height>
+        <width>380</width>
+        <height>600</height>
        </size>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <property name="spacing">
-        <number>8</number>
+        <number>15</number>
        </property>
        <property name="leftMargin">
-        <number>15</number>
+        <number>10</number>
        </property>
        <property name="topMargin">
-        <number>30</number>
+        <number>25</number>
        </property>
        <property name="rightMargin">
-        <number>15</number>
+        <number>10</number>
        </property>
        <property name="bottomMargin">
-        <number>30</number>
+        <number>25</number>
        </property>
-       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <item alignment="Qt::AlignTop">
         <widget class="QLabel" name="SystemTitle">
          <property name="enabled">
           <bool>false</bool>
@@ -150,73 +156,115 @@ QLineEdit {
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="Description1">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 18px;
-	font-weight: bold;
+       <item alignment="Qt::AlignTop">
+        <widget class="QWidget" name="widget" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="Description1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+	font: 900 14pt &quot;Satoshi&quot;;
 	color:  #2E6E65;
 	background: transparent;
 	qproperty-alignment: 'AlignCenter';
 }</string>
-         </property>
-         <property name="text">
-          <string>Log in to your account</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="Description2">
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-	font: 300 10pt &quot;Lexend Light&quot;;
-	font-size: 12px;
+            </property>
+            <property name="text">
+             <string>Log in to your account</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="Description2">
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+	font: 500 11pt &quot;Satoshi&quot;;
 	color:  #2E6E65;
 	background: transparent;
 	qproperty-alignment: 'AlignCenter';
 }</string>
-         </property>
-         <property name="text">
-          <string>Please enter your details to continue</string>
-         </property>
+            </property>
+            <property name="text">
+             <string>Please enter your details to continue</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="UserIDInput">
+        <widget class="QWidget" name="widget_2" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>USER ID</string>
-         </property>
-         <property name="html" stdset="0">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="UserIDInput">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="html" stdset="0">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
@@ -224,37 +272,37 @@ li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:20px; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lexend'; font-size:16pt; color:#2b3752;&quot;&gt;User ID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item alignment="Qt::AlignVCenter">
-        <widget class="QLineEdit" name="PasswordInput">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>PASSWORD</string>
-         </property>
-         <property name="html" stdset="0">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="PasswordInput">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="html" stdset="0">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
@@ -262,41 +310,45 @@ li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:20px; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lexend'; font-size:16pt; color:#2b3752;&quot;&gt;Password&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="SignInButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="SignInButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
 	background-color: #2E6E65;
-	font-size: 20px;
+	font-size: 25px;
 	color: white;
 	border-radius: 10px;
 	font-weight: bold;
+	padding: 5px;
 }</string>
-         </property>
-         <property name="text">
-          <string>Sign In</string>
-         </property>
+            </property>
+            <property name="text">
+             <string>Sign In</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>

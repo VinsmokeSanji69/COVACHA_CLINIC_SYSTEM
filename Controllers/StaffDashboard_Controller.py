@@ -145,7 +145,7 @@ class StaffDashboardController(QMainWindow):
                     continue
 
                 # Extract patient name and capitalize the first letter of each word
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
+                full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
                 # Insert data into the table in the new column order (Check Up ID, Patient Name, Type)
                 self.ui.PendingTable.insertRow(row)

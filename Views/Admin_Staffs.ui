@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1150</width>
+    <width>1149</width>
     <height>805</height>
    </rect>
   </property>
@@ -35,17 +35,16 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
+	font: 900 16pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
-	font-size: 25px;
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
@@ -88,7 +87,7 @@ QLabel {
        <bool>true</bool>
       </property>
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -101,8 +100,14 @@ QLabel {
       </property>
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
+        <width>280</width>
         <height>16777215</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>280</width>
+        <height>0</height>
        </size>
       </property>
       <property name="autoFillBackground">
@@ -125,7 +130,7 @@ QLabel {
         <number>10</number>
        </property>
        <item>
-        <widget class="QPushButton" name="DashboardButton_2">
+        <widget class="QPushButton" name="NavBarButton">
          <property name="toolTip">
           <string>View Main Dashboard</string>
          </property>
@@ -150,24 +155,17 @@ QLabel {
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Preferred</enum>
+          <enum>QSizePolicy::Fixed</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>10</width>
-           <height>20</height>
+           <width>20</width>
+           <height>10</height>
           </size>
          </property>
         </spacer>
@@ -179,6 +177,12 @@ QLabel {
          </property>
          <property name="sizeConstraint">
           <enum>QLayout::SetNoConstraint</enum>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
          </property>
          <item>
           <widget class="QPushButton" name="DashboardButton">
@@ -197,8 +201,33 @@ QLabel {
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="StaffButton">
+           <property name="toolTip">
+            <string>View Staff Record</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+	font: 900 20pt &quot;Satoshi Black&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>  Staffs</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Images/resources.qrc">
+             <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
           </widget>
@@ -217,31 +246,6 @@ QLabel {
            <property name="icon">
             <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="StaffButton">
-           <property name="toolTip">
-            <string>View Staff Record</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton{
-	 border: 3px solid white;
-}</string>
-           </property>
-           <property name="text">
-            <string>  Staffs</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -283,11 +287,11 @@ QLabel {
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>Charges</string>
+            <string>  Charges</string>
            </property>
            <property name="icon">
             <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/chart-no-axes-combined.svg</normaloff>:/lucide/icons/chart-no-axes-combined.svg</iconset>
+             <normaloff>:/lucide/icons/hand-coins.svg</normaloff>:/lucide/icons/hand-coins.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -318,7 +322,7 @@ QLabel {
           <number>15</number>
          </property>
          <item>
-          <widget class="QPushButton" name="OverviewsButton_3">
+          <widget class="QPushButton" name="ProfileButton">
            <property name="toolTip">
             <string>View Profile Settings</string>
            </property>
@@ -341,7 +345,7 @@ QLabel {
           </widget>
          </item>
          <item alignment="Qt::AlignVCenter">
-          <widget class="QPushButton" name="OverviewsButton_2">
+          <widget class="QPushButton" name="LogOutButton">
            <property name="toolTip">
             <string>Log Out from your Account</string>
            </property>
@@ -385,7 +389,7 @@ QLabel {
 padding-top: 15px;
 }
 QLabel {
-    padding: 0px; 
+    padding: 0px;
 }
 #UserType {
 	font: 300 10pt &quot;Lexend Light&quot;;
@@ -401,9 +405,9 @@ QLabel {
 	font-size: 35px;
 }
 QGraphicsView {
-    border: 2px solid #ccc; 
+    border: 2px solid #ccc;
     border-radius: 25px;
-    background: white; 
+    background: white;
 }
 
 </string>
@@ -602,7 +606,7 @@ QGraphicsView {
     background-color: #F4F7ED;
     gridline-color: #D9E4DC;
     border: 2px solid #2E6E65;
-    border-radius: 9px; 
+    border-radius: 9px;
 }
 
 QTableWidget::item {
@@ -610,7 +614,7 @@ QTableWidget::item {
 }
 
 QTableWidget::item:alternate {
-    background-color: #E0E0E0;  
+    background-color: #E0E0E0;
 }
 
 QTableWidget QHeaderView::section {
@@ -634,6 +638,9 @@ QTableWidget::item:selected {
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -648,6 +655,9 @@ QTableWidget::item:selected {
           </property>
           <item>
            <widget class="QWidget" name="BodyLayout" native="true">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <property name="spacing">
               <number>0</number>
@@ -659,6 +669,9 @@ QTableWidget::item:selected {
               <number>0</number>
              </property>
              <property name="rightMargin">
+              <number>20</number>
+             </property>
+             <property name="bottomMargin">
               <number>20</number>
              </property>
              <item alignment="Qt::AlignTop">
@@ -678,7 +691,7 @@ QTableWidget::item:selected {
                <property name="styleSheet">
                 <string notr="true">#SearchBar {
 	background-color: #F4F7ED;
-	border: 2px solid #2E6E65; 
+	border: 2px solid #2E6E65;
     border-radius: 15px;
 }
 #Search{
@@ -714,7 +727,7 @@ QComboBox QAbstractItemView {
     selection-background-color: #CCE3D0;
     border: 1px solid #2E6E65;
     border-radius: 2px;
-    outline: 0;  
+    outline: 0;
 	font: 300 12pt &quot;Lexend Light&quot;;
 }
 
@@ -871,7 +884,7 @@ QComboBox QAbstractItemView {
 	font: 900 10pt &quot;Satoshi Black&quot;;
 	background-color:  #2E6E65;
 	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	font-size: 20px;
 	color: #F4F7ED;
 }</string>
@@ -892,11 +905,31 @@ QComboBox QAbstractItemView {
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+	font: 900 10pt &quot;Satoshi Black&quot;;
+	background-color:  #2E6E65;
+	border-radius: 10px;
+	font-weight: bold;
+	font-size: 20px;
+	color: #F4F7ED;
+	text-align: center;
+}</string>
+               </property>
                <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
                 <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item>
@@ -907,37 +940,212 @@ QComboBox QAbstractItemView {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QTableWidget" name="DoctorTable">
-                  <property name="sizeAdjustPolicy">
-                   <enum>QAbstractScrollArea::AdjustToContents</enum>
-                  </property>
-                  <property name="cornerButtonEnabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="columnCount">
-                   <number>3</number>
-                  </property>
-                  <attribute name="horizontalHeaderHighlightSections">
-                   <bool>true</bool>
-                  </attribute>
-                  <attribute name="horizontalHeaderStretchLastSection">
-                   <bool>true</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>Doctor ID</string>
+                 <widget class="QWidget" name="widget" native="true">
+                  <layout class="QHBoxLayout" name="horizontalLayout_5">
+                   <property name="spacing">
+                    <number>10</number>
                    </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Name</string>
+                   <property name="leftMargin">
+                    <number>0</number>
                    </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Specialty</string>
+                   <property name="topMargin">
+                    <number>0</number>
                    </property>
-                  </column>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QScrollArea" name="DoctorScrollArea">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>774</width>
+                       <height>289</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QScrollBar:vertical {
+     background: transparent;
+     width: 10px;
+	border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    	background: #C0C0C0;
+    	border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    	background: #A0A0A0;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical{
+    	background: none;
+    	border: none;
+}</string>
+                     </property>
+                     <property name="widgetResizable">
+                      <bool>true</bool>
+                     </property>
+                     <widget class="QWidget" name="scrollAreaWidgetContents">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>774</width>
+                        <height>289</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_11">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QTableWidget" name="DoctorTable">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QTableWidget {
+	background-color: #F4F7ED;
+	gridline-color: transparent;
+	border-radius: 8px;
+	border: 2px solid #2E6E65;
+}
+QTableWidget::item {
+	border: none;
+	font:500 16pt &quot;Satoshi&quot;;
+	color: #2B3752;
+}
+QTableWidget::item:selected {
+	background-color: rgba(46, 110, 101, 0.3);
+}
+QTableWidget QHeaderView::section {
+	background-color: #2E6E65;
+	color: white;
+	padding: 5px;
+	font: 700 15pt &quot;Satoshi&quot;;
+	border: 2px solid #2E6E65;
+}</string>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QAbstractScrollArea::AdjustToContents</enum>
+                         </property>
+                         <property name="cornerButtonEnabled">
+                          <bool>true</bool>
+                         </property>
+                         <property name="columnCount">
+                          <number>3</number>
+                         </property>
+                         <attribute name="horizontalHeaderHighlightSections">
+                          <bool>true</bool>
+                         </attribute>
+                         <attribute name="horizontalHeaderStretchLastSection">
+                          <bool>true</bool>
+                         </attribute>
+                         <column>
+                          <property name="text">
+                           <string>Doctor ID</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Name</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Specialty</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
+                   </item>
+                   <item alignment="Qt::AlignTop">
+                    <widget class="QWidget" name="widget_2" native="true">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>110</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_8">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QPushButton" name="ViewDoctor">
+                        <property name="text">
+                         <string>View</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="ModifyDoctor">
+                        <property name="text">
+                         <string>Modify</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="DeleteDoctor">
+                        <property name="text">
+                         <string>Delete</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
                </layout>
@@ -945,11 +1153,37 @@ QComboBox QAbstractItemView {
              </item>
              <item>
               <widget class="QWidget" name="Staff" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+	font: 900 10pt &quot;Satoshi Black&quot;;
+	background-color:  #2E6E65;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 20px;
+	color: #F4F7ED;
+	text-align: center;
+}</string>
+               </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
+                <property name="topMargin">
+                 <number>10</number>
+                </property>
                 <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
                  <number>0</number>
                 </property>
                 <item>
@@ -960,38 +1194,207 @@ QComboBox QAbstractItemView {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QTableWidget" name="StaffTable">
-                  <property name="horizontalScrollBarPolicy">
-                   <enum>Qt::ScrollBarAlwaysOff</enum>
-                  </property>
-                  <property name="sizeAdjustPolicy">
-                   <enum>QAbstractScrollArea::AdjustToContents</enum>
-                  </property>
-                  <property name="columnCount">
-                   <number>2</number>
-                  </property>
-                  <attribute name="horizontalHeaderCascadingSectionResizes">
-                   <bool>true</bool>
-                  </attribute>
-                  <attribute name="horizontalHeaderHighlightSections">
-                   <bool>true</bool>
-                  </attribute>
-                  <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-                   <bool>false</bool>
-                  </attribute>
-                  <attribute name="horizontalHeaderStretchLastSection">
-                   <bool>true</bool>
-                  </attribute>
-                  <column>
-                   <property name="text">
-                    <string>Staff ID</string>
+                 <widget class="QWidget" name="widget_3" native="true">
+                  <layout class="QHBoxLayout" name="horizontalLayout_6">
+                   <property name="spacing">
+                    <number>10</number>
                    </property>
-                  </column>
-                  <column>
-                   <property name="text">
-                    <string>Name</string>
+                   <property name="leftMargin">
+                    <number>0</number>
                    </property>
-                  </column>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QScrollArea" name="StaffScrollArea">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>774</width>
+                       <height>288</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QScrollBar:vertical {
+     background: transparent;
+     width: 10px;
+	border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    	background: #C0C0C0;
+    	border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    	background: #A0A0A0;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical{
+    	background: none;
+    	border: none;
+}</string>
+                     </property>
+                     <property name="widgetResizable">
+                      <bool>true</bool>
+                     </property>
+                     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>774</width>
+                        <height>288</height>
+                       </rect>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_10">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QTableWidget" name="StaffTable">
+                         <property name="styleSheet">
+                          <string notr="true">QTableWidget {
+	background-color: #F4F7ED;
+	gridline-color: transparent;
+	border-radius: 8px;
+	border: 2px solid #2E6E65;
+}
+QTableWidget::item {
+	border: none;
+	font:500 16pt &quot;Satoshi&quot;;
+	color: #2B3752;
+}
+QTableWidget::item:selected {
+	background-color: rgba(46, 110, 101, 0.3);
+}
+QTableWidget QHeaderView::section {
+	background-color: #2E6E65;
+	color: white;
+	padding: 5px;
+	font: 700 15pt &quot;Satoshi&quot;;
+	border: 2px solid #2E6E65;
+}</string>
+                         </property>
+                         <property name="horizontalScrollBarPolicy">
+                          <enum>Qt::ScrollBarAlwaysOff</enum>
+                         </property>
+                         <property name="sizeAdjustPolicy">
+                          <enum>QAbstractScrollArea::AdjustToContents</enum>
+                         </property>
+                         <property name="columnCount">
+                          <number>2</number>
+                         </property>
+                         <attribute name="horizontalHeaderCascadingSectionResizes">
+                          <bool>true</bool>
+                         </attribute>
+                         <attribute name="horizontalHeaderHighlightSections">
+                          <bool>true</bool>
+                         </attribute>
+                         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+                          <bool>false</bool>
+                         </attribute>
+                         <attribute name="horizontalHeaderStretchLastSection">
+                          <bool>true</bool>
+                         </attribute>
+                         <column>
+                          <property name="text">
+                           <string>Staff ID</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Name</string>
+                          </property>
+                         </column>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
+                   </item>
+                   <item alignment="Qt::AlignTop">
+                    <widget class="QWidget" name="widget_4" native="true">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>110</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_9">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QPushButton" name="ViewStaff">
+                        <property name="text">
+                         <string>View</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="ModifyStaff">
+                        <property name="text">
+                         <string>Modify</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="DeleteStaff">
+                        <property name="text">
+                         <string>Delete</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
                </layout>

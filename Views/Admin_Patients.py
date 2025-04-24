@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Admin_Patient.ui'
+# Form implementation generated from reading ui file 'Admin_Patients.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -28,11 +28,10 @@ class Ui_MainWindow(object):
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 10pt \"Satoshi Black\";\n"
+"    font: 900 16pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
 "    font-weight: bold;\n"
-"    font-size: 25px;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
@@ -77,18 +76,18 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.NavBar)
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.DashboardButton_2 = QtWidgets.QPushButton(self.NavBar)
-        self.DashboardButton_2.setStyleSheet("QPushButton {\n"
+        self.NavBarButton = QtWidgets.QPushButton(self.NavBar)
+        self.NavBarButton.setStyleSheet("QPushButton {\n"
 "    padding: 10px 8px;\n"
 "}")
-        self.DashboardButton_2.setText("")
+        self.NavBarButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DashboardButton_2.setIcon(icon)
-        self.DashboardButton_2.setIconSize(QtCore.QSize(35, 35))
-        self.DashboardButton_2.setObjectName("DashboardButton_2")
-        self.verticalLayout.addWidget(self.DashboardButton_2)
-        spacerItem = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+        self.NavBarButton.setIcon(icon)
+        self.NavBarButton.setIconSize(QtCore.QSize(35, 35))
+        self.NavBarButton.setObjectName("NavBarButton")
+        self.verticalLayout.addWidget(self.NavBarButton)
+        spacerItem = QtWidgets.QSpacerItem(10, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         self.verticalLayout.addItem(spacerItem)
         self.MainButtons = QtWidgets.QVBoxLayout()
         self.MainButtons.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
@@ -111,7 +110,9 @@ class Ui_MainWindow(object):
         self.StaffsButton.setObjectName("StaffsButton")
         self.MainButtons.addWidget(self.StaffsButton)
         self.PatientsButton = QtWidgets.QPushButton(self.NavBar)
-        self.PatientsButton.setStyleSheet("")
+        self.PatientsButton.setStyleSheet("QPushButton{\n"
+"    font: 900 20pt \"Satoshi Black\";\n"
+"}")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PatientsButton.setIcon(icon3)
@@ -126,36 +127,36 @@ class Ui_MainWindow(object):
         self.TransactionsButton.setIconSize(QtCore.QSize(40, 40))
         self.TransactionsButton.setObjectName("TransactionsButton")
         self.MainButtons.addWidget(self.TransactionsButton)
-        self.OverviewsButton = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton.setStyleSheet("")
+        self.ChargesButton = QtWidgets.QPushButton(self.NavBar)
+        self.ChargesButton.setStyleSheet("")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/chart-no-axes-combined.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton.setIcon(icon5)
-        self.OverviewsButton.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton.setObjectName("OverviewsButton")
-        self.MainButtons.addWidget(self.OverviewsButton)
+        self.ChargesButton.setIcon(icon5)
+        self.ChargesButton.setIconSize(QtCore.QSize(40, 40))
+        self.ChargesButton.setObjectName("ChargesButton")
+        self.MainButtons.addWidget(self.ChargesButton)
         self.verticalLayout.addLayout(self.MainButtons)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
         self.SettingButtons = QtWidgets.QVBoxLayout()
         self.SettingButtons.setSpacing(15)
         self.SettingButtons.setObjectName("SettingButtons")
-        self.OverviewsButton_3 = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton_3.setStyleSheet("")
+        self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
+        self.ProfileButton.setStyleSheet("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton_3.setIcon(icon6)
-        self.OverviewsButton_3.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton_3.setObjectName("OverviewsButton_3")
-        self.SettingButtons.addWidget(self.OverviewsButton_3)
-        self.OverviewsButton_2 = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton_2.setStyleSheet("")
+        self.ProfileButton.setIcon(icon6)
+        self.ProfileButton.setIconSize(QtCore.QSize(40, 40))
+        self.ProfileButton.setObjectName("ProfileButton")
+        self.SettingButtons.addWidget(self.ProfileButton)
+        self.LogOutButton = QtWidgets.QPushButton(self.NavBar)
+        self.LogOutButton.setStyleSheet("")
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton_2.setIcon(icon7)
-        self.OverviewsButton_2.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton_2.setObjectName("OverviewsButton_2")
-        self.SettingButtons.addWidget(self.OverviewsButton_2, 0, QtCore.Qt.AlignVCenter)
+        self.LogOutButton.setIcon(icon7)
+        self.LogOutButton.setIconSize(QtCore.QSize(40, 40))
+        self.LogOutButton.setObjectName("LogOutButton")
+        self.SettingButtons.addWidget(self.LogOutButton, 0, QtCore.Qt.AlignVCenter)
         self.verticalLayout.addLayout(self.SettingButtons)
         self.horizontalLayout_4.addWidget(self.NavBar)
         self.MainBodyContainer = QtWidgets.QFrame(self.centralwidget)
@@ -306,7 +307,7 @@ class Ui_MainWindow(object):
         self.BodyLayout = QtWidgets.QWidget(self.Body)
         self.BodyLayout.setObjectName("BodyLayout")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.BodyLayout)
-        self.verticalLayout_5.setContentsMargins(20, 0, 20, -1)
+        self.verticalLayout_5.setContentsMargins(20, 0, 20, 20)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.Buttons = QtWidgets.QWidget(self.BodyLayout)
@@ -430,14 +431,72 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Patient.sizePolicy().hasHeightForWidth())
         self.Patient.setSizePolicy(sizePolicy)
+        self.Patient.setStyleSheet("QPushButton {\n"
+"    font: 900 10pt \"Satoshi Black\";\n"
+"    background-color:  #2E6E65;\n"
+"    border-radius: 10px;\n"
+"    font-weight: bold;\n"
+"    font-size: 20px;\n"
+"    color: #F4F7ED;\n"
+"    text-align: center;\n"
+"}")
         self.Patient.setObjectName("Patient")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.Patient)
-        self.verticalLayout_6.setContentsMargins(0, -1, 0, -1)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.PatientTable = QtWidgets.QTableWidget(self.Patient)
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.Patient)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setSpacing(10)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.scrollArea = QtWidgets.QScrollArea(self.Patient)
+        self.scrollArea.setStyleSheet("QScrollBar:vertical {\n"
+"     background: transparent;\n"
+"     width: 10px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"QScrollBar::handle:vertical {\n"
+"        background: #C0C0C0;\n"
+"        border-radius: 5px;\n"
+"}\n"
+"QScrollBar::handle:vertical:hover {\n"
+"        background: #A0A0A0;\n"
+"}\n"
+"QScrollBar::add-line:vertical,\n"
+"QScrollBar::sub-line:vertical{\n"
+"        background: none;\n"
+"        border: none;\n"
+"}\n"
+"\n"
+"")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 775, 637))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.PatientTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        self.PatientTable.setStyleSheet("QTableWidget {\n"
+"    background-color: #F4F7ED;\n"
+"    gridline-color: transparent;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"QTableWidget::item {\n"
+"    border: none;\n"
+"    font: 16pt \"Lexend\";\n"
+"}\n"
+"QTableWidget::item:selected {\n"
+"    background-color: rgba(46, 110, 101, 0.3);\n"
+"}\n"
+"QTableWidget QHeaderView::section {\n"
+"    background-color: #2E6E65;\n"
+"    color: white;\n"
+"    padding: 5px;\n"
+"    font: 18px \"Lexend Medium\";\n"
+"    border: 2px solid #2E6E65;\n"
+"}")
         self.PatientTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.PatientTable.setCornerButtonEnabled(True)
-        self.PatientTable.setColumnCount(5)
+        self.PatientTable.setColumnCount(4)
         self.PatientTable.setObjectName("PatientTable")
         self.PatientTable.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
@@ -448,11 +507,33 @@ class Ui_MainWindow(object):
         self.PatientTable.setHorizontalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.PatientTable.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.PatientTable.setHorizontalHeaderItem(4, item)
         self.PatientTable.horizontalHeader().setHighlightSections(True)
         self.PatientTable.horizontalHeader().setStretchLastSection(True)
-        self.verticalLayout_6.addWidget(self.PatientTable)
+        self.verticalLayout_7.addWidget(self.PatientTable)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.horizontalLayout_5.addWidget(self.scrollArea)
+        self.widget = QtWidgets.QWidget(self.Patient)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setMinimumSize(QtCore.QSize(110, 0))
+        self.widget.setObjectName("widget")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_6.setSpacing(5)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.View = QtWidgets.QPushButton(self.widget)
+        self.View.setObjectName("View")
+        self.verticalLayout_6.addWidget(self.View)
+        self.Modify = QtWidgets.QPushButton(self.widget)
+        self.Modify.setObjectName("Modify")
+        self.verticalLayout_6.addWidget(self.Modify)
+        self.DeletePatient = QtWidgets.QPushButton(self.widget)
+        self.DeletePatient.setObjectName("DeletePatient")
+        self.verticalLayout_6.addWidget(self.DeletePatient)
+        self.horizontalLayout_5.addWidget(self.widget, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_5.addWidget(self.Patient)
         self.verticalLayout_4.addWidget(self.BodyLayout)
         self.verticalLayout_2.addWidget(self.Body)
@@ -467,7 +548,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.DashboardButton_2.setToolTip(_translate("MainWindow", "View Main Dashboard"))
+        self.NavBarButton.setToolTip(_translate("MainWindow", "View Main Dashboard"))
         self.DashboardButton.setToolTip(_translate("MainWindow", "View Main Dashboard"))
         self.DashboardButton.setText(_translate("MainWindow", "  Dashboard"))
         self.StaffsButton.setToolTip(_translate("MainWindow", "View Staff Record"))
@@ -476,12 +557,12 @@ class Ui_MainWindow(object):
         self.PatientsButton.setText(_translate("MainWindow", "  Records"))
         self.TransactionsButton.setToolTip(_translate("MainWindow", "View Transactions "))
         self.TransactionsButton.setText(_translate("MainWindow", "  Transactions"))
-        self.OverviewsButton.setToolTip(_translate("MainWindow", "View Reports and Overviews"))
-        self.OverviewsButton.setText(_translate("MainWindow", "  Overviews"))
-        self.OverviewsButton_3.setToolTip(_translate("MainWindow", "View Profile Settings"))
-        self.OverviewsButton_3.setText(_translate("MainWindow", "  Profile"))
-        self.OverviewsButton_2.setToolTip(_translate("MainWindow", "Log Out from your Account"))
-        self.OverviewsButton_2.setText(_translate("MainWindow", "  Log Out"))
+        self.ChargesButton.setToolTip(_translate("MainWindow", "View Reports and Overviews"))
+        self.ChargesButton.setText(_translate("MainWindow", "  Charges"))
+        self.ProfileButton.setToolTip(_translate("MainWindow", "View Profile Settings"))
+        self.ProfileButton.setText(_translate("MainWindow", "  Profile"))
+        self.LogOutButton.setToolTip(_translate("MainWindow", "Log Out from your Account"))
+        self.LogOutButton.setText(_translate("MainWindow", "  Log Out"))
         self.InterfaceTitle.setText(_translate("MainWindow", "Patients"))
         self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("MainWindow", "Admin"))
@@ -499,5 +580,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Recent Diagnosis"))
         item = self.PatientTable.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Last Diagnosed"))
-        item = self.PatientTable.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Actions"))
+        self.View.setText(_translate("MainWindow", "VIew"))
+        self.Modify.setText(_translate("MainWindow", "Modify"))
+        self.DeletePatient.setText(_translate("MainWindow", "Delete"))

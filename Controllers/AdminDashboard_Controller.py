@@ -1,8 +1,7 @@
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QApplication
 from Views.Admin_Dashboard import Ui_MainWindow as AdminDashboardUI
 from Models.Admin import Admin
-from Controllers.AdminStaffs_Controller import AdminStaffsController
-from Controllers.AdminCharges_Controller import AdminChargesController
 
 class AdminDashboardController(QMainWindow):
     def __init__(self):
@@ -12,24 +11,11 @@ class AdminDashboardController(QMainWindow):
 
         print("Admin Dashboard UI initialized!")
 
-        # Load counts into the UI
         self.load_counts()
-
-        # Connect buttons to staff views
-        if hasattr(self.ui, 'StaffButton'):
-            print("StaffButton exists")
-            self.ui.StaffButton.clicked.connect(self.ViewStaff)
-            print("StaffButton connected to button_clicked method!")
-        else:
-            print("StaffButton is missing!")
-
-        # Connect button to charges views
-        if hasattr(self.ui, 'ChargesButton'):
-            print("ChargesButton exists")
-            self.ui.ChargesButton.clicked.connect(self.ViewCharges)
-            print("Charges button connected to button click method!")
-        else:
-            print("Charges Button is missing")
+        self.ui.StaffButton.clicked.connect(self.view_staff_ui)
+        self.ui.ChargesButton.clicked.connect(self.view_charges_ui)
+        self.ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
+        self.ui.PatientsButton.clicked.connect(self.view_patient_ui)
 
     def load_counts(self):
         try:
@@ -44,26 +30,45 @@ class AdminDashboardController(QMainWindow):
             print(f"Loaded counts - Doctors: {doctor_count}, Staff: {staff_count}")
 
         except Exception as e:
-            print(f"Error loading counts: {e}")
+            print(f"Dashboard: {e}")
 
-    def ViewStaff(self):
+    def view_staff_ui(self):
         print("StaffButton clicked!")
         try:
-            # Instantiate and show the AdminStaffsController window
-            self.admin_staffs_controller = AdminStaffsController()
-            self.admin_staffs_controller.show()
-            self.hide()  # Hide the current dashboard window
+            from Controllers.AdminStaffs_Controller import AdminStaffsController
+            self.admin_staff_controller = AdminStaffsController()
+            self.admin_staff_controller.show()
+            self.hide()
         except Exception as e:
-            print(f"Error loading tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
+            print(f"Dashboard Error(staffs): {e}")
 
-    def ViewCharges(self):
+    def view_charges_ui(self):
         print("ChargesButton clicked!")
         try:
-            # Instantiate and show the AdminChargesController window
+            from Controllers.AdminCharges_Controller import AdminChargesController
             self.admin_charges_controller = AdminChargesController()
             self.admin_charges_controller.show()
-            self.hide()  # Hide the current dashboard window
+            self.hide()
         except Exception as e:
-            print(f"Error loading tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
+            print(f"Staff Details Error(charges): {e}")
+
+    def view_transaction_ui(self):
+        print("TransactionButton clicked!")
+        try:
+            from Controllers.AdminTransaction_Controller import AdminTransactionsController
+            self.admin_transaction_controller = AdminTransactionsController()
+            self.admin_transaction_controller.show()
+            self.hide()
+        except Exception as e:
+            print(f"Staff Details Error(charges): {e}")
+
+    def view_patient_ui(self):
+        print("RecordButton clicked!")
+        try:
+            print("inside Records")
+            from Controllers.AdminPatients_Controller import AdminPatientsController
+            self.admin_patients_controller = AdminPatientsController()
+            self.admin_patients_controller.show()
+            self.hide()
+        except Exception as e:
+            print(f"Staff Error: {e}")

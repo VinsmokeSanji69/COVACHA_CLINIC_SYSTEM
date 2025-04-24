@@ -52,10 +52,10 @@ class DoctorDashboardController(QMainWindow):
         self.doc_id = doc_id
         self.fname = fname
         self.lname = lname
-        self.specialty = specialty
+        self.specialty = specialty.title()
 
         # Example: Set up UI elements (customize as needed)
-        self.ui.User.setText(f"{fname} {lname}")
+        self.ui.User.setText(f"{fname.title()} {lname.title()}")
         self.ui.UserSpecialty.setText(specialty)
 
         # Populate the PatientDetails table with pending check-ups
@@ -177,7 +177,7 @@ class DoctorDashboardController(QMainWindow):
                     continue
 
                 # Extract patient name and capitalize the first letter of each word
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
+                full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
                 # Insert data into the table in the new column order (Check Up ID, Patient ID, Name)
                 self.ui.PatientDetails.insertRow(row)

@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLab
 
 from Models.Doctor import Doctor
 from Views.Admin_AddDoctorCharges import Ui_MainWindow as AdminAddChargesUI
+from Models.LaboratoryTest import Laboratory
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -42,16 +43,19 @@ class ConfirmationDialog(QDialog):
 
 
 class AdminDoctorCharges(QMainWindow):
-    def __init__(self, doc_id ,parent=None):
+    def __init__(self, doc_id ,parent=None , refresh_tables = None):
         super().__init__(parent)
         self.doc_id = doc_id
         self.ui = AdminAddChargesUI()
         self.ui.setupUi(self)
+        self.refresh_tables = refresh_tables
+        self.ui.DocID.setReadOnly(True)
+        self.ui.DocName.setReadOnly(True)
+        self.ui.Specialty.setReadOnly(True)
 
         # Set window properties
         self.setWindowTitle("Add Doctor Charges")
         self.setFixedSize(700, 500)
-
 
         self.initialize_doctor_details()
         self.ui.ModifyCharges.clicked.connect(self.validate_and_save_charges)
@@ -114,7 +118,14 @@ class AdminDoctorCharges(QMainWindow):
         success = Doctor.update_doctor_rate(doctor)
         if success:
             QMessageBox.information(self, "Success", "Doctor rate modified successfully!")
-            self.view_charges_ui()
+            if callable(self.refresh_tables):  # Ensure refresh_table1 is a valid function
+                try:
+                    self.refresh_tables()  # Call the parent's refresh_table function
+                    print("Parent table refreshed successfully.")
+                except Exception as e:
+                    print(f"Error refreshing parent table: {e}")
+                    QMessageBox.critical(self, "Error", f"Failed to refresh parent table: {e}")
+            self.close()
         else:
             QMessageBox.critical(self, "Error", "Failed to add laboratory test.")
 

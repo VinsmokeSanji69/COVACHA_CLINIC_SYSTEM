@@ -239,7 +239,8 @@ class AdminChargesController(QMainWindow):
     def open_add_charges_form(self, doc_id):
         print("Opening Add Charges Form...")
         try:
-            self.add_user_window = AdminDoctorCharges(doc_id, parent=self)
+            # Pass the correct parameter name: refresh_tables
+            self.add_user_window = AdminDoctorCharges(doc_id, parent=self, refresh_tables=self.refresh_tables)
             self.add_user_window.show()
             print("Modify Doctor Charges shown successfully!")
         except Exception as e:

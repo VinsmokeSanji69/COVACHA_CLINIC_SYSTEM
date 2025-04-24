@@ -104,7 +104,7 @@ class DoctorCheckUpList(QMainWindow):
                 continue
 
             # Extract and format patient name
-            full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
+            full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
             # Add row to the table
             self.ui.DoneTable.insertRow(row)

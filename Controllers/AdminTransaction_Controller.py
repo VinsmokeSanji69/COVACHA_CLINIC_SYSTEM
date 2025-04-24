@@ -51,4 +51,3 @@ class AdminTransactionsController(QMainWindow):
             self.hide()
         except Exception as e:
             print(f"Staff Details Error(charges): {e}")
-
