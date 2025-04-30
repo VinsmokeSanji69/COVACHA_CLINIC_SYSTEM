@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1267</width>
-    <height>845</height>
+    <width>1179</width>
+    <height>920</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,10 +26,11 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 10pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;
+	font-size: 25px;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
@@ -107,8 +108,8 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../Images/resources.qrc">
-           <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+          <iconset>
+           <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -145,11 +146,11 @@ QLabel {
          <item>
           <widget class="QPushButton" name="pushButton_3">
            <property name="text">
-            <string> Dashboard</string>
+            <string>Dashboard</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -162,11 +163,11 @@ QLabel {
          <item>
           <widget class="QPushButton" name="pushButton_2">
            <property name="text">
-            <string> Records</string>
+            <string>Records</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -178,35 +179,12 @@ QLabel {
          </item>
          <item>
           <widget class="QPushButton" name="pushButton">
-           <property name="styleSheet">
-            <string notr="true">QPushButton{
-	font: 900 20pt &quot;Satoshi Black&quot;;
-}
-</string>
-           </property>
            <property name="text">
-            <string> Transactions</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_7">
-           <property name="text">
-            <string> Lab Request</string>
+            <string>Transactions</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>:/lucide/icons/test-tubes.svg</normaloff>:/lucide/icons/test-tubes.svg</iconset>
+             <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -242,11 +220,11 @@ QLabel {
          <item>
           <widget class="QPushButton" name="pushButton_5">
            <property name="text">
-            <string> Settings</string>
+            <string>Settings</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -259,11 +237,11 @@ QLabel {
          <item>
           <widget class="QPushButton" name="pushButton_4">
            <property name="text">
-            <string> Logout</string>
+            <string>Logout</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
-             <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+            <iconset>
+             <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -278,7 +256,7 @@ QLabel {
       </layout>
      </widget>
     </item>
-    <item alignment="Qt::AlignTop">
+    <item>
      <widget class="QWidget" name="MainBodyContainer" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -298,17 +276,18 @@ QLabel {
     padding: 0px;
 }
 #UserType {
-	font: 500 13pt &quot;Satoshi&quot;;
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
 	color: #2B3752;
 }
 #UserName {
-	font: 900 16pt &quot;Satoshi&quot;;
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
+	font-size: 25px;
 	color: #2B3752;
 }
 #InterfaceTitle{
-	font-size: 30px;
+	font-size: 40px;
 }
-
 QGraphicsView {
     border: 2px solid #ccc;
     border-radius: 25px;
@@ -337,9 +316,9 @@ QGraphicsView {
         <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>9</number>
        </property>
-       <item alignment="Qt::AlignTop">
+       <item>
         <widget class="QFrame" name="Header">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -353,10 +332,7 @@ QGraphicsView {
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <property name="spacing">
-           <number>0</number>
-          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -369,109 +345,38 @@ QGraphicsView {
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item alignment="Qt::AlignTop">
-           <widget class="QWidget" name="widget_17" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <property name="spacing">
-              <number>10</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item alignment="Qt::AlignVCenter">
-              <widget class="QPushButton" name="BackButton">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	background-color: #2E6E65;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Images/resources.qrc">
-                 <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>40</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignTop">
-              <widget class="QWidget" name="widget_16" native="true">
-               <property name="styleSheet">
-                <string notr="true">#label {
-	font: 500 12pt &quot;Satoshi&quot;;
-}
-#InterfaceTitle {
-	font-size: 24px;
-}</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_27">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label">
-                  <property name="text">
-                   <string>Back to Transaction List</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="InterfaceTitle">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Process Transaction</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
+          <item>
+           <widget class="QPushButton" name="pushButton_6">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/icons/circle-arrow-left.svg</normaloff>:/icons/icons/circle-arrow-left.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="InterfaceTitle">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Process Transaction</string>
+            </property>
            </widget>
           </item>
           <item>
            <layout class="QHBoxLayout" name="UserPanel">
-            <property name="spacing">
-             <number>10</number>
-            </property>
             <property name="rightMargin">
              <number>0</number>
             </property>
@@ -480,6 +385,26 @@ QGraphicsView {
               <property name="spacing">
                <number>0</number>
               </property>
+              <item alignment="Qt::AlignRight">
+               <widget class="QLabel" name="User">
+                <property name="text">
+                 <string>Roy Adrian Rondina</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading</set>
+                </property>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignRight">
+               <widget class="QLabel" name="ID">
+                <property name="text">
+                 <string>Nurse</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading</set>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
@@ -524,6 +449,25 @@ QGraphicsView {
                <property name="bottomMargin">
                 <number>0</number>
                </property>
+               <item>
+                <widget class="QGraphicsView" name="ProfilePic">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
@@ -532,7 +476,7 @@ QGraphicsView {
          </layout>
         </widget>
        </item>
-       <item alignment="Qt::AlignTop">
+       <item>
         <widget class="QWidget" name="MainBody" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -543,16 +487,14 @@ QGraphicsView {
          <property name="styleSheet">
           <string notr="true">#label_2, #label_4, #label_6,  #label_8, #label_11, #label_13, #label_17, #label_18, #label_21, #label_23,  #label_25, #label_26, #label_38, #label_39, #label_40, #label_41 {
 	color: #2b3752;
-	font: 500 13pt &quot;Satoshi&quot;;
+	font-weight: 300;
+	font-size: 17px;
 }
 
-QLabel{
+#label_3, #label_5 ,#label_7, #label_9, #label_12, #label_14, #label_19, #label_20, #label_22, #label_24, #label_27, #label_28, #label_42, #label_43, #label_44 {
 	color: #2b3752;
 }
-#Doc, #Pat, #Lab, #Transact {
-	color: #2E6E65;
-	font-size: 22px ;
-}
+
 #widget, #PatientInfo, #DoctorInfo, #SummaryFrame {
 	border: 2px solid  #2e6e65;
     border-radius: 15px;
@@ -622,28 +564,25 @@ QComboBox QAbstractItemView {
            <number>15</number>
           </property>
           <property name="bottomMargin">
-           <number>20</number>
+           <number>0</number>
           </property>
-          <item alignment="Qt::AlignTop">
+          <item>
            <widget class="QWidget" name="widget" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_5">
              <property name="leftMargin">
-              <number>20</number>
+              <number>15</number>
              </property>
              <property name="topMargin">
               <number>15</number>
              </property>
-             <property name="rightMargin">
-              <number>20</number>
-             </property>
              <item>
-              <widget class="QLabel" name="Transact">
+              <widget class="QLabel" name="label">
                <property name="text">
                 <string>Transaction Details</string>
                </property>
               </widget>
              </item>
-             <item alignment="Qt::AlignTop">
+             <item>
               <widget class="QWidget" name="TransactionInfos" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -656,38 +595,23 @@ QComboBox QAbstractItemView {
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <property name="spacing">
-                 <number>20</number>
+                 <number>0</number>
                 </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>15</number>
                 </property>
                 <property name="topMargin">
                  <number>0</number>
                 </property>
                 <property name="rightMargin">
-                 <number>20</number>
+                 <number>0</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>10</number>
+                 <number>0</number>
                 </property>
-                <item alignment="Qt::AlignLeft">
+                <item>
                  <widget class="QWidget" name="widget_2" native="true">
                   <layout class="QVBoxLayout" name="verticalLayout_7">
-                   <property name="spacing">
-                    <number>1</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
                    <item>
                     <widget class="QLabel" name="label_2">
                      <property name="sizePolicy">
@@ -702,7 +626,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="chck_ID">
+                    <widget class="QLabel" name="label_3">
                      <property name="text">
                       <string>121224-001</string>
                      </property>
@@ -711,36 +635,9 @@ QComboBox QAbstractItemView {
                   </layout>
                  </widget>
                 </item>
-                <item alignment="Qt::AlignLeft">
+                <item>
                  <widget class="QWidget" name="widget_3" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>200</width>
-                    <height>0</height>
-                   </size>
-                  </property>
                   <layout class="QVBoxLayout" name="verticalLayout_8">
-                   <property name="spacing">
-                    <number>1</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
                    <item>
                     <widget class="QLabel" name="label_4">
                      <property name="sizePolicy">
@@ -755,7 +652,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="Diagnosis">
+                    <widget class="QLabel" name="label_5">
                      <property name="text">
                       <string>Fever</string>
                      </property>
@@ -766,28 +663,7 @@ QComboBox QAbstractItemView {
                 </item>
                 <item>
                  <widget class="QWidget" name="widget_4" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
                   <layout class="QVBoxLayout" name="verticalLayout_9">
-                   <property name="spacing">
-                    <number>1</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
                    <item>
                     <widget class="QLabel" name="label_6">
                      <property name="sizePolicy">
@@ -802,7 +678,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="DiagnosisNotes">
+                    <widget class="QLabel" name="label_7">
                      <property name="text">
                       <string>....</string>
                      </property>
@@ -814,21 +690,6 @@ QComboBox QAbstractItemView {
                 <item>
                  <widget class="QWidget" name="widget_5" native="true">
                   <layout class="QVBoxLayout" name="verticalLayout_10">
-                   <property name="spacing">
-                    <number>1</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
                    <item>
                     <widget class="QLabel" name="label_8">
                      <property name="sizePolicy">
@@ -843,7 +704,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="DoctorCharge">
+                    <widget class="QLabel" name="label_9">
                      <property name="text">
                       <string>₱ 00</string>
                      </property>
@@ -855,7 +716,7 @@ QComboBox QAbstractItemView {
                </layout>
               </widget>
              </item>
-             <item alignment="Qt::AlignTop">
+             <item>
               <widget class="QWidget" name="MainTransaction" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -864,29 +725,8 @@ QComboBox QAbstractItemView {
                 </sizepolicy>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
                 <item>
                  <widget class="QWidget" name="widget_8" native="true">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>0</height>
-                   </size>
-                  </property>
                   <layout class="QVBoxLayout" name="verticalLayout_11">
                    <property name="leftMargin">
                     <number>0</number>
@@ -901,7 +741,7 @@ QComboBox QAbstractItemView {
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="QLabel" name="Pat">
+                    <widget class="QLabel" name="label_10">
                      <property name="text">
                       <string>Patient's Info</string>
                      </property>
@@ -915,112 +755,99 @@ QComboBox QAbstractItemView {
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_24">
-                      <property name="spacing">
-                       <number>15</number>
-                      </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_12">
                       <property name="leftMargin">
-                       <number>10</number>
+                       <number>20</number>
                       </property>
                       <property name="topMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>10</number>
+                       <number>20</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>10</number>
+                       <number>20</number>
                       </property>
                       <item>
-                       <widget class="QWidget" name="widget_11" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_12">
-                         <property name="spacing">
-                          <number>1</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QLabel" name="label_11">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>Patient ID</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="PatID">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>100000001</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                       <widget class="QLabel" name="label_11">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string>Patient ID</string>
+                        </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QWidget" name="widget_12" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_23">
-                         <property name="spacing">
-                          <number>1</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QLabel" name="label_13">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>Patient Name</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="PatName">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>Jayson Gabriel L. Limosnero</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                       <widget class="QLabel" name="label_12">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string>100000001</string>
+                        </property>
                        </widget>
+                      </item>
+                      <item>
+                       <spacer name="verticalSpacer_3">
+                        <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Preferred</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_13">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string>Patient Name</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_14">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string>Jayson Gabriel L. Limosnero</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="verticalSpacer_4">
+                        <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Preferred</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                       </spacer>
                       </item>
                       <item>
                        <widget class="QWidget" name="widget_9" native="true">
@@ -1078,7 +905,7 @@ QComboBox QAbstractItemView {
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="PatGender">
+                             <widget class="QLabel" name="label_22">
                               <property name="text">
                                <string>Male</string>
                               </property>
@@ -1125,7 +952,7 @@ QComboBox QAbstractItemView {
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="PatAge">
+                             <widget class="QLabel" name="label_24">
                               <property name="text">
                                <string>24</string>
                               </property>
@@ -1141,7 +968,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="Doc">
+                    <widget class="QLabel" name="label_15">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                        <horstretch>0</horstretch>
@@ -1161,91 +988,66 @@ QComboBox QAbstractItemView {
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_25">
-                      <property name="spacing">
-                       <number>15</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>10</number>
-                      </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_15">
                       <item>
-                       <widget class="QWidget" name="widget_13" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_15">
-                         <property name="spacing">
-                          <number>1</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QLabel" name="label_17">
-                           <property name="text">
-                            <string>Doctor ID</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="DocID">
-                           <property name="text">
-                            <string>D-100003</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                       <widget class="QLabel" name="label_17">
+                        <property name="text">
+                         <string>Doctor ID</string>
+                        </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QWidget" name="widget_14" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_19">
-                         <property name="spacing">
-                          <number>1</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QLabel" name="label_18">
-                           <property name="text">
-                            <string>Doctor Name</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="DocName">
-                           <property name="text">
-                            <string>Roy Adrian R. Rondina</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
+                       <widget class="QLabel" name="label_20">
+                        <property name="text">
+                         <string>D-100003</string>
+                        </property>
                        </widget>
+                      </item>
+                      <item>
+                       <spacer name="verticalSpacer_5">
+                        <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Preferred</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_18">
+                        <property name="text">
+                         <string>Doctor Name</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="label_19">
+                        <property name="text">
+                         <string>Roy Adrian R. Rondina</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="verticalSpacer_6">
+                        <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Preferred</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                       </spacer>
                       </item>
                       <item>
                        <widget class="QWidget" name="widget_10" native="true">
@@ -1309,9 +1111,50 @@ QComboBox QAbstractItemView {
                              </widget>
                             </item>
                             <item>
-                             <widget class="QLabel" name="DocSpecialty">
+                             <widget class="QLabel" name="label_27">
                               <property name="text">
                                <string>Ophthalmologist</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QFrame" name="frame_3">
+                           <property name="frameShape">
+                            <enum>QFrame::StyledPanel</enum>
+                           </property>
+                           <property name="frameShadow">
+                            <enum>QFrame::Raised</enum>
+                           </property>
+                           <layout class="QVBoxLayout" name="verticalLayout_19">
+                            <property name="spacing">
+                             <number>0</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_26">
+                              <property name="text">
+                               <string>Doctor Rates</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="label_28">
+                              <property name="text">
+                               <string>₱ 00</string>
                               </property>
                              </widget>
                             </item>
@@ -1340,7 +1183,7 @@ QComboBox QAbstractItemView {
                   </layout>
                  </widget>
                 </item>
-                <item alignment="Qt::AlignTop">
+                <item>
                  <widget class="QWidget" name="widget_6" native="true">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -1373,8 +1216,8 @@ QComboBox QAbstractItemView {
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="Lab">
+                   <item>
+                    <widget class="QLabel" name="label_16">
                      <property name="text">
                       <string>Diagnostic Charges Summary</string>
                      </property>
@@ -1383,174 +1226,138 @@ QComboBox QAbstractItemView {
                    <item>
                     <widget class="QWidget" name="SummaryFrame" native="true">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>300</height>
-                      </size>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_26">
-                      <property name="spacing">
-                       <number>5</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>10</number>
-                      </property>
-                      <item>
-                       <widget class="QScrollArea" name="scrollArea">
-                        <property name="styleSheet">
-                         <string notr="true">QScrollBar:vertical {
-     background: transparent;
-     width: 10px;
-	border-radius: 5px;
-}
-QScrollBar::handle:vertical {
-    	background: #C0C0C0;
-    	border-radius: 5px;
-}
-QScrollBar::handle:vertical:hover {
-    	background: #A0A0A0;
-}
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical{
-    	background: none;
-    	border: none;
-}
-
-</string>
+                     <layout class="QVBoxLayout" name="verticalLayout_14">
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QFrame" name="frame_5">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
                         </property>
-                        <property name="widgetResizable">
-                         <bool>true</bool>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
                         </property>
-                        <widget class="QWidget" name="scrollAreaWidgetContents">
-                         <property name="geometry">
-                          <rect>
-                           <x>0</x>
-                           <y>0</y>
-                           <width>560</width>
-                           <height>243</height>
-                          </rect>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_14">
-                          <property name="spacing">
-                           <number>0</number>
-                          </property>
-                          <property name="leftMargin">
-                           <number>0</number>
-                          </property>
-                          <property name="topMargin">
-                           <number>0</number>
-                          </property>
-                          <property name="rightMargin">
-                           <number>0</number>
-                          </property>
-                          <property name="bottomMargin">
-                           <number>0</number>
-                          </property>
-                          <item>
-                           <widget class="QTableWidget" name="LabChargeTable">
-                            <property name="styleSheet">
-                             <string notr="true">QTableWidget {
-	background-color: #F4F7ED;
-	gridline-color: transparent;
-	border-radius: 8px;
-
-}
-QTableWidget::item {
-	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
-}
-QTableWidget::item:selected {
-	background-color: rgba(46, 110, 101, 0.3);
-}
-QTableWidget QHeaderView::section {
-	background-color: #2E6E65;
-	color: white;
-	font: 700 15pt &quot;Satoshi&quot;;
-	border: 2px solid #2E6E65;
-}</string>
-                            </property>
-                            <attribute name="horizontalHeaderStretchLastSection">
-                             <bool>true</bool>
-                            </attribute>
-                            <column>
-                             <property name="text">
-                              <string>Laboratory Test</string>
-                             </property>
-                            </column>
-                            <column>
-                             <property name="text">
-                              <string>Test Charge</string>
-                             </property>
-                            </column>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QWidget" name="widget_15" native="true">
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
                         <layout class="QHBoxLayout" name="horizontalLayout_7">
-                         <property name="spacing">
-                          <number>5</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item alignment="Qt::AlignVCenter">
-                          <widget class="QLabel" name="label_26">
+                         <item>
+                          <widget class="QLabel" name="label_29">
                            <property name="text">
-                            <string>Total Lab Charge</string>
+                            <string>Test Code</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="QLineEdit" name="TotalLabCharge">
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>30</height>
-                            </size>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">QLineEdit {
-	background-color: transparent;
-	border-bottom: 2px solid #2E6E65;
-	font: 900 14pt &quot;Satoshi Black&quot;;
-}</string>
-                           </property>
+                          <widget class="QLabel" name="label_30">
                            <property name="text">
-                            <string>50</string>
+                            <string>Laboratory Test</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_31">
+                           <property name="text">
+                            <string>Amount</string>
                            </property>
                           </widget>
                          </item>
                         </layout>
                        </widget>
+                      </item>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QFrame" name="frame_6">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                        <layout class="QHBoxLayout" name="horizontalLayout_8">
+                         <item>
+                          <widget class="QLabel" name="label_32">
+                           <property name="text">
+                            <string>Lab-001</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_33">
+                           <property name="text">
+                            <string>Fasting Blood Sugar</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_34">
+                           <property name="text">
+                            <string>₱ 200</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frame_7">
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                        <layout class="QHBoxLayout" name="horizontalLayout_9">
+                         <item>
+                          <widget class="QLabel" name="label_36">
+                           <property name="text">
+                            <string>Lab-023</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_35">
+                           <property name="text">
+                            <string>CBC</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="label_37">
+                           <property name="text">
+                            <string>₱ 150</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="verticalSpacer_8">
+                        <property name="orientation">
+                         <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Expanding</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                       </spacer>
                       </item>
                      </layout>
                     </widget>
@@ -1579,7 +1386,7 @@ QTableWidget QHeaderView::section {
                       <property name="bottomMargin">
                        <number>17</number>
                       </property>
-                      <item alignment="Qt::AlignTop">
+                      <item>
                        <widget class="QFrame" name="frame_8">
                         <property name="frameShape">
                          <enum>QFrame::StyledPanel</enum>
@@ -1588,9 +1395,6 @@ QTableWidget QHeaderView::section {
                          <enum>QFrame::Raised</enum>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_20">
-                         <property name="spacing">
-                          <number>5</number>
-                         </property>
                          <item>
                           <widget class="QLabel" name="label_38">
                            <property name="sizePolicy">
@@ -1605,22 +1409,16 @@ QTableWidget QHeaderView::section {
                           </widget>
                          </item>
                          <item>
-                          <widget class="QComboBox" name="DiscountSelection">
+                          <widget class="QComboBox" name="comboBox">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
                            </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>150</width>
-                             <height>0</height>
-                            </size>
-                           </property>
                            <item>
                             <property name="text">
-                             <string>None</string>
+                             <string>Seniors</string>
                             </property>
                            </item>
                           </widget>
@@ -1679,22 +1477,22 @@ QTableWidget QHeaderView::section {
                             <enum>QFrame::Raised</enum>
                            </property>
                            <layout class="QVBoxLayout" name="verticalLayout_22">
-                            <item alignment="Qt::AlignRight">
-                             <widget class="QLabel" name="SubtotalAmount">
+                            <item>
+                             <widget class="QLabel" name="label_43">
                               <property name="text">
                                <string>₱ 00.00</string>
                               </property>
                              </widget>
                             </item>
-                            <item alignment="Qt::AlignRight">
-                             <widget class="QLabel" name="DiscountedAmount">
+                            <item>
+                             <widget class="QLabel" name="label_44">
                               <property name="text">
                                <string>-₱ 00.00</string>
                               </property>
                              </widget>
                             </item>
-                            <item alignment="Qt::AlignRight">
-                             <widget class="QLabel" name="TotalAmount">
+                            <item>
+                             <widget class="QLabel" name="label_42">
                               <property name="text">
                                <string>₱ 00.00</string>
                               </property>
@@ -1715,7 +1513,7 @@ QTableWidget QHeaderView::section {
                </layout>
               </widget>
              </item>
-             <item alignment="Qt::AlignRight|Qt::AlignBottom">
+             <item>
               <widget class="QFrame" name="frame_12">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -1731,10 +1529,23 @@ QTableWidget QHeaderView::section {
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_12">
                 <item>
-                 <widget class="QPushButton" name="CompleteButton">
+                 <spacer name="horizontalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="CancelButton">
                   <property name="minimumSize">
                    <size>
-                    <width>200</width>
+                    <width>0</width>
                     <height>60</height>
                    </size>
                   </property>
@@ -1744,13 +1555,27 @@ QTableWidget QHeaderView::section {
                     <height>60</height>
                    </size>
                   </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {
-	text-align: center;
-}</string>
+                  <property name="text">
+                   <string>Cancel Transaction</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="CompleteButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>60</height>
+                   </size>
                   </property>
                   <property name="text">
-                   <string>Complete</string>
+                   <string>Complete Transaction</string>
                   </property>
                  </widget>
                 </item>

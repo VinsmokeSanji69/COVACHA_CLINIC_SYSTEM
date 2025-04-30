@@ -3,7 +3,7 @@ import subprocess
 import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from Views.Doctor_LabResult import Ui_MainWindow as DoctorLabResultUI
+from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
@@ -391,5 +391,3 @@ class DoctorCheckUpListView(QMainWindow):
                 subprocess.call([opener, file_path])
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open file: {e}")
-
-

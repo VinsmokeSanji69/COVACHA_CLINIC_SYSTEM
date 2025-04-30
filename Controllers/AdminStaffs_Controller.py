@@ -1,8 +1,9 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, \
+    QWidget
 
 from Controllers.AdminModifyUser_Controller import AdminModifyUserController
-from Views.Admin_Staffs import Ui_MainWindow as AdminStaffsUI
+from Views.Admin_Staffs import Ui_Admin_Staff as AdminStaffsUI
 from Controllers.AdminAddUser_Controller import AdminAddUserController
 from Models.Staff import Staff
 from Models.Doctor import Doctor
@@ -46,32 +47,32 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
-
-class AdminStaffsController(QMainWindow):
-    def __init__(self):
+class AdminStaffsController(QWidget):
+    def __init__(self, staff_ui):
         super().__init__()
         self.staff_details = None
         self.ui = AdminStaffsUI()
+        self.staff_ui = staff_ui
         self.ui.setupUi(self)
 
         print("Admin Staffs UI initialized!")
         self.refresh_tables()
 
-        self.ui.AddUserButton.clicked.connect(self.open_add_user_form)
-        self.ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        self.ui.ChargesButton.clicked.connect(self.view_charges_ui)
-        self.ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
-        self.ui.PatientsButton.clicked.connect(self.view_patient_ui)
-        self.ui.ViewDoctor.clicked.connect(lambda: self.view_staff_member("doctor"))
-        self.ui.ViewStaff.clicked.connect(lambda: self.view_staff_member("staff"))
-        self.ui.DeleteStaff.clicked.connect(lambda: self.delete_record("staff"))
-        self.ui.DeleteDoctor.clicked.connect(lambda: self.delete_record("doctor"))
-        self.ui.ModifyStaff.clicked.connect(lambda: self.modify_staff("staff"))
-        self.ui.ModifyDoctor.clicked.connect(lambda: self.modify_staff("doctor"))
+        self.staff_ui.AddUserButton.clicked.connect(self.open_add_user_form)
+        self.staff_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
+        self.staff_ui.ChargesButton.clicked.connect(self.view_charges_ui)
+        self.staff_ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
+        self.staff_ui.PatientsButton.clicked.connect(self.view_patient_ui)
+        self.staff_ui.ViewDoctor.clicked.connect(lambda: self.view_staff_member("doctor"))
+        self.staff_ui.ViewStaff.clicked.connect(lambda: self.view_staff_member("staff"))
+        self.staff_ui.DeleteStaff.clicked.connect(lambda: self.delete_record("staff"))
+        self.staff_ui.DeleteDoctor.clicked.connect(lambda: self.delete_record("doctor"))
+        self.staff_ui.ModifyStaff.clicked.connect(lambda: self.modify_staff("staff"))
+        self.staff_ui.ModifyDoctor.clicked.connect(lambda: self.modify_staff("doctor"))
 
     def modify_staff(self, table_type=None):
         try:
-            table = self.ui.DoctorTable if table_type == "doctor" else self.ui.StaffTable
+            table = self.staff_ui.DoctorTable if table_type == "doctor" else self.staff_ui.StaffTable
 
             selected_row = table.currentRow()
             if selected_row == -1:
@@ -98,7 +99,7 @@ class AdminStaffsController(QMainWindow):
 
     def view_staff_member(self, table_type=None):
         try:
-            table = self.ui.DoctorTable if table_type == "doctor" else self.ui.StaffTable
+            table = self.staff_ui.DoctorTable if table_type == "doctor" else self.staff_ui.StaffTable
 
             selected_row = table.currentRow()
             if selected_row == -1:
@@ -125,7 +126,7 @@ class AdminStaffsController(QMainWindow):
 
     def delete_record(self, record_type="doctor"):
         try:
-            table = self.ui.DoctorTable if record_type == "doctor" else self.ui.StaffTable
+            table = self.staff_ui.DoctorTable if record_type == "doctor" else self.staff_ui.StaffTable
             model_class = Doctor if record_type == "doctor" else Staff
 
             # Get selected row
@@ -165,14 +166,12 @@ class AdminStaffsController(QMainWindow):
 
     def view_staff_details_ui(self, staff_id):
         try:
-            # Verify staff_id is valid before proceeding
             if not staff_id or not str(staff_id).strip():
                 raise ValueError("Invalid staff ID provided")
 
             from Controllers.AdminStaffDetails_Controller import AdminStaffDetailsController
             self.staff_details = AdminStaffDetailsController(staff_id)
 
-            # Debug: Verify controller creation
             if not hasattr(self.staff_details, 'show'):
                 raise AttributeError("Controller missing required 'show' method")
 
@@ -208,30 +207,30 @@ class AdminStaffsController(QMainWindow):
 
     def load_doctor_table(self):
         doctors = Doctor.get_all_doctors()
-        self.ui.DoctorTable.setRowCount(len(doctors))
+        self.staff_ui.DoctorTable.setRowCount(len(doctors))
 
         # Remove row numbering
-        self.ui.DoctorTable.verticalHeader().setVisible(False)
-        self.ui.DoctorTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.staff_ui.DoctorTable.verticalHeader().setVisible(False)
+        self.staff_ui.DoctorTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
         # Populate the table
         for row, doctor in enumerate(doctors):
-            self.ui.DoctorTable.setItem(row, 0, QTableWidgetItem(str(doctor["id"])))
-            self.ui.DoctorTable.setItem(row, 1, QTableWidgetItem(doctor["name"]))
-            self.ui.DoctorTable.setItem(row, 2, QTableWidgetItem(doctor["specialty"]))
+            self.staff_ui.DoctorTable.setItem(row, 0, QTableWidgetItem(str(doctor["id"])))
+            self.staff_ui.DoctorTable.setItem(row, 1, QTableWidgetItem(doctor["name"]))
+            self.staff_ui.DoctorTable.setItem(row, 2, QTableWidgetItem(doctor["specialty"]))
 
     def load_staff_table(self):
         staff_list = Staff.get_all_staff()
-        self.ui.StaffTable.setRowCount(len(staff_list))
+        self.staff_ui.StaffTable.setRowCount(len(staff_list))
 
         # Remove row numbering
-        self.ui.StaffTable.verticalHeader().setVisible(False)
-        self.ui.StaffTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.staff_ui.StaffTable.verticalHeader().setVisible(False)
+        self.staff_ui.StaffTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
         # Populate the table
         for row, staff in enumerate(staff_list):
-            self.ui.StaffTable.setItem(row, 0, QTableWidgetItem(str(staff["id"])))
-            self.ui.StaffTable.setItem(row, 1, QTableWidgetItem(staff["name"]))
+            self.staff_ui.StaffTable.setItem(row, 0, QTableWidgetItem(str(staff["id"])))
+            self.staff_ui.StaffTable.setItem(row, 1, QTableWidgetItem(staff["name"]))
 
     def modify_user_form(self, staff_id, record_type):
         try:

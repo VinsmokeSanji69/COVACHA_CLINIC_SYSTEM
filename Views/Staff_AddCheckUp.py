@@ -9,9 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Images import  resources
 
-class Ui_MainWindow(object):
+
+class Ui_Staff_AddCheckUp(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 678)
@@ -754,3 +754,4 @@ class Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Temperature"))
         self.Cancel.setText(_translate("MainWindow", "Cancel"))
         self.AddCheckUp.setText(_translate("MainWindow", "Add Check Up"))
+

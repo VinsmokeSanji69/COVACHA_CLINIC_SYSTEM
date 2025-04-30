@@ -5,7 +5,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDialog, QDialogButtonBox, \
     QApplication
 from Models import Prescription
-from Views.Doctor_LabResult import Ui_MainWindow as DoctorLabResultUI
+from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Controllers.DoctorAddPrescription_Controller import DoctorAddPrescription
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
@@ -517,28 +517,23 @@ class DoctorLabResult(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to save diagnosis: {e}")
 
     def open_or_focus_doctor_records(self):
-        from Controllers.DoctorRecords_Controller import DoctorRecords
-        app = QApplication.instance()  # Get the current application instance
+        from Controllers.DoctorDashboard_Controller import DoctorDashboardController
 
-        # Check if any DoctorRecords window is already active
+        # Get the current application instance
+        app = QApplication.instance()
+
+        # Find the DoctorDashboard window
         for widget in app.topLevelWidgets():
-            if isinstance(widget, DoctorRecords):
-                doctor_records_window = widget
-                doctor_records_window.activateWindow()
-                doctor_records_window.show()
-                print("DoctorRecords window is already active. Bringing it to focus.")
-                return  # Exit early since the window is already open
-
-        # If no existing window is found, create a new one
-        checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-        if not checkup_details or 'doc_id' not in checkup_details:
-            print("Error: Invalid or missing check-up details.")
+            if isinstance(widget, DoctorDashboardController):
+                dashboard = widget
+                break
+        else:
+            print("Error: DoctorDashboard window not found.")
             return
 
-        doc_id = checkup_details['doc_id']
-        print(f"Creating new DoctorRecords window for doc_id={doc_id}")
-
-        # Create a new DoctorRecords window and store it as an instance variable
-        self.doctor_records_window = DoctorRecords(doc_id=doc_id)
-        self.doctor_records_window.show()
-        print("New DoctorRecords window opened successfully.")
+        # Access the records page and show it
+        if hasattr(dashboard, 'records_page'):
+            dashboard.page_stack.setCurrentWidget(dashboard.checkup_page)
+            print("Switched to Records Page.")
+        else:
+            print("Error: Records Page not initialized in DoctorDashboard.")

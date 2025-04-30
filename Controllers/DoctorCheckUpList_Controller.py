@@ -1,14 +1,16 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from Views.Doctor_CheckUpList import Ui_MainWindow as DoctorCheckUpListUI
+from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
+from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList as DoctorCheckUpListUI
 from Controllers.DoctorCheckUpListView_Controller import DoctorCheckUpListView
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 
-class DoctorCheckUpList(QMainWindow):
-    def __init__(self, doc_id):
+class DoctorCheckUpList(QWidget):
+    def __init__(self, doc_id, records_ui):
         super().__init__()
         self.ui = DoctorCheckUpListUI()
+        self.records_ui = records_ui
         self.ui.setupUi(self)
 
         # Store the doc_id
@@ -30,12 +32,28 @@ class DoctorCheckUpList(QMainWindow):
         self.refresh_tables()
 
         # Connect the ViewPatientButton to the view_detials_checkup method
-        self.ui.ViewPatientButton.clicked.connect(self.view_detials_checkup)
+        self.records_ui.ViewPatientButton.clicked.connect(self.view_detials_checkup)
+
+        # Initialize a QTimer for automatic refresh
+        self.refresh_timer = QTimer(self)
+        self.refresh_timer.timeout.connect(self.refresh_tables)  # Connect to refresh_tables method
+        self.refresh_timer.start(30000)  # Refresh every 30 seconds (30000 ms)
 
     def refresh_tables(self):
-        """Reload data into the tables"""
+        """Reload data into the tables."""
         try:
-            self.populate_done_table(self.completed_checkups)  # Pass the completed_checkups
+            # Fetch fresh data from the database
+            checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+            if not checkups:
+                print("No check-ups found for this doctor.")
+                return
+
+            # Filter completed check-ups
+            self.completed_checkups = [checkup for checkup in checkups if checkup['chck_status'] == "Completed"]
+
+            # Repopulate the DoneTable with fresh data
+            self.populate_done_table(self.completed_checkups)
+
             print("Tables refreshed successfully!")
         except Exception as e:
             print(f"Error refreshing tables: {e}")
@@ -87,8 +105,8 @@ class DoctorCheckUpList(QMainWindow):
 
     def populate_done_table(self, checkups):
         # Clear existing rows
-        self.ui.DoneTable.clearContents()
-        self.ui.DoneTable.setRowCount(0)
+        self.records_ui.DoneTable.clearContents()
+        self.records_ui.DoneTable.setRowCount(0)
 
         # Populate the table
         for row, checkup in enumerate(checkups):
@@ -104,26 +122,26 @@ class DoctorCheckUpList(QMainWindow):
                 continue
 
             # Extract and format patient name
-            full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
+            full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
 
             # Add row to the table
-            self.ui.DoneTable.insertRow(row)
-            self.ui.DoneTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))
-            self.ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(full_name))
-            self.ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(chck_diagnoses))
-            self.ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(str(chck_date)))
+            self.records_ui.DoneTable.insertRow(row)
+            self.records_ui.DoneTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))
+            self.records_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(full_name))
+            self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(chck_diagnoses))
+            self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(str(chck_date)))
 
     def view_detials_checkup(self):
         """Handle viewing details of the selected check-up."""
         try:
             # Get the currently selected row in the DoneTable
-            selected_row = self.ui.DoneTable.currentRow()
+            selected_row = self.records_ui.DoneTable.currentRow()
             if selected_row == -1:  # No row selected
                 QMessageBox.warning(self, "Selection Error", "Please select a check-up from the table.")
                 return
 
             # Retrieve the chck_id from the selected row
-            chck_id = self.ui.DoneTable.item(selected_row, 0).text()  # Column 0 contains chck_id
+            chck_id = self.records_ui.DoneTable.item(selected_row, 0).text()  # Column 0 contains chck_id
             print(f"Selected Check-Up ID: {chck_id}")
 
             # Open the DoctorCheckUpListView modal

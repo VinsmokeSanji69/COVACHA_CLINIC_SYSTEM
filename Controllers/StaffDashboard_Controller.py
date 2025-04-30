@@ -1,63 +1,186 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
-from PyQt5.QtCore import QTimer
-from Views.Staff_Dashboard import Ui_MainWindow as StaffDashboardUi
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog, QVBoxLayout, QPushButton, \
+    QStackedWidget, QHeaderView, QSizePolicy, QWidget
+from PyQt5.QtCore import QTimer, pyqtSlot, Qt
+
+from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
+from Models.Doctor import Doctor
+from Models.Transaction import Transaction
+from Views.Staff_Dashboard import Ui_Staff_Dashboard
 from Controllers.StaffAddCheckUp_Controller import StaffAddCheckUp
 from Controllers.StaffLabRequest_Controller import StaffLabRequest
 from Controllers.StaffTransactionModal_Controller import StaffTransactionModal
+from Controllers.StaffTransactions_Controller import StaffTransactions
 from Models.CheckUp import CheckUp
 from  Models.Patient import Patient
 import datetime
 
+from Views.Staff_LabRequest import Ui_Staff_LabRequest
+from Views.Staff_Transactions import Ui_Staff_Transactions
+
+
 class StaffDashboardController(QMainWindow):
-    def __init__(self, staff_id = None):
+    def __init__(self, staff_id=None):
         super().__init__()
-        self.ui = StaffDashboardUi()
-        self.ui.setupUi(self)
+        self.setWindowTitle("Staff Dashboard")
 
-        # Initialize dynamic date and time labels
-        self.update_time_labels()
+        # Store staff ID
+        self.staff_id = staff_id
 
-        # Set up a timer to update the labels every second
+        # Create central widget
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+
+        # Main layout for central widget
+        self.main_layout = QVBoxLayout(self.central_widget)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.setSpacing(0)
+
+        # Create a shared single navbar
+        self.navbar_ui = Ui_Staff_Dashboard()
+
+        # Create stacked widget for page content (navbar + content area for each page)
+        self.page_stack = QStackedWidget()
+        self.main_layout.addWidget(self.page_stack)
+
+        # Initialize pages
+        self.setup_pages()
+
+        # Setup timer for time updates
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_time_labels)
         self.timer.start(1000)
 
-        # Store the staff ID
-        self.staff_id = staff_id
-        print(f"StaffDashboard initialized for staff ID: {self.staff_id}")
+        # Connect navigation buttons - will be connected for each page
+        self.connect_all_buttons()
 
-        print("StaffDashboard UI initialized!")
+        # Start with dashboard view
+        self.go_to_dashboard()
 
-        if hasattr(self.ui, 'LabRequestButton'):
-            print("LabRequestButton exists")
-            self.ui.LabRequestButton.clicked.connect(self.ViewStaffLabRequest)
-            print("LabRequestButton connected to button_clicked method!")
-        else:
-            print("LabRequestButton is missing!")
+        # Responsive table for Dashboard Page
+        # tableWidget
+        header = self.dashboard_ui.PendingTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
 
-        # Connect buttons
-        if hasattr(self.ui, 'AddCheckUp'):
-            print("AddCheckUp exists")
-            self.ui.AddCheckUp.clicked.connect(self.open_checkup_user_form)
-            print("AddCheckUp connected to open_add_user_form!")
-        else:
-            print("AddUserButton is missing!")
+        self.dashboard_ui.PendingTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.dashboard_ui.PendingTable.setWordWrap(True)
+        self.dashboard_ui.PendingTable.resizeRowsToContents()
 
-         # Connect AddTransaction button
-        if hasattr(self.ui, 'AddTransac'):
-            print("AddTransac Exists")
-            self.ui.AddTransac.clicked.connect(self.open_transaction_modal)
+        # # Responsive table for Record Page
+        # # DoneTable
+        # header = self.records_ui.DoneTable.horizontalHeader()
+        # header.setSectionResizeMode(QHeaderView.Stretch)
+        #
+        # self.records_ui.DoneTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # self.records_ui.DoneTable.setWordWrap(True)
+        # self.records_ui.DoneTable.resizeRowsToContents()
 
-        # Populate the PatientDetails table with pending check-ups
+        # Responsive table for Transaction Page
+        # DoneTable
+        header = self.transactions_ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.transactions_ui.TransactionTable.setWordWrap(True)
+        self.transactions_ui.TransactionTable.resizeRowsToContents()
+
+        # Responsive table for LabReq Page
+        header = self.labreq_ui.LabRequestTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.labreq_ui.LabRequestTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.labreq_ui.LabRequestTable.setWordWrap(True)
+        self.labreq_ui.LabRequestTable.resizeRowsToContents()
+
+        self.staff_transactions = StaffTransactions(self.transactions_ui)
+        self.staff_labrequests = StaffLabRequest(self.labreq_ui)
+
+        # Calling Methods
         self.load_pending_checkups()
-        self.apply_table_styles()
+        self.get_transaction_details()
+        self.get_labrequest_details()
 
-    def apply_table_styles(self):
-        """Apply custom styles to the tables"""
-        # Style for PatientDetails table
-        self.ui.PendingTable.setStyleSheet("""
-               QTableWidget {
+        # Table styles
+        self.apply_table_styles(self.dashboard_ui.PendingTable)
+        self.apply_table_styles(self.transactions_ui.TransactionTable)
+        self.apply_table_styles(self.labreq_ui.LabRequestTable)
+
+    def setup_pages(self):
+        """Set up complete pages with navbar and content"""
+        # Dashboard page
+        self.dashboard_page = QWidget()
+        self.dashboard_ui = Ui_Staff_Dashboard()
+        self.dashboard_ui.setupUi(self.dashboard_page)
+        self.page_stack.addWidget(self.dashboard_page)
+
+        # # Records page
+        # self.records_page = QWidget()
+        # self.records_ui = Ui_Staff_Records()
+        # self.records_ui.setupUi(self.records_page)
+        # self.page_stack.addWidget(self.records_page)
+
+        # Transactions page
+        self.transactions_page = QWidget()
+        self.transactions_ui = Ui_Staff_Transactions()
+        self.transactions_ui.setupUi(self.transactions_page)
+        self.page_stack.addWidget(self.transactions_page)
+
+        # LabReq page
+        self.labreq_page = QWidget()
+        self.labreq_ui = Ui_Staff_LabRequest()
+        self.labreq_ui.setupUi(self.labreq_page)
+        self.page_stack.addWidget(self.labreq_page)
+
+    def connect_all_buttons(self):
+        """Connect navigation buttons for all pages"""
+        # Connect dashboard page buttons
+        self.dashboard_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
+        self.dashboard_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
+        self.dashboard_ui.LabButton.clicked.connect(self.go_to_labreq)
+
+        # Connect transactions page buttons
+        self.transactions_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
+        self.transactions_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
+        self.transactions_ui.LabButton.clicked.connect(self.go_to_labreq)
+
+        # Connect labreq page buttons
+        self.labreq_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
+        self.labreq_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
+        self.labreq_ui.LabButton.clicked.connect(self.go_to_labreq)
+
+        # # Connect buttons
+        if hasattr(self.dashboard_ui, 'AddCheckUpButton'):
+            self.dashboard_ui.AddCheckUpButton.clicked.connect(self.open_checkup_user_form)
+        else:
+            print("Missing!")
+        if hasattr(self.dashboard_ui, 'AddTransactionButton'):
+            self.dashboard_ui.AddTransactionButton.clicked.connect(self.open_transaction_modal)
+
+    @pyqtSlot()
+    def go_to_dashboard(self):
+        """Switch to the dashboard page"""
+        print("Navigating to Dashboard")
+        self.page_stack.setCurrentWidget(self.dashboard_page)
+        self.update_time_labels()
+
+    @pyqtSlot()
+    def go_to_transactions(self):
+        """Switch to the transactions page"""
+        print("Navigating to Transactions")
+        self.page_stack.setCurrentWidget(self.transactions_page)
+        self.update_time_labels()
+
+    @pyqtSlot()
+    def go_to_labreq(self):
+        print("Navigating to Lab Request")
+        self.page_stack.setCurrentWidget(self.labreq_page)
+        self.update_time_labels()
+
+    def apply_table_styles(self, table_widget):
+        """Apply custom styles to the given table widget."""
+
+        table_widget.setStyleSheet("""
+            QTableWidget {
                 background-color: #F4F7ED;
                 gridline-color: transparent;
                 border-radius: 10px;
@@ -77,89 +200,77 @@ class StaffDashboardController(QMainWindow):
                 border: 2px solid #2E6E65;
             }
 
-            Scroll Area CSS
+            /* Scroll Area CSS */
             QScrollBar:vertical {
-                 background: transparent;
-                 width: 10px;
+                background: transparent;
+                width: 10px;
                 border-radius: 5px;
             }
             QScrollBar::handle:vertical {
-                    background: #C0C0C0;
-                    border-radius: 5px;
+                background: #C0C0C0;
+                border-radius: 5px;
             }
             QScrollBar::handle:vertical:hover {
-                    background: #A0A0A0;
+                background: #A0A0A0;
             }
             QScrollBar::add-line:vertical,
             QScrollBar::sub-line:vertical{
-                    background: none;
-                    border: none;
+                background: none;
+                border: none;
             }
-           """)
+        """)
 
         # Ensure horizontal headers are visible
-        self.ui.PendingTable.horizontalHeader().setVisible(True)
+        table_widget.horizontalHeader().setVisible(True)
 
         # Align headers to the left
-        self.ui.PendingTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        table_widget.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
 
         # Hide the vertical header (row index)
-        self.ui.PendingTable.verticalHeader().setVisible(False)
+        table_widget.verticalHeader().setVisible(False)
 
         # Set selection behavior
-        self.ui.PendingTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        table_widget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
     def load_pending_checkups(self):
         """Fetch and display pending check-ups in the PatientDetails table."""
         try:
-            # Fetch pending check-ups from the database
             pending_checkups = CheckUp.get_pending_checkups()
+            print("Fetched pending checkups:", pending_checkups)
 
-            # Clear the table before populating it
-            self.ui.PendingTable.setRowCount(0)
+            self.dashboard_ui.PendingTable.setRowCount(0)
 
-            # Check if there are no pending check-ups
             if not pending_checkups:
                 print("No pending check-ups found.")
-
-                # Add a single row with the message "No Pending Check Ups"
-                self.ui.PendingTable.insertRow(0)
+                self.dashboard_ui.PendingTable.insertRow(0)
                 no_data_item = QTableWidgetItem("No Pending Check Ups")
-                self.ui.PendingTable.setItem(0, 0, no_data_item)
+                self.dashboard_ui.PendingTable.setItem(0, 0, no_data_item)
 
-                # Span the message across all columns
-                column_count = self.ui.PendingTable.columnCount()
-                self.ui.PendingTable.setSpan(0, 0, 1, column_count)
+                column_count = self.dashboard_ui.PendingTable.columnCount()
+                self.dashboard_ui.PendingTable.setSpan(0, 0, 1, column_count)
                 return
 
-            # Populate the table with pending check-ups
             for row, checkup in enumerate(pending_checkups):
                 pat_id = checkup["pat_id"]
                 chck_id = checkup["chck_id"]
                 chck_type = checkup["chckup_type"]
 
-                # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
                 if not patient:
                     print(f"No patient found for pat_id={pat_id}")
                     continue
 
-                # Extract patient name and capitalize the first letter of each word
                 full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
-                # Insert data into the table in the new column order (Check Up ID, Patient Name, Type)
-                self.ui.PendingTable.insertRow(row)
-                self.ui.PendingTable.setItem(row, 0, QTableWidgetItem(chck_id))  # Check Up ID
-                self.ui.PendingTable.setItem(row, 1, QTableWidgetItem(full_name))  # Patient Name
-                self.ui.PendingTable.setItem(row, 2, QTableWidgetItem(chck_type))  # Check-Up Type
+                self.dashboard_ui.PendingTable.insertRow(row)
+                self.dashboard_ui.PendingTable.setItem(row, 0, QTableWidgetItem(chck_id))
+                self.dashboard_ui.PendingTable.setItem(row, 1, QTableWidgetItem(full_name))
+                self.dashboard_ui.PendingTable.setItem(row, 2, QTableWidgetItem(chck_type))
 
-            # Resize columns to fit the content
-            self.ui.PendingTable.resizeColumnsToContents()
-
-            # Optionally, set minimum widths for specific columns
-            self.ui.PendingTable.setColumnWidth(0, 150)  # Check Up ID column
-            self.ui.PendingTable.setColumnWidth(1, 150)  # Patient Name column
-            self.ui.PendingTable.setColumnWidth(2, 200)  # Check-Up Type column
+            self.dashboard_ui.PendingTable.resizeColumnsToContents()
+            self.dashboard_ui.PendingTable.setColumnWidth(0, 150)
+            self.dashboard_ui.PendingTable.setColumnWidth(1, 150)
+            self.dashboard_ui.PendingTable.setColumnWidth(2, 200)
 
         except Exception as e:
             print(f"Error loading pending check-ups: {e}")
@@ -202,21 +313,77 @@ class StaffDashboardController(QMainWindow):
         self.update_time_labels()
 
     def update_time_labels(self):
-        """Update the Time, Day, and Month labels with current values."""
+        """Update time labels on the current page"""
         now = datetime.datetime.now()
+        current_page_index = self.page_stack.currentIndex()
 
-        # Format time (e.g., 03:45 PM)
-        time_format = now.strftime("%I:%M %p")
-        self.ui.Time.setText(time_format)
+        if current_page_index == 0:  # Dashboard
+            ui = self.dashboard_ui
+        elif current_page_index == 1:  # Transactions
+            ui = self.transactions_ui
+        else:
+            return
 
-        # Format day (e.g., Sunday)
-        day_format = now.strftime("%A")
-        self.ui.Day.setText(day_format)
+        if hasattr(ui, 'Time'):
+            ui.Time.setText(now.strftime("%I:%M %p"))
+        if hasattr(ui, 'Day'):
+            ui.Day.setText(now.strftime("%A"))
+        if hasattr(ui, 'Month'):
+            ui.Month.setText(f"{now.strftime('%B')} {now.day}, {now.year}")
 
-        # Format month and year (e.g., October 15, 2023)
-        month_year_format = f"{now.strftime('%B')} {now.day}, {now.year}"
-        self.ui.Month.setText(month_year_format)
+    # def open_transaction_form(self):
+    #     """Open the Add Transaction Form"""
+    #     print("Opening Add Transaction Form...")
+    #     # Implement transaction form functionality here
 
-        # Force refresh the UI
-        self.repaint()
+    def open_modify_form(self):
+        """Open the Modify Lab Req Form as a modal dialog"""
+        print("Opening Modify Lab Req Dialog...")
+        try:
+            # Create dialog
+            dialog = QDialog(self)
+            dialog.setWindowTitle("Modify Lab Req")
 
+            # Remove all margins and spacing
+            dialog_layout = QVBoxLayout(dialog)
+            dialog_layout.setContentsMargins(0, 0, 0, 0)
+            dialog_layout.setSpacing(0)
+
+            # Add your custom form widget
+            modify_form = StaffAddAttachment(chck_id=None, doctorname=None, patientname=None)
+            dialog_layout.addWidget(modify_form)
+
+            # Cancel button functionality
+            cancel_button = dialog.findChild(QPushButton, 'Cancel')
+            if cancel_button:
+                cancel_button.clicked.connect(dialog.reject)
+
+            # Optional: remove title bar buttons (X, Min, Max)
+            dialog.setWindowFlags(Qt.Dialog | Qt.CustomizeWindowHint)
+
+            # Size settings
+            dialog.setMinimumWidth(600)
+            dialog.setMinimumHeight(400)
+
+            # Show the modal dialog
+            dialog.exec_()
+
+            print("Modify Form closed")
+        except Exception as e:
+            print(f"Error opening Modify Form Dialog: {e}")
+
+    def get_transaction_details(self):
+        """Call the method from StaffTransactions to load transaction details."""
+        try:
+            self.staff_transactions.load_transaction_details()  # Call method from StaffTransactions instance
+        except Exception as e:
+            print(f"Error loading transaction details: {e}")
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
+
+    def get_labrequest_details(self):
+        """Call the method from StaffLabRequests to load lab request details."""
+        try:
+            self.staff_labrequests.load_staff_labrequest_table()  # Call your existing method
+        except Exception as e:
+            print(f"Error loading lab request details: {e}")
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load lab request details: {e}")

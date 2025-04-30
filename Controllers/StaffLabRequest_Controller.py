@@ -3,25 +3,24 @@ from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Doctor import Doctor
 from Models.DB_Connection import DBConnection
-from Views.Staff_LabRequest import Ui_MainWindow as StaffLabRequestUI
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
+from Views.Staff_LabRequest import Ui_Staff_LabRequest as StaffLabRequestUI
+from PyQt5.QtWidgets import QMessageBox, QWidget
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
 
-class StaffLabRequest(QMainWindow):
-    def __init__(self, staff_id = None):
+class StaffLabRequest(QWidget):
+    def __init__(self, labreq_ui):
         super().__init__()
         self.ui = StaffLabRequestUI()
+        self.labreq_ui = labreq_ui
         self.ui.setupUi(self)
-
+        self.load_staff_labrequest_table()
         print("Staff Lab Request UI initialized!")
 
-        self.apply_table_styles()
-        self.refresh_table()
 
-        # Connect buttons
-        if hasattr(self.ui, 'Modify'):
+        # Connect buttons (if the button exists)
+        if hasattr(self.labreq_ui, 'Modify'):
             print("Modify exists")
-            self.ui.Modify.clicked.connect(self.open_form)
+            self.labreq_ui.Modify.clicked.connect(self.open_form)
             print("Modify connected to open_add_user_form!")
         else:
             print("Modify is missing!")
@@ -34,57 +33,6 @@ class StaffLabRequest(QMainWindow):
         except Exception as e:
             print(f"Error refreshing tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
-
-    def apply_table_styles(self):
-        self.ui.LabRequestTable.setStyleSheet("""
-                               QTableWidget {
-                    background-color: #F4F7ED;
-                    gridline-color: transparent;
-                    border-radius: 10px;
-                }
-                QTableWidget::item {
-                    border: none;
-                    font: 16pt "Lexend";
-                }
-                QTableWidget::item:selected {
-                    background-color: rgba(46, 110, 101, 0.3);
-                }
-                QTableWidget QHeaderView::section {
-                    background-color: #2E6E65;
-                    color: white;
-                    padding: 5px;
-                    font: 18px "Lexend Medium";
-                    border: 2px solid #2E6E65;
-                }
-
-                Scroll Area CSS
-                QScrollBar:vertical {
-                     background: transparent;
-                     width: 10px;
-                    border-radius: 5px;
-                }
-                QScrollBar::handle:vertical {
-                        background: #C0C0C0;
-                        border-radius: 5px;
-                }
-                QScrollBar::handle:vertical:hover {
-                        background: #A0A0A0;
-                }
-                QScrollBar::add-line:vertical,
-                QScrollBar::sub-line:vertical{
-                        background: none;
-                        border: none;
-                }
-                   """)
-        self.ui.LabRequestTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        # Ensure horizontal headers are visible
-        self.ui.LabRequestTable.horizontalHeader().setVisible(True)
-
-        # Align headers to the left
-        self.ui.LabRequestTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-
-        # Hide the vertical header (row index)
-        self.ui.LabRequestTable.verticalHeader().setVisible(False)
 
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
@@ -105,7 +53,7 @@ class StaffLabRequest(QMainWindow):
                 checkup_ids = [row[0] for row in cursor.fetchall()]
 
             # Clear the table before populating it
-            self.ui.LabRequestTable.setRowCount(0)
+            self.labreq_ui.LabRequestTable.setRowCount(0)
 
             # Populate the table with filtered data
             for checkup_id in checkup_ids:
@@ -163,13 +111,13 @@ class StaffLabRequest(QMainWindow):
 
                 # Add a new row to the table
                 row_position = self.ui.LabRequestTable.rowCount()
-                self.ui.LabRequestTable.insertRow(row_position)
+                self.labreq_ui.LabRequestTable.insertRow(row_position)
 
                 # Insert data into the table
-                self.ui.LabRequestTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(str(checkup_id)))
-                self.ui.LabRequestTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(patient_name))
-                self.ui.LabRequestTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(doctor_name))
-                self.ui.LabRequestTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem(status))
+                self.labreq_ui.LabRequestTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(str(checkup_id)))
+                self.labreq_ui.LabRequestTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(patient_name))
+                self.labreq_ui.LabRequestTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(doctor_name))
+                self.labreq_ui.LabRequestTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem(status))
 
             print("Lab Request Table loaded successfully!")
 
@@ -186,15 +134,15 @@ class StaffLabRequest(QMainWindow):
         print("Opening Add User Form...")
         try:
             # Get the currently selected row in the LabRequestTable
-            selected_row = self.ui.LabRequestTable.currentRow()
+            selected_row = self.labreq_ui.LabRequestTable.currentRow()
             if selected_row == -1:  # No row selected
                 QMessageBox.warning(self, "Selection Error", "Please select a row from the table.")
                 return
 
             # Retrieve data from the selected row with proper validation
-            chk_id_item = self.ui.LabRequestTable.item(selected_row, 0)  # Check-Up ID (Column 0)
-            patient_name_item = self.ui.LabRequestTable.item(selected_row, 1)  # Patient Name (Column 1)
-            doctor_name_item = self.ui.LabRequestTable.item(selected_row, 2)  # Doctor Name (Column 2)
+            chk_id_item = self.labreq_ui.LabRequestTable.item(selected_row, 0)  # Check-Up ID (Column 0)
+            patient_name_item = self.labreq_ui.LabRequestTable.item(selected_row, 1)  # Patient Name (Column 1)
+            doctor_name_item = self.labreq_ui.LabRequestTable.item(selected_row, 2)  # Doctor Name (Column 2)
 
             # Validate that all required cells are populated
             if not chk_id_item or not patient_name_item or not doctor_name_item:

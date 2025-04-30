@@ -291,3 +291,4 @@ class AdminModifyUserController(QMainWindow):
             'specialty': self.ui.Specialty.currentText() if self.ui.StaffType.currentText() == "Doctor" else None,
             'license': int(self.ui.License.text().strip()) if self.ui.StaffType.currentText() == "Doctor" else None
         }
+

@@ -35,18 +35,18 @@
 	border: 0px;
 }
 QPushButton {
-
+	
 
 	font: 900 16pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;
+	font-weight: bold;	
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65;
+    background-color: #2E6E65; 
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
@@ -204,7 +204,7 @@ QLabel {
            </property>
            <property name="styleSheet">
             <string notr="true">QPushButton{
-	font: 900 20pt &quot;Satoshi Black&quot;;
+	font: 900 20pt &quot;Satoshi Black&quot;;	
 }
 </string>
            </property>
@@ -380,7 +380,7 @@ QLabel {
 padding-top: 15px;
 }
 QLabel {
-    padding: 0px;
+    padding: 0px; 
 }
 #UserType {
 	font: 300 10pt &quot;Lexend Light&quot;;
@@ -396,9 +396,9 @@ QLabel {
 	font-size: 35px;
 }
 QGraphicsView {
-    border: 2px solid #ccc;
+    border: 2px solid #ccc; 
     border-radius: 25px;
-    background: white;
+    background: white; 
 }
 
 </string>
@@ -533,7 +533,7 @@ QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
 	background-color: #2E6E65;
  	border-radius: 10px;
-	font-weight: bold;
+	font-weight: bold;	
 	font-size: 25px;
 	color: #F4F7ED;
 	text-align: left;
@@ -776,7 +776,7 @@ QLabel {
     background-color: #F4F7ED;
     gridline-color: #D9E4DC;
     border: 2px solid #2E6E65;
-    border-radius: 9px;
+    border-radius: 9px; 
 }
 
 QTableWidget::item {
@@ -784,7 +784,7 @@ QTableWidget::item {
 }
 
 QTableWidget::item:alternate {
-    background-color: #E0E0E0;
+    background-color: #E0E0E0;  
 }
 
 QTableWidget QHeaderView::section {
@@ -880,7 +880,7 @@ Line {
 }
 QGraphicsView {
     border-radius: 10px;
-    background: white;
+    background: white; 
 }
 #DocID, #DocSpecialty, #DocAge, #DocAbout, #DocContact, #DocEmail, #DocAddress {
 	font: 500 13pt &quot;Lexend&quot;;
@@ -1448,7 +1448,7 @@ QGraphicsView {
 }
 #Category, #Category_2, #Percentage, #Percentage_2 {
 	color: #2B3752;
-}
+} 
 #OverviewSub, #OverviewSub_2 {
 	font: 300 10pt &quot;Lexend Light&quot;;
 }

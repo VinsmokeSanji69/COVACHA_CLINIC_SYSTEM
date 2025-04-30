@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox
-from Controllers.DoctorLabResult_Controller import DoctorLabResult
-from Views.Doctor_Diagnosis import Ui_MainWindow as DoctorDiagnosisUI
+from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory

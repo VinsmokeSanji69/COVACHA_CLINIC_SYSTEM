@@ -1,11 +1,16 @@
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox, QApplication
 from Controllers.DoctorLabResult_Controller import DoctorLabResult
-from Views.Doctor_Diagnosis import Ui_MainWindow as DoctorDiagnosisUI
+from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
+from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Controllers.DoctorRecords_Controller import DoctorRecords
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
+
+from Views.Doctor_Records import Ui_Doctor_Records
+
 
 class DoctorDiagnosis(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
@@ -131,11 +136,22 @@ class DoctorDiagnosis(QMainWindow):
     def ViewRecords(self):
         print("Opening Doctor Records...")
         try:
-            # Close the current DoctorDiagnosis window
             self.close()
-            # Instantiate and show the DoctorRecords window with the doc_id
-            self.doctor_records = DoctorRecords(doc_id=self.doc_id)
-            self.doctor_records.show()
+
+            # Find DoctorDashboard window
+            app = QApplication.instance()
+            for widget in app.topLevelWidgets():
+                if hasattr(widget, "page_stack") and hasattr(widget, "checkup_page"):
+                    dashboard = widget
+                    break
+            else:
+                print("Error: DoctorDashboard window not found.")
+                return
+
+            # Switch to the Checkup Page
+            dashboard.page_stack.setCurrentWidget(dashboard.checkup_page)
+            print("Switched to Doctor Records (Checkup Page).")
+
         except Exception as e:
             print(f"Error loading Doctor Records: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load Doctor Records: {e}")

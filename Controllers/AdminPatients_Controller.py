@@ -1,36 +1,60 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
 
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
-from Views.Admin_Patients import Ui_MainWindow as AdminPatientsUI
+from Views.Admin_Patients import Ui_Admin_Patients as AdminPatientsUI
 
-class AdminPatientsController(QMainWindow):
-    def __init__(self):
+
+def safe_date_format(date_value, date_format="%B %d, %Y"):
+    if not date_value:
+        return "N/A"
+    if isinstance(date_value, str):
+        try:
+            # Try parsing if it's a date string
+            from datetime import datetime
+            return datetime.strptime(date_value, "%Y-%m-%d").strftime(date_format)
+        except ValueError:
+            return date_value  # Return as-is if parsing fails
+    elif hasattr(date_value, 'strftime'):  # If it's a date/datetime object
+        return date_value.strftime(date_format)
+    return "N/A"
+
+class AdminPatientsController(QWidget):
+    def __init__(self, records_ui):
         super().__init__()
         self.ui = AdminPatientsUI()
+        self.records_ui = records_ui
         self.ui.setupUi(self)
 
-        print("Admin Patients UI initialized!")
+        self.records_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
+        self.records_ui.ChargesButton.clicked.connect(self.view_charges_ui)
+        self.records_ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
+        self.records_ui.StaffsButton.clicked.connect(self.view_staff_ui)
+        self.records_ui.View.clicked.connect(self.view_patient)
+        self.records_ui.SearchButton.clicked.connect(self.filter_tables)
 
-        self.ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        self.ui.ChargesButton.clicked.connect(self.view_charges_ui)
-        self.ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
-        self.ui.StaffsButton.clicked.connect(self.view_staff_ui)
-
-        self.ui.View.clicked.connect(self.view_patient)
+        SortBy = ["Date", "Name", "Diagnosis", "Status"]
+        SortOrder = ["Ascending", "Descending"]
+        self.records_ui.SortByBox.clear()
+        self.records_ui.SortByBox.addItems(SortBy)
+        self.records_ui.SortByBox.setCurrentIndex(0)
+        self.records_ui.SortOrderBox.clear()
+        self.records_ui.SortOrderBox.addItems(SortOrder)
+        self.records_ui.SortOrderBox.setCurrentIndex(0)
+        self.records_ui.SortByBox.currentIndexChanged.connect(self.refresh_tables)
+        self.records_ui.SortOrderBox.currentIndexChanged.connect(self.refresh_tables)
         self.refresh_tables()
-
 
 
     def view_patient(self):
         try:
-            selected_row = self.ui.PatientTable.currentRow()
+            selected_row = self.records_ui.PatientTable.currentRow()
             if selected_row == -1:
                 print("no row selected")
                 return
 
-            patient_id = self.ui.PatientTable.item(selected_row, 0)
+            patient_id = self.records_ui.PatientTable.item(selected_row, 0)
             if not patient_id:
                 raise ValueError(f"No patient ID found in selected row")
 
@@ -50,45 +74,139 @@ class AdminPatientsController(QMainWindow):
 
     def refresh_tables(self):
         try:
-            self.load_table()
+            search_query = self.records_ui.Search.text().strip().lower()
+            sort_by = self.records_ui.SortByBox.currentText()
+            sort_order = self.records_ui.SortOrderBox.currentText()
+
+            # Determine the key to sort by
+            if sort_by == "Date":
+                sort_key = "diagnosed_date"
+            elif sort_by == "Name":
+                sort_key = "name"
+            elif sort_by == "Diagnosis":
+                sort_key = "recent_diagnosis"
+            elif sort_by == "Status":
+                sort_key = "chck_status"
+            else:
+                sort_key = None
+
+            reverse_order = True if sort_order == "Descending" else False
+
+            patients = Patient.get_all_patients()
+            if not patients:
+                return
+
+            # Filter accepted check-ups
+            filtered_patients = []
+            for patient in patients:
+                pat_id = patient['id']
+                patient["recent_diagnosis"] = "No Diagnosis"
+                patient["diagnosed_date"] = ""
+                patient["status"] = "Pending"
+                checkup = CheckUp.get_checkup_by_pat_id(pat_id)
+                if checkup:
+                    patient["recent_diagnosis"] = checkup[0]["diagnosis"] if checkup[0]["diagnosis"] else "N/A"
+                    date = checkup[0]["date"] if checkup[0]["date"] else "N/A"
+                    patient["diagnosed_date"] = safe_date_format(date)
+                    patient["status"] = "Complete"
+
+                if search_query in patient["name"].lower():
+                    filtered_patients.append(patient)
+
+            # Apply sorting to filtered accepted check-ups
+            if sort_key:
+                filtered_patients.sort(key=lambda x: x.get(sort_key, ""), reverse=reverse_order)
+
+            self.load_table(filtered_patients)
+
         except Exception as e:
             print(f"Error refreshing tables: {e}")
 
-    def load_table(self):
+    def filter_tables(self):
         try:
+            search_query = self.records_ui.Search.text().strip().lower()
+            sort_by = self.records_ui.SortByBox.currentText()
+            sort_order = self.records_ui.SortOrderBox.currentText()
+
+            # Determine the key to sort by
+            if sort_by == "Date":
+                sort_key = "diagnosed_date"
+            elif sort_by == "Name":
+                sort_key = "name"
+            elif sort_by == "Diagnosis":
+                sort_key = "recent_diagnosis"
+            elif sort_by == "Status":
+                sort_key = "chck_status"
+            else:
+                sort_key = None
+
+            reverse_order = True if sort_order == "Descending" else False
+
+            # Filter accepted check-ups
             patients = Patient.get_all_patients()
-            self.ui.PatientTable.setRowCount(len(patients))
+            if not patients:
+                return
+
+            # Filter accepted check-ups
+            filtered_patients = []
+            for patient in patients:
+                pat_id = patient['id']
+                patient["recent_diagnosis"] = "No Diagnosis"
+                patient["diagnosed_date"] = ""
+                patient["status"] = "Pending"
+                checkup = CheckUp.get_checkup_by_pat_id(pat_id)
+                if checkup:
+                    patient["recent_diagnosis"] = checkup[0]["diagnosis"] if checkup[0]["diagnosis"] else "N/A"
+                    date = checkup[0]["date"] if checkup[0]["date"] else "N/A"
+                    patient["diagnosed_date"] = safe_date_format(date)
+                    patient["status"] = "Complete"
+
+                if search_query in patient["name"].lower():
+                    filtered_patients.append(patient)
+
+            if sort_key:
+                filtered_patients.sort(key=lambda x: x.get(sort_key, ""), reverse=reverse_order)
+
+            # Handle the case where no matching records are found in AcceptedCheckUp
+            if not filtered_patients:
+                self.records_ui.PatientTable.setRowCount(1)  # Add one row for the message
+                no_data_item = QtWidgets.QTableWidgetItem("No matching records found")
+                no_data_item.setTextAlignment(QtCore.Qt.AlignCenter)
+            else:
+                # Repopulate the table with filtered data
+                self.load_table(filtered_patients)
+
+        except Exception as e:
+            print(f"Error filtering tables: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to filter tables: {e}")
+
+    def load_table(self, patients):
+        try:
+            self.records_ui.PatientTable.setRowCount(0)
+            self.records_ui.PatientTable.setRowCount(len(patients))
 
             # Configure table properties first
-            self.ui.PatientTable.verticalHeader().setVisible(False)
-            self.ui.PatientTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)  # Moved up
-            self.ui.PatientTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Recent Diagnosis", "Date"])
+            self.records_ui.PatientTable.verticalHeader().setVisible(False)
+            self.records_ui.PatientTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)  # Moved up
+            self.records_ui.PatientTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Recent Diagnosis", "Date"])
 
             # Populate the table
             for row, patient in enumerate(patients):
                 id = str(patient.get("id", ""))
                 name = patient.get("name", "N/A")
-
-                # Get checkup data with proper defaults
-                diagnosis = "No diagnosis"
-                date = "No records"
-
-                patient_checkups = CheckUp.get_checkup_by_pat_id(patient["id"])
-                if patient_checkups and len(patient_checkups) > 0:
-                    diagnosis = patient_checkups[0].get("diagnosis", "No diagnosis")
-                    date = patient_checkups[0].get("date", "No date").strftime('%Y-%m-%d') if patient_checkups[0].get(
-                        "date") else "No date"
+                diagnosis = patient.get("recent_diagnosis", "No diagnosis")
+                date = patient.get("diagnosed_date", "No date") if patient.get("diagnosed_date") else "No date"
 
                 # Insert row items
-                self.ui.PatientTable.insertRow(row)
-                self.ui.PatientTable.setItem(row, 0, QtWidgets.QTableWidgetItem(id))
-                self.ui.PatientTable.setItem(row, 1, QtWidgets.QTableWidgetItem(name))
-                self.ui.PatientTable.setItem(row, 2, QtWidgets.QTableWidgetItem(diagnosis))
-                self.ui.PatientTable.setItem(row, 3, QtWidgets.QTableWidgetItem(date))  # Fixed column index
+                self.records_ui.PatientTable.insertRow(row)
+                self.records_ui.PatientTable.setItem(row, 0, QtWidgets.QTableWidgetItem(id))
+                self.records_ui.PatientTable.setItem(row, 1, QtWidgets.QTableWidgetItem(name))
+                self.records_ui.PatientTable.setItem(row, 2, QtWidgets.QTableWidgetItem(diagnosis))
+                self.records_ui.PatientTable.setItem(row, 3, QtWidgets.QTableWidgetItem(date))
 
             # Adjust table appearance
-            self.ui.PatientTable.resizeColumnsToContents()
-            self.ui.PatientTable.horizontalHeader().setStretchLastSection(True)
+            self.records_ui.PatientTable.resizeColumnsToContents()
+            self.records_ui.PatientTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
             print(f"Error populating Patient Table: {e}")

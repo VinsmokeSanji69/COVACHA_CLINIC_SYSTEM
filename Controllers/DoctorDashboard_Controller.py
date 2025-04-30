@@ -1,10 +1,19 @@
 from PyQt5 import QtWidgets, QtCore, Qt
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
+from PyQt5.QtCore import pyqtSlot, QTimer
+from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, \
+    QWidget, QSizePolicy, QHeaderView, QStackedWidget, QMainWindow
+
+from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Controllers.DoctorDiagnosis_Controller import DoctorDiagnosis
 from Controllers.DoctorRecords_Controller import DoctorRecords
-from Views.Doctor_Dashboard import Ui_MainWindow as DoctorDashboardUi
+from Controllers.DoctorPatientList_Controller import DoctorPatientList
+from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
+from Views.Doctor_Dashboard import Ui_Doctor_Dashboard
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Views.Doctor_Records import Ui_Doctor_Records
+import datetime
+
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -42,55 +51,210 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
+
 class DoctorDashboardController(QMainWindow):
     def __init__(self, doc_id, fname, lname, specialty):
         super().__init__()
-        self.ui = DoctorDashboardUi()
-        self.ui.setupUi(self)
+        self.doc_id = doc_id
+        self.setWindowTitle("Doctor Dashboard")
 
-        # Store the doctor's details
+        # Store doctor ID
         self.doc_id = doc_id
         self.fname = fname
         self.lname = lname
-        self.specialty = specialty.title()
+        self.specialty = specialty
 
-        # Example: Set up UI elements (customize as needed)
-        self.ui.User.setText(f"{fname.title()} {lname.title()}")
-        self.ui.UserSpecialty.setText(specialty)
+        # Create central widget
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
 
-        # Populate the PatientDetails table with pending check-ups
+        # Main layout for central widget
+        self.main_layout = QVBoxLayout(self.central_widget)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.setSpacing(0)
+
+        # Create a shared single navbar
+        self.navbar_ui = Ui_Doctor_Dashboard()
+
+        # Create stacked widget for page content (navbar + content area for each page)
+        self.page_stack = QStackedWidget()
+        self.main_layout.addWidget(self.page_stack)
+
+        # Initialize pages
+        self.setup_pages()
+
+        # Setup timer for time updates
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_time_labels)
+        self.timer.start(1000)
+
+        # Connect navigation buttons - will be connected for each page
+        self.connect_all_buttons()
+
+        # Start with dashboard view
+        self.go_to_dashboard()
+
+        # Responsive table for Record Page
+        # DoneTable
+        header = self.records_ui.DoneTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.records_ui.DoneTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.records_ui.DoneTable.setWordWrap(True)
+        self.records_ui.DoneTable.resizeRowsToContents()
+
+        # AcceptedCheckUp
+        header = self.checkup_ui.AcceptedCheckUp.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.checkup_ui.AcceptedCheckUp.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.checkup_ui.AcceptedCheckUp.setWordWrap(True)
+        self.checkup_ui.AcceptedCheckUp.resizeRowsToContents()
+
+        # Responsive table for Dashboard Page
+        # PatientDetails (?)
+        header = self.dashboard_ui.PatientDetails.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.dashboard_ui.PatientDetails.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.dashboard_ui.PatientDetails.setWordWrap(True)
+        self.dashboard_ui.PatientDetails.resizeRowsToContents()
+
+        # Responsive table for Dashboard Page
+        # PatientDetails (?)
+        header = self.checkup_ui.DoneTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.checkup_ui.DoneTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.checkup_ui.DoneTable.setWordWrap(True)
+        self.checkup_ui.DoneTable.resizeRowsToContents()
+
+        # self.checkups = []
+        self.doctor_records = DoctorRecords(self.doc_id, self.checkup_ui)
+        self.doctor_checkup = DoctorCheckUpList(self.doc_id, self.records_ui)
+
         self.load_pending_checkups()
+        # self.get_accepted_checkup()
+        # self.get_done_checkup()
+        #
+        # self.get_done_checkup()
+
+        self.apply_table_styles(self.dashboard_ui.PatientDetails)
+        self.apply_table_styles(self.checkup_ui.AcceptedCheckUp)
+        self.apply_table_styles(self.checkup_ui.DoneTable)
+        self.apply_table_styles(self.records_ui.DoneTable)
+
+
+    def setup_pages(self):
+        """Set up complete pages with navbar and content"""
+        # Dashboard page
+        self.dashboard_page = QWidget()
+        self.dashboard_ui = Ui_Doctor_Dashboard()
+        self.dashboard_ui.setupUi(self.dashboard_page)
+        self.page_stack.addWidget(self.dashboard_page)
+
+        # Records page
+        self.records_page = QWidget()
+        self.records_ui = Ui_Doctor_CheckUpList()
+        self.records_ui.setupUi(self.records_page)
+        self.page_stack.addWidget(self.records_page)
+
+        # Patient page
+        self.checkup_page = QWidget()
+        self.checkup_ui = Ui_Doctor_Records()
+        self.checkup_ui.setupUi(self.checkup_page)
+        self.page_stack.addWidget(self.checkup_page)
+
+    def connect_all_buttons(self):
+        """Connect navigation buttons for all pages"""
+        # Connect dashboard page buttons
+        self.dashboard_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
+        self.dashboard_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
+        self.dashboard_ui.RecordsButton.clicked.connect(self.go_to_records)
+
+        # Connect checkup  page buttons
+        self.checkup_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
+        self.checkup_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
+        self.checkup_ui.RecordsButton.clicked.connect(self.go_to_records)
+
+        # Connect records page buttons
+        self.records_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
+        self.records_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
+        self.records_ui.RecordsButton.clicked.connect(self.go_to_records)
 
         # Connect the Accept Check-Up button
-        self.ui.AcceptCheckUp.clicked.connect(self.accept_checkup)
+        self.dashboard_ui.AcceptCheckUp.clicked.connect(self.accept_checkup)
 
-        print("Doctor Dashboard UI initialized!")
 
-        self.apply_table_styles()
+    @pyqtSlot()
+    def go_to_dashboard(self):
+        """Switch to the dashboard page"""
+        print("Navigating to Dashboard")
+        self.page_stack.setCurrentWidget(self.dashboard_page)
+        self.update_time_labels()
 
-        if hasattr(self.ui, 'RecordButton'):
-            print("RecordButton exists")
-            self.ui.RecordButton.clicked.connect(self.ViewRecord)
-            print("RecordButton connected to button_clicked method!")
-        else:
-            print("RecordButton is missing!")
+    @pyqtSlot()
+    def go_to_checkup_list(self):
+        """Switch to the transactions page"""
+        print("Navigating to Check Up List")
+        self.page_stack.setCurrentWidget(self.checkup_page)
+        self.update_time_labels()
 
-    def ViewRecord(self):
-        print("StaffButton clicked!")
+    @pyqtSlot()
+    def go_to_records(self):
+        """Switch to the records page"""
+        print("Navigating to Records")
+        self.page_stack.setCurrentWidget(self.records_page)
+        self.update_time_labels()
+
+    def ViewPatient(self):
+        print("PatientButton clicked!")
         try:
             # Instantiate and show the AdminStaffsController window
-            self.record_controller = DoctorRecords(self.doc_id)
-            self.record_controller.show()
-            self.hide()  # Hide the current dashboard window
+            self.patient_controller = DoctorPatientList(self.doc_id)
+            self.patient_controller.show()
+            self.hide()
         except Exception as e:
             print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
-    def apply_table_styles(self):
-        """Apply custom styles to the tables"""
-        # Style for PatientDetails table
-        self.ui.PatientDetails.setStyleSheet("""
-               QTableWidget {
+    def update_time_labels(self):
+        """Update time labels on the current page"""
+        now = datetime.datetime.now()
+        current_page_index = self.page_stack.currentIndex()
+
+        if current_page_index == 0:  # Dashboard
+            ui = self.dashboard_ui
+        elif current_page_index == 1:  # Transactions
+            ui = self.checkup_ui
+        elif current_page_index == 2:
+            ui = self.records_ui
+        else:
+            return
+
+        if hasattr(ui, 'Time'):
+            ui.Time.setText(now.strftime("%I:%M %p"))
+        if hasattr(ui, 'Day'):
+            ui.Day.setText(now.strftime("%A"))
+        if hasattr(ui, 'Month'):
+            ui.Month.setText(f"{now.strftime('%B')} {now.day}, {now.year}")
+
+    def ViewRecord(self):
+        print("RecordButton clicked!")
+        try:
+            # Instantiate and show the AdminStaffsController window
+            self.record_controller = DoctorRecords(self.doc_id)
+            self.record_controller.show()
+            self.hide()
+        except Exception as e:
+            print(f"Error loading tables: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
+
+    def apply_table_styles(self, table_widget):
+        """Apply custom styles to the given table widget."""
+
+        table_widget.setStyleSheet("""
+            QTableWidget {
                 background-color: #F4F7ED;
                 gridline-color: transparent;
                 border-radius: 10px;
@@ -109,38 +273,38 @@ class DoctorDashboardController(QMainWindow):
                 font: 18px "Lexend Medium";
                 border: 2px solid #2E6E65;
             }
-            
-            Scroll Area CSS
+
+            /* Scroll Area CSS */
             QScrollBar:vertical {
-                 background: transparent;
-                 width: 10px;
+                background: transparent;
+                width: 10px;
                 border-radius: 5px;
             }
             QScrollBar::handle:vertical {
-                    background: #C0C0C0;
-                    border-radius: 5px;
+                background: #C0C0C0;
+                border-radius: 5px;
             }
             QScrollBar::handle:vertical:hover {
-                    background: #A0A0A0;
+                background: #A0A0A0;
             }
             QScrollBar::add-line:vertical,
             QScrollBar::sub-line:vertical{
-                    background: none;
-                    border: none;
+                background: none;
+                border: none;
             }
-           """)
+        """)
 
         # Ensure horizontal headers are visible
-        self.ui.PatientDetails.horizontalHeader().setVisible(True)
+        table_widget.horizontalHeader().setVisible(True)
 
         # Align headers to the left
-        self.ui.PatientDetails.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        table_widget.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
 
         # Hide the vertical header (row index)
-        self.ui.PatientDetails.verticalHeader().setVisible(False)
+        table_widget.verticalHeader().setVisible(False)
 
         # Set selection behavior
-        self.ui.PatientDetails.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        table_widget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
     def load_pending_checkups(self):
         """Fetch and display pending check-ups in the PatientDetails table."""
@@ -148,21 +312,23 @@ class DoctorDashboardController(QMainWindow):
             # Fetch pending check-ups from the database
             pending_checkups = CheckUp.get_pending_checkups()
 
+            # self.checkups = CheckUp.get_all_checkups()
+
             # Clear the table before populating it
-            self.ui.PatientDetails.setRowCount(0)
+            self.dashboard_ui.PatientDetails.setRowCount(0)
 
             # Check if there are no pending check-ups
             if not pending_checkups:
                 print("No pending check-ups found.")
 
                 # Add a single row with the message "No Patient Yet"
-                self.ui.PatientDetails.insertRow(0)
+                self.dashboard_ui.PatientDetails.insertRow(0)
                 no_data_item = QTableWidgetItem("No Patient Yet")
-                self.ui.PatientDetails.setItem(0, 0, no_data_item)
+                self.dashboard_ui.PatientDetails.setItem(0, 0, no_data_item)
 
                 # Span the message across all columns
-                column_count = self.ui.PatientDetails.columnCount()
-                self.ui.PatientDetails.setSpan(0, 0, 1, column_count)
+                column_count = self.dashboard_ui.PatientDetails.columnCount()
+                self.dashboard_ui.PatientDetails.setSpan(0, 0, 1, column_count)
                 return
 
             # Populate the table with pending check-ups
@@ -180,18 +346,18 @@ class DoctorDashboardController(QMainWindow):
                 full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
                 # Insert data into the table in the new column order (Check Up ID, Patient ID, Name)
-                self.ui.PatientDetails.insertRow(row)
-                self.ui.PatientDetails.setItem(row, 0, QTableWidgetItem(chck_id))  # Check Up ID
-                self.ui.PatientDetails.setItem(row, 1, QTableWidgetItem(str(pat_id)))  # Patient ID
-                self.ui.PatientDetails.setItem(row, 2, QTableWidgetItem(full_name))  # Name
+                self.dashboard_ui.PatientDetails.insertRow(row)
+                self.dashboard_ui.PatientDetails.setItem(row, 0, QTableWidgetItem(chck_id))  # Check Up ID
+                self.dashboard_ui.PatientDetails.setItem(row, 1, QTableWidgetItem(str(pat_id)))  # Patient ID
+                self.dashboard_ui.PatientDetails.setItem(row, 2, QTableWidgetItem(full_name))  # Name
 
             # Resize columns to fit the content
-            self.ui.PatientDetails.resizeColumnsToContents()
+            self.dashboard_ui.PatientDetails.resizeColumnsToContents()
 
             # Optionally, set minimum widths for specific columns
-            self.ui.PatientDetails.setColumnWidth(0, 150)
-            self.ui.PatientDetails.setColumnWidth(1, 150)
-            self.ui.PatientDetails.setColumnWidth(2, 200)
+            self.dashboard_ui.PatientDetails.setColumnWidth(0, 150)
+            self.dashboard_ui.PatientDetails.setColumnWidth(1, 150)
+            self.dashboard_ui.PatientDetails.setColumnWidth(2, 200)
 
         except Exception as e:
             print(f"Error loading pending check-ups: {e}")
@@ -200,7 +366,7 @@ class DoctorDashboardController(QMainWindow):
         """Handle the Accept Check-Up button click."""
         try:
             # Get the selected row from the check-up table
-            selected_row = self.ui.PatientDetails.currentRow()
+            selected_row = self.dashboard_ui.PatientDetails.currentRow()
             if selected_row == -1:
                 QMessageBox.warning(self, "Selection Error", "Please select a check-up to accept.")
                 return
@@ -208,7 +374,7 @@ class DoctorDashboardController(QMainWindow):
             print("Selected row:", selected_row)
 
             # Get the check-up ID from the selected row
-            chck_id = self.ui.PatientDetails.item(selected_row, 0).text()  # Assuming chck_id is in column 0
+            chck_id = self.dashboard_ui.PatientDetails.item(selected_row, 0).text()  # Assuming chck_id is in column 0
             print(f"Selected check-up ID: {chck_id}")
 
             # Show confirmation dialog
@@ -246,3 +412,5 @@ class DoctorDashboardController(QMainWindow):
         except Exception as e:
             print(f"Error opening DoctorDiagnosis window: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
+
+

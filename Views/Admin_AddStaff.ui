@@ -7,13 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>640</height>
+    <height>700</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="baseSize">
    <size>
     <width>800</width>
-    <height>640</height>
+    <height>700</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -49,16 +55,30 @@
        <string notr="true">QLabel {
 	font: bold 20pt &quot;Satoshi Black&quot;;
 	color: #2E6E65;
-    qproperty-wordWrap: true;
 	background: transparent;
+	text-align: center;
 }
 #Subheader {
 	font: 500 14pt &quot;Satoshi Medium&quot;;
-}</string>
+	text-align: center;
+}
+</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QLabel" name="Title">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>501</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>COVHACHA DIAGNOSTIC SYSTEM</string>
          </property>
@@ -67,8 +87,20 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QLabel" name="Subheader">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Staff Registration Form</string>
          </property>
@@ -80,10 +112,10 @@
       </layout>
      </widget>
     </item>
-    <item>
+    <item alignment="Qt::AlignTop">
      <widget class="QWidget" name="Body" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -246,6 +278,18 @@ QCalendarWidget QTableView {
        </property>
        <item alignment="Qt::AlignTop">
         <widget class="QWidget" name="StaffTypeCon" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>55</height>
+          </size>
+         </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <property name="spacing">
            <number>10</number>
@@ -365,7 +409,7 @@ QCalendarWidget QTableView {
        <item alignment="Qt::AlignTop">
         <widget class="QWidget" name="StaffNameCon" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -393,7 +437,7 @@ QCalendarWidget QTableView {
             </property>
            </widget>
           </item>
-          <item alignment="Qt::AlignTop">
+          <item>
            <widget class="QWidget" name="upper" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <property name="spacing">
@@ -422,13 +466,13 @@ QCalendarWidget QTableView {
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>60</height>
+                 <height>55</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
-                 <height>60</height>
+                 <height>16777215</height>
                 </size>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -553,7 +597,7 @@ QCalendarWidget QTableView {
                   </layout>
                  </widget>
                 </item>
-                <item>
+                <item alignment="Qt::AlignTop">
                  <widget class="QWidget" name="widget_8" native="true">
                   <layout class="QVBoxLayout" name="verticalLayout_14">
                    <property name="spacing">
@@ -569,7 +613,7 @@ QCalendarWidget QTableView {
                     <number>0</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>8</number>
+                    <number>0</number>
                    </property>
                    <item>
                     <widget class="QLabel" name="label_4">
@@ -592,29 +636,20 @@ QCalendarWidget QTableView {
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>35</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>35</height>
+                      </size>
+                     </property>
                     </widget>
                    </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item alignment="Qt::AlignTop">
-                 <widget class="QWidget" name="widget_5" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_11">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
                   </layout>
                  </widget>
                 </item>
@@ -639,7 +674,7 @@ QCalendarWidget QTableView {
                 <property name="bottomMargin">
                  <number>0</number>
                 </property>
-                <item>
+                <item alignment="Qt::AlignRight">
                  <widget class="QLabel" name="Indicator">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -667,7 +702,7 @@ QCalendarWidget QTableView {
        <item alignment="Qt::AlignTop">
         <widget class="QWidget" name="Specialization" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -697,6 +732,12 @@ QCalendarWidget QTableView {
           </item>
           <item alignment="Qt::AlignTop">
            <widget class="QWidget" name="widget_6" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <property name="spacing">
               <number>10</number>
@@ -834,7 +875,7 @@ QCalendarWidget QTableView {
        <item alignment="Qt::AlignTop">
         <widget class="QWidget" name="StaffInfo" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -856,14 +897,20 @@ QCalendarWidget QTableView {
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="DocLincense">
+           <widget class="QLabel" name="Title_3">
             <property name="text">
              <string>General Information</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignTop">
            <widget class="QWidget" name="upper_2" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <property name="spacing">
               <number>10</number>
@@ -992,7 +1039,7 @@ QCalendarWidget QTableView {
                </layout>
               </widget>
              </item>
-             <item>
+             <item alignment="Qt::AlignTop">
               <widget class="QWidget" name="widget_15" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_21">
                 <property name="spacing">
@@ -1051,8 +1098,14 @@ QCalendarWidget QTableView {
             </layout>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignTop">
            <widget class="QWidget" name="lower_2" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <property name="spacing">
               <number>10</number>
@@ -1066,7 +1119,7 @@ QCalendarWidget QTableView {
              <property name="rightMargin">
               <number>0</number>
              </property>
-             <item>
+             <item alignment="Qt::AlignTop">
               <widget class="QWidget" name="widget_9" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_15">
                 <property name="spacing">
@@ -1100,17 +1153,29 @@ QCalendarWidget QTableView {
                 <item>
                  <widget class="QLineEdit" name="Email">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>35</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>35</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
                </layout>
               </widget>
              </item>
-             <item>
+             <item alignment="Qt::AlignTop">
               <widget class="QWidget" name="widget_17" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_23">
                 <property name="spacing">
@@ -1166,7 +1231,7 @@ QCalendarWidget QTableView {
                </layout>
               </widget>
              </item>
-             <item>
+             <item alignment="Qt::AlignTop">
               <widget class="QWidget" name="widget_18" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_24">
                 <property name="spacing">
@@ -1239,6 +1304,11 @@ QCalendarWidget QTableView {
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="styleSheet">
+       <string notr="true">*{
+	text-align: center;
+}</string>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item alignment="Qt::AlignRight">
         <widget class="QWidget" name="widget" native="true">
@@ -1270,7 +1340,7 @@ QCalendarWidget QTableView {
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QPushButton" name="Cancel">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -1305,7 +1375,7 @@ QCalendarWidget QTableView {
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QPushButton" name="AddStaff">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -1350,7 +1420,7 @@ QCalendarWidget QTableView {
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../Images/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

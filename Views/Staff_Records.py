@@ -11,11 +11,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1048, 692)
-        MainWindow.setStyleSheet("*{\n"
+class Ui_Staff_Records(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(1137, 737)
+        Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
@@ -24,14 +24,14 @@ class Ui_MainWindow(object):
 "    font: 900 10pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
-"    font-weight: bold;\n"
+"    font-weight: bold;    \n"
 "    font-size: 25px;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
 "}\n"
 "#NavBar {\n"
-"    background-color: #2E6E65;\n"
+"    background-color: #2E6E65; \n"
 "}\n"
 "QLabel {\n"
 "    font: 900 10pt \"Satoshi Black\";\n"
@@ -43,13 +43,11 @@ class Ui_MainWindow(object):
 "    background: transparent;\n"
 "}\n"
 "")
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.NavBar = QtWidgets.QWidget(self.centralwidget)
+        self.NavBar = QtWidgets.QWidget(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -63,9 +61,9 @@ class Ui_MainWindow(object):
         self.DashBoardButton_2 = QtWidgets.QPushButton(self.NavBar)
         self.DashBoardButton_2.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashBoardButton_2.setIcon(icon)
-        self.DashBoardButton_2.setIconSize(QtCore.QSize(30, 30))
+        self.DashBoardButton_2.setIconSize(QtCore.QSize(40, 40))
         self.DashBoardButton_2.setObjectName("DashBoardButton_2")
         self.verticalLayout_3.addWidget(self.DashBoardButton_2)
         spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
@@ -76,51 +74,55 @@ class Ui_MainWindow(object):
         self.MainButtons_2.setObjectName("MainButtons_2")
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
-        self.DashboardButton.setIconSize(QtCore.QSize(30, 30))
+        self.DashboardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashboardButton.setObjectName("DashboardButton")
         self.MainButtons_2.addWidget(self.DashboardButton)
-        self.pushButton_7 = QtWidgets.QPushButton(self.NavBar)
-        self.pushButton_7.setStyleSheet("QPushButton{\n"
-"    border: 2px solid white;\n"
-"}")
+        self.RecordsButton = QtWidgets.QPushButton(self.NavBar)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_7.setIcon(icon2)
-        self.pushButton_7.setIconSize(QtCore.QSize(30, 30))
-        self.pushButton_7.setObjectName("pushButton_7")
-        self.MainButtons_2.addWidget(self.pushButton_7)
-        self.TransactionButton = QtWidgets.QPushButton(self.NavBar)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.RecordsButton.setIcon(icon2)
+        self.RecordsButton.setIconSize(QtCore.QSize(40, 40))
+        self.RecordsButton.setObjectName("RecordsButton")
+        self.MainButtons_2.addWidget(self.RecordsButton)
+        self.TransactionsButton = QtWidgets.QPushButton(self.NavBar)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.TransactionButton.setIcon(icon3)
-        self.TransactionButton.setIconSize(QtCore.QSize(30, 30))
-        self.TransactionButton.setObjectName("TransactionButton")
-        self.MainButtons_2.addWidget(self.TransactionButton)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.TransactionsButton.setIcon(icon3)
+        self.TransactionsButton.setIconSize(QtCore.QSize(40, 40))
+        self.TransactionsButton.setObjectName("TransactionsButton")
+        self.MainButtons_2.addWidget(self.TransactionsButton)
+        self.LabButton = QtWidgets.QPushButton(self.NavBar)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/test-tubes.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.LabButton.setIcon(icon4)
+        self.LabButton.setIconSize(QtCore.QSize(40, 40))
+        self.LabButton.setObjectName("LabButton")
+        self.MainButtons_2.addWidget(self.LabButton)
         self.verticalLayout_3.addLayout(self.MainButtons_2)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem1)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ProfileButton.setIcon(icon4)
-        self.ProfileButton.setIconSize(QtCore.QSize(30, 30))
-        self.ProfileButton.setObjectName("ProfileButton")
-        self.verticalLayout_4.addWidget(self.ProfileButton)
-        self.LogoutButton = QtWidgets.QPushButton(self.NavBar)
+        self.pushButton_9 = QtWidgets.QPushButton(self.NavBar)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.LogoutButton.setIcon(icon5)
-        self.LogoutButton.setIconSize(QtCore.QSize(30, 30))
-        self.LogoutButton.setObjectName("LogoutButton")
-        self.verticalLayout_4.addWidget(self.LogoutButton)
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_9.setIcon(icon5)
+        self.pushButton_9.setIconSize(QtCore.QSize(40, 40))
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.verticalLayout_4.addWidget(self.pushButton_9)
+        self.pushButton_10 = QtWidgets.QPushButton(self.NavBar)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_10.setIcon(icon6)
+        self.pushButton_10.setIconSize(QtCore.QSize(40, 40))
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.verticalLayout_4.addWidget(self.pushButton_10)
         self.verticalLayout_3.addLayout(self.verticalLayout_4)
         self.horizontalLayout.addWidget(self.NavBar)
-        self.MainBodyContainer = QtWidgets.QFrame(self.centralwidget)
+        self.MainBodyContainer = QtWidgets.QFrame(Form)
         self.MainBodyContainer.setStyleSheet("#MainBodyContainer {\n"
 "    background-color: #f0f0f0;\n"
 "}\n"
@@ -129,7 +131,7 @@ class Ui_MainWindow(object):
 "    padding: 20px 20px;\n"
 "}\n"
 "QLabel {\n"
-"    padding: 0px;\n"
+"    padding: 0px; \n"
 "}\n"
 "#UserType {\n"
 "    font: 300 10pt \"Lexend Light\";\n"
@@ -138,16 +140,16 @@ class Ui_MainWindow(object):
 "}\n"
 "#UserName {\n"
 "    font: 600 10pt \"Lexend SemiBold\";\n"
-"    font-size: 20px;\n"
+"    font-size: 25px;\n"
 "    color: #2B3752;\n"
 "}\n"
 "#InterfaceTitle{\n"
-"    font-size: 35px;\n"
+"    font-size: 40px;\n"
 "}\n"
 "QGraphicsView {\n"
-"    border: 2px solid #ccc;\n"
+"    border: 2px solid #ccc; \n"
 "    border-radius: 25px;\n"
-"    background: white;\n"
+"    background: white; \n"
 "}\n"
 "\n"
 "\n"
@@ -184,6 +186,10 @@ class Ui_MainWindow(object):
         self.UserName.setAlignment(QtCore.Qt.AlignLeading)
         self.UserName.setObjectName("UserName")
         self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight)
+        self.UserType = QtWidgets.QLabel(self.Header)
+        self.UserType.setAlignment(QtCore.Qt.AlignLeading)
+        self.UserType.setObjectName("UserType")
+        self.UserInfo.addWidget(self.UserType, 0, QtCore.Qt.AlignRight)
         self.UserPanel.addLayout(self.UserInfo)
         self.Profile = QtWidgets.QFrame(self.Header)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -263,7 +269,7 @@ class Ui_MainWindow(object):
         self.SearchBar.setMaximumSize(QtCore.QSize(500, 16777215))
         self.SearchBar.setStyleSheet("#SearchBar {\n"
 "    background-color: #F4F7ED;\n"
-"    border: 2px solid #2E6E65;\n"
+"    border: 2px solid #2E6E65; \n"
 "    border-radius: 15px;\n"
 "}\n"
 "#Search{\n"
@@ -277,10 +283,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.Icon = QtWidgets.QPushButton(self.SearchBar)
         self.Icon.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Icon.setIcon(icon6)
-        self.Icon.setIconSize(QtCore.QSize(30, 30))
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Icon.setIcon(icon7)
+        self.Icon.setIconSize(QtCore.QSize(40, 30))
         self.Icon.setObjectName("Icon")
         self.horizontalLayout_3.addWidget(self.Icon)
         self.Search = QtWidgets.QLineEdit(self.SearchBar)
@@ -290,12 +296,12 @@ class Ui_MainWindow(object):
         spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem2)
         self.StatusBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.StatusBox.sizePolicy().hasHeightForWidth())
         self.StatusBox.setSizePolicy(sizePolicy)
-        self.StatusBox.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.StatusBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.StatusBox.setStyleSheet("QComboBox {\n"
 "    background-color: #D9E4DC;\n"
 "    border: 2px solid #2E6E65;\n"
@@ -322,7 +328,7 @@ class Ui_MainWindow(object):
 "    selection-background-color: #CCE3D0;\n"
 "    border: 1px solid #2E6E65;\n"
 "    border-radius: 2px;\n"
-"    outline: 0;\n"
+"    outline: 0;  \n"
 "    font: 300 12pt \"Lexend Light\";\n"
 "}")
         self.StatusBox.setEditable(False)
@@ -330,7 +336,12 @@ class Ui_MainWindow(object):
         self.StatusBox.addItem("")
         self.horizontalLayout_4.addWidget(self.StatusBox)
         self.TypeBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        self.TypeBox.setMaximumSize(QtCore.QSize(100, 16777215))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.TypeBox.sizePolicy().hasHeightForWidth())
+        self.TypeBox.setSizePolicy(sizePolicy)
+        self.TypeBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.TypeBox.setStyleSheet("QComboBox {\n"
 "    background-color: #D9E4DC;\n"
 "    border: 2px solid #2E6E65;\n"
@@ -357,14 +368,19 @@ class Ui_MainWindow(object):
 "    selection-background-color: #CCE3D0;\n"
 "    border: 1px solid #2E6E65;\n"
 "    border-radius: 2px;\n"
-"    outline: 0;\n"
+"    outline: 0;  \n"
 "    font: 300 12pt \"Lexend Light\";\n"
 "}")
         self.TypeBox.setObjectName("TypeBox")
         self.TypeBox.addItem("")
         self.horizontalLayout_4.addWidget(self.TypeBox)
         self.DateBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        self.DateBox.setMaximumSize(QtCore.QSize(100, 16777215))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.DateBox.sizePolicy().hasHeightForWidth())
+        self.DateBox.setSizePolicy(sizePolicy)
+        self.DateBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.DateBox.setStyleSheet("QComboBox {\n"
 "    background-color: #D9E4DC;\n"
 "    border: 2px solid #2E6E65;\n"
@@ -391,7 +407,7 @@ class Ui_MainWindow(object):
 "    selection-background-color: #CCE3D0;\n"
 "    border: 1px solid #2E6E65;\n"
 "    border-radius: 2px;\n"
-"    outline: 0;\n"
+"    outline: 0;  \n"
 "    font: 300 12pt \"Lexend Light\";\n"
 "}")
         self.DateBox.setObjectName("DateBox")
@@ -405,43 +421,28 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addWidget(self.SearchBarContainer)
         self.DoneTable = QtWidgets.QTableWidget(self.MainBody)
         self.DoneTable.setStyleSheet("QTableWidget {\n"
-"    border: 2px solid white;\n"
-"    border-radius: 15px;\n"
-"    background-color: white;\n"
-"    border-color: #2e6e65;\n"
+"    background-color: #F4F7ED;\n"
+"    gridline-color: transparent;\n"
+"    border-radius: 8px;\n"
+"    border: 2px solid #2E6E65;\n"
 "}\n"
-"\n"
-"QHeaderView {\n"
+"QTableWidget::item {\n"
 "    border: none;\n"
-"    font: 700 16pt \"Arial\";\n"
-"    background-color: #2e6e65;\n"
-"    color: #f4f7ed;\n"
-"    padding: 0px;\n"
-"    margin: 0px;\n"
-"    border-top-left-radius: 10px;\n"
-"    border-top-right-radius: 10px;\n"
+"    font:500 16pt \"Satoshi\";\n"
+"    color: #2B3752;\n"
 "}\n"
-"\n"
-"QHeaderView::section {\n"
-"    border: none;\n"
-"    text-align: left;\n"
-"    font: 700 16pt \"Arial\";\n"
-"    background-color: #2e6e65;\n"
-"    color: #f4f7ed;\n"
+"QTableWidget::item:selected {\n"
+"    background-color: rgba(46, 110, 101, 0.3);\n"
+"}\n"
+"QTableWidget QHeaderView::section {\n"
+"    background-color: #2E6E65;\n"
+"    color: white;\n"
 "    padding: 5px;\n"
-"    margin: 0px;\n"
-"}\n"
-"\n"
-"QHeaderView::section:first {\n"
-"    border-top-left-radius: 10px;\n"
-"}\n"
-"\n"
-"QHeaderView::section:last {\n"
-"    border-top-right-radius: 10px;\n"
-"}\n"
-"")
+"    font: 700 15pt \"Satoshi\";\n"
+"    border: 2px solid #2E6E65;\n"
+"}")
         self.DoneTable.setObjectName("DoneTable")
-        self.DoneTable.setColumnCount(5)
+        self.DoneTable.setColumnCount(4)
         self.DoneTable.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.DoneTable.setHorizontalHeaderItem(0, item)
@@ -451,37 +452,36 @@ class Ui_MainWindow(object):
         self.DoneTable.setHorizontalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.DoneTable.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.DoneTable.setHorizontalHeaderItem(4, item)
+        self.DoneTable.horizontalHeader().setStretchLastSection(True)
         self.verticalLayout_7.addWidget(self.DoneTable)
         self.verticalLayout_5.addWidget(self.MainBody)
         self.horizontalLayout.addWidget(self.MainBodyContainer)
-        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.DashboardButton.setText(_translate("MainWindow", "Dashboard"))
-        self.pushButton_7.setText(_translate("MainWindow", "Records"))
-        self.TransactionButton.setText(_translate("MainWindow", "Transactions"))
-        self.ProfileButton.setText(_translate("MainWindow", "Profile"))
-        self.LogoutButton.setText(_translate("MainWindow", "Logout"))
-        self.InterfaceTitle.setText(_translate("MainWindow", "Check Ups"))
-        self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
-        self.StatusBox.setItemText(0, _translate("MainWindow", "Status"))
-        self.TypeBox.setItemText(0, _translate("MainWindow", "Type"))
-        self.DateBox.setItemText(0, _translate("MainWindow", "Date"))
-        self.AddButton.setText(_translate("MainWindow", "Add Check Up"))
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.DashboardButton.setText(_translate("Form", "Dashboard"))
+        self.RecordsButton.setText(_translate("Form", "Records"))
+        self.TransactionsButton.setText(_translate("Form", "Transactions"))
+        self.LabButton.setText(_translate("Form", "Lab Request"))
+        self.pushButton_9.setText(_translate("Form", "Settings"))
+        self.pushButton_10.setText(_translate("Form", "Logout"))
+        self.InterfaceTitle.setText(_translate("Form", "Records"))
+        self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
+        self.UserType.setText(_translate("Form", "Nurse"))
+        self.StatusBox.setItemText(0, _translate("Form", "Status"))
+        self.TypeBox.setItemText(0, _translate("Form", "Type"))
+        self.DateBox.setItemText(0, _translate("Form", "Date"))
+        self.AddButton.setText(_translate("Form", "Add Check Up"))
         item = self.DoneTable.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Patient ID"))
+        item.setText(_translate("Form", "Patient ID"))
         item = self.DoneTable.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Name"))
+        item.setText(_translate("Form", "Name"))
         item = self.DoneTable.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Diagnosis"))
+        item.setText(_translate("Form", "Diagnosis"))
         item = self.DoneTable.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Date Diagnosed"))
-        item = self.DoneTable.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "Action"))
+        item.setText(_translate("Form", "Date Diagnosed"))
+

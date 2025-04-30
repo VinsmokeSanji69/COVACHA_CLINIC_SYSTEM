@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtCore, QtWidgets
 from pkg_resources import non_empty_lines
 
-from Views.Staff_AddLabAttachment import Ui_MainWindow as StaffAddAttachmentUI
+from Views.Staff_AddLabAttachment import Ui_Staff_AddLabAttachment as StaffAddAttachmentUI
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFileDialog
 from Models.CheckUp import CheckUp
 from Models.LaboratoryTest import Laboratory

@@ -9,36 +9,28 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Images import resources
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
-        MainWindow.resize(1150, 805)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
-        MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setBaseSize(QtCore.QSize(1150, 805))
-        MainWindow.setStyleSheet("*{\n"
+
+class Ui_Admin_Dashboard(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(1003, 608)
+        Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 10pt \"Satoshi Black\";\n"
+"    font: 900 16pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
-"    font-weight: bold;\n"
-"    font-size: 25px;\n"
+"    font-weight: bold;    \n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
 "}\n"
 "#NavBar {\n"
-"    background-color: #2E6E65;\n"
+"    background-color: #2E6E65; \n"
 "}\n"
 "QLabel {\n"
 "    font: 900 10pt \"Satoshi Black\";\n"
@@ -51,18 +43,11 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "")
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
-        self.centralwidget.setSizePolicy(sizePolicy)
-        self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.NavBar = QtWidgets.QWidget(self.centralwidget)
+        self.NavBar = QtWidgets.QWidget(Form)
         self.NavBar.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -77,17 +62,17 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.NavBar)
         self.verticalLayout.setContentsMargins(10, 10, 10, 10)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.DashboardButton_2 = QtWidgets.QPushButton(self.NavBar)
-        self.DashboardButton_2.setStyleSheet("QPushButton {\n"
+        self.NavBarButton = QtWidgets.QPushButton(self.NavBar)
+        self.NavBarButton.setStyleSheet("QPushButton {\n"
 "    padding: 10px 8px;\n"
 "}")
-        self.DashboardButton_2.setText("")
+        self.NavBarButton.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.DashboardButton_2.setIcon(icon)
-        self.DashboardButton_2.setIconSize(QtCore.QSize(35, 35))
-        self.DashboardButton_2.setObjectName("DashboardButton_2")
-        self.verticalLayout.addWidget(self.DashboardButton_2)
+        self.NavBarButton.setIcon(icon)
+        self.NavBarButton.setIconSize(QtCore.QSize(35, 35))
+        self.NavBarButton.setObjectName("NavBarButton")
+        self.verticalLayout.addWidget(self.NavBarButton)
         spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem)
         self.MainButtons = QtWidgets.QVBoxLayout()
@@ -96,22 +81,23 @@ class Ui_MainWindow(object):
         self.MainButtons.setObjectName("MainButtons")
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
         self.DashboardButton.setStyleSheet("QPushButton{\n"
-"    border: 2px solid white;\n"
-"}")
+"    font: 900 20pt \"Satoshi Black\";    \n"
+"}\n"
+"")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
         self.DashboardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashboardButton.setObjectName("DashboardButton")
         self.MainButtons.addWidget(self.DashboardButton)
-        self.StaffButton = QtWidgets.QPushButton(self.NavBar)
-        self.StaffButton.setStyleSheet("")
+        self.StaffsButton = QtWidgets.QPushButton(self.NavBar)
+        self.StaffsButton.setStyleSheet("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.StaffButton.setIcon(icon2)
-        self.StaffButton.setIconSize(QtCore.QSize(40, 40))
-        self.StaffButton.setObjectName("StaffButton")
-        self.MainButtons.addWidget(self.StaffButton)
+        self.StaffsButton.setIcon(icon2)
+        self.StaffsButton.setIconSize(QtCore.QSize(40, 40))
+        self.StaffsButton.setObjectName("StaffsButton")
+        self.MainButtons.addWidget(self.StaffsButton)
         self.PatientsButton = QtWidgets.QPushButton(self.NavBar)
         self.PatientsButton.setStyleSheet("")
         icon3 = QtGui.QIcon()
@@ -131,7 +117,7 @@ class Ui_MainWindow(object):
         self.ChargesButton = QtWidgets.QPushButton(self.NavBar)
         self.ChargesButton.setStyleSheet("")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/chart-no-axes-combined.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/hand-coins.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ChargesButton.setIcon(icon5)
         self.ChargesButton.setIconSize(QtCore.QSize(40, 40))
         self.ChargesButton.setObjectName("ChargesButton")
@@ -142,25 +128,25 @@ class Ui_MainWindow(object):
         self.SettingButtons = QtWidgets.QVBoxLayout()
         self.SettingButtons.setSpacing(15)
         self.SettingButtons.setObjectName("SettingButtons")
-        self.OverviewsButton_3 = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton_3.setStyleSheet("")
+        self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
+        self.ProfileButton.setStyleSheet("")
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton_3.setIcon(icon6)
-        self.OverviewsButton_3.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton_3.setObjectName("OverviewsButton_3")
-        self.SettingButtons.addWidget(self.OverviewsButton_3)
-        self.OverviewsButton_2 = QtWidgets.QPushButton(self.NavBar)
-        self.OverviewsButton_2.setStyleSheet("")
+        self.ProfileButton.setIcon(icon6)
+        self.ProfileButton.setIconSize(QtCore.QSize(40, 40))
+        self.ProfileButton.setObjectName("ProfileButton")
+        self.SettingButtons.addWidget(self.ProfileButton)
+        self.LogOutButton = QtWidgets.QPushButton(self.NavBar)
+        self.LogOutButton.setStyleSheet("")
         icon7 = QtGui.QIcon()
         icon7.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.OverviewsButton_2.setIcon(icon7)
-        self.OverviewsButton_2.setIconSize(QtCore.QSize(40, 40))
-        self.OverviewsButton_2.setObjectName("OverviewsButton_2")
-        self.SettingButtons.addWidget(self.OverviewsButton_2, 0, QtCore.Qt.AlignVCenter)
+        self.LogOutButton.setIcon(icon7)
+        self.LogOutButton.setIconSize(QtCore.QSize(40, 40))
+        self.LogOutButton.setObjectName("LogOutButton")
+        self.SettingButtons.addWidget(self.LogOutButton, 0, QtCore.Qt.AlignVCenter)
         self.verticalLayout.addLayout(self.SettingButtons)
         self.horizontalLayout_4.addWidget(self.NavBar)
-        self.MainBodyContainer = QtWidgets.QFrame(self.centralwidget)
+        self.MainBodyContainer = QtWidgets.QFrame(Form)
         self.MainBodyContainer.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -171,25 +157,23 @@ class Ui_MainWindow(object):
 "    padding: 20px 20px;\n"
 "}\n"
 "QLabel {\n"
-"    padding: 0px;\n"
+"    padding: 0px; \n"
 "}\n"
 "#UserType {\n"
-"    font: 300 10pt \"Lexend Light\";\n"
-"    font-size: 15px;\n"
+"    font: 500 12pt \"Satoshi\";\n"
 "    color: #2B3752;\n"
 "}\n"
 "#UserName {\n"
-"    font: 600 10pt \"Lexend SemiBold\";\n"
-"    font-size: 20px;\n"
+"    font: 900 16pt \"Satoshi\";\n"
 "    color: #2B3752;\n"
 "}\n"
 "#InterfaceTitle{\n"
 "    font-size: 35px;\n"
 "}\n"
 "QGraphicsView {\n"
-"    border: 2px solid #ccc;\n"
+"    border: 2px solid #ccc; \n"
 "    border-radius: 25px;\n"
-"    background: white;\n"
+"    background: white; \n"
 "}\n"
 "#NotificationBox{\n"
 "    background-color: #F4F7ED;\n"
@@ -290,7 +274,8 @@ class Ui_MainWindow(object):
         self.BodyLayout.setFrameShadow(QtWidgets.QFrame.Raised)
         self.BodyLayout.setObjectName("BodyLayout")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.BodyLayout)
-        self.horizontalLayout_5.setContentsMargins(20, -1, 20, 20)
+        self.horizontalLayout_5.setContentsMargins(20, 10, 20, 20)
+        self.horizontalLayout_5.setSpacing(10)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.Overviews = QtWidgets.QWidget(self.BodyLayout)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -303,9 +288,7 @@ class Ui_MainWindow(object):
 "    border: 2px solid #2E6E65;\n"
 "    border-radius: 12px;\n"
 "}\n"
-"#TDHeader, #TPHeader, #TSHeader {\n"
-"    font: 600 14pt \"Lexend SemiBold\";\n"
-"}\n"
+"\n"
 "#TotalPatient, #TotalDoctor, #TotalStaff {\n"
 "    color: #2B3752;\n"
 "    font: 900 20pt \"Satoshi Black\";\n"
@@ -326,7 +309,7 @@ class Ui_MainWindow(object):
 "}\n"
 "#Category, #Category_2, #Percentage, #Percentage_2 {\n"
 "    color: #2B3752;\n"
-"}\n"
+"} \n"
 "#OverviewSub, #OverviewSub_2 {\n"
 "    font: 300 10pt \"Lexend Light\";\n"
 "}\n"
@@ -344,6 +327,10 @@ class Ui_MainWindow(object):
 "    font: 10pt \"Lexend\";\n"
 "    color: #2B3752;\n"
 "}\n"
+"\n"
+"QPushButton {\n"
+"    padding: 0px;\n"
+"}\n"
 "")
         self.Overviews.setObjectName("Overviews")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.Overviews)
@@ -351,9 +338,15 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setSpacing(10)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.Column1 = QtWidgets.QWidget(self.Overviews)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Column1.sizePolicy().hasHeightForWidth())
+        self.Column1.setSizePolicy(sizePolicy)
+        self.Column1.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.Column1.setObjectName("Column1")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.Column1)
-        self.horizontalLayout_9.setContentsMargins(0, 0, 11, 0)
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_9.setSpacing(10)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.TotalPatientCon = QtWidgets.QWidget(self.Column1)
@@ -364,7 +357,7 @@ class Ui_MainWindow(object):
         self.TotalPatientCon.setSizePolicy(sizePolicy)
         self.TotalPatientCon.setObjectName("TotalPatientCon")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.TotalPatientCon)
-        self.verticalLayout_9.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_9.setContentsMargins(10, 10, 10, 15)
         self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.widget_3 = QtWidgets.QWidget(self.TotalPatientCon)
@@ -383,14 +376,15 @@ class Ui_MainWindow(object):
         self.DashboardButton_3.setObjectName("DashboardButton_3")
         self.horizontalLayout.addWidget(self.DashboardButton_3, 0, QtCore.Qt.AlignLeft)
         self.TPHeader = QtWidgets.QLabel(self.widget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.TPHeader.sizePolicy().hasHeightForWidth())
         self.TPHeader.setSizePolicy(sizePolicy)
         self.TPHeader.setAlignment(QtCore.Qt.AlignLeading)
+        self.TPHeader.setWordWrap(True)
         self.TPHeader.setObjectName("TPHeader")
-        self.horizontalLayout.addWidget(self.TPHeader, 0, QtCore.Qt.AlignVCenter)
+        self.horizontalLayout.addWidget(self.TPHeader)
         self.verticalLayout_9.addWidget(self.widget_3)
         self.TPValue = QtWidgets.QWidget(self.TotalPatientCon)
         self.TPValue.setObjectName("TPValue")
@@ -420,7 +414,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.verticalLayout_9.addWidget(self.TPSub, 0, QtCore.Qt.AlignTop)
-        self.horizontalLayout_9.addWidget(self.TotalPatientCon)
+        self.horizontalLayout_9.addWidget(self.TotalPatientCon, 0, QtCore.Qt.AlignTop)
         self.TotalDoctorCon = QtWidgets.QWidget(self.Column1)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -429,7 +423,7 @@ class Ui_MainWindow(object):
         self.TotalDoctorCon.setSizePolicy(sizePolicy)
         self.TotalDoctorCon.setObjectName("TotalDoctorCon")
         self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.TotalDoctorCon)
-        self.verticalLayout_10.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_10.setContentsMargins(10, 10, 10, 15)
         self.verticalLayout_10.setSpacing(0)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.widget = QtWidgets.QWidget(self.TotalDoctorCon)
@@ -452,6 +446,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.TDHeader.sizePolicy().hasHeightForWidth())
         self.TDHeader.setSizePolicy(sizePolicy)
         self.TDHeader.setAlignment(QtCore.Qt.AlignLeading)
+        self.TDHeader.setWordWrap(True)
         self.TDHeader.setObjectName("TDHeader")
         self.horizontalLayout_11.addWidget(self.TDHeader, 0, QtCore.Qt.AlignVCenter)
         self.verticalLayout_10.addWidget(self.widget)
@@ -483,7 +478,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.setSpacing(0)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
         self.verticalLayout_10.addWidget(self.TDSub, 0, QtCore.Qt.AlignTop)
-        self.horizontalLayout_9.addWidget(self.TotalDoctorCon)
+        self.horizontalLayout_9.addWidget(self.TotalDoctorCon, 0, QtCore.Qt.AlignTop)
         self.TotalStaffCon = QtWidgets.QWidget(self.Column1)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -492,7 +487,7 @@ class Ui_MainWindow(object):
         self.TotalStaffCon.setSizePolicy(sizePolicy)
         self.TotalStaffCon.setObjectName("TotalStaffCon")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.TotalStaffCon)
-        self.verticalLayout_11.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_11.setContentsMargins(10, 10, 10, 15)
         self.verticalLayout_11.setSpacing(0)
         self.verticalLayout_11.setObjectName("verticalLayout_11")
         self.widget_2 = QtWidgets.QWidget(self.TotalStaffCon)
@@ -515,7 +510,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.TSHeader.sizePolicy().hasHeightForWidth())
         self.TSHeader.setSizePolicy(sizePolicy)
         self.TSHeader.setLineWidth(1)
+        self.TSHeader.setScaledContents(False)
         self.TSHeader.setAlignment(QtCore.Qt.AlignLeading)
+        self.TSHeader.setWordWrap(True)
         self.TSHeader.setObjectName("TSHeader")
         self.horizontalLayout_14.addWidget(self.TSHeader, 0, QtCore.Qt.AlignVCenter)
         self.verticalLayout_11.addWidget(self.widget_2)
@@ -547,7 +544,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13.setSpacing(0)
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
         self.verticalLayout_11.addWidget(self.TSSub, 0, QtCore.Qt.AlignTop)
-        self.horizontalLayout_9.addWidget(self.TotalStaffCon)
+        self.horizontalLayout_9.addWidget(self.TotalStaffCon, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_8.addWidget(self.Column1, 0, QtCore.Qt.AlignTop)
         self.Column2 = QtWidgets.QWidget(self.Overviews)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -557,7 +554,7 @@ class Ui_MainWindow(object):
         self.Column2.setSizePolicy(sizePolicy)
         self.Column2.setObjectName("Column2")
         self.horizontalLayout_18 = QtWidgets.QHBoxLayout(self.Column2)
-        self.horizontalLayout_18.setContentsMargins(0, 0, 10, 0)
+        self.horizontalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_18.setSpacing(10)
         self.horizontalLayout_18.setObjectName("horizontalLayout_18")
         self.PatOverview = QtWidgets.QWidget(self.Column2)
@@ -706,16 +703,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_19.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_19.setSpacing(0)
         self.verticalLayout_19.setObjectName("verticalLayout_19")
-        self.OverviewProfile = QtWidgets.QGraphicsView(self.widget_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.OverviewProfile.sizePolicy().hasHeightForWidth())
-        self.OverviewProfile.setSizePolicy(sizePolicy)
-        self.OverviewProfile.setMinimumSize(QtCore.QSize(45, 45))
-        self.OverviewProfile.setMaximumSize(QtCore.QSize(45, 45))
-        self.OverviewProfile.setObjectName("OverviewProfile")
-        self.verticalLayout_19.addWidget(self.OverviewProfile)
         self.horizontalLayout_21.addWidget(self.widget_6, 0, QtCore.Qt.AlignLeft)
         self.widget_5 = QtWidgets.QWidget(self.CategoryLine_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
@@ -753,7 +740,7 @@ class Ui_MainWindow(object):
         self.PatientCount.setSizePolicy(sizePolicy)
         self.PatientCount.setAlignment(QtCore.Qt.AlignLeading)
         self.PatientCount.setObjectName("PatientCount")
-        self.horizontalLayout_23.addWidget(self.PatientCount)
+        self.horizontalLayout_23.addWidget(self.PatientCount, 0, QtCore.Qt.AlignRight)
         self.verticalLayout_20.addWidget(self.widget_11)
         self.widget_12 = QtWidgets.QWidget(self.widget_5)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -809,14 +796,19 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.PatOverview_2.sizePolicy().hasHeightForWidth())
         self.PatOverview_2.setSizePolicy(sizePolicy)
-        self.PatOverview_2.setMinimumSize(QtCore.QSize(259, 0))
-        self.PatOverview_2.setMaximumSize(QtCore.QSize(400, 16777215))
+        self.PatOverview_2.setMinimumSize(QtCore.QSize(400, 0))
+        self.PatOverview_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.PatOverview_2.setObjectName("PatOverview_2")
         self.verticalLayout_21 = QtWidgets.QVBoxLayout(self.PatOverview_2)
         self.verticalLayout_21.setContentsMargins(10, 10, 10, 10)
         self.verticalLayout_21.setSpacing(10)
         self.verticalLayout_21.setObjectName("verticalLayout_21")
         self.widget_13 = QtWidgets.QWidget(self.PatOverview_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget_13.sizePolicy().hasHeightForWidth())
+        self.widget_13.setSizePolicy(sizePolicy)
         self.widget_13.setObjectName("widget_13")
         self.horizontalLayout_25 = QtWidgets.QHBoxLayout(self.widget_13)
         self.horizontalLayout_25.setContentsMargins(0, 0, 0, 0)
@@ -828,8 +820,13 @@ class Ui_MainWindow(object):
         self.DashboardButton_9.setIcon(icon9)
         self.DashboardButton_9.setIconSize(QtCore.QSize(35, 35))
         self.DashboardButton_9.setObjectName("DashboardButton_9")
-        self.horizontalLayout_25.addWidget(self.DashboardButton_9, 0, QtCore.Qt.AlignTop)
+        self.horizontalLayout_25.addWidget(self.DashboardButton_9, 0, QtCore.Qt.AlignVCenter)
         self.widget_14 = QtWidgets.QWidget(self.widget_13)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget_14.sizePolicy().hasHeightForWidth())
+        self.widget_14.setSizePolicy(sizePolicy)
         self.widget_14.setObjectName("widget_14")
         self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.widget_14)
         self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
@@ -856,7 +853,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_25.addWidget(self.widget_14, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_21.addWidget(self.widget_13, 0, QtCore.Qt.AlignTop)
         self.CategoryCon_3 = QtWidgets.QWidget(self.PatOverview_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.CategoryCon_3.sizePolicy().hasHeightForWidth())
@@ -867,6 +864,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.setSpacing(5)
         self.verticalLayout_23.setObjectName("verticalLayout_23")
         self.CategoryLine_3 = QtWidgets.QWidget(self.CategoryCon_3)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.CategoryLine_3.sizePolicy().hasHeightForWidth())
+        self.CategoryLine_3.setSizePolicy(sizePolicy)
         self.CategoryLine_3.setObjectName("CategoryLine_3")
         self.horizontalLayout_26 = QtWidgets.QHBoxLayout(self.CategoryLine_3)
         self.horizontalLayout_26.setObjectName("horizontalLayout_26")
@@ -890,173 +892,59 @@ class Ui_MainWindow(object):
         self.horizontalLayout_26.addWidget(self.Percentage_2, 0, QtCore.Qt.AlignRight)
         self.verticalLayout_23.addWidget(self.CategoryLine_3, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_21.addWidget(self.CategoryCon_3)
-        self.horizontalLayout_27.addWidget(self.PatOverview_2)
-        self.verticalLayout_8.addWidget(self.Column3, 0, QtCore.Qt.AlignLeft)
+        self.horizontalLayout_27.addWidget(self.PatOverview_2, 0, QtCore.Qt.AlignLeft)
+        self.verticalLayout_8.addWidget(self.Column3)
         self.horizontalLayout_5.addWidget(self.Overviews)
-        self.NotificationBox = QtWidgets.QWidget(self.BodyLayout)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.NotificationBox.sizePolicy().hasHeightForWidth())
-        self.NotificationBox.setSizePolicy(sizePolicy)
-        self.NotificationBox.setMinimumSize(QtCore.QSize(300, 0))
-        self.NotificationBox.setMaximumSize(QtCore.QSize(300, 16777215))
-        self.NotificationBox.setStyleSheet("#NotifObject{\n"
-"    background-color: rgba(46, 110, 101, 0.3);\n"
-"    border-radius: 10px;\n"
-"}\n"
-"\n"
-"#NotificationLabel {\n"
-"    padding: 5px 10px;\n"
-"}\n"
-"\n"
-"QGraphicsView {\n"
-"    border: 1px solid #ccc;\n"
-"    border-radius: 22px;\n"
-"    background: white;\n"
-"}\n"
-"\n"
-"#NotifTimestamp {\n"
-"    font: 600 10pt \"Lexend SemiBold\";\n"
-"    font-size: 14px;\n"
-"    color: #2B3752;\n"
-"}\n"
-"\n"
-"#NotifDescription {\n"
-"    font: 10pt \"Lexend\";\n"
-"    font-size: 15px;\n"
-"    color: #2B3752;\n"
-"}")
-        self.NotificationBox.setObjectName("NotificationBox")
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.NotificationBox)
-        self.verticalLayout_5.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.NotificationLabel = QtWidgets.QLabel(self.NotificationBox)
-        self.NotificationLabel.setStyleSheet("")
-        self.NotificationLabel.setObjectName("NotificationLabel")
-        self.verticalLayout_5.addWidget(self.NotificationLabel, 0, QtCore.Qt.AlignTop)
-        self.Notifications = QtWidgets.QWidget(self.NotificationBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.Notifications.sizePolicy().hasHeightForWidth())
-        self.Notifications.setSizePolicy(sizePolicy)
-        self.Notifications.setObjectName("Notifications")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.Notifications)
-        self.verticalLayout_6.setContentsMargins(10, 0, 10, 0)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.NotifObject = QtWidgets.QWidget(self.Notifications)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.NotifObject.sizePolicy().hasHeightForWidth())
-        self.NotifObject.setSizePolicy(sizePolicy)
-        self.NotifObject.setMinimumSize(QtCore.QSize(0, 0))
-        self.NotifObject.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.NotifObject.setObjectName("NotifObject")
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.NotifObject)
-        self.horizontalLayout_7.setContentsMargins(10, 5, 10, 4)
-        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.NotifProfil = QtWidgets.QGraphicsView(self.NotifObject)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.NotifProfil.sizePolicy().hasHeightForWidth())
-        self.NotifProfil.setSizePolicy(sizePolicy)
-        self.NotifProfil.setMinimumSize(QtCore.QSize(45, 45))
-        self.NotifProfil.setMaximumSize(QtCore.QSize(45, 45))
-        self.NotifProfil.setObjectName("NotifProfil")
-        self.horizontalLayout_7.addWidget(self.NotifProfil, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
-        self.NotifDetails = QtWidgets.QWidget(self.NotifObject)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.NotifDetails.sizePolicy().hasHeightForWidth())
-        self.NotifDetails.setSizePolicy(sizePolicy)
-        self.NotifDetails.setMinimumSize(QtCore.QSize(0, 0))
-        self.NotifDetails.setObjectName("NotifDetails")
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.NotifDetails)
-        self.verticalLayout_7.setContentsMargins(5, 0, 5, 0)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.NotifDescription = QtWidgets.QLabel(self.NotifDetails)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.NotifDescription.sizePolicy().hasHeightForWidth())
-        self.NotifDescription.setSizePolicy(sizePolicy)
-        self.NotifDescription.setAlignment(QtCore.Qt.AlignLeading)
-        self.NotifDescription.setObjectName("NotifDescription")
-        self.verticalLayout_7.addWidget(self.NotifDescription, 0, QtCore.Qt.AlignTop)
-        self.NotifTimestamp = QtWidgets.QLabel(self.NotifDetails)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.NotifTimestamp.sizePolicy().hasHeightForWidth())
-        self.NotifTimestamp.setSizePolicy(sizePolicy)
-        self.NotifTimestamp.setMinimumSize(QtCore.QSize(0, 0))
-        self.NotifTimestamp.setAlignment(QtCore.Qt.AlignLeading)
-        self.NotifTimestamp.setObjectName("NotifTimestamp")
-        self.verticalLayout_7.addWidget(self.NotifTimestamp, 0, QtCore.Qt.AlignTop)
-        self.horizontalLayout_7.addWidget(self.NotifDetails)
-        self.verticalLayout_6.addWidget(self.NotifObject, 0, QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.verticalLayout_5.addWidget(self.Notifications)
-        self.horizontalLayout_5.addWidget(self.NotificationBox, 0, QtCore.Qt.AlignRight)
         self.verticalLayout_4.addWidget(self.BodyLayout)
         self.verticalLayout_2.addWidget(self.Body)
         self.horizontalLayout_4.addWidget(self.MainBodyContainer)
-        self.MainBodyContainer.raise_()
-        self.NavBar.raise_()
-        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.DashboardButton_2.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.DashboardButton.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.DashboardButton.setText(_translate("MainWindow", "  Dashboard"))
-        self.StaffButton.setToolTip(_translate("MainWindow", "View Staff Record"))
-        self.StaffButton.setText(_translate("MainWindow", "  Staffs"))
-        self.PatientsButton.setToolTip(_translate("MainWindow", "View Patient Record"))
-        self.PatientsButton.setText(_translate("MainWindow", "  Records"))
-        self.TransactionsButton.setToolTip(_translate("MainWindow", "View Transactions "))
-        self.TransactionsButton.setText(_translate("MainWindow", "  Transactions"))
-        self.ChargesButton.setToolTip(_translate("MainWindow", "View Reports and Overviews"))
-        self.ChargesButton.setText(_translate("MainWindow", "Charges"))
-        self.OverviewsButton_3.setToolTip(_translate("MainWindow", "View Profile Settings"))
-        self.OverviewsButton_3.setText(_translate("MainWindow", "  Profile"))
-        self.OverviewsButton_2.setToolTip(_translate("MainWindow", "Log Out from your Account"))
-        self.OverviewsButton_2.setText(_translate("MainWindow", "  Log Out"))
-        self.InterfaceTitle.setText(_translate("MainWindow", "Dashboard"))
-        self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
-        self.UserType.setText(_translate("MainWindow", "Admin"))
-        self.DashboardButton_3.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.TPHeader.setText(_translate("MainWindow", "Total Patient"))
-        self.TotalPatient.setText(_translate("MainWindow", "12344"))
-        self.DashboardButton_4.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.TDHeader.setText(_translate("MainWindow", "Total Doctor"))
-        self.TotalDoctor.setText(_translate("MainWindow", "23"))
-        self.DashboardButton_5.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.TSHeader.setText(_translate("MainWindow", "Total Staff"))
-        self.TotalStaff.setText(_translate("MainWindow", "123"))
-        self.DashboardButton_7.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.OverviewHeader.setText(_translate("MainWindow", "Patient Overview"))
-        self.OverviewSub.setText(_translate("MainWindow", "By Diagnosis"))
-        self.Category.setText(_translate("MainWindow", "Fever"))
-        self.Percentage.setText(_translate("MainWindow", "36%"))
-        self.DashboardButton_8.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.OverviewHeader_2.setText(_translate("MainWindow", "Doctor Overview"))
-        self.DoctorName.setText(_translate("MainWindow", "Dr. Limosnero"))
-        self.PatientCount.setText(_translate("MainWindow", "2380"))
-        self.Specialty.setText(_translate("MainWindow", "Gynecologist"))
-        self.PatientPercentage.setText(_translate("MainWindow", "23.8%"))
-        self.DashboardButton_9.setToolTip(_translate("MainWindow", "View Main Dashboard"))
-        self.OverviewHeader_3.setText(_translate("MainWindow", "Patient Overview"))
-        self.OverviewSub_2.setText(_translate("MainWindow", "By Age Stage"))
-        self.Category_2.setText(_translate("MainWindow", "Fever"))
-        self.Percentage_2.setText(_translate("MainWindow", "36%"))
-        self.NotificationLabel.setText(_translate("MainWindow", "Recent Activity"))
-        self.NotifDescription.setText(_translate("MainWindow", "Dr. Limosnero diagnosed a patient with fever."))
-        self.NotifTimestamp.setText(_translate("MainWindow", "15:22 | February 13, 2020"))
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.NavBarButton.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.DashboardButton.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.DashboardButton.setText(_translate("Form", "  Dashboard"))
+        self.StaffsButton.setToolTip(_translate("Form", "View Staff Record"))
+        self.StaffsButton.setText(_translate("Form", "  Staffs"))
+        self.PatientsButton.setToolTip(_translate("Form", "View Patient Record"))
+        self.PatientsButton.setText(_translate("Form", "  Records"))
+        self.TransactionsButton.setToolTip(_translate("Form", "View Transactions "))
+        self.TransactionsButton.setText(_translate("Form", "  Transactions"))
+        self.ChargesButton.setToolTip(_translate("Form", "View Reports and Overviews"))
+        self.ChargesButton.setText(_translate("Form", "  Charges"))
+        self.ProfileButton.setToolTip(_translate("Form", "View Profile Settings"))
+        self.ProfileButton.setText(_translate("Form", "  Profile"))
+        self.LogOutButton.setToolTip(_translate("Form", "Log Out from your Account"))
+        self.LogOutButton.setText(_translate("Form", "  Log Out"))
+        self.InterfaceTitle.setText(_translate("Form", "Dashboard"))
+        self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
+        self.UserType.setText(_translate("Form", "Admin"))
+        self.DashboardButton_3.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.TPHeader.setText(_translate("Form", "Total Patient"))
+        self.TotalPatient.setText(_translate("Form", "12344"))
+        self.DashboardButton_4.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.TDHeader.setText(_translate("Form", "Total Doctor"))
+        self.TotalDoctor.setText(_translate("Form", "23"))
+        self.DashboardButton_5.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.TSHeader.setText(_translate("Form", "Total Staff"))
+        self.TotalStaff.setText(_translate("Form", "123"))
+        self.DashboardButton_7.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.OverviewHeader.setText(_translate("Form", "Patient Overview"))
+        self.OverviewSub.setText(_translate("Form", "By Diagnosis"))
+        self.Category.setText(_translate("Form", "Fever"))
+        self.Percentage.setText(_translate("Form", "36%"))
+        self.DashboardButton_8.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.OverviewHeader_2.setText(_translate("Form", "Doctor Overview"))
+        self.DoctorName.setText(_translate("Form", "Dr. Limosnero"))
+        self.PatientCount.setText(_translate("Form", "2380"))
+        self.Specialty.setText(_translate("Form", "Gynecologist"))
+        self.PatientPercentage.setText(_translate("Form", "23.8%"))
+        self.DashboardButton_9.setToolTip(_translate("Form", "View Main Dashboard"))
+        self.OverviewHeader_3.setText(_translate("Form", "Patient Overview"))
+        self.OverviewSub_2.setText(_translate("Form", "By Age Stage"))
+        self.Category_2.setText(_translate("Form", "Fever"))
+        self.Percentage_2.setText(_translate("Form", "36%"))

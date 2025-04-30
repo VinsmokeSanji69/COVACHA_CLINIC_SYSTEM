@@ -1,9 +1,8 @@
 import datetime
-
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-from Views.Staff_AddCheckUp import Ui_MainWindow as StaffCheckUpUi
+from Views.Staff_AddCheckUp import Ui_Staff_AddCheckUp as StaffCheckUpUi
 from Models.Patient import Patient
 from Models.CheckUp import CheckUp
 
@@ -226,9 +225,6 @@ class StaffAddCheckUp(QMainWindow):
         return data
 
     def validate_and_submit(self):
-        """
-        Validate the form and submit the data. Update the patient record if it exists.
-        """
         # Validate the form
         if not self.validate_form():
             return

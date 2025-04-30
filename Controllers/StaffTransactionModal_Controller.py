@@ -4,14 +4,14 @@ from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Doctor import Doctor
 from Models.Transaction import Transaction
-from Views.Staff_Transactions import StaffTransactionModalUI
+from Views.Staff_TransactionsList import Ui_Staff_TransactionList
 from Controllers.StaffTransactionProcess_Controller import StaffTransactionProcess
 
 
 class StaffTransactionModal(QMainWindow):
     def __init__(self, parent=None , staff_dashboard=None):
         super().__init__(parent)
-        self.ui = StaffTransactionModalUI()
+        self.ui = Ui_Staff_TransactionList()
         self.ui.setupUi(self)
         self.staff_dashboard = staff_dashboard
 
@@ -102,6 +102,9 @@ class StaffTransactionModal(QMainWindow):
                 if checkup["chck_id"] not in transaction_chck_ids
             ]
 
+            # Debug: Log filtered check-ups
+            print(f"Filtered check-ups: {filtered_checkups}")
+
             # Check if there are no pending check-ups after filtering
             if not filtered_checkups:
                 print("No pending check-ups found.")
@@ -114,6 +117,7 @@ class StaffTransactionModal(QMainWindow):
 
                 # Span the message across all columns
                 column_count = self.ui.TransactionTable.columnCount()
+                print(f"Column count: {column_count}")
                 self.ui.TransactionTable.setSpan(0, 0, 1, column_count)
                 return
 
@@ -139,7 +143,7 @@ class StaffTransactionModal(QMainWindow):
                     docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
 
                 # Extract patient name and capitalize the first letter of each word
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
+                full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
                 # Insert data into the table
                 self.ui.TransactionTable.insertRow(row)
@@ -148,8 +152,13 @@ class StaffTransactionModal(QMainWindow):
                 self.ui.TransactionTable.setItem(row, 2, QTableWidgetItem(chck_type))  # Check-Up Type
                 self.ui.TransactionTable.setItem(row, 3, QTableWidgetItem(docFullname))  # Doctor Name
 
+                # Debug: Log inserted row
+                print(
+                    f"Inserting row {row}: chck_id={chck_id}, full_name={full_name}, chck_type={chck_type}, docFullname={docFullname}")
+
             # Resize columns to fit the content
-            self.ui.TransactionTable.resizeColumnsToContents()
+            if self.ui.TransactionTable.rowCount() > 0:
+                self.ui.TransactionTable.resizeColumnsToContents()
 
         except Exception as e:
             print(f"Error loading pending check-ups: {e}")

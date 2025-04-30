@@ -35,17 +35,16 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
+	font: 900 16pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;
-	font-size: 25px;
+	font-weight: bold;	
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65;
+    background-color: #2E6E65; 
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
@@ -125,7 +124,7 @@ QLabel {
         <number>10</number>
        </property>
        <item>
-        <widget class="QPushButton" name="DashboardButton_2">
+        <widget class="QPushButton" name="NavBarButtobn">
          <property name="toolTip">
           <string>View Main Dashboard</string>
          </property>
@@ -138,7 +137,7 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../Images/resources.qrc">
            <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
@@ -160,7 +159,7 @@ QLabel {
          <property name="sizeHint" stdset="0">
           <size>
            <width>10</width>
-           <height>20</height>
+           <height>10</height>
           </size>
          </property>
         </spacer>
@@ -185,7 +184,7 @@ QLabel {
             <string>  Dashboard</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
            </property>
            <property name="iconSize">
@@ -208,7 +207,7 @@ QLabel {
             <string>  Staffs</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
            </property>
            <property name="iconSize">
@@ -231,7 +230,7 @@ QLabel {
             <string>  Records</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
            </property>
            <property name="iconSize">
@@ -248,13 +247,16 @@ QLabel {
             <string>View Transactions </string>
            </property>
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">QPushButton{
+	font: 900 20pt &quot;Satoshi Black&quot;;	
+}
+</string>
            </property>
            <property name="text">
             <string>  Transactions</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
            </property>
            <property name="iconSize">
@@ -277,7 +279,7 @@ QLabel {
             <string>  Charges</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/hand-coins.svg</normaloff>:/lucide/icons/hand-coins.svg</iconset>
            </property>
            <property name="iconSize">
@@ -309,7 +311,7 @@ QLabel {
           <number>15</number>
          </property>
          <item>
-          <widget class="QPushButton" name="OverviewsButton_3">
+          <widget class="QPushButton" name="ProfileButton">
            <property name="toolTip">
             <string>View Profile Settings</string>
            </property>
@@ -320,7 +322,7 @@ QLabel {
             <string>  Profile</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
            </property>
            <property name="iconSize">
@@ -332,7 +334,7 @@ QLabel {
           </widget>
          </item>
          <item alignment="Qt::AlignVCenter">
-          <widget class="QPushButton" name="OverviewsButton_2">
+          <widget class="QPushButton" name="LogOutButton">
            <property name="toolTip">
             <string>Log Out from your Account</string>
            </property>
@@ -343,7 +345,7 @@ QLabel {
             <string>  Log Out</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
            </property>
            <property name="iconSize">
@@ -376,7 +378,7 @@ QLabel {
 padding-top: 15px;
 }
 QLabel {
-    padding: 0px;
+    padding: 0px; 
 }
 #UserType {
 	font: 300 10pt &quot;Lexend Light&quot;;
@@ -392,9 +394,9 @@ QLabel {
 	font-size: 35px;
 }
 QGraphicsView {
-    border: 2px solid #ccc;
+    border: 2px solid #ccc; 
     border-radius: 25px;
-    background: white;
+    background: white; 
 }
 
 </string>
@@ -498,13 +500,13 @@ QLabel {
               <number>0</number>
              </property>
              <item alignment="Qt::AlignLeft">
-              <widget class="QPushButton" name="BackButton">
+              <widget class="QPushButton" name="BacktoTransactionButton">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
 	font: 900 10pt &quot;Satoshi Black&quot;;
 	background-color: #2E6E65;
  	border-radius: 10px;
-	font-weight: bold;
+	font-weight: bold;	
 	font-size: 25px;
 	color: #F4F7ED;
 	text-align: left;
@@ -515,7 +517,7 @@ QLabel {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset resource="../Images/resources.qrc">
                  <normaloff>:/lucide/icons/arrow-left.svg</normaloff>:/lucide/icons/arrow-left.svg</iconset>
                </property>
                <property name="iconSize">
@@ -571,11 +573,14 @@ QLabel {
                    </size>
                   </property>
                   <property name="text">
-                   <string> Back to Doctor List</string>
+                   <string> Back to Transaction List</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading</set>
                   </property>
                  </widget>
                 </item>
-                <item>
+                <item alignment="Qt::AlignLeft|Qt::AlignTop">
                  <widget class="QLabel" name="Title">
                   <property name="enabled">
                    <bool>true</bool>
@@ -599,7 +604,7 @@ QLabel {
                    </size>
                   </property>
                   <property name="text">
-                   <string>Doctor Details</string>
+                   <string>Transaction Details</string>
                   </property>
                   <property name="textFormat">
                    <enum>Qt::PlainText</enum>
@@ -732,7 +737,7 @@ QLabel {
     background-color: #F4F7ED;
     gridline-color: #D9E4DC;
     border: 2px solid #2E6E65;
-    border-radius: 9px;
+    border-radius: 9px; 
 }
 
 QTableWidget::item {
@@ -740,7 +745,7 @@ QTableWidget::item {
 }
 
 QTableWidget::item:alternate {
-    background-color: #E0E0E0;
+    background-color: #E0E0E0;  
 }
 
 QTableWidget QHeaderView::section {
@@ -768,7 +773,7 @@ QTableWidget::item:selected {
            <number>20</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>10</number>
           </property>
           <property name="rightMargin">
            <number>20</number>
@@ -778,9 +783,9 @@ QTableWidget::item:selected {
           </property>
           <item>
            <widget class="QWidget" name="BodyLayout" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QVBoxLayout" name="verticalLayout_6">
              <property name="spacing">
-              <number>10</number>
+              <number>15</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -792,304 +797,77 @@ QTableWidget::item:selected {
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>10</number>
              </property>
-             <item alignment="Qt::AlignLeft|Qt::AlignTop">
-              <widget class="QWidget" name="DoctorDetails" native="true">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             <item alignment="Qt::AlignTop">
+              <widget class="QWidget" name="Transaction" native="true">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel {
-	font: 10pt &quot;Lexend&quot;;
 	color: #2B3752;
+	font: 11pt &quot;Lexend&quot;;
 }
-#DoctorDetails {
+#PatientID, #PatientName, #PatientAge, #PatientGender, #DoctorID,  #DoctorName,  #DoctorSpecialty, #StaffID, #StaffName, #TransactionDate, #TransactionID, #TransactionTime, #TransactionFee, #Diagnosis, #Notes  {
+	font: 700 14pt &quot;Lexend&quot;;
+}
+#Transaction {
 	background-color: #F4F7ED;
-	border: 2px solid #2E6E65;
+	border: 2px solid #2E6E65 ;
 	border-radius: 15px;
 }
-Line {
-	background-color: #2E6E65;
-	max-height: 2px;
-}
-QGraphicsView {
-    border-radius: 10px;
-    background: white;
-}
-#DocID, #DocSpecialty, #DocAge, #DocAbout, #DocContact, #DocEmail, #DocAddress {
-	font: 500 13pt &quot;Lexend&quot;;
-}
-#DocName {
-	font: 700 17pt &quot;Lexend&quot;;
-}
-#DocAvailability {
-	font: 12pt &quot;Lexend&quot;;
+#Doctor, #Patient, #Staff {
 	background-color: rgba(46, 110, 101, 0.3);
-	padding: 5px 5px;
 	border-radius: 10px;
-	margin-top: 10px;
-}
-</string>
+}</string>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_6">
+               <layout class="QVBoxLayout" name="verticalLayout_7">
                 <property name="spacing">
-                 <number>10</number>
+                 <number>20</number>
                 </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>20</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>20</number>
                 </property>
                 <property name="rightMargin">
-                 <number>0</number>
+                 <number>20</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>0</number>
+                 <number>20</number>
                 </property>
                 <item>
-                 <widget class="QWidget" name="Basics" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <widget class="QWidget" name="widget_2" native="true">
+                  <layout class="QHBoxLayout" name="horizontalLayout_2">
                    <property name="spacing">
-                    <number>15</number>
+                    <number>10</number>
                    </property>
                    <property name="leftMargin">
-                    <number>20</number>
+                    <number>0</number>
                    </property>
                    <property name="topMargin">
-                    <number>35</number>
+                    <number>0</number>
                    </property>
                    <property name="rightMargin">
-                    <number>20</number>
+                    <number>0</number>
                    </property>
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
-                   <item alignment="Qt::AlignHCenter">
-                    <widget class="QGraphicsView" name="DocProfile">
-                     <property name="enabled">
-                      <bool>true</bool>
-                     </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>100</width>
-                       <height>100</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>100</width>
-                       <height>100</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_14" native="true">
-                     <layout class="QVBoxLayout" name="verticalLayout_13">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignHCenter">
-                       <widget class="QLabel" name="DocName">
-                        <property name="font">
-                         <font>
-                          <family>Lexend</family>
-                          <pointsize>17</pointsize>
-                          <italic>false</italic>
-                          <bold>true</bold>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>Dr. Roy Adrian Rondina</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignHCenter">
-                       <widget class="QLabel" name="DocID">
-                        <property name="text">
-                         <string>10002</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignLeading</set>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignHCenter">
-                       <widget class="QLabel" name="DocAvailability">
-                        <property name="text">
-                         <string>Available</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignLeading</set>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item alignment="Qt::AlignTop">
-                 <widget class="QWidget" name="GenInfo" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_8">
-                   <property name="spacing">
-                    <number>30</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>20</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>20</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>10</number>
-                   </property>
                    <item alignment="Qt::AlignTop">
-                    <widget class="QWidget" name="widget_8" native="true">
-                     <layout class="QHBoxLayout" name="horizontalLayout_5">
-                      <property name="spacing">
-                       <number>30</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="QWidget" name="widget_9" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_10">
-                         <property name="spacing">
-                          <number>5</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QLabel" name="label">
-                           <property name="text">
-                            <string>Specialty</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="DocSpecialty">
-                           <property name="text">
-                            <string>Ophthalmologist</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QWidget" name="widget_10" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_9">
-                         <property name="spacing">
-                          <number>5</number>
-                         </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item>
-                          <widget class="QLabel" name="label_3">
-                           <property name="text">
-                            <string>Age</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="DocAge">
-                           <property name="text">
-                            <string>54</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QWidget" name="widget_2" native="true">
-                     <layout class="QVBoxLayout" name="verticalLayout_11">
+                    <widget class="QWidget" name="widget_4" native="true">
+                     <layout class="QVBoxLayout" name="verticalLayout_8">
                       <property name="spacing">
                        <number>5</number>
                       </property>
@@ -1106,719 +884,351 @@ QGraphicsView {
                        <number>0</number>
                       </property>
                       <item alignment="Qt::AlignTop">
-                       <widget class="QLabel" name="label_5">
+                       <widget class="QLabel" name="label_3">
                         <property name="text">
-                         <string>Date Joined</string>
+                         <string>Patient Info</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QLabel" name="DocAbout">
+                       <widget class="QWidget" name="Patient" native="true">
                         <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
                         </property>
-                        <property name="text">
-                         <string>December 13, 2003</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_2">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="Contacts" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_12">
-                   <property name="spacing">
-                    <number>10</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>20</number>
-                   </property>
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QWidget" name="widget_11" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_6">
-                      <property name="spacing">
-                       <number>10</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignLeft">
-                       <widget class="QPushButton" name="pushButton">
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="resources.qrc">
-                          <normaloff>:/lucide/icons/phone.svg</normaloff>:/lucide/icons/phone.svg</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>30</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignVCenter">
-                       <widget class="QLabel" name="DocContact">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="text">
-                         <string>+63 1234 567 8910</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignLeading</set>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item alignment="Qt::AlignLeft|Qt::AlignTop">
-                    <widget class="QWidget" name="widget_12" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_7">
-                      <property name="spacing">
-                       <number>10</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignLeft">
-                       <widget class="QPushButton" name="pushButton_2">
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="resources.qrc">
-                          <normaloff>:/lucide/icons/mail.svg</normaloff>:/lucide/icons/mail.svg</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>30</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignVCenter">
-                       <widget class="QLabel" name="DocEmail">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="text">
-                         <string>rondina.sample@gmail.com</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignLeading</set>
-                        </property>
-                        <property name="wordWrap">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item alignment="Qt::AlignLeft|Qt::AlignTop">
-                    <widget class="QWidget" name="widget_13" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_8">
-                      <property name="spacing">
-                       <number>10</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignLeft">
-                       <widget class="QPushButton" name="pushButton_3">
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="resources.qrc">
-                          <normaloff>:/lucide/icons/house.svg</normaloff>:/lucide/icons/house.svg</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>30</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignVCenter">
-                       <widget class="QLabel" name="DocAddress">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="text">
-                         <string>Sample Street, Pardo, Cebu City</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignLeading</set>
-                        </property>
-                        <property name="wordWrap">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignTop">
-              <widget class="QWidget" name="widget_3" native="true">
-               <property name="styleSheet">
-                <string notr="true">#PatOverview {
-	background-color: #F4F7ED;
-	border: 2px solid #2E6E65;
-	border-radius: 12px;
-}
-
-#CategoryLine, #CategoryLine_2,  #CategoryLine_3 {
-	background-color: rgba(46, 110, 101, 0.3);
-	border-radius: 12px
-}
-#Category, #Category_2, #Percentage, #Percentage_2 {
-	color: #2B3752;
-}
-#OverviewSub, #OverviewSub_2 {
-	font: 300 10pt &quot;Lexend Light&quot;;
-}
-
-QGraphicsView {
-    border: 1px solid #ccc;
-    border-radius: 22px;
-    background: white;
-}
-#DoctorName, #PatientCount {
-	color: #2B3752;
-	font: 500 13pt &quot;Lexend&quot;;
-}
-#Specialty, #PatientPercentage {
-	font: 10pt &quot;Lexend&quot;;
-	color: #2B3752;
-}
-</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_14">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QWidget" name="PatOverview" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>259</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>400</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_21">
-                   <property name="spacing">
-                    <number>10</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>10</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>20</number>
-                   </property>
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QWidget" name="widget_15" native="true">
-                     <layout class="QHBoxLayout" name="horizontalLayout_25">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignTop">
-                       <widget class="QPushButton" name="DashboardButton_9">
-                        <property name="toolTip">
-                         <string>View Main Dashboard</string>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="resources.qrc">
-                          <normaloff>:/lucide/icons/chart-bar-big.svg</normaloff>:/lucide/icons/chart-bar-big.svg</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>35</width>
-                          <height>35</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignTop">
-                       <widget class="QWidget" name="widget_16" native="true">
-                        <layout class="QVBoxLayout" name="verticalLayout_22">
+                        <layout class="QVBoxLayout" name="verticalLayout_18">
                          <property name="spacing">
-                          <number>0</number>
+                          <number>10</number>
                          </property>
-                         <property name="leftMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>0</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>0</number>
-                         </property>
-                         <item alignment="Qt::AlignTop">
-                          <widget class="QLabel" name="OverviewHeader_3">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>Patient Overview</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignLeading</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item alignment="Qt::AlignTop">
-                          <widget class="QLabel" name="OverviewSub_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>By Age Stage</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignLeading</set>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="CategoryCon_3" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_23">
-                      <property name="spacing">
-                       <number>5</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignTop">
-                       <widget class="QWidget" name="CategoryLine_3" native="true">
-                        <layout class="QHBoxLayout" name="horizontalLayout_26">
-                         <item>
-                          <widget class="QLabel" name="Category_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>Fever</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignLeading</set>
-                           </property>
-                          </widget>
-                         </item>
-                         <item alignment="Qt::AlignRight">
-                          <widget class="QLabel" name="Percentage_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="text">
-                            <string>36%</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignLeading</set>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignTop">
-              <widget class="QWidget" name="widget_4" native="true">
-               <layout class="QVBoxLayout" name="verticalLayout_18">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QWidget" name="NotificationBox" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>280</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>280</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">#NotificationBox{
-	background-color: #F4F7ED;
-	border: 2px solid #2E6E65;
-	border-radius: 15px;
-}
-#NotifObject{
-	background-color: rgba(46, 110, 101, 0.3);
-	border-radius: 10px;
-}
-
-#NotificationLabel {
-	padding: 5px 10px;
-}
-
-QGraphicsView {
-    border: 1px solid #ccc;
-    border-radius: 22px;
-    background: white;
-}
-
-#NotifTimestamp {
-	font: 600 10pt &quot;Lexend SemiBold&quot;;
-	font-size: 14px;
-	color: #2B3752;
-}
-
-#NotifDescription {
-	font: 10pt &quot;Lexend&quot;;
-	font-size: 15px;
-	color: #2B3752;
-}</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_15">
-                   <property name="leftMargin">
-                    <number>5</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>5</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>5</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>20</number>
-                   </property>
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="NotificationLabel">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>Recent Activity</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="Notifications" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_16">
-                      <property name="leftMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>10</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item alignment="Qt::AlignLeft|Qt::AlignTop">
-                       <widget class="QWidget" name="NotifObject" native="true">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <layout class="QHBoxLayout" name="horizontalLayout_9">
                          <property name="leftMargin">
                           <number>10</number>
                          </property>
                          <property name="topMargin">
-                          <number>5</number>
+                          <number>10</number>
                          </property>
                          <property name="rightMargin">
                           <number>10</number>
                          </property>
                          <property name="bottomMargin">
-                          <number>4</number>
+                          <number>10</number>
                          </property>
                          <item>
-                          <widget class="QWidget" name="NotifDetails" native="true">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <layout class="QVBoxLayout" name="verticalLayout_17">
+                          <widget class="QWidget" name="widget_19" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_24">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
                             <property name="leftMargin">
-                             <number>5</number>
+                             <number>0</number>
                             </property>
                             <property name="topMargin">
                              <number>0</number>
                             </property>
                             <property name="rightMargin">
-                             <number>5</number>
+                             <number>0</number>
                             </property>
                             <property name="bottomMargin">
                              <number>0</number>
                             </property>
-                            <item alignment="Qt::AlignTop">
-                             <widget class="QLabel" name="NotifDescription">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
+                            <item>
+                             <widget class="QLabel" name="label_7">
                               <property name="text">
-                               <string>Dr. Limosnero diagnosed a patient with fever.</string>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignLeading</set>
+                               <string>Patient ID</string>
                               </property>
                              </widget>
                             </item>
-                            <item alignment="Qt::AlignTop">
-                             <widget class="QLabel" name="NotifTimestamp">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>0</width>
-                                <height>0</height>
-                               </size>
-                              </property>
+                            <item>
+                             <widget class="QLabel" name="PatientID">
                               <property name="text">
-                               <string>15:22 | February 13, 2020</string>
+                               <string>10000004</string>
                               </property>
-                              <property name="alignment">
-                               <set>Qt::AlignLeading</set>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QWidget" name="widget_20" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_27">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_9">
+                              <property name="text">
+                               <string>Patient Name</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="PatientName">
+                              <property name="text">
+                               <string>Roy Adrian Rondina</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QWidget" name="widget_21" native="true">
+                           <layout class="QHBoxLayout" name="horizontalLayout_6">
+                            <property name="spacing">
+                             <number>10</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QWidget" name="widget_28" native="true">
+                              <layout class="QVBoxLayout" name="verticalLayout_26">
+                               <property name="spacing">
+                                <number>1</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="label_11">
+                                 <property name="text">
+                                  <string>Gender</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="PatientGender">
+                                 <property name="text">
+                                  <string>Male</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QWidget" name="widget_29" native="true">
+                              <layout class="QVBoxLayout" name="verticalLayout_25">
+                               <property name="spacing">
+                                <number>1</number>
+                               </property>
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <item>
+                                <widget class="QLabel" name="label_13">
+                                 <property name="text">
+                                  <string>Age</string>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QLabel" name="PatientAge">
+                                 <property name="text">
+                                  <string>17</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item alignment="Qt::AlignTop">
+                    <widget class="QWidget" name="widget_5" native="true">
+                     <layout class="QVBoxLayout" name="verticalLayout_9">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QLabel" name="label_2">
+                        <property name="text">
+                         <string>Doctor Info</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QWidget" name="Doctor" native="true">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout_17">
+                         <property name="spacing">
+                          <number>10</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>10</number>
+                         </property>
+                         <item>
+                          <widget class="QWidget" name="widget_22" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_21">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_15">
+                              <property name="text">
+                               <string>Doctor ID</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="DoctorID">
+                              <property name="text">
+                               <string>10005</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QWidget" name="widget_23" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_22">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_18">
+                              <property name="text">
+                               <string>Doctor Name</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="DoctorName">
+                              <property name="text">
+                               <string>Dr. Jayson Gabriel</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QWidget" name="widget_24" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_23">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_19">
+                              <property name="text">
+                               <string>Specialty</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="DoctorSpecialty">
+                              <property name="text">
+                               <string>Ophthalmologist</string>
                               </property>
                              </widget>
                             </item>
@@ -1831,9 +1241,457 @@ QGraphicsView {
                      </layout>
                     </widget>
                    </item>
+                   <item alignment="Qt::AlignTop">
+                    <widget class="QWidget" name="widget_6" native="true">
+                     <layout class="QVBoxLayout" name="verticalLayout_10">
+                      <property name="spacing">
+                       <number>5</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QLabel" name="label">
+                        <property name="text">
+                         <string>Transactor Info</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QWidget" name="Staff" native="true">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout_16">
+                         <property name="spacing">
+                          <number>10</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>10</number>
+                         </property>
+                         <item alignment="Qt::AlignTop">
+                          <widget class="QWidget" name="widget_25" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_19">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_21">
+                              <property name="text">
+                               <string>Staff ID</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="StaffID">
+                              <property name="text">
+                               <string>1000007</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item alignment="Qt::AlignTop">
+                          <widget class="QWidget" name="widget_26" native="true">
+                           <layout class="QVBoxLayout" name="verticalLayout_20">
+                            <property name="spacing">
+                             <number>1</number>
+                            </property>
+                            <property name="leftMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="topMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="rightMargin">
+                             <number>0</number>
+                            </property>
+                            <property name="bottomMargin">
+                             <number>0</number>
+                            </property>
+                            <item>
+                             <widget class="QLabel" name="label_23">
+                              <property name="text">
+                               <string>Staff Name</string>
+                              </property>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QLabel" name="StaffName">
+                              <property name="text">
+                               <string>Dan Bejec</string>
+                              </property>
+                             </widget>
+                            </item>
+                           </layout>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QWidget" name="widget_27" native="true"/>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
                   </layout>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QWidget" name="widget_3" native="true">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_7">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QWidget" name="widget_31" native="true">
+                     <layout class="QVBoxLayout" name="verticalLayout_30">
+                      <property name="spacing">
+                       <number>10</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QWidget" name="widget_33" native="true">
+                        <layout class="QVBoxLayout" name="verticalLayout_35">
+                         <property name="spacing">
+                          <number>1</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLabel" name="label_8">
+                           <property name="text">
+                            <string>Diagnosis</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Diagnosis">
+                           <property name="text">
+                            <string>Fever</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QWidget" name="widget_34" native="true">
+                        <layout class="QVBoxLayout" name="verticalLayout_36">
+                         <property name="spacing">
+                          <number>1</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLabel" name="label_16">
+                           <property name="text">
+                            <string>See Diagnosis</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item alignment="Qt::AlignLeft">
+                          <widget class="QPushButton" name="ViewDiagnosis">
+                           <property name="styleSheet">
+                            <string notr="true">#ViewDiagnosis {
+	font: 900 13pt &quot;Satoshi Black&quot;;
+	background-color: #2E6E65;
+ 	border-radius: 14px;
+	color: #F4F7ED;
+	text-align: center;
+	padding: 4px 20px;
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>View Diagnosis</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QWidget" name="widget_30" native="true">
+                     <layout class="QVBoxLayout" name="verticalLayout_29">
+                      <property name="spacing">
+                       <number>10</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QWidget" name="widget_36" native="true">
+                        <layout class="QVBoxLayout" name="verticalLayout_31">
+                         <property name="spacing">
+                          <number>1</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLabel" name="label_20">
+                           <property name="text">
+                            <string>Transaction Date</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="TransactionDate">
+                           <property name="text">
+                            <string>December 12, 2024</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QWidget" name="widget_32" native="true">
+                     <layout class="QVBoxLayout" name="verticalLayout_28">
+                      <property name="spacing">
+                       <number>10</number>
+                      </property>
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QWidget" name="widget_37" native="true">
+                        <layout class="QVBoxLayout" name="verticalLayout_34">
+                         <property name="spacing">
+                          <number>1</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLabel" name="label_26">
+                           <property name="text">
+                            <string>Transaction ID</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="TransactionID">
+                           <property name="text">
+                            <string>121224-001</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item alignment="Qt::AlignTop">
+                       <widget class="QWidget" name="widget_38" native="true">
+                        <layout class="QVBoxLayout" name="verticalLayout_33">
+                         <property name="spacing">
+                          <number>1</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QLabel" name="label_28">
+                           <property name="text">
+                            <string>Transaction Fee</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="TransactionFee">
+                           <property name="text">
+                            <string>₱ 200</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item alignment="Qt::AlignTop">
+              <widget class="QWidget" name="widget_10" native="true">
+               <property name="styleSheet">
+                <string notr="true">#PatGenInfo, #HistoryCon {
+	background-color: #F4F7ED;
+	border: 2px solid #2E6E65;
+	border-radius: 15px;
+}
+QLabel {
+	color: #2B3752;
+	font: 10pt &quot;Lexend&quot;;
+}
+#TransactionID_2, #Diagnosis_2, #TransactionDate_2, #Transactor, #DiagnosedBy {
+	font: 500 14pt &quot;Lexend&quot;;
+}
+
+#Header_2 {
+	color: #2E6E65;
+	font: 700 15pt &quot;Lexend&quot;;
+}
+#HistoryObject {
+	background-color: rgba(46, 110, 101, 0.3);
+	border-radius: 15px;
+}
+</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_11">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                </layout>
               </widget>
              </item>
@@ -1852,7 +1710,7 @@ QGraphicsView {
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../Images/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
