@@ -57,32 +57,32 @@ class StaffDashboardController(QMainWindow):
         # Start with dashboard view
         self.go_to_dashboard()
 
-        # Responsive table for Dashboard Page
-        # tableWidget
-        header = self.dashboard_ui.PendingTable.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.Stretch)
-
-        self.dashboard_ui.PendingTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.dashboard_ui.PendingTable.setWordWrap(True)
-        self.dashboard_ui.PendingTable.resizeRowsToContents()
-
-        # # Responsive table for Record Page
-        # # DoneTable
-        # header = self.records_ui.DoneTable.horizontalHeader()
+        # # Responsive table for Dashboard Page
+        # # tableWidget
+        # header = self.dashboard_ui.PendingTable.horizontalHeader()
         # header.setSectionResizeMode(QHeaderView.Stretch)
         #
-        # self.records_ui.DoneTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # self.records_ui.DoneTable.setWordWrap(True)
-        # self.records_ui.DoneTable.resizeRowsToContents()
-
-        # Responsive table for Transaction Page
-        # DoneTable
-        header = self.transactions_ui.TransactionTable.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.Stretch)
-
-        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.transactions_ui.TransactionTable.setWordWrap(True)
-        self.transactions_ui.TransactionTable.resizeRowsToContents()
+        # self.dashboard_ui.PendingTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # self.dashboard_ui.PendingTable.setWordWrap(True)
+        # self.dashboard_ui.PendingTable.resizeRowsToContents()
+        #
+        # # # Responsive table for Record Page
+        # # # DoneTable
+        # # header = self.records_ui.DoneTable.horizontalHeader()
+        # # header.setSectionResizeMode(QHeaderView.Stretch)
+        # #
+        # # self.records_ui.DoneTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # # self.records_ui.DoneTable.setWordWrap(True)
+        # # self.records_ui.DoneTable.resizeRowsToContents()
+        #
+        # # Responsive table for Transaction Page
+        # # DoneTable
+        # header = self.transactions_ui.TransactionTable.horizontalHeader()
+        # header.setSectionResizeMode(QHeaderView.Stretch)
+        #
+        # self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # self.transactions_ui.TransactionTable.setWordWrap(True)
+        # self.transactions_ui.TransactionTable.resizeRowsToContents()
 
         # Responsive table for LabReq Page
         header = self.labreq_ui.LabRequestTable.horizontalHeader()
@@ -158,15 +158,11 @@ class StaffDashboardController(QMainWindow):
 
     @pyqtSlot()
     def go_to_dashboard(self):
-        """Switch to the dashboard page"""
-        print("Navigating to Dashboard")
         self.page_stack.setCurrentWidget(self.dashboard_page)
         self.update_time_labels()
 
     @pyqtSlot()
     def go_to_transactions(self):
-        """Switch to the transactions page"""
-        print("Navigating to Transactions")
         self.page_stack.setCurrentWidget(self.transactions_page)
         self.update_time_labels()
 
@@ -177,49 +173,6 @@ class StaffDashboardController(QMainWindow):
         self.update_time_labels()
 
     def apply_table_styles(self, table_widget):
-        """Apply custom styles to the given table widget."""
-
-        table_widget.setStyleSheet("""
-            QTableWidget {
-                background-color: #F4F7ED;
-                gridline-color: transparent;
-                border-radius: 10px;
-            }
-            QTableWidget::item {
-                border: none;
-                font: 16pt "Lexend";
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(46, 110, 101, 0.3);
-            }
-            QTableWidget QHeaderView::section {
-                background-color: #2E6E65;
-                color: white;
-                padding: 5px;
-                font: 18px "Lexend Medium";
-                border: 2px solid #2E6E65;
-            }
-
-            /* Scroll Area CSS */
-            QScrollBar:vertical {
-                background: transparent;
-                width: 10px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical {
-                background: #C0C0C0;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background: #A0A0A0;
-            }
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical{
-                background: none;
-                border: none;
-            }
-        """)
-
         # Ensure horizontal headers are visible
         table_widget.horizontalHeader().setVisible(True)
 
@@ -373,7 +326,6 @@ class StaffDashboardController(QMainWindow):
             print(f"Error opening Modify Form Dialog: {e}")
 
     def get_transaction_details(self):
-        """Call the method from StaffTransactions to load transaction details."""
         try:
             self.staff_transactions.load_transaction_details()  # Call method from StaffTransactions instance
         except Exception as e:
@@ -381,7 +333,6 @@ class StaffDashboardController(QMainWindow):
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
     def get_labrequest_details(self):
-        """Call the method from StaffLabRequests to load lab request details."""
         try:
             self.staff_labrequests.load_staff_labrequest_table()  # Call your existing method
         except Exception as e:

@@ -1,13 +1,32 @@
 <RCC>
-  <qresource prefix="lucide">
+  <qresource prefix="icons">
+    <file>icons/test-tubes.svg</file>
     <file>icons/align-justify.svg</file>
+    <file>icons/arrow-left.svg</file>
+    <file>icons/calendar.svg</file>
+    <file>icons/chart-bar-big(green).svg</file>
+    <file>icons/chart-bar-big.svg</file>
+    <file>icons/chart-no-axes-combined(green).svg</file>
     <file>icons/chart-no-axes-combined.svg</file>
     <file>icons/chevron-down.svg</file>
+    <file>icons/chevron-left.svg</file>
+    <file>icons/chevron-right.svg</file>
+    <file>icons/circle-arrow-left.svg</file>
+    <file>icons/external-link.svg</file>
+    <file>icons/file-plus-2.svg</file>
     <file>icons/file-text.svg</file>
+    <file>icons/file-user.svg</file>
+    <file>icons/hand-coins.svg</file>
+    <file>icons/house.svg</file>
     <file>icons/layout-dashboard.svg</file>
     <file>icons/log-out.svg</file>
+    <file>icons/mail.svg</file>
+    <file>icons/phone.svg</file>
     <file>icons/search.svg</file>
+    <file>icons/square-pen.svg</file>
+    <file>icons/ticket-plus.svg</file>
     <file>icons/tickets.svg</file>
+    <file>icons/user-pen.svg</file>
     <file>icons/user-round-cog.svg</file>
     <file>icons/user-round-pen.svg</file>
   </qresource>

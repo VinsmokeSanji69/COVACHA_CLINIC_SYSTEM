@@ -139,13 +139,12 @@ class Ui_Staff_TransactionList(object):
         self.TransactionTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -154,10 +153,9 @@ class Ui_Staff_TransactionList(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
-"}\n"
-"")
+"}")
         self.TransactionTable.setObjectName("TransactionTable")
         self.TransactionTable.setColumnCount(4)
         self.TransactionTable.setRowCount(0)

@@ -89,6 +89,14 @@ class Ui_Staff_AddLabAttachment(object):
         self.verticalLayout_6.setSpacing(10)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.widget_3 = QtWidgets.QWidget(self.Body)
+        self.widget_3.setStyleSheet("#PatName, #ReqBy {\n"
+"    font-weight: bold;\n"
+"    color: #2b3752;\n"
+"}\n"
+"\n"
+"#Patient, #Doctor {\n"
+"    color: #2b3752;\n"
+"}")
         self.widget_3.setObjectName("widget_3")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -100,9 +108,9 @@ class Ui_Staff_AddLabAttachment(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setSpacing(1)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.Title_2 = QtWidgets.QLabel(self.widget_5)
-        self.Title_2.setObjectName("Title_2")
-        self.verticalLayout_3.addWidget(self.Title_2)
+        self.PatName = QtWidgets.QLabel(self.widget_5)
+        self.PatName.setObjectName("PatName")
+        self.verticalLayout_3.addWidget(self.PatName)
         self.Patient = QtWidgets.QLabel(self.widget_5)
         self.Patient.setObjectName("Patient")
         self.verticalLayout_3.addWidget(self.Patient)
@@ -113,9 +121,9 @@ class Ui_Staff_AddLabAttachment(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(1)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_3 = QtWidgets.QLabel(self.widget_6)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout_4.addWidget(self.label_3)
+        self.ReqBy = QtWidgets.QLabel(self.widget_6)
+        self.ReqBy.setObjectName("ReqBy")
+        self.verticalLayout_4.addWidget(self.ReqBy)
         self.Doctor = QtWidgets.QLabel(self.widget_6)
         self.Doctor.setObjectName("Doctor")
         self.verticalLayout_4.addWidget(self.Doctor)
@@ -141,6 +149,7 @@ class Ui_Staff_AddLabAttachment(object):
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
 "    border-radius: 10px;\n"
+"    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
@@ -155,8 +164,7 @@ class Ui_Staff_AddLabAttachment(object):
 "    padding: 5px;\n"
 "    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
-"}\n"
-"")
+"}")
         self.LabTable.setObjectName("LabTable")
         self.LabTable.setColumnCount(2)
         self.LabTable.setRowCount(0)
@@ -257,9 +265,9 @@ class Ui_Staff_AddLabAttachment(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.Title.setText(_translate("MainWindow", "COVHACHA DIAGNOSTIC SYSTEM"))
         self.Subheader.setText(_translate("MainWindow", "Lab Result Attachment Form"))
-        self.Title_2.setText(_translate("MainWindow", "Patient Name :"))
+        self.PatName.setText(_translate("MainWindow", "Patient Name :"))
         self.Patient.setText(_translate("MainWindow", "Roy Adrian"))
-        self.label_3.setText(_translate("MainWindow", "Requested By :"))
+        self.ReqBy.setText(_translate("MainWindow", "Requested By :"))
         self.Doctor.setText(_translate("MainWindow", "Jayson Limosnero"))
         item = self.LabTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Lab Test Name"))

@@ -67,45 +67,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
         self.ui.CompleteButton.clicked.connect(self.close)
 
     def apply_table_styles(self):
-        """Apply custom styles to the tables."""
-        self.ui.LabChargeTable.setStyleSheet("""
-            QTableWidget {
-                background-color: #F4F7ED;
-                gridline-color: transparent;
-                border-radius: 10px;
-            }
-            QTableWidget::item {
-                border: none;
-                font: 16pt "Lexend";
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(46, 110, 101, 0.3);
-            }
-            QTableWidget QHeaderView::section {
-                background-color: #2E6E65;
-                color: white;
-                padding: 5px;
-                font: 18px "Lexend Medium";
-                border: 2px solid #2E6E65;
-            }
-            QScrollBar:vertical {
-                background: transparent;
-                width: 10px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical {
-                background: #C0C0C0;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background: #A0A0A0;
-            }
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical {
-                background: none;
-                border: none;
-            }
-        """)
         self.ui.LabChargeTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.ui.LabChargeTable.horizontalHeader().setVisible(True)
         self.ui.LabChargeTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)

@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import Images.resources
 
 class Ui_Staff_Transactions(object):
     def setupUi(self, Form):
@@ -24,12 +24,13 @@ class Ui_Staff_Transactions(object):
 "    font: 900 16pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
+"    font-weight: bold;    \n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
 "}\n"
 "#NavBar {\n"
-"    background-color: #2E6E65;\n"
+"    background-color: #2E6E65; \n"
 "}\n"
 "QLabel {\n"
 "    font: 900 10pt \"Satoshi Black\";\n"
@@ -40,6 +41,7 @@ class Ui_Staff_Transactions(object):
 "    qproperty-wordWrap: true;\n"
 "    background: transparent;\n"
 "}\n"
+"\n"
 "")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -59,7 +61,7 @@ class Ui_Staff_Transactions(object):
         self.DashBoardButton_2 = QtWidgets.QPushButton(self.NavBar)
         self.DashBoardButton_2.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashBoardButton_2.setIcon(icon)
         self.DashBoardButton_2.setIconSize(QtCore.QSize(40, 40))
         self.DashBoardButton_2.setObjectName("DashBoardButton_2")
@@ -72,7 +74,7 @@ class Ui_Staff_Transactions(object):
         self.MainButtons_2.setObjectName("MainButtons_2")
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
         self.DashboardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashboardButton.setObjectName("DashboardButton")
@@ -80,18 +82,16 @@ class Ui_Staff_Transactions(object):
         self.TransactionsButton = QtWidgets.QPushButton(self.NavBar)
         self.TransactionsButton.setStyleSheet("QPushButton{\n"
 "    font: 900 20pt \"Satoshi Black\";    \n"
-"    border: 2px solid white;\n"
-"}\n"
-"")
+"}")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.TransactionsButton.setIcon(icon2)
         self.TransactionsButton.setIconSize(QtCore.QSize(40, 40))
         self.TransactionsButton.setObjectName("TransactionsButton")
         self.MainButtons_2.addWidget(self.TransactionsButton)
         self.LabButton = QtWidgets.QPushButton(self.NavBar)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/test-tubes.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/test-tubes.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.LabButton.setIcon(icon3)
         self.LabButton.setIconSize(QtCore.QSize(40, 40))
         self.LabButton.setObjectName("LabButton")
@@ -104,14 +104,14 @@ class Ui_Staff_Transactions(object):
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ProfileButton.setIcon(icon4)
         self.ProfileButton.setIconSize(QtCore.QSize(40, 40))
         self.ProfileButton.setObjectName("ProfileButton")
         self.verticalLayout_4.addWidget(self.ProfileButton)
         self.pushButton_10 = QtWidgets.QPushButton(self.NavBar)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_10.setIcon(icon5)
         self.pushButton_10.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_10.setObjectName("pushButton_10")
@@ -124,28 +124,48 @@ class Ui_Staff_Transactions(object):
 "}\n"
 "\n"
 "#Header {\n"
-"    padding: 10px 20px;\n"
-"    padding-top: 20px;\n"
+"    padding: 20px 20px;\n"
+"    padding-bottom: 10px;\n"
 "}\n"
 "QLabel {\n"
 "    padding: 0px;\n"
 "}\n"
-"#UserType {\n"
-"    font: 500 12pt \"Satoshi\";\n"
+"#UserType_2 {\n"
+"    font: 300 10pt \"Lexend Light\";\n"
+"    font-size: 15px;\n"
 "    color: #2B3752;\n"
 "}\n"
-"#UserName {\n"
-"    font: 900 16pt \"Satoshi\";\n"
+"#UserName_2 {\n"
+"    font: 600 10pt \"Lexend SemiBold\";\n"
+"    font-size: 25px;\n"
 "    color: #2B3752;\n"
 "}\n"
 "#InterfaceTitle{\n"
-"    font-size: 35px;\n"
+"    font-size: 40px;\n"
 "}\n"
 "QGraphicsView {\n"
 "    border: 2px solid #ccc;\n"
 "    border-radius: 25px;\n"
 "    background: white;\n"
 "}\n"
+"\n"
+"QComboBox {\n"
+"    background-color: #2E6E65;\n"
+"    font-size: 15px;\n"
+"    color: #1b3b3a;\n"
+"    border-radius: 10px;\n"
+"    padding: 5px 10px;\n"
+"    border: 1px solid #2E6E65;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down {\n"
+"    background: transparent;\n"
+"    border: none;\n"
+"    width: 20px;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
 "\n"
 "\n"
 "")
@@ -167,6 +187,7 @@ class Ui_Staff_Transactions(object):
         self.Header.setObjectName("Header")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.Header)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.InterfaceTitle = QtWidgets.QLabel(self.Header)
         self.InterfaceTitle.setObjectName("InterfaceTitle")
@@ -174,10 +195,17 @@ class Ui_Staff_Transactions(object):
         self.UserPanel = QtWidgets.QHBoxLayout()
         self.UserPanel.setContentsMargins(-1, -1, 0, -1)
         self.UserPanel.setObjectName("UserPanel")
-        self.UserInfo = QtWidgets.QVBoxLayout()
-        self.UserInfo.setSpacing(0)
-        self.UserInfo.setObjectName("UserInfo")
-        self.UserPanel.addLayout(self.UserInfo)
+        self.UserInfo_2 = QtWidgets.QVBoxLayout()
+        self.UserInfo_2.setSpacing(0)
+        self.UserInfo_2.setObjectName("UserInfo_2")
+        self.UserName_2 = QtWidgets.QLabel(self.Header)
+        self.UserName_2.setAlignment(QtCore.Qt.AlignLeading)
+        self.UserName_2.setObjectName("UserName_2")
+        self.UserInfo_2.addWidget(self.UserName_2, 0, QtCore.Qt.AlignRight)
+        self.UserType_2 = QtWidgets.QLabel(self.Header)
+        self.UserType_2.setObjectName("UserType_2")
+        self.UserInfo_2.addWidget(self.UserType_2, 0, QtCore.Qt.AlignRight)
+        self.UserPanel.addLayout(self.UserInfo_2)
         self.Profile = QtWidgets.QFrame(self.Header)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -193,6 +221,16 @@ class Ui_Staff_Transactions(object):
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.ProfilePic = QtWidgets.QGraphicsView(self.Profile)
+        self.ProfilePic.setEnabled(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ProfilePic.sizePolicy().hasHeightForWidth())
+        self.ProfilePic.setSizePolicy(sizePolicy)
+        self.ProfilePic.setMinimumSize(QtCore.QSize(0, 0))
+        self.ProfilePic.setObjectName("ProfilePic")
+        self.verticalLayout_6.addWidget(self.ProfilePic)
         self.UserPanel.addWidget(self.Profile)
         self.horizontalLayout_2.addLayout(self.UserPanel)
         self.verticalLayout_5.addWidget(self.Header)
@@ -215,7 +253,7 @@ class Ui_Staff_Transactions(object):
         self.MainBody.setFrameShadow(QtWidgets.QFrame.Raised)
         self.MainBody.setObjectName("MainBody")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.MainBody)
-        self.verticalLayout_7.setContentsMargins(20, 0, 20, 20)
+        self.verticalLayout_7.setContentsMargins(20, 11, 20, 20)
         self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.SearchBarContainer = QtWidgets.QFrame(self.MainBody)
@@ -229,7 +267,7 @@ class Ui_Staff_Transactions(object):
         self.SearchBarContainer.setFrameShadow(QtWidgets.QFrame.Raised)
         self.SearchBarContainer.setObjectName("SearchBarContainer")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.SearchBarContainer)
-        self.horizontalLayout_4.setContentsMargins(0, 0, -1, -1)
+        self.horizontalLayout_4.setContentsMargins(0, 11, -1, -1)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.SearchBar = QtWidgets.QWidget(self.SearchBarContainer)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -251,17 +289,17 @@ class Ui_Staff_Transactions(object):
         self.horizontalLayout_3.setContentsMargins(0, 5, 0, 5)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.Search = QtWidgets.QLineEdit(self.SearchBar)
-        self.Search.setObjectName("Search")
-        self.horizontalLayout_3.addWidget(self.Search)
         self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
         self.SearchButton.setText("")
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.SearchButton.setIcon(icon6)
         self.SearchButton.setIconSize(QtCore.QSize(30, 30))
         self.SearchButton.setObjectName("SearchButton")
         self.horizontalLayout_3.addWidget(self.SearchButton)
+        self.Search = QtWidgets.QLineEdit(self.SearchBar)
+        self.Search.setObjectName("Search")
+        self.horizontalLayout_3.addWidget(self.Search)
         self.horizontalLayout_4.addWidget(self.SearchBar)
         spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem2)
@@ -376,10 +414,10 @@ class Ui_Staff_Transactions(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 728, 645))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 698, 634))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setContentsMargins(0, 5, 0, 0)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.TransactionTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
@@ -391,8 +429,7 @@ class Ui_Staff_Transactions(object):
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -400,7 +437,8 @@ class Ui_Staff_Transactions(object):
 "QTableWidget QHeaderView::section {\n"
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    padding: 5px;\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
 "}")
         self.TransactionTable.setObjectName("TransactionTable")
@@ -445,12 +483,14 @@ class Ui_Staff_Transactions(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.DashboardButton.setText(_translate("Form", " Dashboard"))
-        self.TransactionsButton.setText(_translate("Form", " Transactions"))
-        self.LabButton.setText(_translate("Form", " Lab Request"))
+        self.DashboardButton.setText(_translate("Form", "Dashboard"))
+        self.TransactionsButton.setText(_translate("Form", "Transactions"))
+        self.LabButton.setText(_translate("Form", "Lab Request"))
         self.ProfileButton.setText(_translate("Form", " Settings"))
         self.pushButton_10.setText(_translate("Form", " Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Transactions List"))
+        self.UserName_2.setText(_translate("Form", "Roy Adrian Rondina"))
+        self.UserType_2.setText(_translate("Form", "Nurse"))
         self.DiagnoseBox.setItemText(0, _translate("Form", "Sort By:"))
         self.DateBox.setItemText(0, _translate("Form", "Sort Order: "))
         item = self.TransactionTable.horizontalHeaderItem(0)
@@ -462,3 +502,4 @@ class Ui_Staff_Transactions(object):
         item = self.TransactionTable.horizontalHeaderItem(3)
         item.setText(_translate("Form", "Status"))
         self.ViewButton.setText(_translate("Form", "View"))
+

@@ -23,12 +23,13 @@ QPushButton {
 	font: 900 16pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
+	font-weight: bold;	
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65;
+    background-color: #2E6E65; 
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
@@ -39,6 +40,7 @@ QLabel {
     qproperty-wordWrap: true;
 	background: transparent;
 }
+
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -87,8 +89,8 @@ QLabel {
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+         <iconset resource="../Images/resources.qrc">
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -125,11 +127,11 @@ QLabel {
         <item>
          <widget class="QPushButton" name="DashboardButton">
           <property name="text">
-           <string> Dashboard</string>
+           <string>Dashboard</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -144,16 +146,14 @@ QLabel {
           <property name="styleSheet">
            <string notr="true">QPushButton{
 	font: 900 20pt &quot;Satoshi Black&quot;;	
-	border: 2px solid white;
-}
-</string>
+}</string>
           </property>
           <property name="text">
-           <string> Transactions</string>
+           <string>Transactions</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -166,11 +166,11 @@ QLabel {
         <item>
          <widget class="QPushButton" name="LabButton">
           <property name="text">
-           <string> Lab Request</string>
+           <string>Lab Request</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/test-tubes.svg</normaloff>:/lucide/icons/test-tubes.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/test-tubes.svg</normaloff>:/icons/icons/test-tubes.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -209,8 +209,8 @@ QLabel {
            <string> Settings</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -226,8 +226,8 @@ QLabel {
            <string> Logout</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -250,28 +250,48 @@ QLabel {
 }
 
 #Header {
-	padding: 10px 20px;
-	padding-top: 20px;
+	padding: 20px 20px;
+	padding-bottom: 10px;
 }
 QLabel {
     padding: 0px;
 }
-#UserType {
-	font: 500 12pt &quot;Satoshi&quot;;
+#UserType_2 {
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
 	color: #2B3752;
 }
-#UserName {
-	font: 900 16pt &quot;Satoshi&quot;;
+#UserName_2 {
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
+	font-size: 25px;
 	color: #2B3752;
 }
 #InterfaceTitle{
-	font-size: 35px;
+	font-size: 40px;
 }
 QGraphicsView {
     border: 2px solid #ccc;
     border-radius: 25px;
     background: white;
 }
+
+QComboBox {
+    background-color: #2E6E65;
+    font-size: 15px;
+    color: #1b3b3a;
+    border-radius: 10px;
+    padding: 5px 10px;
+    border: 1px solid #2E6E65;
+}
+
+QComboBox::drop-down {
+    background: transparent;
+    border: none;
+    width: 20px;
+}
+
+
+
 
 
 </string>
@@ -313,6 +333,9 @@ QGraphicsView {
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -338,10 +361,27 @@ QGraphicsView {
             <number>0</number>
            </property>
            <item>
-            <layout class="QVBoxLayout" name="UserInfo">
+            <layout class="QVBoxLayout" name="UserInfo_2">
              <property name="spacing">
               <number>0</number>
              </property>
+             <item alignment="Qt::AlignRight">
+              <widget class="QLabel" name="UserName_2">
+               <property name="text">
+                <string>Roy Adrian Rondina</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading</set>
+               </property>
+              </widget>
+             </item>
+             <item alignment="Qt::AlignRight">
+              <widget class="QLabel" name="UserType_2">
+               <property name="text">
+                <string>Nurse</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -386,6 +426,25 @@ QGraphicsView {
               <property name="bottomMargin">
                <number>0</number>
               </property>
+              <item>
+               <widget class="QGraphicsView" name="ProfilePic">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -427,7 +486,7 @@ QGraphicsView {
           <number>20</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>11</number>
          </property>
          <property name="rightMargin">
           <number>20</number>
@@ -460,7 +519,7 @@ QGraphicsView {
              <number>0</number>
             </property>
             <property name="topMargin">
-             <number>0</number>
+             <number>11</number>
             </property>
             <item>
              <widget class="QWidget" name="SearchBar" native="true">
@@ -498,16 +557,13 @@ QGraphicsView {
                 <number>5</number>
                </property>
                <item>
-                <widget class="QLineEdit" name="Search"/>
-               </item>
-               <item>
                 <widget class="QPushButton" name="SearchButton">
                  <property name="text">
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset>
-                   <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
+                  <iconset resource="../Images/resources.qrc">
+                   <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -516,6 +572,9 @@ QGraphicsView {
                   </size>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="Search"/>
                </item>
               </layout>
              </widget>
@@ -702,8 +761,8 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>728</width>
-                 <height>645</height>
+                 <width>698</width>
+                 <height>634</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -714,7 +773,7 @@ QScrollBar::sub-line:vertical{
                  <number>0</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>5</number>
                 </property>
                 <property name="rightMargin">
                  <number>0</number>
@@ -733,8 +792,7 @@ QScrollBar::sub-line:vertical{
 }
 QTableWidget::item {
 	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
+	font: 16pt &quot;Lexend&quot;;
 }
 QTableWidget::item:selected {
 	background-color: rgba(46, 110, 101, 0.3);
@@ -742,7 +800,8 @@ QTableWidget::item:selected {
 QTableWidget QHeaderView::section {
 	background-color: #2E6E65;
 	color: white;
-	font: 700 15pt &quot;Satoshi&quot;;
+	padding: 5px;
+	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
 }</string>
                   </property>
@@ -832,6 +891,8 @@ QTableWidget QHeaderView::section {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Images/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

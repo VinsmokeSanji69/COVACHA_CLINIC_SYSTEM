@@ -9,23 +9,22 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import Images.resources
 
 class Ui_Staff_Dashboard(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1134, 908)
+        Form.resize(1134, 805)
         Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 10pt \"Satoshi Black\";\n"
+"    font: 900 16pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
 "    font-weight: bold;    \n"
-"    font-size: 25px;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
@@ -43,9 +42,6 @@ class Ui_Staff_Dashboard(object):
 "    background: transparent;\n"
 "}\n"
 "\n"
-"#MainBodyContainer {\n"
-"    background-color: #f0f0f0;\n"
-"}\n"
 "")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -77,6 +73,10 @@ class Ui_Staff_Dashboard(object):
         self.MainButtons_2.setSpacing(20)
         self.MainButtons_2.setObjectName("MainButtons_2")
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
+        self.DashboardButton.setStyleSheet("QPushButton{\n"
+"    font: 900 20pt \"Satoshi Black\";    \n"
+"}\n"
+"")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
@@ -245,7 +245,7 @@ class Ui_Staff_Dashboard(object):
         self.widget.setSizePolicy(sizePolicy)
         self.widget.setObjectName("widget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget)
-        self.verticalLayout_2.setContentsMargins(-1, -1, -1, 11)
+        self.verticalLayout_2.setContentsMargins(-1, 0, -1, 20)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.TopOverview = QtWidgets.QWidget(self.widget)
         self.TopOverview.setStyleSheet("#AddCheckUpButton, #AddTransactionButton {\n"
@@ -277,6 +277,7 @@ class Ui_Staff_Dashboard(object):
 "")
         self.TopOverview.setObjectName("TopOverview")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.TopOverview)
+        self.horizontalLayout_3.setContentsMargins(-1, -1, -1, 0)
         self.horizontalLayout_3.setSpacing(15)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.AddCheckUpButton = QtWidgets.QPushButton(self.TopOverview)
@@ -352,23 +353,50 @@ class Ui_Staff_Dashboard(object):
         self.TableFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.TableFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.TableFrame.setObjectName("TableFrame")
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.TableFrame)
-        self.verticalLayout_7.setContentsMargins(-1, -1, 20, 0)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.TableFrame)
+        self.verticalLayout_10.setContentsMargins(-1, -1, -1, 0)
+        self.verticalLayout_10.setSpacing(0)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.label_2 = QtWidgets.QLabel(self.TableFrame)
         self.label_2.setObjectName("label_2")
-        self.verticalLayout_7.addWidget(self.label_2)
-        self.PendingTable = QtWidgets.QTableWidget(self.TableFrame)
+        self.verticalLayout_10.addWidget(self.label_2)
+        self.scrollArea = QtWidgets.QScrollArea(self.TableFrame)
+        self.scrollArea.setStyleSheet("QScrollBar:vertical {\n"
+"     background: transparent;\n"
+"     width: 10px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"QScrollBar::handle:vertical {\n"
+"        background: #C0C0C0;\n"
+"        border-radius: 5px;\n"
+"}\n"
+"QScrollBar::handle:vertical:hover {\n"
+"        background: #A0A0A0;\n"
+"}\n"
+"QScrollBar::add-line:vertical,\n"
+"QScrollBar::sub-line:vertical{\n"
+"        background: none;\n"
+"        border: none;\n"
+"}")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 576, 522))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_7.setContentsMargins(0, 11, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.PendingTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
         self.PendingTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -377,7 +405,7 @@ class Ui_Staff_Dashboard(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
 "}")
         self.PendingTable.setObjectName("PendingTable")
@@ -391,6 +419,8 @@ class Ui_Staff_Dashboard(object):
         self.PendingTable.setHorizontalHeaderItem(2, item)
         self.PendingTable.horizontalHeader().setStretchLastSection(True)
         self.verticalLayout_7.addWidget(self.PendingTable)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout_10.addWidget(self.scrollArea)
         self.LowerOverview = QtWidgets.QFrame(self.TableFrame)
         self.LowerOverview.setStyleSheet("#DiagnosisOverview {\n"
 "    border: 2px solid  #2e6e65;\n"
@@ -439,217 +469,7 @@ class Ui_Staff_Dashboard(object):
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.PatientOverview = QtWidgets.QFrame(self.LowerOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PatientOverview.sizePolicy().hasHeightForWidth())
-        self.PatientOverview.setSizePolicy(sizePolicy)
-        self.PatientOverview.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.PatientOverview.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.PatientOverview.setObjectName("PatientOverview")
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.PatientOverview)
-        self.horizontalLayout_6.setContentsMargins(0, 10, 0, 0)
-        self.horizontalLayout_6.setSpacing(15)
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.DiagnosisOverview = QtWidgets.QWidget(self.PatientOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.DiagnosisOverview.sizePolicy().hasHeightForWidth())
-        self.DiagnosisOverview.setSizePolicy(sizePolicy)
-        self.DiagnosisOverview.setObjectName("DiagnosisOverview")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.DiagnosisOverview)
-        self.verticalLayout_10.setObjectName("verticalLayout_10")
-        self.label_4 = QtWidgets.QLabel(self.DiagnosisOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy)
-        self.label_4.setObjectName("label_4")
-        self.verticalLayout_10.addWidget(self.label_4)
-        self.ByDiagnosisLabel = QtWidgets.QLabel(self.DiagnosisOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ByDiagnosisLabel.sizePolicy().hasHeightForWidth())
-        self.ByDiagnosisLabel.setSizePolicy(sizePolicy)
-        self.ByDiagnosisLabel.setObjectName("ByDiagnosisLabel")
-        self.verticalLayout_10.addWidget(self.ByDiagnosisLabel, 0, QtCore.Qt.AlignTop)
-        self.frame = QtWidgets.QFrame(self.DiagnosisOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        self.frame.setSizePolicy(sizePolicy)
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame)
-        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.Diagnosis1 = QtWidgets.QLabel(self.frame)
-        self.Diagnosis1.setObjectName("Diagnosis1")
-        self.horizontalLayout_7.addWidget(self.Diagnosis1)
-        self.DiagnosisPercentage1 = QtWidgets.QLabel(self.frame)
-        self.DiagnosisPercentage1.setObjectName("DiagnosisPercentage1")
-        self.horizontalLayout_7.addWidget(self.DiagnosisPercentage1, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_10.addWidget(self.frame, 0, QtCore.Qt.AlignTop)
-        self.frame_2 = QtWidgets.QFrame(self.DiagnosisOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
-        self.frame_2.setSizePolicy(sizePolicy)
-        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_2.setObjectName("frame_2")
-        self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.frame_2)
-        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.Diagnosis2 = QtWidgets.QLabel(self.frame_2)
-        self.Diagnosis2.setObjectName("Diagnosis2")
-        self.horizontalLayout_8.addWidget(self.Diagnosis2)
-        self.DiagnosisPercentage2 = QtWidgets.QLabel(self.frame_2)
-        self.DiagnosisPercentage2.setObjectName("DiagnosisPercentage2")
-        self.horizontalLayout_8.addWidget(self.DiagnosisPercentage2, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_10.addWidget(self.frame_2, 0, QtCore.Qt.AlignTop)
-        self.frame_5 = QtWidgets.QFrame(self.DiagnosisOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
-        self.frame_5.setSizePolicy(sizePolicy)
-        self.frame_5.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_5.setObjectName("frame_5")
-        self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.frame_5)
-        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.Diagnosis3 = QtWidgets.QLabel(self.frame_5)
-        self.Diagnosis3.setObjectName("Diagnosis3")
-        self.horizontalLayout_9.addWidget(self.Diagnosis3)
-        self.DiagnosisPercentage3 = QtWidgets.QLabel(self.frame_5)
-        self.DiagnosisPercentage3.setObjectName("DiagnosisPercentage3")
-        self.horizontalLayout_9.addWidget(self.DiagnosisPercentage3, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_10.addWidget(self.frame_5, 0, QtCore.Qt.AlignTop)
-        self.frame_7 = QtWidgets.QFrame(self.DiagnosisOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
-        self.frame_7.setSizePolicy(sizePolicy)
-        self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_7.setObjectName("frame_7")
-        self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.frame_7)
-        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        self.Diagnosis4 = QtWidgets.QLabel(self.frame_7)
-        self.Diagnosis4.setObjectName("Diagnosis4")
-        self.horizontalLayout_10.addWidget(self.Diagnosis4)
-        self.DiagnosisPercentage4 = QtWidgets.QLabel(self.frame_7)
-        self.DiagnosisPercentage4.setObjectName("DiagnosisPercentage4")
-        self.horizontalLayout_10.addWidget(self.DiagnosisPercentage4, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_10.addWidget(self.frame_7, 0, QtCore.Qt.AlignTop)
-        self.horizontalLayout_6.addWidget(self.DiagnosisOverview)
-        self.AgeStageOverview = QtWidgets.QWidget(self.PatientOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.AgeStageOverview.sizePolicy().hasHeightForWidth())
-        self.AgeStageOverview.setSizePolicy(sizePolicy)
-        self.AgeStageOverview.setObjectName("AgeStageOverview")
-        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.AgeStageOverview)
-        self.verticalLayout_11.setObjectName("verticalLayout_11")
-        self.label_3 = QtWidgets.QLabel(self.AgeStageOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout_11.addWidget(self.label_3)
-        self.ByAgeStageLabel = QtWidgets.QLabel(self.AgeStageOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ByAgeStageLabel.sizePolicy().hasHeightForWidth())
-        self.ByAgeStageLabel.setSizePolicy(sizePolicy)
-        self.ByAgeStageLabel.setObjectName("ByAgeStageLabel")
-        self.verticalLayout_11.addWidget(self.ByAgeStageLabel, 0, QtCore.Qt.AlignTop)
-        self.frame_8 = QtWidgets.QFrame(self.AgeStageOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_8.sizePolicy().hasHeightForWidth())
-        self.frame_8.setSizePolicy(sizePolicy)
-        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_8.setObjectName("frame_8")
-        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.frame_8)
-        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.ChildLabel = QtWidgets.QLabel(self.frame_8)
-        self.ChildLabel.setObjectName("ChildLabel")
-        self.horizontalLayout_11.addWidget(self.ChildLabel)
-        self.ChildPercentage = QtWidgets.QLabel(self.frame_8)
-        self.ChildPercentage.setObjectName("ChildPercentage")
-        self.horizontalLayout_11.addWidget(self.ChildPercentage, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_11.addWidget(self.frame_8, 0, QtCore.Qt.AlignTop)
-        self.frame_9 = QtWidgets.QFrame(self.AgeStageOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
-        self.frame_9.setSizePolicy(sizePolicy)
-        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_9.setObjectName("frame_9")
-        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.frame_9)
-        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
-        self.AdultLabel = QtWidgets.QLabel(self.frame_9)
-        self.AdultLabel.setObjectName("AdultLabel")
-        self.horizontalLayout_12.addWidget(self.AdultLabel)
-        self.AdultPercentage = QtWidgets.QLabel(self.frame_9)
-        self.AdultPercentage.setObjectName("AdultPercentage")
-        self.horizontalLayout_12.addWidget(self.AdultPercentage, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_11.addWidget(self.frame_9, 0, QtCore.Qt.AlignTop)
-        self.frame_10 = QtWidgets.QFrame(self.AgeStageOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_10.sizePolicy().hasHeightForWidth())
-        self.frame_10.setSizePolicy(sizePolicy)
-        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_10.setObjectName("frame_10")
-        self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.frame_10)
-        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.ElderlyLabel = QtWidgets.QLabel(self.frame_10)
-        self.ElderlyLabel.setObjectName("ElderlyLabel")
-        self.horizontalLayout_13.addWidget(self.ElderlyLabel)
-        self.ElderlyPercentage = QtWidgets.QLabel(self.frame_10)
-        self.ElderlyPercentage.setObjectName("ElderlyPercentage")
-        self.horizontalLayout_13.addWidget(self.ElderlyPercentage, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_11.addWidget(self.frame_10, 0, QtCore.Qt.AlignTop)
-        self.frame_12 = QtWidgets.QFrame(self.AgeStageOverview)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_12.sizePolicy().hasHeightForWidth())
-        self.frame_12.setSizePolicy(sizePolicy)
-        self.frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_12.setObjectName("frame_12")
-        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.frame_12)
-        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.TotalLabel = QtWidgets.QLabel(self.frame_12)
-        self.TotalLabel.setObjectName("TotalLabel")
-        self.horizontalLayout_14.addWidget(self.TotalLabel)
-        self.TotalPercentage = QtWidgets.QLabel(self.frame_12)
-        self.TotalPercentage.setObjectName("TotalPercentage")
-        self.horizontalLayout_14.addWidget(self.TotalPercentage, 0, QtCore.Qt.AlignRight)
-        self.verticalLayout_11.addWidget(self.frame_12, 0, QtCore.Qt.AlignTop)
-        self.horizontalLayout_6.addWidget(self.AgeStageOverview)
-        self.horizontalLayout_5.addWidget(self.PatientOverview)
-        self.verticalLayout_7.addWidget(self.LowerOverview)
+        self.verticalLayout_10.addWidget(self.LowerOverview)
         self.horizontalLayout_4.addWidget(self.TableFrame)
         self.RecentFrame = QtWidgets.QFrame(self.frame_3)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
@@ -731,25 +551,5 @@ class Ui_Staff_Dashboard(object):
         item.setText(_translate("Form", "Patient Name"))
         item = self.PendingTable.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Check Up Type"))
-        self.label_4.setText(_translate("Form", "Patient Overview"))
-        self.ByDiagnosisLabel.setText(_translate("Form", "By Diagnosis"))
-        self.Diagnosis1.setText(_translate("Form", "Fever"))
-        self.DiagnosisPercentage1.setText(_translate("Form", "0%"))
-        self.Diagnosis2.setText(_translate("Form", "Ingrown"))
-        self.DiagnosisPercentage2.setText(_translate("Form", "0%"))
-        self.Diagnosis3.setText(_translate("Form", "Cough"))
-        self.DiagnosisPercentage3.setText(_translate("Form", "0%"))
-        self.Diagnosis4.setText(_translate("Form", "Emergency"))
-        self.DiagnosisPercentage4.setText(_translate("Form", "0%"))
-        self.label_3.setText(_translate("Form", "Patient Overview"))
-        self.ByAgeStageLabel.setText(_translate("Form", "By Age Stage"))
-        self.ChildLabel.setText(_translate("Form", "Child"))
-        self.ChildPercentage.setText(_translate("Form", "0"))
-        self.AdultLabel.setText(_translate("Form", "Adult"))
-        self.AdultPercentage.setText(_translate("Form", "0"))
-        self.ElderlyLabel.setText(_translate("Form", "Elderly"))
-        self.ElderlyPercentage.setText(_translate("Form", "0"))
-        self.TotalLabel.setText(_translate("Form", "Total:"))
-        self.TotalPercentage.setText(_translate("Form", "0"))
         self.label.setText(_translate("Form", "Recent Activity"))
 

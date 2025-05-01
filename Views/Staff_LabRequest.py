@@ -9,23 +9,22 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import Images.resources
 
 class Ui_Staff_LabRequest(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1113, 738)
+        Form.resize(1143, 738)
         Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 10pt \"Satoshi Black\";\n"
+"    font: 900 16pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
 "    font-weight: bold;    \n"
-"    font-size: 25px;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
@@ -43,9 +42,6 @@ class Ui_Staff_LabRequest(object):
 "    background: transparent;\n"
 "}\n"
 "\n"
-"#MainBodyContainer {\n"
-"    background-color: #f0f0f0;\n"
-"}\n"
 "")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -91,7 +87,9 @@ class Ui_Staff_LabRequest(object):
         self.TransactionsButton.setObjectName("TransactionsButton")
         self.verticalLayout_3.addWidget(self.TransactionsButton)
         self.LabButton = QtWidgets.QPushButton(self.NavBar)
-        self.LabButton.setStyleSheet("")
+        self.LabButton.setStyleSheet("QPushButton{\n"
+"    font: 900 20pt \"Satoshi Black\";    \n"
+"}")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(":/icons/icons/test-tubes.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.LabButton.setIcon(icon3)
@@ -275,7 +273,7 @@ class Ui_Staff_LabRequest(object):
 "")
         self.Body.setObjectName("Body")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.Body)
-        self.verticalLayout_7.setContentsMargins(20, 11, 20, 11)
+        self.verticalLayout_7.setContentsMargins(20, 11, 20, 20)
         self.verticalLayout_7.setSpacing(7)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.widget_3 = QtWidgets.QWidget(self.Body)
@@ -332,7 +330,7 @@ class Ui_Staff_LabRequest(object):
 "")
         self.widget_3.setObjectName("widget_3")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_3)
-        self.horizontalLayout_4.setContentsMargins(0, 21, -1, -1)
+        self.horizontalLayout_4.setContentsMargins(0, 0, -1, -1)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.SearchBar = QtWidgets.QWidget(self.widget_3)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -449,7 +447,7 @@ class Ui_Staff_LabRequest(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 761, 541))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 700, 553))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -459,13 +457,12 @@ class Ui_Staff_LabRequest(object):
         self.LabRequestTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -474,7 +471,7 @@ class Ui_Staff_LabRequest(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
 "}")
         self.LabRequestTable.setColumnCount(4)

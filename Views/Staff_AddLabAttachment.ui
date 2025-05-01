@@ -129,6 +129,16 @@
        </property>
        <item>
         <widget class="QWidget" name="widget_3" native="true">
+         <property name="styleSheet">
+          <string notr="true">#PatName, #ReqBy {
+	font-weight: bold;
+	color: #2b3752;
+}
+
+#Patient, #Doctor {
+	color: #2b3752;
+}</string>
+         </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <property name="spacing">
            <number>10</number>
@@ -164,7 +174,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="Title_2">
+              <widget class="QLabel" name="PatName">
                <property name="text">
                 <string>Patient Name :</string>
                </property>
@@ -199,7 +209,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="ReqBy">
                <property name="text">
                 <string>Requested By :</string>
                </property>
@@ -254,6 +264,7 @@
 	background-color: #F4F7ED;
 	gridline-color: transparent;
 	border-radius: 10px;
+	border: 2px solid #2E6E65;
 }
 QTableWidget::item {
 	border: none;
@@ -268,8 +279,7 @@ QTableWidget QHeaderView::section {
 	padding: 5px;
 	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
-}
-</string>
+}</string>
             </property>
             <attribute name="horizontalHeaderStretchLastSection">
              <bool>true</bool>

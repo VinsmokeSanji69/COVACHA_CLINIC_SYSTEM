@@ -138,7 +138,7 @@ QGraphicsView {
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item alignment="Qt::AlignTop">
+       <item>
         <widget class="QFrame" name="Header">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -215,7 +215,7 @@ QGraphicsView {
                 <item>
                  <widget class="QLabel" name="InterfaceTitle">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
@@ -230,68 +230,6 @@ QGraphicsView {
              </item>
             </layout>
            </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="UserPanel">
-            <property name="spacing">
-             <number>10</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="UserInfo">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-             </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="Profile">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_6">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-              </layout>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
@@ -329,6 +267,11 @@ QLabel{
 
 #label_29, #label_30, #label_31 {
 	color: #F4F7ED;
+}
+
+#PatID, #PatName, #PatGender, #PatAge, 
+#DocID, #DocName, #DocSpecialty {
+	font-weight: normal;
 }
 
 #frame_6, #frame_7 {
@@ -416,7 +359,9 @@ QComboBox QAbstractItemView {
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">#chck_ID, #Diagnosis, #DiagnosisNotes, #DoctorCharge {
+	font-weight: normal;
+}</string>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <property name="spacing">
@@ -1163,16 +1108,16 @@ QComboBox QAbstractItemView {
                        <number>5</number>
                       </property>
                       <property name="leftMargin">
-                       <number>10</number>
+                       <number>15</number>
                       </property>
                       <property name="topMargin">
-                       <number>10</number>
+                       <number>15</number>
                       </property>
                       <property name="rightMargin">
-                       <number>10</number>
+                       <number>15</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>10</number>
+                       <number>15</number>
                       </property>
                       <item>
                        <widget class="QScrollArea" name="scrollArea">
@@ -1205,8 +1150,8 @@ QScrollBar::sub-line:vertical{
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>857</width>
-                           <height>243</height>
+                           <width>847</width>
+                           <height>233</height>
                           </rect>
                          </property>
                          <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1231,13 +1176,12 @@ QScrollBar::sub-line:vertical{
                              <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
-	border-radius: 8px;
-
+	border-radius: 10px;
+	border: 2px solid #2E6E65;
 }
 QTableWidget::item {
 	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
+	font: 16pt &quot;Lexend&quot;;
 }
 QTableWidget::item:selected {
 	background-color: rgba(46, 110, 101, 0.3);
@@ -1245,7 +1189,8 @@ QTableWidget::item:selected {
 QTableWidget QHeaderView::section {
 	background-color: #2E6E65;
 	color: white;
-	font: 700 15pt &quot;Satoshi&quot;;
+	padding: 5px;
+	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
 }</string>
                             </property>
