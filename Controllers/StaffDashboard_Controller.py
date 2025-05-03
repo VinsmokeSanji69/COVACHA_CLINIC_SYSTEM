@@ -185,7 +185,7 @@ class StaffDashboardController(QMainWindow):
         # Set selection behavior
         table_widget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-    def load_pending_checkups(self):
+    def load_pending_checkupss(self):
         """Fetch and display pending check-ups in the PatientDetails table."""
         try:
             pending_checkups = CheckUp.get_pending_checkups()
