@@ -18,7 +18,7 @@ class StaffTransactionModal(QMainWindow):
         # Set window properties
         self.setWindowTitle("Add Transaction")
 
-        print("AddTransaction initialized successfully!")
+        # print("AddTransaction initialized successfully!")
 
         self.apply_table_styles()
         self.load_pending_transaction()
@@ -45,7 +45,7 @@ class StaffTransactionModal(QMainWindow):
             transaction_chck_ids = {tran['chck_id'] for tran in transactions}
 
             # Debug: Log fetched transactions
-            print(f"Fetched transactions with chck_id: {transaction_chck_ids}")
+            # print(f"Fetched transactions with chck_id: {transaction_chck_ids}")
 
             # Fetch all check-ups from the database
             pending_checkups = CheckUp.get_all_checkups()
@@ -60,11 +60,11 @@ class StaffTransactionModal(QMainWindow):
             ]
 
             # Debug: Log filtered check-ups
-            print(f"Filtered check-ups: {filtered_checkups}")
+            # print(f"Filtered check-ups: {filtered_checkups}")
 
             # Check if there are no pending check-ups after filtering
             if not filtered_checkups:
-                print("No pending check-ups found.")
+                # print("No pending check-ups found.")
 
                 # Add a single row with the message "No Transaction Yet"
                 self.ui.TransactionTable.insertRow(0)
@@ -74,7 +74,7 @@ class StaffTransactionModal(QMainWindow):
 
                 # Span the message across all columns
                 column_count = self.ui.TransactionTable.columnCount()
-                print(f"Column count: {column_count}")
+                # print(f"Column count: {column_count}")
                 self.ui.TransactionTable.setSpan(0, 0, 1, column_count)
                 return
 
@@ -88,13 +88,13 @@ class StaffTransactionModal(QMainWindow):
                 # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
                 if not patient:
-                    print(f"No patient found for pat_id={pat_id}")
+                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Fetch doctor details
                 doctor = Doctor.get_doctor_by_id(doc_id)
                 if not doctor:
-                    print(f"No doctor found for doc_id {doc_id}")
+                    # print(f"No doctor found for doc_id {doc_id}")
                     docFullname = "Unknown Doctor"
                 else:
                     docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
@@ -110,19 +110,19 @@ class StaffTransactionModal(QMainWindow):
                 self.ui.TransactionTable.setItem(row, 3, QTableWidgetItem(docFullname))  # Doctor Name
 
                 # Debug: Log inserted row
-                print(
-                    f"Inserting row {row}: chck_id={chck_id}, full_name={full_name}, chck_type={chck_type}, docFullname={docFullname}")
+                # print(f"Inserting row {row}: chck_id={chck_id}, full_name={full_name}, chck_type={chck_type}, docFullname={docFullname}")
 
             # Resize columns to fit the content
             if self.ui.TransactionTable.rowCount() > 0:
                 self.ui.TransactionTable.resizeColumnsToContents()
 
         except Exception as e:
-            print(f"Error loading pending check-ups: {e}")
+            # print(f"Error loading pending check-ups: {e}")
+            pass
 
     def open_transaction_process(self):
         try:
-            print("Add button clicked!")
+            # print("Add button clicked!")
             # Determine which row is selected
             selected_row = self.ui.TransactionTable.currentRow()
             if selected_row == -1:
@@ -138,20 +138,20 @@ class StaffTransactionModal(QMainWindow):
             chck_id = chck_id_item.text()
 
             # Open the StaffTransactionProcess modal with the selected chck_id
-            print(f"Attempting to open StaffTransactionProcess modal with chck_id: {chck_id}")
+            # print(f"Attempting to open StaffTransactionProcess modal with chck_id: {chck_id}")
             self.transaction_process_window = StaffTransactionProcess(chck_id=chck_id)
 
             # Close the parent dashboard window
             self.staff_dashboard.close()
 
             # Close the current modal (StaffTransactionModal)
-            print("Closing StaffTransactionModal...")
+            # print("Closing StaffTransactionModal...")
             self.close()
 
             # Show the StaffTransactionProcess modal
-            print("Showing StaffTransactionProcess modal...")
+            # print("Showing StaffTransactionProcess modal...")
             self.transaction_process_window.show()
-            print("StaffTransactionProcess modal opened successfully!")
+            # print("StaffTransactionProcess modal opened successfully!")
         except Exception as e:
-            print(f"Error opening StaffTransactionProcess modal: {e}")
+            # print(f"Error opening StaffTransactionProcess modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open StaffTransactionProcess: {e}")

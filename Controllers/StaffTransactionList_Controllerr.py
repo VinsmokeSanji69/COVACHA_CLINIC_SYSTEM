@@ -27,7 +27,7 @@ class StaffTransactionList(QMainWindow):
             # Fetch all completed check-ups
             checkups = CheckUp.get_all_checkups()
             if not checkups:
-                print("No completed check-ups found.")
+                # print("No completed check-ups found.")
                 return
 
             # Fetch all transactions to determine their status
@@ -46,20 +46,20 @@ class StaffTransactionList(QMainWindow):
                 chck_id = checkup['chck_id'].strip().lower()
 
                 # Debug: Log the current chck_id
-                print(f"Processing chck_id: {chck_id}")
+                # print(f"Processing chck_id: {chck_id}")
 
                 # Fetch patient details
                 pat_id = checkup['pat_id']
                 patient = Patient.get_patient_details(pat_id)
                 if not patient:
-                    print(f"No patient found for pat_id={pat_id}")
+                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Fetch doctor details
                 doc_id = checkup['doc_id']
                 doctor = Doctor.get_doctor_by_id(doc_id)
                 if not doctor:
-                    print(f"No doctor found for doc_id={doc_id}")
+                    # print(f"No doctor found for doc_id={doc_id}")
                     continue
 
                 # Format patient and doctor names
@@ -70,7 +70,7 @@ class StaffTransactionList(QMainWindow):
                 tran_status = transaction_dict.get(chck_id, "Pending")
 
                 # Debug: Log the transaction status
-                print(f"Transaction status for chck_id {chck_id}: {tran_status}")
+                # print(f"Transaction status for chck_id {chck_id}: {tran_status}")
 
                 # Insert data into the table
                 self.ui.TransactionTable.insertRow(row)
@@ -82,9 +82,9 @@ class StaffTransactionList(QMainWindow):
             # Resize columns to fit content
             self.ui.TransactionTable.resizeColumnsToContents()
 
-            print("Transaction details loaded successfully!")
+            # print("Transaction details loaded successfully!")
 
         except Exception as e:
-            print(f"Error loading transaction details: {e}")
+            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 

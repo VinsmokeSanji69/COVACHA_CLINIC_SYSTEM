@@ -94,20 +94,20 @@ class StaffAddCheckUp(QMainWindow):
         lname = self.ui.Lname.text().strip()
 
         # Log input values for debugging
-        print(f"Checking for patient: {fname}, {lname}")
+        # print(f"Checking for patient: {fname}, {lname}")
 
         # Do nothing if either Fname or Lname is empty
         if not fname or not lname:
-            print("One or both fields are empty. Skipping check.")
+            # print("One or both fields are empty. Skipping check.")
             return
 
         try:
             # Check if the patient already exists in the database
             patient = Patient.get_patient_by_name(fname, lname)
-            print(f"Query result: {patient}")  # Debug: Log the query result
+            # print(f"Query result: {patient}")  # Debug: Log the query result
 
             if patient:
-                print("Patient found. Prefilling form...")
+                # print("Patient found. Prefilling form...")
                 # Temporarily disconnect editingFinished signals to prevent recursion
                 self.ui.Fname.editingFinished.disconnect(self.check_patient_existence)
                 self.ui.Lname.editingFinished.disconnect(self.check_patient_existence)
@@ -134,7 +134,7 @@ class StaffAddCheckUp(QMainWindow):
                                         "Patient already exists. Information has been prefilled.")
             else:
                 # Clear fields for a new patient
-                print("Patient not found. Generating new patient ID...")
+                # print("Patient not found. Generating new patient ID...")
                 self.ui.Mname.clear()
                 self.ui.Gender.setCurrentIndex(-1)
                 self.ui.Dob.setDate(QDate(1990, 1, 1))
@@ -154,13 +154,13 @@ class StaffAddCheckUp(QMainWindow):
                 })
                 if new_pat_id:
                     self.ui.ID.setText(str(new_pat_id))
-                    print(f"Generated new patient ID: {new_pat_id}")
+                    # print(f"Generated new patient ID: {new_pat_id}")
                     QMessageBox.information(self, "New Patient", "A new patient ID has been generated.")
                 else:
                     QMessageBox.critical(self, "Error", "Failed to generate a new patient ID.")
 
         except Exception as e:
-            print(f"Error in check_patient_existence: {e}")
+            # print(f"Error in check_patient_existence: {e}")
             QMessageBox.critical(self, "Error", "An error occurred while checking patient existence.")
 
 
@@ -221,7 +221,7 @@ class StaffAddCheckUp(QMainWindow):
             "staff_id": int(self.staff_id),
             "checkup_type" : self.ui.CheckType.currentText()
         }
-        print(f"Collected data: {data}")
+        # print(f"Collected data: {data}")
         return data
 
     def validate_and_submit(self):
@@ -238,7 +238,7 @@ class StaffAddCheckUp(QMainWindow):
         data = self.collect_data()
 
         # Debug: Print collected data before saving
-        print(f"Data to be saved: {data}")
+        # print(f"Data to be saved: {data}")
 
         # Save or update patient information
         if Patient.update_or_create_patient(data):

@@ -40,6 +40,7 @@ class Ui_Staff_AddLabAttachment(object):
 "    color: #2E6E65;\n"
 "    qproperty-wordWrap: true;\n"
 "    background: transparent;\n"
+"    qproperty-alignment: AlignCenter;\n"
 "}\n"
 "#Subheader {\n"
 "    font: 500 14pt \"Satoshi Medium\";\n"

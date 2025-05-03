@@ -51,6 +51,7 @@
 	color: #2E6E65;
     qproperty-wordWrap: true;
 	background: transparent;
+	qproperty-alignment: AlignCenter;
 }
 #Subheader {
 	font: 500 14pt &quot;Satoshi Medium&quot;;
