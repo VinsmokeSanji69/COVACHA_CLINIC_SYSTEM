@@ -222,7 +222,7 @@ QLabel {
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="LogoutButton">
           <property name="text">
            <string>Logout</string>
           </property>

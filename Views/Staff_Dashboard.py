@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import Images.resources
+
 
 class Ui_Staff_Dashboard(object):
     def setupUi(self, Form):
@@ -110,13 +110,13 @@ class Ui_Staff_Dashboard(object):
         self.pushButton_9.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_9.setObjectName("pushButton_9")
         self.verticalLayout_4.addWidget(self.pushButton_9)
-        self.pushButton_10 = QtWidgets.QPushButton(self.NavBar)
+        self.LogoutButton = QtWidgets.QPushButton(self.NavBar)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_10.setIcon(icon5)
-        self.pushButton_10.setIconSize(QtCore.QSize(40, 40))
-        self.pushButton_10.setObjectName("pushButton_10")
-        self.verticalLayout_4.addWidget(self.pushButton_10)
+        self.LogoutButton.setIcon(icon5)
+        self.LogoutButton.setIconSize(QtCore.QSize(40, 40))
+        self.LogoutButton.setObjectName("LogoutButton")
+        self.verticalLayout_4.addWidget(self.LogoutButton)
         self.verticalLayout_3.addLayout(self.verticalLayout_4)
         self.horizontalLayout.addWidget(self.NavBar)
         self.MainBodyContainer = QtWidgets.QWidget(Form)
@@ -532,7 +532,7 @@ class Ui_Staff_Dashboard(object):
         self.TransactionsButton.setText(_translate("Form", "Transactions"))
         self.LabButton.setText(_translate("Form", "Lab Request"))
         self.pushButton_9.setText(_translate("Form", "Settings"))
-        self.pushButton_10.setText(_translate("Form", "Logout"))
+        self.LogoutButton.setText(_translate("Form", "Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Dashboard"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Nurse"))

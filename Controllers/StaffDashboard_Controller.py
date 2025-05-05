@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog, QVBoxLayout, QPushButton, \
     QStackedWidget, QHeaderView, QSizePolicy, QWidget
 from PyQt5.QtCore import QTimer, pyqtSlot, Qt
@@ -131,6 +131,8 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.setupUi(self.labreq_page)
         self.page_stack.addWidget(self.labreq_page)
 
+
+
     def connect_all_buttons(self):
         """Connect navigation buttons for all pages"""
         # Connect dashboard page buttons
@@ -157,6 +159,7 @@ class StaffDashboardController(QMainWindow):
         if hasattr(self.dashboard_ui, 'AddTransactionButton'):
             self.dashboard_ui.AddTransactionButton.clicked.connect(self.open_transaction_modal)
 
+
     @pyqtSlot()
     def go_to_dashboard(self):
         self.page_stack.setCurrentWidget(self.dashboard_page)
@@ -172,6 +175,7 @@ class StaffDashboardController(QMainWindow):
         self.page_stack.setCurrentWidget(self.labreq_page)
         self.update_time_labels()
 
+
     def apply_table_styles(self, table_widget):
         # Ensure horizontal headers are visible
         table_widget.horizontalHeader().setVisible(True)
@@ -185,7 +189,7 @@ class StaffDashboardController(QMainWindow):
         # Set selection behavior
         table_widget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-    def load_pending_checkupss(self):
+    def load_pending_checkups(self):
         """Fetch and display pending check-ups in the PatientDetails table."""
         try:
             pending_checkups = CheckUp.get_pending_checkups()
@@ -341,3 +345,8 @@ class StaffDashboardController(QMainWindow):
         except Exception as e:
             # print(f"Error loading lab request details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load lab request details: {e}")
+
+
+
+
+
