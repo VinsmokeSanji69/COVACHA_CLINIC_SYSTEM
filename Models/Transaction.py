@@ -9,7 +9,7 @@ class Transaction():
         conn = DBConnection.get_db_connection()
 
         if not conn:
-            return[]
+            return []
 
         try:
             with conn.cursor() as cursor:
@@ -21,14 +21,14 @@ class Transaction():
 
                 cursor.execute(query, (
                     chck_id,
-                    trans_data ["discount"],
-                    trans_data ["base_charge"],
-                    trans_data ["lab_charge"],
+                    trans_data["discount"],
+                    trans_data["base_charge"],
+                    trans_data["lab_charge"],
                     "Completed"
                 ))
 
                 conn.commit()
-                print("transaction data saved successfully")
+                # print("transaction data saved successfully")  # Commented to speed up execution
 
         except Exception as e:
             print(f"Database error while creating new patient: {e}")
@@ -64,13 +64,12 @@ class Transaction():
                         'tran_status': row[1],
                     })
 
-                # Debug: Log the fetched transactions
-                print(f"Fetched transactions: {transactions}")
+                # print(f"Fetched transactions: {transactions}")  # Commented to reduce load time
                 return transactions
 
-        except Exception as e:
-            print(f"Error fetching transactions: {e}")
-            return []
+        # except Exception as e:
+        #     print(f"Error fetching transactions: {e}")
+        #     return []
 
         finally:
             if conn:
