@@ -6,7 +6,7 @@ class DBConnection:
     def get_db_connection():
         try:
             conn = psycopg2.connect(
-                dbname="ClinicSystemF",
+                dbname="TestDB",
                 user="postgres",
                 password="12345",
                 host="localhost",

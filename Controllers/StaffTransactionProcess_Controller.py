@@ -1,9 +1,9 @@
 from datetime import date
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog, QMainWindow, QWidget
 
 from Controllers.StaffTransactionList_Controllerr import StaffTransactionList
-from Views.Staff_TransactionProcess import Ui_MainWindow
+from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor, calculate_age
 from Models.Patient import Patient
@@ -46,27 +46,25 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
-class StaffTransactionProcess(QtWidgets.QMainWindow):
-    def __init__(self, chck_id=None):
-        super().__init__()
-        self.ui = Ui_MainWindow()  # Replace with your actual UI class
+
+class StaffTransactionProcess(QDialog):  # Changed from QWidget to QDialog
+    def __init__(self, chck_id=None, parent=None):
+        super().__init__(parent)  # Add parent support
+        self.setModal(True)  # Make it behave like a modal dialog
+        self.setWindowTitle("Transaction Process")
+
+        self.ui = Ui_Staff_Transaction_Process()
         self.ui.setupUi(self)
 
-        # Store the chck_id
         self.chck_id = chck_id
-        # print(f"Staff transaction initialized with chck_id: {self.chck_id}")
-
-        # Apply table styles (if needed)
         self.apply_table_styles()
-
-        # Load transaction details
         self.load_transaction_details()
         self.load_LabCharge_Table()
         self.calculate_total_lab_charge()
         self.calculate_subtotal()
 
-        #save transaction
         self.ui.CompleteButton.clicked.connect(lambda: self.save_transaction_process(self.chck_id))
+        self.ui.BackButton.clicked.connect(self.close)
 
     def apply_table_styles(self):
         """Apply custom styles to the tables."""
@@ -307,7 +305,7 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
         try:
             # Prepare the transaction data
             trans_data = {
-                "discount": 0,  # Store discount as an integer (default is 0)
+                "discount": 0,
                 "base_charge": int(float(self.ui.DoctorCharge.text().replace("₱", "").replace(",", "").strip())),
                 "lab_charge": int(float(self.ui.TotalLabCharge.text().replace("₱", "").replace(",", "").strip())),
             }
@@ -315,26 +313,26 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             # Show confirmation dialog
             confirmation_dialog = ConfirmationDialog(self)
             if confirmation_dialog.exec_() == QtWidgets.QDialog.Rejected:
-                # print("Transaction confirmation cancelled by the user.")
                 return
 
             # Save the transaction
             Transaction.add_transaction(chck_id, trans_data)
 
-            # Optionally, close the modal or refresh the UI after saving
-            # print("Transaction saved successfully!")
-            QtWidgets.QMessageBox.information(self, "Success", "Transaction has been confirmed and saved successfully!")
+            # Notify success
+            QtWidgets.QMessageBox.information(self, "Success", "Transaction confirmed and saved successfully!")
 
-            # Open the StaffTransactionList window
-            self.staff_transaction_list_window = StaffTransactionList()
-            self.staff_transaction_list_window.show()
+            # Go back to Transactions page and reload data
+            if self.parent() and hasattr(self.parent(), 'staff_transactions'):
+                # Reload the transaction list
+                self.parent().staff_transactions.load_transaction_details()
 
-            # Close the current modal
-            self.close()
+                # Navigate to Transactions page
+                self.parent().go_to_transactions()
+
+            # Close this modal
+            self.accept()
 
         except ValueError as ve:
-            # print(f"ValueError while preparing transaction data: {ve}")
-            QtWidgets.QMessageBox.critical(self, "Error", "Invalid value in DoctorCharge or TotalLabCharge.")
+            QtWidgets.QMessageBox.critical(self, "Error", f"Invalid value: {ve}")
         except Exception as e:
-            # print(f"Error saving transaction: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to save transaction: {e}")
