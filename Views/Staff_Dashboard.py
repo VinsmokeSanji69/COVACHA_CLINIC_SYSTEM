@@ -381,7 +381,7 @@ class Ui_Staff_Dashboard(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 576, 522))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 826, 522))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_7.setContentsMargins(0, 11, 0, 0)
@@ -471,53 +471,6 @@ class Ui_Staff_Dashboard(object):
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_10.addWidget(self.LowerOverview)
         self.horizontalLayout_4.addWidget(self.TableFrame)
-        self.RecentFrame = QtWidgets.QFrame(self.frame_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.RecentFrame.sizePolicy().hasHeightForWidth())
-        self.RecentFrame.setSizePolicy(sizePolicy)
-        self.RecentFrame.setMinimumSize(QtCore.QSize(250, 0))
-        self.RecentFrame.setMaximumSize(QtCore.QSize(70, 16777215))
-        self.RecentFrame.setStyleSheet("#RecentFrame {\n"
-"    border: 2px solid  #2e6e65;\n"
-"    border-radius: 15px; \n"
-"}\n"
-"\n"
-"#RecentFrame QFrame {\n"
-"    background-color: #b9cec4;\n"
-"    border-radius: 20px;\n"
-"}\n"
-"\n"
-"#RecentFrame QLabel {\n"
-"    background-color: transparent;\n"
-"}\n"
-"")
-        self.RecentFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.RecentFrame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.RecentFrame.setObjectName("RecentFrame")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.RecentFrame)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.label = QtWidgets.QLabel(self.RecentFrame)
-        self.label.setObjectName("label")
-        self.verticalLayout_6.addWidget(self.label)
-        self.frame_4 = QtWidgets.QFrame(self.RecentFrame)
-        self.frame_4.setMinimumSize(QtCore.QSize(0, 100))
-        self.frame_4.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_4.setObjectName("frame_4")
-        self.verticalLayout_6.addWidget(self.frame_4)
-        self.frame_6 = QtWidgets.QFrame(self.RecentFrame)
-        self.frame_6.setMinimumSize(QtCore.QSize(0, 100))
-        self.frame_6.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_6.setObjectName("frame_6")
-        self.verticalLayout_6.addWidget(self.frame_6)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_6.addItem(spacerItem2)
-        self.horizontalLayout_4.addWidget(self.RecentFrame)
         self.verticalLayout_2.addWidget(self.frame_3)
         self.verticalLayout.addWidget(self.widget)
         self.horizontalLayout.addWidget(self.MainBodyContainer)
@@ -551,5 +504,4 @@ class Ui_Staff_Dashboard(object):
         item.setText(_translate("Form", "Patient Name"))
         item = self.PendingTable.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Check Up Type"))
-        self.label.setText(_translate("Form", "Recent Activity"))
 

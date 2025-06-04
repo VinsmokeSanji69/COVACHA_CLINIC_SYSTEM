@@ -75,14 +75,14 @@ class StaffDashboardController(QMainWindow):
         # # self.records_ui.DoneTable.setWordWrap(True)
         # # self.records_ui.DoneTable.resizeRowsToContents()
         #
-        # # Responsive table for Transaction Page
-        # # DoneTable
-        # header = self.transactions_ui.TransactionTable.horizontalHeader()
-        # header.setSectionResizeMode(QHeaderView.Stretch)
-        #
-        # self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # self.transactions_ui.TransactionTable.setWordWrap(True)
-        # self.transactions_ui.TransactionTable.resizeRowsToContents()
+        # Responsive table for Transaction Page
+        # DoneTable
+        header = self.transactions_ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.transactions_ui.TransactionTable.setWordWrap(True)
+        self.transactions_ui.TransactionTable.resizeRowsToContents()
 
         # Responsive table for LabReq Page
         header = self.labreq_ui.LabRequestTable.horizontalHeader()
