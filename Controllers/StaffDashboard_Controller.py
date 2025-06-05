@@ -56,6 +56,22 @@ class StaffDashboardController(QMainWindow):
         # Start with dashboard view
         self.go_to_dashboard()
 
+        # Responsive for Staff Dashboard Page
+        header = self.dashboard_ui.PendingTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.dashboard_ui.PendingTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.dashboard_ui.PendingTable.setWordWrap(True)
+        self.dashboard_ui.PendingTable.resizeRowsToContents()
+
+        # Responsive for Staff Transaction Page
+        header = self.transactions_ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.transactions_ui.TransactionTable.setWordWrap(True)
+        self.transactions_ui.TransactionTable.resizeRowsToContents()
+
         # Responsive table for LabReq Page
         header = self.labreq_ui.LabRequestTable.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
@@ -134,6 +150,7 @@ class StaffDashboardController(QMainWindow):
     @pyqtSlot()
     def go_to_transactions(self):
         self.page_stack.setCurrentWidget(self.transactions_page)
+        self.staff_transactions.load_transaction_details()
         self.update_time_labels()
 
     @pyqtSlot()

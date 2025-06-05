@@ -29,10 +29,6 @@ class AdminTransactionsController(QWidget):
 
         print("Admin Transactions UI initialized!")
 
-        # self.transactions_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        # self.transactions_ui.ChargesButton.clicked.connect(self.view_charges_ui)
-        # self.transactions_ui.StaffsButton.clicked.connect(self.view_staff_ui)
-        # self.transactions_ui.PatientsButton.clicked.connect(self.view_patient_ui)
         self.transactions_ui.ViewTransaction.clicked.connect(self.view_transaction)
         self.refresh_tables()
 
