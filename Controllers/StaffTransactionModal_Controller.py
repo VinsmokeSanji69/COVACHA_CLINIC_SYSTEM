@@ -42,10 +42,8 @@ class StaffTransactionModal(QMainWindow):
         try:
             # Fetch all transactions to determine which check-ups are already completed
             transactions = Transaction.get_all_transaction()
-            transaction_chck_ids = {tran['chck_id'] for tran in transactions}
-
-            # Debug: Log fetched transactions
-            # print(f"Fetched transactions with chck_id: {transaction_chck_ids}")
+            # Create a mapping of chck_id to tran_status
+            transaction_status_map = {tran['chck_id']: tran['tran_status'] for tran in transactions}
 
             # Fetch all check-ups from the database
             pending_checkups = CheckUp.get_all_checkups()
@@ -56,17 +54,12 @@ class StaffTransactionModal(QMainWindow):
             # Filter out check-ups whose chck_id exists in the transactions
             filtered_checkups = [
                 checkup for checkup in pending_checkups
-                if checkup["chck_id"] not in transaction_chck_ids
+                if checkup["chck_id"] not in transaction_status_map
+                   or transaction_status_map[checkup["chck_id"]] in ("Pending", "Partial")
             ]
-
-            # Debug: Log filtered check-ups
-            # print(f"Filtered check-ups: {filtered_checkups}")
 
             # Check if there are no pending check-ups after filtering
             if not filtered_checkups:
-                # print("No pending check-ups found.")
-
-                # Add a single row with the message "No Transaction Yet"
                 self.ui.TransactionTable.insertRow(0)
                 no_data_item = QTableWidgetItem("No Transaction Yet")
                 no_data_item.setTextAlignment(QtCore.Qt.AlignCenter)
@@ -74,9 +67,18 @@ class StaffTransactionModal(QMainWindow):
 
                 # Span the message across all columns
                 column_count = self.ui.TransactionTable.columnCount()
-                # print(f"Column count: {column_count}")
                 self.ui.TransactionTable.setSpan(0, 0, 1, column_count)
                 return
+
+            # Ensure the table has at least 5 columns to show tran_status
+            expected_columns = 5  # chck_id, patient name, check-up type, doctor, tran_status
+            if self.ui.TransactionTable.columnCount() < expected_columns:
+                self.ui.TransactionTable.setColumnCount(expected_columns)
+
+            # Optional: Set headers (only if needed)
+            self.ui.TransactionTable.setHorizontalHeaderLabels([
+                "Check-Up ID", "Patient Name", "Check-Up Type", "Doctor", "Transaction Status"
+            ])
 
             # Populate the table with filtered pending check-ups
             for row, checkup in enumerate(filtered_checkups):
@@ -88,36 +90,36 @@ class StaffTransactionModal(QMainWindow):
                 # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
                 if not patient:
-                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Fetch doctor details
                 doctor = Doctor.get_doctor_by_id(doc_id)
                 if not doctor:
-                    # print(f"No doctor found for doc_id {doc_id}")
                     docFullname = "Unknown Doctor"
                 else:
                     docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
 
-                # Extract patient name and capitalize the first letter of each word
+                # Extract patient name
                 full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
+
+                # Get transaction status (default to "Pending" if not found)
+                tran_status = transaction_status_map.get(chck_id, "Pending")
 
                 # Insert data into the table
                 self.ui.TransactionTable.insertRow(row)
-                self.ui.TransactionTable.setItem(row, 0, QTableWidgetItem(chck_id))  # Check Up ID
+                self.ui.TransactionTable.setItem(row, 0, QTableWidgetItem(chck_id))  # Check-Up ID
                 self.ui.TransactionTable.setItem(row, 1, QTableWidgetItem(full_name))  # Patient Name
                 self.ui.TransactionTable.setItem(row, 2, QTableWidgetItem(chck_type))  # Check-Up Type
                 self.ui.TransactionTable.setItem(row, 3, QTableWidgetItem(docFullname))  # Doctor Name
-
-                # Debug: Log inserted row
-                # print(f"Inserting row {row}: chck_id={chck_id}, full_name={full_name}, chck_type={chck_type}, docFullname={docFullname}")
+                self.ui.TransactionTable.setItem(row, 4, QTableWidgetItem(tran_status))  # Transaction Status
 
             # Resize columns to fit the content
             if self.ui.TransactionTable.rowCount() > 0:
                 self.ui.TransactionTable.resizeColumnsToContents()
 
         except Exception as e:
-            # print(f"Error loading pending check-ups: {e}")
+            # Optional: Log the exception
+            print(f"Error loading pending check-ups: {e}")
             pass
 
     def open_transaction_process(self):

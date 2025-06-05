@@ -36,11 +36,11 @@ class Patient:
                         "address": result[6],
                         "contact": result[7]
                     }
-                    print(f"Found existing patient: {patient_details}")
+                   # print(f"Found existing patient: {patient_details}")
                     return patient_details
 
                 # Patient does not exist
-                print("Patient does not exist in the database.")
+                #print("Patient does not exist in the database.")
                 return None
 
         except Exception as e:
@@ -164,7 +164,7 @@ class Patient:
                 # Generate a new patient ID using the sequence
                 cursor.execute("SELECT nextval('patient_id_seq');")
                 new_pat_id = cursor.fetchone()[0]
-                print(f"Generated new patient ID: {new_pat_id}")
+                #print(f"Generated new patient ID: {new_pat_id}")
 
                 # Insert the new patient record into the database
                 query = """
@@ -185,11 +185,11 @@ class Patient:
                 ))
 
                 conn.commit()
-                print("New patient data saved successfully.")
+                #print("New patient data saved successfully.")
                 return new_pat_id
 
         except Exception as e:
-            print(f"Database error while creating new patient: {e}")
+            #print(f"Database error while creating new patient: {e}")
             conn.rollback()
             return None
 
@@ -222,7 +222,7 @@ class Patient:
                     }
                 return None
         except Exception as e:
-            print(f"Error fetching patient details: {e}")
+            #print(f"Error fetching patient details: {e}")
             return None
         finally:
             if conn:
@@ -232,7 +232,7 @@ class Patient:
     def update_or_create_patient(data):
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
+            #print("Failed to establish database connection.")
             return None
 
         try:
@@ -277,11 +277,11 @@ class Patient:
                 # Commit the transaction
                 conn.commit()
 
-                print(f"Patient {'updated' if pat_id else 'created'} successfully. ID: {pat_id}")
+                #print(f"Patient {'updated' if pat_id else 'created'} successfully. ID: {pat_id}")
                 return pat_id
 
         except Exception as e:
-            print(f"Error updating/creating patient: {e}")
+            #print(f"Error updating/creating patient: {e}")
             if conn:
                 conn.rollback()  # Rollback in case of error
             return None
