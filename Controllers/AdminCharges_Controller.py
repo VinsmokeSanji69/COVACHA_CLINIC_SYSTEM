@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QDialogButtonBox, QLabel, QVBoxLayout
 from PyQt5.uic.Compiler.qtproxies import QtCore
-
 from Models import LaboratoryTest
 from Models.Doctor import Doctor
 from Views.Admin_Charges import Ui_MainWindow  as AdminChargesUI
