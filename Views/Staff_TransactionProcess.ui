@@ -1318,7 +1318,7 @@ QTableWidget QHeaderView::section {
                          </widget>
                         </item>
                         <item>
-                         <widget class="QCheckBox" name="checkBox">
+                         <widget class="QCheckBox" name="SeniorCheckBox">
                           <property name="text">
                            <string>Senior</string>
                           </property>
