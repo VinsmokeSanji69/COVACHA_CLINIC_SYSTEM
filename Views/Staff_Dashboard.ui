@@ -20,10 +20,10 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
@@ -133,7 +133,7 @@ QLabel {
 </string>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -150,7 +150,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="TransactionsButton">
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -167,7 +167,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="LabButton">
           <property name="text">
-           <string>Lab Request</string>
+           <string> Lab Request</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -205,9 +205,9 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="ProfileButton">
           <property name="text">
-           <string>Settings</string>
+           <string>Profile</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -323,6 +323,33 @@ QPushButton {
       </property>
       <item>
        <widget class="QFrame" name="Header">
+        <property name="styleSheet">
+         <string notr="true">#Header {
+	padding: 10px 20px;
+	padding-top: 15px;
+}
+QLabel {
+    padding: 0px; 
+}
+#UserType {
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
+	color: #2B3752;
+}
+#UserName {
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
+	font-size: 20px;
+	color: #2B3752;
+}
+#InterfaceTitle{
+	font-size: 35px;
+}
+QGraphicsView {
+    border: 2px solid #ccc; 
+    border-radius: 25px;
+    background: white; 
+}</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -378,7 +405,7 @@ QPushButton {
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="UserType">
                <property name="text">
-                <string>Nurse</string>
+                <string>Staff</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
@@ -497,7 +524,7 @@ QPushButton {
 #Day {
 	color: #2e6e65;
 	font-weight: 300;
-	font-size: 12px
+	font-size: 16px
 }
 
 </string>
@@ -567,8 +594,14 @@ QPushButton {
               </property>
              </widget>
             </item>
-            <item>
+            <item alignment="Qt::AlignBottom">
              <widget class="QFrame" name="TotalPatient">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -576,7 +609,7 @@ QPushButton {
                <enum>QFrame::Raised</enum>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_8">
-               <item>
+               <item alignment="Qt::AlignBottom">
                 <widget class="QLabel" name="label_9">
                  <property name="text">
                   <string>Total Patient</string>
@@ -593,13 +626,6 @@ QPushButton {
                  </property>
                  <property name="text">
                   <string>0000</string>
-                 </property>
-                </widget>
-               </item>
-               <item alignment="Qt::AlignTop">
-                <widget class="QLabel" name="Review">
-                 <property name="text">
-                  <string>20 more than yesterday</string>
                  </property>
                 </widget>
                </item>
@@ -723,8 +749,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>826</width>
-                    <height>522</height>
+                    <width>863</width>
+                    <height>538</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">

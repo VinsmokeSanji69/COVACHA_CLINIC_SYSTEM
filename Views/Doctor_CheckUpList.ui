@@ -20,11 +20,10 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;
-	font-size: 25px;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
@@ -89,7 +88,7 @@ QLabel {
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../Images/resources.qrc">
+         <iconset>
           <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
@@ -130,7 +129,7 @@ QLabel {
            <string>Dashboard</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
@@ -143,11 +142,16 @@ QLabel {
         </item>
         <item>
          <widget class="QPushButton" name="CheckUpButton">
+          <property name="styleSheet">
+           <string notr="true">QPushButton{
+	font: 900 20pt &quot;Satoshi Black&quot;;	
+}</string>
+          </property>
           <property name="text">
            <string>Check Up</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
@@ -167,7 +171,7 @@ QLabel {
            <string>Records</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
           </property>
           <property name="iconSize">
@@ -207,7 +211,7 @@ QLabel {
            <string>Profile</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
           </property>
           <property name="iconSize">
@@ -224,7 +228,7 @@ QLabel {
            <string>Logout</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
@@ -243,15 +247,12 @@ QLabel {
    <item>
     <widget class="QFrame" name="MainBodyContainer">
      <property name="styleSheet">
-      <string notr="true">#MainBodyContainer {
-	background-color: #f0f0f0;
-}
-
-#Header {
-	padding: 20px 20px;
+      <string notr="true">#Header {
+	padding: 10px 20px;
+padding-top: 15px;
 }
 QLabel {
-    padding: 0px;
+    padding: 0px; 
 }
 #UserType {
 	font: 300 10pt &quot;Lexend Light&quot;;
@@ -260,19 +261,17 @@ QLabel {
 }
 #UserName {
 	font: 600 10pt &quot;Lexend SemiBold&quot;;
-	font-size: 25px;
+	font-size: 20px;
 	color: #2B3752;
 }
 #InterfaceTitle{
-	font-size: 40px;
+	font-size: 35px;
 }
 QGraphicsView {
-    border: 2px solid #ccc;
+    border: 2px solid #ccc; 
     border-radius: 25px;
-    background: white;
+    background: white; 
 }
-
-
 </string>
      </property>
      <property name="frameShape">
@@ -376,7 +375,7 @@ QGraphicsView {
               </widget>
              </item>
              <item alignment="Qt::AlignRight">
-              <widget class="QLabel" name="ID">
+              <widget class="QLabel" name="UserType">
                <property name="text">
                 <string>Doctor</string>
                </property>
@@ -496,6 +495,9 @@ QComboBox::drop-down {
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
          <property name="leftMargin">
           <number>20</number>
          </property>
@@ -522,6 +524,37 @@ QComboBox::drop-down {
              <height>70</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QComboBox {
+    background-color: #F4F7ED;
+    border: 2px solid #2E6E65;
+    border-radius: 10px;
+    padding: 5px 10px;
+	font: 300 12pt &quot;Lexend Light&quot;;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border-left: 1px solid #2E6E65;
+    background-color: #D9E4DC;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+QComboBox::down-arrow {
+    image: url(:/lucide/icons/chevron-down.svg);
+    width: 20px;
+    height: 20px;
+}
+QComboBox QAbstractItemView {
+    background-color: #F4F7ED;
+    selection-background-color: #CCE3D0;
+    border: 1px solid #2E6E65;
+    border-radius: 2px;
+    outline: 0;  
+	font: 300 12pt &quot;Lexend Light&quot;;
+}</string>
+           </property>
            <property name="frameShape">
             <enum>QFrame::StyledPanel</enum>
            </property>
@@ -529,7 +562,19 @@ QComboBox::drop-down {
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="spacing">
+             <number>5</number>
+            </property>
             <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
@@ -539,6 +584,12 @@ QComboBox::drop-down {
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>290</width>
+                <height>0</height>
+               </size>
               </property>
               <property name="styleSheet">
                <string notr="true">#SearchBar {
@@ -576,7 +627,7 @@ QComboBox::drop-down {
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="../Images/resources.qrc">
+                  <iconset>
                    <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
                  </property>
                  <property name="iconSize">
@@ -591,22 +642,6 @@ QComboBox::drop-down {
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Maximum</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>10</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QComboBox" name="StatusBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -614,36 +649,14 @@ QComboBox::drop-down {
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="styleSheet">
-               <string notr="true">QComboBox {
-    background-color: #D9E4DC;
-    border: 2px solid #2E6E65;
-    border-radius: 10px;
-    padding: 5px 10px;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 30px;
-    border-left: 1px solid #2E6E65;
-    background-color: #D9E4DC;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
-    width: 20px;
-    height: 20px;
-}
-QComboBox QAbstractItemView {
-    background-color: #F4F7ED;
-    selection-background-color: #CCE3D0;
-    border: 1px solid #2E6E65;
-    border-radius: 2px;
-    outline: 0;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}</string>
+               <string notr="true"/>
               </property>
               <property name="editable">
                <bool>false</bool>
@@ -657,36 +670,14 @@ QComboBox QAbstractItemView {
             </item>
             <item>
              <widget class="QComboBox" name="TypeBox">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="styleSheet">
-               <string notr="true">QComboBox {
-    background-color: #D9E4DC;
-    border: 2px solid #2E6E65;
-    border-radius: 10px;
-    padding: 5px 10px;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 30px;
-    border-left: 1px solid #2E6E65;
-    background-color: #D9E4DC;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
-    width: 20px;
-    height: 20px;
-}
-QComboBox QAbstractItemView {
-    background-color: #F4F7ED;
-    selection-background-color: #CCE3D0;
-    border: 1px solid #2E6E65;
-    border-radius: 2px;
-    outline: 0;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}</string>
+               <string notr="true"/>
               </property>
               <item>
                <property name="text">
@@ -762,8 +753,8 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>702</width>
-                 <height>547</height>
+                 <width>753</width>
+                 <height>581</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -812,7 +803,7 @@ QTableWidget QHeaderView::section {
                   </attribute>
                   <column>
                    <property name="text">
-                    <string>Check Up ID</string>
+                    <string>Patient ID</string>
                    </property>
                   </column>
                   <column>
@@ -822,12 +813,12 @@ QTableWidget QHeaderView::section {
                   </column>
                   <column>
                    <property name="text">
-                    <string>Diagnosis</string>
+                    <string>Recent Diagnosis</string>
                    </property>
                   </column>
                   <column>
                    <property name="text">
-                    <string>Date Diagnosed</string>
+                    <string>Last Diagnosed</string>
                    </property>
                   </column>
                  </widget>
