@@ -420,7 +420,10 @@ QTableWidget QHeaderView::section {
 	font-weight: bold;
 	font-size: 20px;
 	color: #F4F7ED;
-}</string>
+	text-align: center;
+}
+
+</string>
             </property>
             <property name="text">
              <string>Cancel</string>
@@ -455,6 +458,7 @@ QTableWidget QHeaderView::section {
 	font-weight: bold;
 	font-size: 20px;
 	color: #F4F7ED;
+	text-align: center;
 }</string>
             </property>
             <property name="text">

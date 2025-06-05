@@ -144,7 +144,7 @@ class StaffTransactionModal(QMainWindow):
             self.transaction_process_window = StaffTransactionProcess(chck_id=chck_id)
 
             # Close the parent dashboard window
-            self.staff_dashboard.close()
+            # self.staff_dashboard.close()
 
             # Close the current modal (StaffTransactionModal)
             # print("Closing StaffTransactionModal...")
@@ -152,7 +152,7 @@ class StaffTransactionModal(QMainWindow):
 
             # Show the StaffTransactionProcess modal
             # print("Showing StaffTransactionProcess modal...")
-            self.transaction_process_window.show()
+            self.transaction_process_window.exec_()
             # print("StaffTransactionProcess modal opened successfully!")
         except Exception as e:
             # print(f"Error opening StaffTransactionProcess modal: {e}")
