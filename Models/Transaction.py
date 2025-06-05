@@ -3,7 +3,7 @@ from typing import final
 
 from Models.DB_Connection import DBConnection
 
-class Transaction():
+class Transaction:
     @staticmethod
     def add_transaction(chck_id, trans_data):
         conn = DBConnection.get_db_connection()
