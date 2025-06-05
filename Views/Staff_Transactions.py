@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import Images.resources
+
 
 class Ui_Staff_Transactions(object):
     def setupUi(self, Form):

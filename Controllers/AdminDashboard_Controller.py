@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSlot, QTimer
-from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedWidget
+from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedWidget, QHeaderView, QSizePolicy
 
 from Controllers.AdminPatients_Controller import AdminPatientsController
 from Controllers.AdminStaffs_Controller import AdminStaffsController
@@ -59,6 +59,37 @@ class AdminDashboardController(QMainWindow):
 
         # Start with dashboard view
         self.go_to_dashboard()
+
+        # Responsive for Admin Staffs View Page
+        header = self.staff_ui.DoctorTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.staff_ui.DoctorTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.staff_ui.DoctorTable.setWordWrap(True)
+        self.staff_ui.DoctorTable.resizeRowsToContents()
+
+        header = self.staff_ui.StaffTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.staff_ui.StaffTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.staff_ui.StaffTable.setWordWrap(True)
+        self.staff_ui.StaffTable.resizeRowsToContents()
+
+        # Responsive for Admin Records
+        header = self.records_ui.PatientTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.records_ui.PatientTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.records_ui.PatientTable.setWordWrap(True)
+        self.records_ui.PatientTable.resizeRowsToContents()
+
+        # Responsive for Admin Transactions
+        header = self.transactions_ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.transactions_ui.TransactionTable.setWordWrap(True)
+        self.transactions_ui.TransactionTable.resizeRowsToContents()
 
     def setup_pages(self):
         """Set up complete pages with navbar and content"""
