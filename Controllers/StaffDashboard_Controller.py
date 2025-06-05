@@ -2,19 +2,17 @@ from PyQt5 import QtCore, QtWidgets, uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog, QVBoxLayout, QPushButton, \
     QStackedWidget, QHeaderView, QSizePolicy, QWidget
 from PyQt5.QtCore import QTimer, pyqtSlot, Qt
-
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
 from Models.Doctor import Doctor
 from Models.Transaction import Transaction
 from Views.Staff_Dashboard import Ui_Staff_Dashboard
-from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
 from Controllers.StaffAddCheckUp_Controller import StaffAddCheckUp
 from Controllers.StaffLabRequest_Controller import StaffLabRequest
 from Controllers.StaffTransactionModal_Controller import StaffTransactionModal
 from Controllers.StaffTransactions_Controller import StaffTransactions
 from Models.CheckUp import CheckUp
 from  Models.Patient import Patient
-import datetime
+from datetime import datetime
 
 from Views.Staff_LabRequest import Ui_Staff_LabRequest
 from Views.Staff_Transactions import Ui_Staff_Transactions
@@ -58,13 +56,6 @@ class StaffDashboardController(QMainWindow):
         # Start with dashboard view
         self.go_to_dashboard()
 
-        header = self.transactions_ui.TransactionTable.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.Stretch)
-
-        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.transactions_ui.TransactionTable.setWordWrap(True)
-        self.transactions_ui.TransactionTable.resizeRowsToContents()
-
         # Responsive table for LabReq Page
         header = self.labreq_ui.LabRequestTable.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
@@ -106,11 +97,6 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.setupUi(self.labreq_page)
         self.page_stack.addWidget(self.labreq_page)
 
-        # Transaction Process page
-        self.transaction_process_page = QWidget()
-        self.transaction_process_ui = Ui_Staff_Transaction_Process()
-        self.transaction_process_ui.setupUi(self.transaction_process_page)
-        self.page_stack.addWidget(self.transaction_process_page)
 
 
     def connect_all_buttons(self):
@@ -129,9 +115,6 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.labreq_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.labreq_ui.LabButton.clicked.connect(self.go_to_labreq)
-
-        # Connect transaction process page buttons
-        # self.transaction_process_ui.BackButton.clicked.connect(self.go_to_dashboard)
 
         # # Connect buttons
         if hasattr(self.dashboard_ui, 'AddCheckUpButton'):
@@ -159,7 +142,6 @@ class StaffDashboardController(QMainWindow):
         self.update_time_labels()
 
 
-
     def apply_table_styles(self, table_widget):
         # Ensure horizontal headers are visible
         table_widget.horizontalHeader().setVisible(True)
@@ -174,31 +156,42 @@ class StaffDashboardController(QMainWindow):
         table_widget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
     def load_pending_checkups(self):
-        """Fetch and display pending check-ups in the PatientDetails table."""
+        """Fetch and display today's pending check-ups in the PendingTable."""
         try:
+            # Fetch all pending check-ups
             pending_checkups = CheckUp.get_pending_checkups()
-            # print("Fetched pending checkups:", pending_checkups)
 
+            # Get today's date in YYYYMMDD format
+            today_date = datetime.now().strftime("%Y%m%d")
+
+            # Filter check-ups for today only
+            todays_checkups = [
+                checkup for checkup in pending_checkups
+                if checkup["chck_id"].startswith(today_date)
+            ]
+
+            # Clear the table
             self.dashboard_ui.PendingTable.setRowCount(0)
 
-            if not pending_checkups:
-                # print("No pending check-ups found.")
+            # Handle case: No check-ups for today
+            if not todays_checkups:
                 self.dashboard_ui.PendingTable.insertRow(0)
-                no_data_item = QTableWidgetItem("No Pending Check Ups")
+                no_data_item = QTableWidgetItem("No Check Ups For Today")
                 self.dashboard_ui.PendingTable.setItem(0, 0, no_data_item)
 
                 column_count = self.dashboard_ui.PendingTable.columnCount()
                 self.dashboard_ui.PendingTable.setSpan(0, 0, 1, column_count)
                 return
 
-            for row, checkup in enumerate(pending_checkups):
+            # Populate the table with today's check-ups
+            for row, checkup in enumerate(todays_checkups):
                 pat_id = checkup["pat_id"]
                 chck_id = checkup["chck_id"]
                 chck_type = checkup["chckup_type"]
 
+                # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
                 if not patient:
-                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
@@ -214,8 +207,7 @@ class StaffDashboardController(QMainWindow):
             self.dashboard_ui.PendingTable.setColumnWidth(2, 200)
 
         except Exception as e:
-            # print(f"Error loading pending check-ups: {e}")
-            pass
+            print(f"Error loading pending check-ups: {e}")
 
     def open_checkup_user_form(self):
         # print("Opening Add Check-Up Form...")
@@ -257,7 +249,7 @@ class StaffDashboardController(QMainWindow):
 
     def update_time_labels(self):
         """Update time labels on the current page"""
-        now = datetime.datetime.now()
+        now = datetime.now()
         current_page_index = self.page_stack.currentIndex()
 
         if current_page_index == 0:  # Dashboard
@@ -311,7 +303,7 @@ class StaffDashboardController(QMainWindow):
             # Show the modal dialog
             dialog.exec_()
 
-            print("Modify Form closed")
+            # print("Modify Form closed")
         except Exception as e:
             # print(f"Error opening Modify Form Dialog: {e}")
             pass

@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QMainWindow
 from Views.Staff_TransactionList import Ui_MainWindow as StaffTransactionListUI
 from Models.Transaction import Transaction
@@ -30,12 +31,10 @@ class StaffTransactionList(QMainWindow):
                 # print("No completed check-ups found.")
                 return
 
-            # Fetch all transactions to determine their status
             transactions = Transaction.get_all_transaction()
+            print("All Transactions:", transactions)  # <-- Debug line
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
 
-            # Debug: Log all chck_id from transactions
-            print(f"All transaction chck_id: {list(transaction_dict.keys())}")
 
             # Clear the table before populating it
             self.ui.TransactionTable.clearContents()
@@ -69,16 +68,17 @@ class StaffTransactionList(QMainWindow):
                 # Determine the transaction status
                 tran_status = transaction_dict.get(chck_id, "Pending")
 
-                # Debug: Log the transaction status
-                # print(f"Transaction status for chck_id {chck_id}: {tran_status}")
+                # Optional: Style based on status
+                status_item = QtWidgets.QTableWidgetItem(tran_status)
+                if tran_status.lower() == "partial":
+                    status_item.setForeground(QColor("orange"))
 
                 # Insert data into the table
                 self.ui.TransactionTable.insertRow(row)
-                self.ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
-                self.ui.TransactionTable.setItem(row, 1, QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
-                self.ui.TransactionTable.setItem(row, 2, QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
-                self.ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(tran_status))  # Transaction Status
-
+                self.ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))
+                self.ui.TransactionTable.setItem(row, 1, QtWidgets.QTableWidgetItem(pat_full_name))
+                self.ui.TransactionTable.setItem(row, 2, QtWidgets.QTableWidgetItem(doc_full_name))
+                self.ui.TransactionTable.setItem(row, 3, status_item)  # Styled status
             # Resize columns to fit content
             self.ui.TransactionTable.resizeColumnsToContents()
 

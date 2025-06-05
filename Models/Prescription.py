@@ -69,7 +69,7 @@ class Prescription:
                 }
                 prescriptions.append(prescription)
 
-            print(f"Prescriptions retrieved successfully for chck_id: {chck_id}")
+            #print(f"Prescriptions retrieved successfully for chck_id: {chck_id}")
             return prescriptions  # Return the list of prescriptions
 
         except Exception as e:

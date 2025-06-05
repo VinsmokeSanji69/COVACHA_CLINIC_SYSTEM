@@ -1,7 +1,7 @@
 from datetime import date
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
-from Views.Staff_ViewTransaction import Ui_Staff_ViewTransaction as StaffTransactionProcessUI
+from Views.Staff_ViewTransaction import Ui_MainWindow
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor, calculate_age
 from Models.Patient import Patient
@@ -47,7 +47,7 @@ class ConfirmationDialog(QDialog):
 class StaffViewTransaction(QtWidgets.QMainWindow):
     def __init__(self, chck_id=None, parent = None):
         super().__init__()
-        self.ui = StaffTransactionProcessUI()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
         # Store the chck_id
@@ -65,6 +65,9 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
         #save transaction
         self.ui.CompleteButton.clicked.connect(self.close)
+        self.ui.SeniorCheckBox.stateChanged.connect(self.apply_discount_if_senior)
+        self.set_read_only_fields()
+
 
     def apply_table_styles(self):
         self.ui.LabChargeTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
@@ -110,6 +113,22 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
             docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
 
+            # Check if a transaction exists for this check-up ID
+            transaction = Transaction.get_transaction_by_chckid(self.chck_id)
+            if transaction and transaction.get('tran_discount'):
+                discount = float(transaction['tran_discount'])
+
+                # Format and set the discounted amount
+                self.ui.DiscountedAmount.setText(f"₱ {discount:,.2f}")
+                self.ui.SeniorCheckBox.setChecked(True)
+
+                # Recalculate total amount after applying discount
+                subtotal_text = self.ui.SubtotalAmount.text().replace("₱", "").replace(",", "").strip()
+                subtotal = float(subtotal_text) if subtotal_text else 0.0
+                total = subtotal - discount
+                self.ui.TotalAmount.setText(f"₱ {total:,.2f}")
+
+
             # Populate the UI with transaction details
             self.ui.chck_ID.setText(str(checkup["chck_id"]))  # Ensure string conversion
             self.ui.PatID.setText(str(checkup["pat_id"]))  # Ensure string conversion
@@ -118,7 +137,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             self.ui.PatGender.setText(str(patient["pat_gender"]))  # Ensure string conversion
             self.ui.DocID.setText(str(checkup["doc_id"]))  # Ensure string conversion
             self.ui.DocName.setText(docFullname)
-            self.ui.DocSpecialty.setText(str(doctor["doc_specialty"]))  # Ensure string conversion
+            # self.ui.DocSpecialty.setText(str(doctor["doc_specialty"]))  # Ensure string conversion
             self.ui.DoctorCharge.setText("₱ " + str(doctor["doc_rate"]))  # Ensure string conversion
 
             self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))  # Ensure string conversion
@@ -128,6 +147,39 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
         except Exception as e:
             # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
+
+    def set_read_only_fields(self):
+        """Set all editable fields to read-only mode."""
+        # QLineEdit fields
+        line_edits = [
+            self.ui.chck_ID,
+            self.ui.PatID,
+            self.ui.PatName,
+            self.ui.PatAge,
+            self.ui.PatGender,
+            self.ui.DocID,
+            self.ui.DocName,
+            # self.ui.DocSpecialty,
+            self.ui.DoctorCharge,
+            self.ui.Diagnosis,
+            self.ui.DiagnosisNotes,
+            self.ui.SubtotalAmount,
+            self.ui.DiscountedAmount,
+            self.ui.TotalAmount,
+            self.ui.TotalLabCharge
+        ]
+
+        # Apply read-only to QLineEdit fields
+        for line_edit in line_edits:
+            if isinstance(line_edit, QtWidgets.QLineEdit):  # Ensure it's a QLineEdit
+                line_edit.setReadOnly(True)
+                line_edit.setStyleSheet("background-color: #F0F0F0; border: 1px solid #CCC;")
+
+        # Disable checkboxes and other interactive controls
+        self.ui.SeniorCheckBox.setEnabled(False)
+
+        # Optional: disable LabChargeTable editing
+        self.ui.LabChargeTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
     def calculate_age(dob):
         if not dob:
@@ -225,6 +277,29 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
         except Exception as e:
             # print(f"Error calculating total lab charge: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate total lab charge: {e}")
+    def apply_discount_if_senior(self):
+        try:
+            # Get subtotal
+            subtotal_text = self.ui.SubtotalAmount.text().replace("₱", "").replace(",", "").strip()
+            if not subtotal_text:
+                subtotal = 0.0
+            else:
+                subtotal = float(subtotal_text)
+
+            # Apply 20% discount if checkbox is checked
+            discount = 0.0
+            if self.ui.SeniorCheckBox.isChecked():
+                discount = subtotal * 0.20
+
+            # Calculate total after discount
+            total = subtotal - discount
+
+            # Update UI
+            self.ui.DiscountedAmount.setText(f"₱ {discount:,.2f}")
+            self.ui.TotalAmount.setText(f"₱ {total:,.2f}")
+
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to apply discount: {e}")
 
     def calculate_subtotal(self):
         """Calculate the subtotal by adding DoctorCharge and TotalLabCharge."""
@@ -252,6 +327,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             formatted_subtotal = f"₱ {subtotal:,.2f}"
             self.ui.SubtotalAmount.setText(formatted_subtotal)
             self.ui.TotalAmount.setText(formatted_subtotal)
+            self.apply_discount_if_senior()
             # print(f"Subtotal calculated successfully: {formatted_subtotal}")
 
         except ValueError as ve:
