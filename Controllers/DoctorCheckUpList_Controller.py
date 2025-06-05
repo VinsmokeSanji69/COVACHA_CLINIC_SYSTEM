@@ -32,12 +32,46 @@ class DoctorCheckUpList(QWidget):
         self.refresh_tables()
 
         # Connect the ViewPatientButton to the view_detials_checkup method
-        self.records_ui.ViewPatientButton.clicked.connect(self.view_detials_checkup)
+        self.records_ui.ViewPatientButton.clicked.connect(self.view_patient)
 
         # Initialize a QTimer for automatic refresh
         self.refresh_timer = QTimer(self)
         self.refresh_timer.timeout.connect(self.refresh_tables)  # Connect to refresh_tables method
         self.refresh_timer.start(30000)  # Refresh every 30 seconds (30000 ms)
+
+    def view_patient_details_ui(self, patient_id):
+        print("View Patient Button clicked!")
+        try:
+            from Controllers.AdminPatientDetails_Controller import AdminPatientDetailsController
+            self.admin_patient_details_controller = AdminPatientDetailsController(patient_id)
+            self.admin_patient_details_controller.show()
+            self.hide()
+        except Exception as e:
+            print(f"Staff Error: {e}")
+
+    def view_patient(self):
+        try:
+            selected_row = self.records_ui.DoneTable.currentRow()
+            if selected_row == -1:
+                print("no row selected")
+                return
+
+            patient_id = self.records_ui.DoneTable.item(selected_row, 0)
+            if not patient_id:
+                raise ValueError(f"No patient ID found in selected row")
+
+            patient_id = patient_id.text().strip()
+            if not patient_id:
+                raise ValueError(f" ID is empty")
+
+            self.view_patient_details_ui(int(patient_id))
+
+        except ValueError as ve:
+            QMessageBox.warning(self, "Input Error", str(ve))
+        except Exception as e:
+            error_msg = f"Failed to select patient: {str(e)}"
+            QMessageBox.critical(self, "Error", error_msg)
+            print(error_msg)
 
     def refresh_tables(self):
         """Reload data into the tables."""
@@ -151,3 +185,34 @@ class DoctorCheckUpList(QWidget):
         except Exception as e:
             print(f"Error viewing check-up details: {e}")
             QMessageBox.critical(self, "Error", f"Failed to view check-up details: {e}")
+
+    def load_table(self, patients):
+        try:
+            self.records_ui.DoneTable.setRowCount(0)
+            self.records_ui.DoneTable.setRowCount(len(patients))
+
+            # Configure table properties first
+            self.records_ui.DoneTable.verticalHeader().setVisible(False)
+            self.records_ui.DoneTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+            self.records_ui.DoneTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Recent Diagnosis", "Date"])
+
+            # Populate the table
+            for row, patient in enumerate(patients):
+                id = str(patient.get("id", ""))
+                name = patient.get("name", "N/A")
+                diagnosis = patient.get("recent_diagnosis", "No diagnosis")
+                date = patient.get("diagnosed_date", "No date") if patient.get("diagnosed_date") else "No date"
+
+                # Insert row items
+                self.records_ui.DoneTable.insertRow(row)
+                self.records_ui.DoneTable.setItem(row, 0, QtWidgets.QTableWidgetItem(id))
+                self.records_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(name))
+                self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(diagnosis))
+                self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(date))
+
+            # Adjust table appearance
+            self.records_ui.DoneTable.resizeColumnsToContents()
+            self.records_ui.DoneTable.horizontalHeader().setStretchLastSection(True)
+
+        except Exception as e:
+            print(f"Error populating Patient Table: {e}")
