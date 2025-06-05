@@ -13,7 +13,10 @@ class StaffTransactions(QWidget):
         self.ui = StaffTransactionUI()
         self.transactions_ui = transactions_ui
         self.ui.setupUi(self)
+
         self.load_transaction_details()
+
+
         if hasattr(self.transactions_ui, 'ViewButton'):
             # print('ViewButton exist')
             self.transactions_ui.ViewButton.clicked.connect(self.view_transaction)
@@ -65,24 +68,12 @@ class StaffTransactions(QWidget):
                 # Determine the transaction status
                 tran_status = transaction_dict.get(chck_id, "Pending")
 
-                # Debug: Log the transaction status
-                # print(f"Transaction status for chck_id {chck_id}: {tran_status}")
-
                 # Insert data into the table
                 self.transactions_ui.TransactionTable.insertRow(row)
-                self.transactions_ui.TransactionTable.setItem(row, 0,
-                                                              QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
-                self.transactions_ui.TransactionTable.setItem(row, 1,
-                                                              QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
-                self.transactions_ui.TransactionTable.setItem(row, 2,
-                                                              QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
-                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(
-                    tran_status))  # Transaction Status
-
-            # Resize columns to fit content
-            self.transactions_ui.TransactionTable.resizeColumnsToContents()
-
-            # print("Transaction details loaded successfully!")
+                self.transactions_ui.TransactionTable.setItem(row, 0,QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
+                self.transactions_ui.TransactionTable.setItem(row, 1,QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
+                self.transactions_ui.TransactionTable.setItem(row, 2,QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
+                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(tran_status))  # Transaction Status
 
         except Exception as e:
             # print(f"Error loading transaction details: {e}")

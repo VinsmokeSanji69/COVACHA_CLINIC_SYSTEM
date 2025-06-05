@@ -3,41 +3,57 @@ from typing import final
 
 from Models.DB_Connection import DBConnection
 
+
 class Transaction():
     @staticmethod
     def add_transaction(chck_id, trans_data):
         conn = DBConnection.get_db_connection()
-
         if not conn:
-            return []
+            print("Failed to connect to database.")
+            return False
 
         try:
             with conn.cursor() as cursor:
-                query = """
+                # Check if transaction already exists
+                check_query = "SELECT tran_status FROM transaction WHERE chck_id = %s"
+                cursor.execute(check_query, (chck_id,))
+                existing = cursor.fetchone()
+
+                if existing:
+                    existing_status = existing[0]
+                    # If transaction exists and is Partial, allow update to Completed
+                    if existing_status == "Partial" and trans_data.get("status") == "Completed":
+                        print(f"Updating existing Partial transaction for chck_id={chck_id} to Completed.")
+                        return Transaction.update_transaction_status(chck_id, trans_data)
+                    else:
+                        print(f"Transaction already exists for chck_id={chck_id} with status={existing_status}.")
+                        return False
+
+                # Insert new transaction
+                insert_query = """
                     INSERT INTO transaction (
-                        chck_id, tran_discount, tran_base_charge, tran_lab_charge, tran_status
+                        chck_id, tran_discount, tran_base_charge, 
+                        tran_lab_charge, tran_status
                     ) VALUES (%s, %s, %s, %s, %s)
                 """
-                cursor.execute(query, (
+
+                cursor.execute(insert_query, (
                     chck_id,
-                    trans_data["discount"],
-                    trans_data["base_charge"],
-                    trans_data["lab_charge"],
+                    trans_data.get("discount", 0),
+                    trans_data.get("base_charge", 0),
+                    trans_data.get("lab_charge", 0),
                     trans_data.get("status", "Completed")
                 ))
 
                 conn.commit()
-                print("Transaction data saved successfully")
+                print(
+                    f"Transaction for chck_id={chck_id} inserted successfully with status={trans_data.get('status', 'Completed')}.")
+                return True
 
         except Exception as e:
-            # If duplicate key, update instead
-            if "duplicate key value violates unique constraint" in str(e):
-                print(f"Transaction already exists for chck_id={chck_id}. Updating instead.")
-                return Transaction.update_transaction(chck_id, trans_data)
-            else:
-                print(f"Database error while creating new transaction: {e}")
-                conn.rollback()
-                return None
+            print(f"Error inserting transaction: {e}")
+            conn.rollback()
+            return False
 
         finally:
             if conn:
@@ -45,13 +61,20 @@ class Transaction():
 
     @staticmethod
     def update_transaction(chck_id, trans_data):
+        """Legacy method - use update_transaction_status instead"""
+        return Transaction.update_transaction_status(chck_id, trans_data)
+
+    @staticmethod
+    def update_transaction_status(chck_id, trans_data):
+        """Update an existing transaction's status and data"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            return []
+            print("Failed to connect to database.")
+            return False
 
         try:
             with conn.cursor() as cursor:
-                # Only update values that changed, or at least status to Completed
+                # Update the transaction
                 query = """
                     UPDATE transaction
                     SET tran_discount = %s,
@@ -61,19 +84,27 @@ class Transaction():
                     WHERE chck_id = %s
                 """
                 cursor.execute(query, (
-                    trans_data["discount"],
-                    trans_data["base_charge"],
-                    trans_data["lab_charge"],
-                    "Completed",  # Always set to Completed when updating from Partial
+                    trans_data.get("discount", 0),
+                    trans_data.get("base_charge", 0),
+                    trans_data.get("lab_charge", 0),
+                    trans_data.get("status", "Completed"),
                     chck_id
                 ))
+
+                # Check if any row was updated
+                if cursor.rowcount == 0:
+                    print(f"No transaction found for chck_id={chck_id} to update.")
+                    return False
+
                 conn.commit()
-                print("Transaction updated successfully")
+                print(
+                    f"Transaction for chck_id={chck_id} updated successfully to status={trans_data.get('status', 'Completed')}.")
+                return True
 
         except Exception as e:
             print(f"Database error while updating transaction: {e}")
             conn.rollback()
-            return None
+            return False
 
         finally:
             if conn:
@@ -81,9 +112,7 @@ class Transaction():
 
     @staticmethod
     def get_transaction_by_chckid(chck_id):
-        """Fetch transaction discount for a given chck_id."""
-        from Models.DB_Connection import DBConnection
-
+        """Fetch complete transaction details for a given chck_id."""
         conn = DBConnection.get_db_connection()
         if not conn:
             print("Failed to establish database connection.")
@@ -92,7 +121,7 @@ class Transaction():
         try:
             with conn.cursor() as cursor:
                 query = """
-                    SELECT tran_discount 
+                    SELECT tran_discount, tran_base_charge, tran_lab_charge, tran_status
                     FROM transaction 
                     WHERE chck_id = %s;
                 """
@@ -100,8 +129,13 @@ class Transaction():
                 result = cursor.fetchone()
 
                 if result:
-                    # Return the transaction discount as a dictionary
-                    return {'tran_discount': float(result[0]) if result[0] is not None else 0.0}
+                    # Return complete transaction data
+                    return {
+                        'tran_discount': float(result[0]) if result[0] is not None else 0.0,
+                        'tran_base_charge': float(result[1]) if result[1] is not None else 0.0,
+                        'tran_lab_charge': float(result[2]) if result[2] is not None else 0.0,
+                        'tran_status': result[3] if result[3] is not None else "Pending"
+                    }
                 else:
                     return None
 
@@ -125,8 +159,9 @@ class Transaction():
             with conn.cursor() as cursor:
                 # Fetch all transactions
                 cursor.execute("""
-                    SELECT chck_id, tran_status
-                    FROM transaction;
+                    SELECT chck_id, tran_status, tran_discount, tran_base_charge, tran_lab_charge
+                    FROM transaction
+                    ORDER BY chck_id DESC;
                 """)
 
                 results = cursor.fetchall()
@@ -137,10 +172,11 @@ class Transaction():
                     transactions.append({
                         'chck_id': row[0],
                         'tran_status': row[1],
+                        'tran_discount': float(row[2]) if row[2] is not None else 0.0,
+                        'tran_base_charge': float(row[3]) if row[3] is not None else 0.0,
+                        'tran_lab_charge': float(row[4]) if row[4] is not None else 0.0,
                     })
 
-                # Debug: Log the fetched transactions
-                #print(f"Fetched transactions: {transactions}")
                 return transactions
 
         except Exception as e:
