@@ -2,7 +2,7 @@ from datetime import date
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
 from Controllers.StaffTransactionList_Controllerr import StaffTransactionList
-from Views.Staff_TransactionProcess import Ui_MainWindow
+from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor, calculate_age
 from Models.Patient import Patient
@@ -45,10 +45,10 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
-class StaffTransactionProcess(QtWidgets.QMainWindow):
+class StaffTransactionProcess(QtWidgets.QDialog):
     def __init__(self, chck_id=None):
         super().__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_Staff_Transaction_Process()
         self.ui.setupUi(self)
 
         # Store the chck_id

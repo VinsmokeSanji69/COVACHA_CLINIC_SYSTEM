@@ -59,7 +59,7 @@ class AdminStaffsController(QWidget):
         self.refresh_tables()
 
         self.staff_ui.AddUserButton.clicked.connect(self.open_add_user_form)
-        self.staff_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
+        # self.staff_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
         self.staff_ui.ChargesButton.clicked.connect(self.view_charges_ui)
         self.staff_ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
         self.staff_ui.PatientsButton.clicked.connect(self.view_patient_ui)
@@ -281,12 +281,12 @@ class AdminStaffsController(QWidget):
         except Exception as e:
             print(f"Staff Error: {e}")
 
-    def view_dashboard_ui(self):
-        print("DashboardButton clicked!")
-        try:
-            from Controllers.AdminDashboard_Controller import AdminDashboardController
-            self.admin_dashboard_controller = AdminDashboardController()
-            self.admin_dashboard_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Staff Error: {e}")
+    # def view_dashboard_ui(self):
+    #     print("DashboardButton clicked!")
+    #     try:
+    #         from Controllers.AdminDashboard_Controller import AdminDashboardController
+    #         self.admin_dashboard_controller = AdminDashboardController()
+    #         self.admin_dashboard_controller.show()
+    #         self.hide()
+    #     except Exception as e:
+    #         print(f"Staff Error: {e}")

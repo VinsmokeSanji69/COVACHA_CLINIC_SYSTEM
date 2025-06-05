@@ -77,8 +77,8 @@ class Laboratory:
                 """
                 cursor.execute(query, (
                     data["lab_code"],
-                    data["lab_name"],
-                    data["price"],
+                    data["lab_test_name"],
+                    data["lab_price"],
                 ))
 
                 conn.commit()
