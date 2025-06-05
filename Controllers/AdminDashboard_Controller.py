@@ -5,6 +5,8 @@ from Controllers.AdminPatients_Controller import AdminPatientsController
 from Controllers.AdminStaffs_Controller import AdminStaffsController
 from Controllers.AdminTransaction_Controller import AdminTransactionsController
 from Controllers.AdminCharges_Controller import AdminChargesController  # Add this import
+from Controllers.AdminPatientDetails_Controller import AdminPatientDetailsController
+
 from Views.Admin_Charges import Ui_Admin_Charges
 from Views.Admin_Dashboard import Ui_Admin_Dashboard as AdminDashboardUI, Ui_Admin_Dashboard
 from Models.Admin import Admin
