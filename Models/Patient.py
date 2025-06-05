@@ -239,6 +239,37 @@ class Patient:
                 conn.close()
 
     @staticmethod
+    def get_patient_details(pat_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return None
+
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                        SELECT pat_lname, pat_fname, pat_mname, pat_dob, pat_gender, pat_contact
+                        FROM patient
+                        WHERE pat_id = %s;
+                    """, (pat_id,))
+                result = cursor.fetchone()
+                if result:
+                    return {
+                        'pat_lname': result[0],
+                        'pat_fname': result[1],
+                        'pat_mname': result[2],
+                        'pat_dob': result[3],
+                        'pat_gender': result[4],
+                        'pat_contact': result[5]
+                    }
+                return None
+        except Exception as e:
+            print(f"Error fetching patient details: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
     def _calculate_age(dob):
         """Internal method to calculate age from date of birth"""
         if not dob:

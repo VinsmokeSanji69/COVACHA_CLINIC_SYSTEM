@@ -8,6 +8,10 @@ from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
+from docx import Document
+import os
+from docx2pdf import convert
+
 
 from Views.Doctor_Records import Ui_Doctor_Records
 
@@ -181,9 +185,8 @@ class DoctorDiagnosis(QMainWindow):
             layout.addWidget(checkbox)
 
     def process_selected_tests(self):
-        """Process the selected checkboxes and store the lab codes."""
-        # Collect selected lab codes from both frames
-        selected_lab_codes = []
+        """Process selected checkboxes and generate Lab Request PDF if applicable."""
+        selected_lab_names = []
 
         for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
             layout = frame.layout()
@@ -192,32 +195,94 @@ class DoctorDiagnosis(QMainWindow):
                     widget = layout.itemAt(i).widget()
                     if isinstance(widget, QCheckBox) and widget.isChecked():
                         lab_code = widget.property("lab_code")
-                        if lab_code:  # Ensure lab_code is valid
-                            selected_lab_codes.append(lab_code)
-                        else:
-                            print(f"Warning: Checkbox at index {i} has no lab_code property.")
+                        if lab_code:
+                            result = Laboratory.get_test_by_labcode(lab_code)
+                            if result:
+                                lab_name = result[0]['lab_test_name']
+                                selected_lab_names.append(lab_name)
 
-        # Check if OtherText has a value
-        other_text_value = self.ui.OtherText.text().strip()  # Get the value and remove extra spaces
-
-        # Add the OtherText value to the list if it exists
+        # Handle "Other" text manually entered
+        other_text_value = self.ui.OtherText.text().strip()
         if other_text_value:
-            selected_lab_codes.append(other_text_value)
+            selected_lab_names.append(other_text_value)
 
-        # Check if no checkboxes are selected and OtherText is empty
-        if not selected_lab_codes and not other_text_value:
-            # Open the DoctorLabResult modal
+        # If no lab test selected, open modal
+        if not selected_lab_names:
             self.open_doctor_lab_result_modal()
-        else:
-            # Update the database with the selected lab codes
-            success = CheckUp.update_lab_codes(self.checkup_id, selected_lab_codes)
-            if not success:
-                QMessageBox.critical(self, "Error", "Failed to update lab codes.")
+            return
+
+        # Save raw lab codes only (excluding custom entries) to DB
+        raw_lab_codes = [widget.property("lab_code")
+                         for frame in [self.ui.FirstFrame, self.ui.SecondFrame]
+                         for i in range(frame.layout().count())
+                         if isinstance((widget := frame.layout().itemAt(i).widget()), QCheckBox)
+                         and widget.isChecked()
+                         and widget.property("lab_code")]
+
+        success = CheckUp.update_lab_codes(self.checkup_id,
+                                           raw_lab_codes + ([other_text_value] if other_text_value else []))
+        if not success:
+            QMessageBox.critical(self, "Error", "Failed to update lab codes.")
+            return
+
+        try:
+            # Get full patient and doctor info
+            patient_info = Patient.get_patient_by_id(self.patient_id)
+            doctor_info = Doctor.get_doctor_by_id(self.doc_id)
+            if not patient_info or not doctor_info:
+                QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
                 return
 
-            # Proceed to ViewRecords
-            QMessageBox.information(self, "Success", f"Selected Lab Codes: {', '.join(selected_lab_codes)}")
-            self.ViewRecords()
+            name = self.ui.PatName.text()
+            age = str(patient_info["age"])
+            gender = patient_info["gender"]
+            address = patient_info["address"]
+            today = datetime.today().strftime("%Y-%m-%d")
+            doctor_name = f"{doctor_info['doc_fname'].capitalize()} {doctor_info['doc_mname'].capitalize()} {doctor_info['doc_lname'].capitalize()}"
+
+            # Output paths
+            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            os.makedirs(output_dir, exist_ok=True)
+            word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{name}.docx")
+            pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{name}_LabRequest.pdf")
+
+            # Load the template
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\LabRequest.docx"
+            doc = Document(template_path)
+
+            # Replace patient and doctor placeholders
+            placeholders = {
+                "{{name}}": name,
+                "{{age}}": age,
+                "{{gender}}": gender,
+                "{{address}}": address,
+                "{{date}}": today,
+                "{{doctor_name}}": doctor_name
+            }
+            for p in doc.paragraphs:
+                for key, val in placeholders.items():
+                    if key in p.text:
+                        p.text = p.text.replace(key, val)
+
+            # Fill in lab requests using test names
+            for i in range(1, 11):
+                tag = f"{{{{lab_request{i}}}}}"
+                lab_name = f"• {selected_lab_names[i - 1]}" if i <= len(selected_lab_names) else ""
+                for p in doc.paragraphs:
+                    if tag in p.text:
+                        p.text = p.text.replace(tag, lab_name)
+
+            # Save and convert
+            doc.save(word_output)
+            convert(word_output, pdf_output)
+
+            QMessageBox.information(self, "Success", f"PDF Lab Request created:\n{pdf_output}")
+
+        except Exception as e:
+            QMessageBox.critical(self, "PDF Error", f"Failed to generate Lab Request PDF: {e}")
+            return
+
+        self.ViewRecords()
 
     def open_doctor_lab_result_modal(self):
         try:

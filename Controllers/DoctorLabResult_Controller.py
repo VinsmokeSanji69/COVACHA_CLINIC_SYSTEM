@@ -2,16 +2,18 @@ import os
 import subprocess
 import sys
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDialog, QDialogButtonBox, \
-    QApplication
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDialog, QDialogButtonBox, QApplication
 from Models import Prescription
 from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Controllers.DoctorAddPrescription_Controller import DoctorAddPrescription
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from Models.Prescription import Prescription
 from datetime import datetime, date
+from docx import Document
+from docx2pdf import convert
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -517,6 +519,7 @@ class DoctorLabResult(QMainWindow):
             QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
             pat_id = checkup_details['pat_id']
             self.make_into_pdf(pat_id)
+            self.make_prescription_pdf(pat_id)
             print("Diagnosis saved successfully!")
 
             # Refresh the tables in the parent window
@@ -543,33 +546,35 @@ class DoctorLabResult(QMainWindow):
 
     def make_into_pdf(self, pat_id):
         try:
-            # Load patient details
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
             patient_details = Patient.get_patient_by_id(pat_id)
-            self.load_data()
+            doc_id = checkup_details['doc_id']
+            doctor_details = Doctor.get_doctor(doc_id)
+
+            doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
 
             # Prepare data dictionary matching your template placeholders
             data = {
                 'name': self.ui.PatName.text() or '___',
                 'age': self.ui.PatAge.text() or '___',
                 'gender': self.ui.PatGender.text() or '___',
-                'address': patient_details['pat_address'] or '___',
+                'address': patient_details.get('address', '___'),
+                'contact': patient_details.get('contact', '___'),
+                'dob': patient_details.get('dob', '___'),
                 'date': checkup_details['chck_date'] or '___',
-                'dob': patient_details['pat_birthday'] or '___',
-                'contact': patient_details['pat_contact'] or '___',
+                'doctor_name': doctor_name,
                 'bloodpressure': self.ui.BloodPressure.text() or '___',
                 'temperature': self.ui.Temperature.text() or '___',
                 'weight': self.ui.Weight.text() or '___',
-                'height': checkup_details['physician'] or '___',
+                'height': self.ui.Heights.text() or '___',
                 'diagnosis': self.ui.DiagnoseText.text() or '___',
             }
 
             # Path setup
-            template_path = "Images\PatientRecord.docx"
+            template_path = "Images/PatientRecord.docx"
             output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
             os.makedirs(output_dir, exist_ok=True)
 
-            # Generate output filenames
             word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{data['name']}.docx")
             pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{data['name']}.pdf")
 
@@ -583,7 +588,7 @@ class DoctorLabResult(QMainWindow):
                     if placeholder in paragraph.text:
                         paragraph.text = paragraph.text.replace(placeholder, str(value))
 
-            # Replace placeholders in tables (if any exist)
+            # Replace placeholders in tables
             for table in doc.tables:
                 for row in table.rows:
                     for cell in row.cells:
@@ -592,13 +597,9 @@ class DoctorLabResult(QMainWindow):
                             if placeholder in cell.text:
                                 cell.text = cell.text.replace(placeholder, str(value))
 
-            # Save filled Word document
+            # Save and convert
             doc.save(word_output)
-
-            # Convert to PDF
             convert(word_output, pdf_output)
-
-            # Remove temporary Word file
             os.remove(word_output)
 
             print(f"PDF successfully generated at: {pdf_output}")
@@ -606,6 +607,82 @@ class DoctorLabResult(QMainWindow):
 
         except Exception as e:
             error_msg = f"Error generating PDF: {str(e)}"
+            print(error_msg)
+            QMessageBox.critical(self, "PDF Generation Error", error_msg)
+            return None
+
+    def make_prescription_pdf(self, pat_id):
+        try:
+            # Fetch checkup, patient, doctor, and prescription details
+            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            patient_details = Patient.get_patient_by_id(pat_id)
+            doctor_details = Doctor.get_doctor(checkup_details['doc_id'])
+            prescriptions = Prescription.display_prescription(self.checkup_id)
+
+            doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
+
+            # Core info
+            data = {
+                'name': self.ui.PatName.text() or '___',
+                'age': self.ui.PatAge.text() or '___',
+                'gender': self.ui.PatGender.text() or '___',
+                'address': patient_details.get('address', '___'),
+                'date': checkup_details['chck_date'] or '___',
+                'doctor_name': doctor_name
+            }
+
+            # Fill up to 10 prescription entries
+            for i in range(1, 11):
+                if i <= len(prescriptions):
+                    med = prescriptions[i - 1]
+                    data[f'meds{i}'] = med.get("pres_medicine", "")
+                    data[f'dosage{i}'] = med.get("pres_dosage", "")
+                    data[f'intake{i}'] = med.get("pres_intake", "")
+                else:
+                    # Fill unused rows with blanks
+                    data[f'meds{i}'] = ""
+                    data[f'dosage{i}'] = ""
+                    data[f'intake{i}'] = ""
+
+            # File paths
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\Prescription.docx"
+            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            os.makedirs(output_dir, exist_ok=True)
+
+            # Filenames with “Prescription” suffix
+            filename_base = f"{self.checkup_id}_{data['name']} Prescription"
+            word_output = os.path.join(output_dir, f"temp_{filename_base}.docx")
+            pdf_output = os.path.join(output_dir, f"{filename_base}.pdf")
+
+            # Load Word template
+            doc = Document(template_path)
+
+            # Replace placeholders in paragraphs
+            for paragraph in doc.paragraphs:
+                for key, value in data.items():
+                    placeholder = f"{{{{{key}}}}}"
+                    if placeholder in paragraph.text:
+                        paragraph.text = paragraph.text.replace(placeholder, str(value))
+
+            # Replace placeholders in tables
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        for key, value in data.items():
+                            placeholder = f"{{{{{key}}}}}"
+                            if placeholder in cell.text:
+                                cell.text = cell.text.replace(placeholder, str(value))
+
+            # Save and convert to PDF
+            doc.save(word_output)
+            convert(word_output, pdf_output)
+            os.remove(word_output)
+
+            print(f"Prescription PDF generated at: {pdf_output}")
+            return pdf_output
+
+        except Exception as e:
+            error_msg = f"Error generating prescription PDF: {str(e)}"
             print(error_msg)
             QMessageBox.critical(self, "PDF Generation Error", error_msg)
             return None
