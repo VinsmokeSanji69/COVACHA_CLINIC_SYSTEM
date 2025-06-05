@@ -137,7 +137,7 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../Images/resources.qrc">
+          <iconset>
            <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
@@ -184,7 +184,7 @@ QLabel {
             <string>  Dashboard</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
            </property>
            <property name="iconSize">
@@ -207,7 +207,7 @@ QLabel {
             <string>  Staffs</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
            </property>
            <property name="iconSize">
@@ -233,7 +233,7 @@ QLabel {
             <string>  Records</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
            </property>
            <property name="iconSize">
@@ -256,7 +256,7 @@ QLabel {
             <string>  Transactions</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
            </property>
            <property name="iconSize">
@@ -279,7 +279,7 @@ QLabel {
             <string>  Charges</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/hand-coins.svg</normaloff>:/lucide/icons/hand-coins.svg</iconset>
            </property>
            <property name="iconSize">
@@ -322,7 +322,7 @@ QLabel {
             <string>  Profile</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
            </property>
            <property name="iconSize">
@@ -345,7 +345,7 @@ QLabel {
             <string>  Log Out</string>
            </property>
            <property name="icon">
-            <iconset resource="../Images/resources.qrc">
+            <iconset>
              <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
            </property>
            <property name="iconSize">
@@ -515,7 +515,7 @@ QLabel {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../Images/resources.qrc">
+                <iconset>
                  <normaloff>:/lucide/icons/arrow-left.svg</normaloff>:/lucide/icons/arrow-left.svg</iconset>
                </property>
                <property name="iconSize">
@@ -622,7 +622,7 @@ QLabel {
               <item alignment="Qt::AlignRight">
                <widget class="QLabel" name="UserType">
                 <property name="text">
-                 <string>Admin</string>
+                 <string>Doctor</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>
@@ -861,7 +861,7 @@ QLabel {
                       <string>Edit Patient</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="../Images/resources.qrc">
+                      <iconset>
                        <normaloff>:/lucide/icons/square-pen.svg</normaloff>:/lucide/icons/square-pen.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -1289,7 +1289,7 @@ Line {
                                <string/>
                               </property>
                               <property name="icon">
-                               <iconset resource="../Images/resources.qrc">
+                               <iconset>
                                 <normaloff>:/lucide/icons/phone.svg</normaloff>:/lucide/icons/phone.svg</iconset>
                               </property>
                               <property name="iconSize">
@@ -1349,7 +1349,7 @@ Line {
                                <string/>
                               </property>
                               <property name="icon">
-                               <iconset resource="../Images/resources.qrc">
+                               <iconset>
                                 <normaloff>:/lucide/icons/house.svg</normaloff>:/lucide/icons/house.svg</iconset>
                               </property>
                               <property name="iconSize">
@@ -1456,8 +1456,8 @@ Line {
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>426</width>
-                           <height>571</height>
+                           <width>396</width>
+                           <height>559</height>
                           </rect>
                          </property>
                          <layout class="QVBoxLayout" name="verticalLayout_21">

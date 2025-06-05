@@ -1,9 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
-from Views.Admin_Patients import Ui_Admin_Patients as AdminPatientsUI
+from Views.Admin_Patients import Ui_Admin_Patients
 
 
 def safe_date_format(date_value, date_format="%B %d, %Y"):
@@ -20,13 +20,17 @@ def safe_date_format(date_value, date_format="%B %d, %Y"):
         return date_value.strftime(date_format)
     return "N/A"
 
-class AdminPatientsController(QWidget):
+class AdminPatientsController(QMainWindow):
     def __init__(self, records_ui):
         super().__init__()
-        self.ui = AdminPatientsUI()
+        self.ui = Ui_Admin_Patients()
         self.records_ui = records_ui
         self.ui.setupUi(self)
 
+        # self.ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
+        # self.ui.ChargesButton.clicked.connect(self.view_charges_ui)
+        # self.ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
+        # self.ui.StaffsButton.clicked.connect(self.view_staff_ui)
         self.records_ui.View.clicked.connect(self.view_patient)
         self.records_ui.SearchButton.clicked.connect(self.filter_tables)
 
