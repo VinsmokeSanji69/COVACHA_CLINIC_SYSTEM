@@ -7,6 +7,7 @@ from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
 from Models.Doctor import Doctor
 from Models.Transaction import Transaction
 from Views.Staff_Dashboard import Ui_Staff_Dashboard
+from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
 from Controllers.StaffAddCheckUp_Controller import StaffAddCheckUp
 from Controllers.StaffLabRequest_Controller import StaffLabRequest
 from Controllers.StaffTransactionModal_Controller import StaffTransactionModal
@@ -57,26 +58,6 @@ class StaffDashboardController(QMainWindow):
         # Start with dashboard view
         self.go_to_dashboard()
 
-        # # Responsive table for Dashboard Page
-        # # tableWidget
-        # header = self.dashboard_ui.PendingTable.horizontalHeader()
-        # header.setSectionResizeMode(QHeaderView.Stretch)
-        #
-        # self.dashboard_ui.PendingTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # self.dashboard_ui.PendingTable.setWordWrap(True)
-        # self.dashboard_ui.PendingTable.resizeRowsToContents()
-        #
-        # # # Responsive table for Record Page
-        # # # DoneTable
-        # # header = self.records_ui.DoneTable.horizontalHeader()
-        # # header.setSectionResizeMode(QHeaderView.Stretch)
-        # #
-        # # self.records_ui.DoneTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # # self.records_ui.DoneTable.setWordWrap(True)
-        # # self.records_ui.DoneTable.resizeRowsToContents()
-        #
-        # Responsive table for Transaction Page
-        # DoneTable
         header = self.transactions_ui.TransactionTable.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
 
@@ -113,12 +94,6 @@ class StaffDashboardController(QMainWindow):
         self.dashboard_ui.setupUi(self.dashboard_page)
         self.page_stack.addWidget(self.dashboard_page)
 
-        # # Records page
-        # self.records_page = QWidget()
-        # self.records_ui = Ui_Staff_Records()
-        # self.records_ui.setupUi(self.records_page)
-        # self.page_stack.addWidget(self.records_page)
-
         # Transactions page
         self.transactions_page = QWidget()
         self.transactions_ui = Ui_Staff_Transactions()
@@ -131,6 +106,11 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.setupUi(self.labreq_page)
         self.page_stack.addWidget(self.labreq_page)
 
+        # Transaction Process page
+        self.transaction_process_page = QWidget()
+        self.transaction_process_ui = Ui_Staff_Transaction_Process()
+        self.transaction_process_ui.setupUi(self.transaction_process_page)
+        self.page_stack.addWidget(self.transaction_process_page)
 
 
     def connect_all_buttons(self):
@@ -149,6 +129,9 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.labreq_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.labreq_ui.LabButton.clicked.connect(self.go_to_labreq)
+
+        # Connect transaction process page buttons
+        # self.transaction_process_ui.BackButton.clicked.connect(self.go_to_dashboard)
 
         # # Connect buttons
         if hasattr(self.dashboard_ui, 'AddCheckUpButton'):
@@ -174,6 +157,7 @@ class StaffDashboardController(QMainWindow):
     def go_to_labreq(self):
         self.page_stack.setCurrentWidget(self.labreq_page)
         self.update_time_labels()
+
 
 
     def apply_table_styles(self, table_widget):
