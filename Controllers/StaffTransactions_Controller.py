@@ -26,15 +26,14 @@ class StaffTransactions(QWidget):
             # Fetch all completed check-ups
             checkups = CheckUp.get_all_checkups()
             if not checkups:
-                # print("No completed check-ups found.")
                 return
+
+            # Sort checkups in descending order by chck_id (latest first)
+            checkups.sort(key=lambda x: x['chck_id'].strip(), reverse=True)
 
             # Fetch all transactions to determine their status
             transactions = Transaction.get_all_transaction()
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
-
-            # Debug: Log all chck_id from transactions
-            # print(f"All transaction chck_id: {list(transaction_dict.keys())}")
 
             # Clear the table before populating it
             self.transactions_ui.TransactionTable.clearContents()
@@ -44,44 +43,39 @@ class StaffTransactions(QWidget):
             for row, checkup in enumerate(checkups):
                 chck_id = checkup['chck_id'].strip().lower()
 
-                # Debug: Log the current chck_id
-                # print(f"Processing chck_id: {chck_id}")
-
                 # Fetch patient details
                 pat_id = checkup['pat_id']
                 patient = Patient.get_patient_details(pat_id)
                 if not patient:
-                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Fetch doctor details
                 doc_id = checkup['doc_id']
                 doctor = Doctor.get_doctor_by_id(doc_id)
                 if not doctor:
-                    # print(f"No doctor found for doc_id={doc_id}")
                     continue
 
-                # Format patient and doctor names
+                # Format names
                 pat_full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
                 doc_full_name = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
 
-                # Determine the transaction status
+                # Get transaction status
                 tran_status = transaction_dict.get(chck_id, "Pending")
 
                 # Insert data into the table
                 self.transactions_ui.TransactionTable.insertRow(row)
-                self.transactions_ui.TransactionTable.setItem(row, 0,QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
-                self.transactions_ui.TransactionTable.setItem(row, 1,QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
-                self.transactions_ui.TransactionTable.setItem(row, 2,QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
-                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(tran_status))  # Transaction Status
+                self.transactions_ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))
+                self.transactions_ui.TransactionTable.setItem(row, 1, QtWidgets.QTableWidgetItem(pat_full_name))
+                self.transactions_ui.TransactionTable.setItem(row, 2, QtWidgets.QTableWidgetItem(doc_full_name))
+                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(tran_status))
 
         except Exception as e:
-            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
         self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.transactions_ui.TransactionTable.horizontalHeader().setVisible(True)
-        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
 
     def view_transaction(self):

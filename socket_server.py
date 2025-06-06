@@ -5,6 +5,10 @@ import logging
 import subprocess
 import re
 import platform
+# Option 1: Fully disable all logging
+import logging
+logging.disable(logging.CRITICAL)
+
 from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
