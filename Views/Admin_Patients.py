@@ -10,18 +10,18 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-# Records
+
 class Ui_Admin_Patients(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1095, 569)
+        Form.resize(1095, 713)
         Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 16pt \"Satoshi Black\";\n"
+"    font: 900 17pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
 "    font-weight: bold;    \n"
@@ -68,7 +68,7 @@ class Ui_Admin_Patients(object):
 "}")
         self.NavBarButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.NavBarButton.setIcon(icon)
         self.NavBarButton.setIconSize(QtCore.QSize(35, 35))
         self.NavBarButton.setObjectName("NavBarButton")
@@ -82,7 +82,7 @@ class Ui_Admin_Patients(object):
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
         self.DashboardButton.setStyleSheet("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
         self.DashboardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashboardButton.setObjectName("DashboardButton")
@@ -90,7 +90,7 @@ class Ui_Admin_Patients(object):
         self.StaffsButton = QtWidgets.QPushButton(self.NavBar)
         self.StaffsButton.setStyleSheet("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/user-round-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.StaffsButton.setIcon(icon2)
         self.StaffsButton.setIconSize(QtCore.QSize(40, 40))
         self.StaffsButton.setObjectName("StaffsButton")
@@ -100,7 +100,7 @@ class Ui_Admin_Patients(object):
 "    font: 900 20pt \"Satoshi Black\";    \n"
 "}")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PatientsButton.setIcon(icon3)
         self.PatientsButton.setIconSize(QtCore.QSize(40, 40))
         self.PatientsButton.setObjectName("PatientsButton")
@@ -108,7 +108,7 @@ class Ui_Admin_Patients(object):
         self.TransactionsButton = QtWidgets.QPushButton(self.NavBar)
         self.TransactionsButton.setStyleSheet("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/lucide/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.TransactionsButton.setIcon(icon4)
         self.TransactionsButton.setIconSize(QtCore.QSize(40, 40))
         self.TransactionsButton.setObjectName("TransactionsButton")
@@ -116,7 +116,7 @@ class Ui_Admin_Patients(object):
         self.ChargesButton = QtWidgets.QPushButton(self.NavBar)
         self.ChargesButton.setStyleSheet("")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/chart-no-axes-combined.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/hand-coins.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ChargesButton.setIcon(icon5)
         self.ChargesButton.setIconSize(QtCore.QSize(40, 40))
         self.ChargesButton.setObjectName("ChargesButton")
@@ -127,19 +127,11 @@ class Ui_Admin_Patients(object):
         self.SettingButtons = QtWidgets.QVBoxLayout()
         self.SettingButtons.setSpacing(15)
         self.SettingButtons.setObjectName("SettingButtons")
-        self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
-        self.ProfileButton.setStyleSheet("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ProfileButton.setIcon(icon6)
-        self.ProfileButton.setIconSize(QtCore.QSize(40, 40))
-        self.ProfileButton.setObjectName("ProfileButton")
-        self.SettingButtons.addWidget(self.ProfileButton)
         self.LogOutButton = QtWidgets.QPushButton(self.NavBar)
         self.LogOutButton.setStyleSheet("")
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.LogOutButton.setIcon(icon7)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.LogOutButton.setIcon(icon6)
         self.LogOutButton.setIconSize(QtCore.QSize(40, 40))
         self.LogOutButton.setObjectName("LogOutButton")
         self.SettingButtons.addWidget(self.LogOutButton, 0, QtCore.Qt.AlignVCenter)
@@ -195,6 +187,31 @@ class Ui_Admin_Patients(object):
         self.Header.setMinimumSize(QtCore.QSize(0, 80))
         self.Header.setMaximumSize(QtCore.QSize(16777215, 80))
         self.Header.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.Header.setStyleSheet("#Header {\n"
+"    padding: 10px 20px;\n"
+"    padding-top: 15px;\n"
+"}\n"
+"QLabel {\n"
+"    padding: 0px; \n"
+"}\n"
+"#UserType {\n"
+"    font: 300 10pt \"Lexend Light\";\n"
+"    font-size: 15px;\n"
+"    color: #2B3752;\n"
+"}\n"
+"#UserName {\n"
+"    font: 600 10pt \"Lexend SemiBold\";\n"
+"    font-size: 20px;\n"
+"    color: #2B3752;\n"
+"}\n"
+"#InterfaceTitle{\n"
+"    font-size: 35px;\n"
+"}\n"
+"QGraphicsView {\n"
+"    border: 2px solid #ccc; \n"
+"    border-radius: 25px;\n"
+"    background: white; \n"
+"}")
         self.Header.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Header.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Header.setObjectName("Header")
@@ -375,13 +392,18 @@ class Ui_Admin_Patients(object):
         self.Search.setObjectName("Search")
         self.horizontalLayout_2.addWidget(self.Search)
         self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.SearchButton.sizePolicy().hasHeightForWidth())
+        self.SearchButton.setSizePolicy(sizePolicy)
         self.SearchButton.setText("")
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.SearchButton.setIcon(icon8)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.SearchButton.setIcon(icon7)
         self.SearchButton.setIconSize(QtCore.QSize(30, 30))
         self.SearchButton.setObjectName("SearchButton")
-        self.horizontalLayout_2.addWidget(self.SearchButton)
+        self.horizontalLayout_2.addWidget(self.SearchButton, 0, QtCore.Qt.AlignRight)
         self.horizontalLayout.addWidget(self.SearchBar)
         self.SortByBox = QtWidgets.QComboBox(self.Buttons)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -391,6 +413,12 @@ class Ui_Admin_Patients(object):
         self.SortByBox.setSizePolicy(sizePolicy)
         self.SortByBox.setMinimumSize(QtCore.QSize(0, 0))
         self.SortByBox.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.SortByBox.setStyleSheet("QComboBox::down-arrow {\n"
+"    image: url(:/icons/icons/chevron-down.svg);\n"
+"    width: 20px;\n"
+"    height: 20px;\n"
+"}\n"
+"")
         self.SortByBox.setObjectName("SortByBox")
         self.SortByBox.addItem("")
         self.SortByBox.addItem("")
@@ -404,6 +432,12 @@ class Ui_Admin_Patients(object):
         self.SortOrderBox.setSizePolicy(sizePolicy)
         self.SortOrderBox.setMinimumSize(QtCore.QSize(0, 0))
         self.SortOrderBox.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.SortOrderBox.setStyleSheet("QComboBox::down-arrow {\n"
+"    image: url(:/icons/icons/chevron-down.svg);\n"
+"    width: 20px;\n"
+"    height: 20px;\n"
+"}\n"
+"")
         self.SortOrderBox.setObjectName("SortOrderBox")
         self.SortOrderBox.addItem("")
         self.SortOrderBox.addItem("")
@@ -455,7 +489,7 @@ class Ui_Admin_Patients(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 670, 397))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 680, 541))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -514,12 +548,9 @@ class Ui_Admin_Patients(object):
         self.View = QtWidgets.QPushButton(self.widget)
         self.View.setObjectName("View")
         self.verticalLayout_6.addWidget(self.View)
-        self.Modify = QtWidgets.QPushButton(self.widget)
-        self.Modify.setObjectName("Modify")
-        self.verticalLayout_6.addWidget(self.Modify)
-        self.DeletePatient = QtWidgets.QPushButton(self.widget)
-        self.DeletePatient.setObjectName("DeletePatient")
-        self.verticalLayout_6.addWidget(self.DeletePatient)
+        self.Delete = QtWidgets.QPushButton(self.widget)
+        self.Delete.setObjectName("Delete")
+        self.verticalLayout_6.addWidget(self.Delete)
         self.horizontalLayout_5.addWidget(self.widget, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_5.addWidget(self.Patient)
         self.verticalLayout_4.addWidget(self.BodyLayout)
@@ -534,19 +565,17 @@ class Ui_Admin_Patients(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.NavBarButton.setToolTip(_translate("Form", "View Main Dashboard"))
         self.DashboardButton.setToolTip(_translate("Form", "View Main Dashboard"))
-        self.DashboardButton.setText(_translate("Form", "  Dashboard"))
+        self.DashboardButton.setText(_translate("Form", "Dashboard"))
         self.StaffsButton.setToolTip(_translate("Form", "View Staff Record"))
-        self.StaffsButton.setText(_translate("Form", "  Staffs"))
+        self.StaffsButton.setText(_translate("Form", "Staffs"))
         self.PatientsButton.setToolTip(_translate("Form", "View Patient Record"))
-        self.PatientsButton.setText(_translate("Form", "  Records"))
+        self.PatientsButton.setText(_translate("Form", "Records"))
         self.TransactionsButton.setToolTip(_translate("Form", "View Transactions "))
-        self.TransactionsButton.setText(_translate("Form", "  Transactions"))
+        self.TransactionsButton.setText(_translate("Form", "Transactions"))
         self.ChargesButton.setToolTip(_translate("Form", "View Reports and Overviews"))
-        self.ChargesButton.setText(_translate("Form", "  Charges"))
-        self.ProfileButton.setToolTip(_translate("Form", "View Profile Settings"))
-        self.ProfileButton.setText(_translate("Form", "  Profile"))
+        self.ChargesButton.setText(_translate("Form", "Charges"))
         self.LogOutButton.setToolTip(_translate("Form", "Log Out from your Account"))
-        self.LogOutButton.setText(_translate("Form", "  Log Out"))
+        self.LogOutButton.setText(_translate("Form", "Log Out"))
         self.InterfaceTitle.setText(_translate("Form", "Patients"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Admin"))
@@ -564,7 +593,6 @@ class Ui_Admin_Patients(object):
         item.setText(_translate("Form", "Recent Diagnosis"))
         item = self.PatientTable.horizontalHeaderItem(3)
         item.setText(_translate("Form", "Last Diagnosed"))
-        self.View.setText(_translate("Form", "VIew"))
-        self.Modify.setText(_translate("Form", "Modify"))
-        self.DeletePatient.setText(_translate("Form", "Delete"))
+        self.View.setText(_translate("Form", "View"))
+        self.Delete.setText(_translate("Form", "Delete"))
 

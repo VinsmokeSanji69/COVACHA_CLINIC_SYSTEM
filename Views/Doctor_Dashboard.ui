@@ -97,8 +97,8 @@ QLabel {
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+         <iconset resource="../Images/resources.qrc">
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -144,8 +144,8 @@ QLabel {
            <string>Dashboard</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -164,8 +164,8 @@ QLabel {
            <string>Check Up</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/square-pen.svg</normaloff>:/icons/icons/square-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -181,8 +181,8 @@ QLabel {
            <string>Records</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -221,8 +221,8 @@ QLabel {
            <string>Logout</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>

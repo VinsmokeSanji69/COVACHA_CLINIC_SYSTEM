@@ -97,6 +97,15 @@ class AdminDashboardController(QMainWindow):
         self.transactions_ui.TransactionTable.setWordWrap(True)
         self.transactions_ui.TransactionTable.resizeRowsToContents()
 
+        # Responsive for Admin Charges
+        self.charges_ui.DoctorTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.charges_ui.DoctorTable.setWordWrap(True)
+        self.charges_ui.DoctorTable.resizeRowsToContents()
+
+        self.charges_ui.LaboratoryTestTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.charges_ui.LaboratoryTestTable.setWordWrap(True)
+        self.charges_ui.LaboratoryTestTable.resizeRowsToContents()
+
     def setup_pages(self):
         """Set up complete pages with navbar and content"""
         # Dashboard page
