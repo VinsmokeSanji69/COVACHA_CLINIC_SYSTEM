@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1007</width>
-    <height>753</height>
+    <height>806</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,17 +20,16 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;
-	font-size: 25px;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65;
+    background-color: #2E6E65; 
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
@@ -41,6 +40,7 @@ QLabel {
     qproperty-wordWrap: true;
 	background: transparent;
 }
+
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -90,7 +90,7 @@ QLabel {
         </property>
         <property name="icon">
          <iconset resource="../Images/resources.qrc">
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -131,7 +131,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -144,7 +144,9 @@ QLabel {
         <item>
          <widget class="QPushButton" name="CheckUpButton">
           <property name="styleSheet">
-           <string notr="true">
+           <string notr="true">QPushButton{
+	font: 900 20pt &quot;Satoshi Black&quot;;	
+}
 </string>
           </property>
           <property name="text">
@@ -152,7 +154,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+            <normaloff>:/icons/icons/square-pen.svg</normaloff>:/icons/icons/square-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -164,12 +166,15 @@ QLabel {
         </item>
         <item>
          <widget class="QPushButton" name="RecordsButton">
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string>Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+            <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -203,30 +208,13 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_5">
-          <property name="text">
-           <string>Profile</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="pushButton_4">
           <property name="text">
            <string>Logout</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -571,7 +559,7 @@ QComboBox::drop-down {
                  </property>
                  <property name="icon">
                   <iconset resource="../Images/resources.qrc">
-                   <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
+                   <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -751,41 +739,25 @@ QComboBox QAbstractItemView {
               </property>
               <property name="styleSheet">
                <string notr="true">QTableWidget {
-    border: 2px solid white;
-    border-radius: 15px;
-    background-color: white;
-	border-color: #2e6e65;
+	background-color: #F4F7ED;
+	gridline-color: transparent;
+	border-radius: 10px;
+	border: 2px solid #2E6E65;
 }
-
-QHeaderView {
-    border: none;
-    font: 700 16pt &quot;Arial&quot;;
-    background-color: #2e6e65;
-    color: #f4f7ed;
-    padding: 0px;
-    margin: 0px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+QTableWidget::item {
+	border: none;
+	font: 16pt &quot;Lexend&quot;;
 }
-
-QHeaderView::section {
-    border: none;
-	text-align: left;
-    font: 700 12pt &quot;Arial&quot;;
-    background-color: #2e6e65;
-    color: #f4f7ed;
-    padding: 5px;
-    margin: 0px;
+QTableWidget::item:selected {
+	background-color: rgba(46, 110, 101, 0.3);
 }
-
-QHeaderView::section:first {
-    border-top-left-radius: 10px;
-}
-
-QHeaderView::section:last {
-    border-top-right-radius: 10px;
-}
-</string>
+QTableWidget QHeaderView::section {
+	background-color: #2E6E65;
+	color: white;
+	padding: 5px;
+	font: 18px &quot;Lexend Medium&quot;;
+	border: 2px solid #2E6E65;
+}</string>
               </property>
               <column>
                <property name="text">
@@ -882,41 +854,25 @@ QHeaderView::section:last {
           <widget class="QTableWidget" name="DoneTable">
            <property name="styleSheet">
             <string notr="true">QTableWidget {
-    border: 2px solid white;
-    border-radius: 15px;
-    background-color: white;
-	border-color: #2e6e65;
+	background-color: #F4F7ED;
+	gridline-color: transparent;
+	border-radius: 10px;
+	border: 2px solid #2E6E65;
 }
-
-QHeaderView {
-    border: none;
-    font: 700 16pt &quot;Arial&quot;;
-    background-color: #2e6e65;
-    color: #f4f7ed;
-    padding: 0px;
-    margin: 0px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+QTableWidget::item {
+	border: none;
+	font: 16pt &quot;Lexend&quot;;
 }
-
-QHeaderView::section {
-    border: none;
-	text-align: left;
-    font: 700 12pt &quot;Arial&quot;;
-    background-color: #2e6e65;
-    color: #f4f7ed;
-    padding: 5px;
-    margin: 0px;
+QTableWidget::item:selected {
+	background-color: rgba(46, 110, 101, 0.3);
 }
-
-QHeaderView::section:first {
-    border-top-left-radius: 10px;
-}
-
-QHeaderView::section:last {
-    border-top-right-radius: 10px;
-}
-</string>
+QTableWidget QHeaderView::section {
+	background-color: #2E6E65;
+	color: white;
+	padding: 5px;
+	font: 18px &quot;Lexend Medium&quot;;
+	border: 2px solid #2E6E65;
+}</string>
            </property>
            <column>
             <property name="text">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1095</width>
-    <height>569</height>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -115,8 +115,8 @@ QLabel {
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+         <iconset resource="../Images/resources.qrc">
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -159,11 +159,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Dashboard</string>
+           <string>Dashboard</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -182,11 +182,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Staffs</string>
+           <string>Staffs</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/user-round-pen.svg</normaloff>:/icons/icons/user-round-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -207,11 +207,11 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>  Records</string>
+           <string>Records</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -230,11 +230,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Transactions</string>
+           <string>Transactions</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -253,11 +253,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Charges</string>
+           <string>Charges</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/chart-no-axes-combined.svg</normaloff>:/lucide/icons/chart-no-axes-combined.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/hand-coins.svg</normaloff>:/icons/icons/hand-coins.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -296,11 +296,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Log Out</string>
+           <string>Log Out</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -769,8 +769,8 @@ QComboBox QAbstractItemView {
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset>
-                      <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
+                     <iconset resource="../Images/resources.qrc">
+                      <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -955,8 +955,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>751</width>
-                    <height>402</height>
+                    <width>680</width>
+                    <height>541</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">

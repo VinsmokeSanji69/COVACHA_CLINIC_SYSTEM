@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout,
 
 from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Controllers.DoctorDiagnosis_Controller import DoctorDiagnosis
+from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Controllers.DoctorRecords_Controller import DoctorRecords
 # from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
@@ -145,6 +146,7 @@ class DoctorDashboardController(QMainWindow):
         self.apply_table_styles(self.records_ui.DoneTable)
 
 
+
     def setup_pages(self):
         """Set up complete pages with navbar and content"""
         # Dashboard page
@@ -251,49 +253,6 @@ class DoctorDashboardController(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def apply_table_styles(self, table_widget):
-        """Apply custom styles to the given table widget."""
-
-        table_widget.setStyleSheet("""
-            QTableWidget {
-                background-color: #F4F7ED;
-                gridline-color: transparent;
-                border-radius: 10px;
-            }
-            QTableWidget::item {
-                border: none;
-                font: 16pt "Lexend";
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(46, 110, 101, 0.3);
-            }
-            QTableWidget QHeaderView::section {
-                background-color: #2E6E65;
-                color: white;
-                padding: 5px;
-                font: 18px "Lexend Medium";
-                border: 2px solid #2E6E65;
-            }
-
-            /* Scroll Area CSS */
-            QScrollBar:vertical {
-                background: transparent;
-                width: 10px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical {
-                background: #C0C0C0;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background: #A0A0A0;
-            }
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical{
-                background: none;
-                border: none;
-            }
-        """)
-
         # Ensure horizontal headers are visible
         table_widget.horizontalHeader().setVisible(True)
 

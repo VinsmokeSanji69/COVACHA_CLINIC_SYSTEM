@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1005</width>
-    <height>608</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -116,7 +116,7 @@ QLabel {
         </property>
         <property name="icon">
          <iconset resource="../Images/resources.qrc">
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -166,7 +166,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -189,7 +189,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+            <normaloff>:/icons/icons/user-round-pen.svg</normaloff>:/icons/icons/user-round-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -212,7 +212,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+            <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -235,7 +235,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
+            <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -257,8 +257,8 @@ QLabel {
            <string>Charges</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>:/lucide/icons/hand-coins.svg</normaloff>:/lucide/icons/hand-coins.svg</iconset>
+           <iconset resource="../Images/resources.qrc">
+            <normaloff>:/icons/icons/hand-coins.svg</normaloff>:/icons/icons/hand-coins.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -288,29 +288,6 @@ QLabel {
         <property name="spacing">
          <number>15</number>
         </property>
-        <item>
-         <widget class="QPushButton" name="ProfileButton">
-          <property name="toolTip">
-           <string>View Profile Settings</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>Profile</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item alignment="Qt::AlignVCenter">
          <widget class="QPushButton" name="LogOutButton">
           <property name="toolTip">
@@ -324,7 +301,7 @@ QLabel {
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
