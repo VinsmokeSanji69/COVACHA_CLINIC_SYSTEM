@@ -42,12 +42,13 @@ class DoctorCheckUpList(QWidget):
     def view_patient_details_ui(self, patient_id):
         print("View Patient Button clicked!")
         try:
-            from Controllers.AdminPatientDetails_Controller import AdminPatientDetailsController
-            self.admin_patient_details_controller = AdminPatientDetailsController(patient_id)
-            self.admin_patient_details_controller.show()
+            from Controllers.DoctorPatientDetailsView_Controller import DoctorPatientDetailsViewController
+            self.doctor_patient_details_controller = DoctorPatientDetailsViewController(patient_id)
+            self.doctor_patient_details_controller.show()
             self.hide()
         except Exception as e:
             print(f"Staff Error: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to load patient details: {e}")
 
     def view_patient(self):
         try:
@@ -56,14 +57,25 @@ class DoctorCheckUpList(QWidget):
                 print("no row selected")
                 return
 
-            patient_id = self.records_ui.DoneTable.item(selected_row, 0)
-            if not patient_id:
-                raise ValueError(f"No patient ID found in selected row")
+            # Get the Check Up ID (chck_id) from the selected row
+            chck_id_item = self.records_ui.DoneTable.item(selected_row, 0)
+            if not chck_id_item:
+                raise ValueError(f"No Check Up ID found in selected row")
 
-            patient_id = patient_id.text().strip()
-            if not patient_id:
-                raise ValueError(f" ID is empty")
+            chck_id = chck_id_item.text().strip()
+            if not chck_id:
+                raise ValueError(f"Check Up ID is empty")
 
+            # Fetch the patient_id associated with this checkup
+            checkup_details = CheckUp.get_checkup_details(chck_id)
+            if not checkup_details:
+                raise ValueError(f"No checkup details found for ID: {chck_id}")
+
+            patient_id = checkup_details.get('pat_id')
+            if not patient_id:
+                raise ValueError(f"No patient ID found for checkup ID: {chck_id}")
+
+            # Open the DoctorPatientDetailsViewController with the patient_id
             self.view_patient_details_ui(int(patient_id))
 
         except ValueError as ve:
