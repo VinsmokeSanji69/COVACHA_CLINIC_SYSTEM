@@ -42,20 +42,31 @@ class StaffLabRequest(QWidget):
             return
 
         try:
-            # Query to fetch all checkup IDs with associated lab codes
+            # Query to fetch all checkup IDs with associated lab codes along with check_date
             query = """
-                SELECT DISTINCT clt.chck_id
+                SELECT DISTINCT clt.chck_id, c.chck_date
                 FROM checkup_lab_tests clt
                 JOIN checkup c ON clt.chck_id = c.chck_id;
             """
             with conn.cursor() as cursor:
                 cursor.execute(query)
-                checkup_ids = [row[0] for row in cursor.fetchall()]
+                rows = cursor.fetchall()
+
+                # Sort by chck_date (descending), then split and sort chck_id numerically (descending)
+                checkup_ids = [
+                    row[0] for row in sorted(
+                        rows,
+                        key=lambda x: (
+                            -int(x[1].strftime("%Y%m%d")),  # Descending by date as integer
+                            -int(x[0].split("-")[1])  # Descending by numeric suffix
+                        )
+                    )
+                ]
 
             # Clear the table before populating it
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
-            # Populate the table with filtered data
+            # Iterate over the sorted checkup_ids
             for checkup_id in checkup_ids:
                 # Fetch check-up details
                 checkup_details = CheckUp.get_checkup_details(checkup_id)
@@ -65,55 +76,40 @@ class StaffLabRequest(QWidget):
                 pat_id = checkup_details['pat_id']
                 doc_id = checkup_details['doc_id']
 
-                # Fetch patient details
+                # Fetch patient and doctor details
                 patient_details = Patient.get_patient_details(pat_id)
-                if not patient_details:
-                    continue
-
-                # Format patient name (lname, fname)
-                patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
-
-                # Fetch doctor details
                 doctor_details = Doctor.get_doctor_by_id(doc_id)
-                if not doctor_details:
+                if not patient_details or not doctor_details:
                     continue
 
-                # Format doctor name (lname, fname)
+                patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
                 doctor_name = f"{doctor_details['doc_lname'].capitalize()}, {doctor_details['doc_fname'].capitalize()}"
 
-                # Fetch all lab attachments for this chck_id
-                query = """
-                    SELECT lab_attachment
-                    FROM checkup_lab_tests
-                    WHERE chck_id = %s;
-                """
-                with conn.cursor() as cursor:
-                    cursor.execute(query, (checkup_id,))
+                # Fetch lab attachments using a new cursor
+                with conn.cursor() as cursor:  # Create a new cursor here
+                    cursor.execute("""
+                        SELECT lab_attachment
+                        FROM checkup_lab_tests
+                        WHERE chck_id = %s;
+                    """, (checkup_id,))
                     lab_attachments = cursor.fetchall()
 
-                # Determine the status based on lab_attachment values
+                # Determine status
                 if not lab_attachments:
                     status = "No Results Yet"
                 else:
-                    # Separate NULL and non-NULL lab_attachment values
                     null_count = sum(1 for lab_attachment in lab_attachments if lab_attachment[0] is None)
                     total_count = len(lab_attachments)
-
                     if null_count == total_count:
-                        # All lab_attachment values are NULL
                         status = "No Results Yet"
                     elif null_count > 0:
-                        # Some lab_attachment values are NULL
                         status = "Incomplete"
                     else:
-                        # All lab_attachment values are non-NULL
                         status = "Completed"
 
-                # Add a new row to the table
-                row_position = self.ui.LabRequestTable.rowCount()
+                # Add to table
+                row_position = self.labreq_ui.LabRequestTable.rowCount()
                 self.labreq_ui.LabRequestTable.insertRow(row_position)
-
-                # Insert data into the table
                 self.labreq_ui.LabRequestTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(str(checkup_id)))
                 self.labreq_ui.LabRequestTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(patient_name))
                 self.labreq_ui.LabRequestTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(doctor_name))
