@@ -159,7 +159,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -182,7 +182,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Staffs</string>
+           <string> Staffs</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -205,7 +205,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Records</string>
+           <string> Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -228,7 +228,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -253,7 +253,7 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>Charges</string>
+           <string> Charges</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -296,7 +296,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Log Out</string>
+           <string> Log Out</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -899,7 +899,7 @@ QScrollBar::sub-line:vertical{
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>251</width>
+                       <width>247</width>
                        <height>563</height>
                       </rect>
                      </property>
@@ -921,6 +921,12 @@ QScrollBar::sub-line:vertical{
                       </property>
                       <item>
                        <widget class="QTableWidget" name="DoctorTable">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
@@ -1012,7 +1018,7 @@ QTableWidget QHeaderView::section {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>387</width>
+                       <width>383</width>
                        <height>563</height>
                       </rect>
                      </property>

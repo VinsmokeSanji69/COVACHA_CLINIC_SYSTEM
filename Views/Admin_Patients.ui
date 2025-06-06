@@ -159,7 +159,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -182,7 +182,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Staffs</string>
+           <string> Staffs</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -207,7 +207,7 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>Records</string>
+           <string> Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -230,7 +230,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -253,7 +253,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Charges</string>
+           <string> Charges</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -296,7 +296,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Log Out</string>
+           <string> Log Out</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -745,19 +745,6 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </widget>
-                  </item>
-                  <item alignment="Qt::AlignRight">
                    <widget class="QPushButton" name="SearchButton">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -777,6 +764,19 @@ QComboBox QAbstractItemView {
                       <width>30</width>
                       <height>30</height>
                      </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string/>
                     </property>
                    </widget>
                   </item>
@@ -955,7 +955,7 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>680</width>
+                    <width>672</width>
                     <height>541</height>
                    </rect>
                   </property>

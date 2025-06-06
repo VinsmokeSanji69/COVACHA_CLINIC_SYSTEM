@@ -171,7 +171,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -196,7 +196,7 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>Staffs</string>
+           <string> Staffs</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -219,7 +219,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Records</string>
+           <string> Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -242,7 +242,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -265,7 +265,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Charges</string>
+           <string> Charges</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -308,7 +308,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Log Out</string>
+           <string> Log Out</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
