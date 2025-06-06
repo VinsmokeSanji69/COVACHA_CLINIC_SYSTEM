@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1223</width>
-    <height>828</height>
+    <height>829</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -185,16 +185,14 @@ QGraphicsView {
                </sizepolicy>
               </property>
               <property name="styleSheet">
-               <string notr="true">QPushButton {
-	background-color: #2E6E65;
-}</string>
+               <string notr="true"/>
               </property>
               <property name="text">
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+               <iconset resource="../Images/resources.qrc">
+                <normaloff>:/icons/icons/circle-arrow-left.svg</normaloff>:/icons/icons/circle-arrow-left.svg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -1491,6 +1489,8 @@ QTableWidget QHeaderView::section {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Images/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

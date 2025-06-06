@@ -111,17 +111,10 @@ class Ui_Doctor_LabRequest(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.pushButton_9 = QtWidgets.QPushButton(self.NavBar)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_9.setIcon(icon5)
-        self.pushButton_9.setIconSize(QtCore.QSize(40, 40))
-        self.pushButton_9.setObjectName("pushButton_9")
-        self.verticalLayout_4.addWidget(self.pushButton_9)
         self.pushButton_10 = QtWidgets.QPushButton(self.NavBar)
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_10.setIcon(icon6)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_10.setIcon(icon5)
         self.pushButton_10.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_10.setObjectName("pushButton_10")
         self.verticalLayout_4.addWidget(self.pushButton_10)
@@ -357,9 +350,9 @@ class Ui_Doctor_LabRequest(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.Icon = QtWidgets.QPushButton(self.SearchBar)
         self.Icon.setText("")
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Icon.setIcon(icon7)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Icon.setIcon(icon6)
         self.Icon.setIconSize(QtCore.QSize(30, 30))
         self.Icon.setObjectName("Icon")
         self.horizontalLayout_4.addWidget(self.Icon)
@@ -434,13 +427,12 @@ class Ui_Doctor_LabRequest(object):
         self.LabRequestTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -449,7 +441,7 @@ class Ui_Doctor_LabRequest(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
 "}")
         self.LabRequestTable.setColumnCount(4)
@@ -501,7 +493,6 @@ class Ui_Doctor_LabRequest(object):
         self.RecordsButton.setText(_translate("Form", "Records"))
         self.PatientsButton.setText(_translate("Form", "Patients"))
         self.LabButton.setText(_translate("Form", "Lab Request"))
-        self.pushButton_9.setText(_translate("Form", "Profile"))
         self.pushButton_10.setText(_translate("Form", "Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Lab Request"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
@@ -519,4 +510,4 @@ class Ui_Doctor_LabRequest(object):
         item.setText(_translate("Form", "Status"))
         self.Modify.setText(_translate("Form", "Modify"))
         self.Delete.setText(_translate("Form", "Delete"))
-import resources_rc
+

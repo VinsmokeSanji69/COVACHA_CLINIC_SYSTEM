@@ -116,7 +116,7 @@ QLabel {
         </property>
         <property name="icon">
          <iconset resource="../Images/resources.qrc">
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -159,11 +159,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Dashboard</string>
+           <string>Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -182,11 +182,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Staffs</string>
+           <string>Staffs</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+            <normaloff>:/icons/icons/user-round-pen.svg</normaloff>:/icons/icons/user-round-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -205,11 +205,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Records</string>
+           <string>Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+            <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -228,11 +228,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Transactions</string>
+           <string>Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
+            <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -253,11 +253,11 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>  Charges</string>
+           <string>Charges</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/chart-no-axes-combined.svg</normaloff>:/lucide/icons/chart-no-axes-combined.svg</iconset>
+            <normaloff>:/icons/icons/hand-coins.svg</normaloff>:/icons/icons/hand-coins.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -287,29 +287,6 @@ QLabel {
         <property name="spacing">
          <number>15</number>
         </property>
-        <item>
-         <widget class="QPushButton" name="ProfileButton">
-          <property name="toolTip">
-           <string>View Profile Settings</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>  Profile</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item alignment="Qt::AlignVCenter">
          <widget class="QPushButton" name="LogOutButton">
           <property name="toolTip">
@@ -319,11 +296,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Log Out</string>
+           <string>Log Out</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -747,12 +724,12 @@ QComboBox QAbstractItemView {
                     </property>
                     <property name="icon">
                      <iconset resource="../Images/resources.qrc">
-                      <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
+                      <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
-                      <width>30</width>
-                      <height>30</height>
+                      <width>35</width>
+                      <height>35</height>
                      </size>
                     </property>
                    </widget>
@@ -922,8 +899,8 @@ QScrollBar::sub-line:vertical{
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>243</width>
-                       <height>568</height>
+                       <width>251</width>
+                       <height>563</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -948,13 +925,12 @@ QScrollBar::sub-line:vertical{
                          <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
-	border-radius: 8px;
+	border-radius: 10px;
 	border: 2px solid #2E6E65;
 }
 QTableWidget::item {
 	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
+	font: 16pt &quot;Lexend&quot;;
 }
 QTableWidget::item:selected {
 	background-color: rgba(46, 110, 101, 0.3);
@@ -963,10 +939,9 @@ QTableWidget QHeaderView::section {
 	background-color: #2E6E65;
 	color: white;
 	padding: 5px;
-	font: 700 15pt &quot;Satoshi&quot;;
+	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
-}
-</string>
+}</string>
                         </property>
                         <property name="sizeAdjustPolicy">
                          <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -1037,8 +1012,8 @@ QTableWidget QHeaderView::section {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>379</width>
-                       <height>568</height>
+                       <width>387</width>
+                       <height>563</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1063,13 +1038,12 @@ QTableWidget QHeaderView::section {
                          <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
-	border-radius: 8px;
+	border-radius: 10px;
 	border: 2px solid #2E6E65;
 }
 QTableWidget::item {
 	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
+	font: 16pt &quot;Lexend&quot;;
 }
 QTableWidget::item:selected {
 	background-color: rgba(46, 110, 101, 0.3);
@@ -1078,10 +1052,9 @@ QTableWidget QHeaderView::section {
 	background-color: #2E6E65;
 	color: white;
 	padding: 5px;
-	font: 700 15pt &quot;Satoshi&quot;;
+	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
-}
-</string>
+}</string>
                         </property>
                         <property name="sizeAdjustPolicy">
                          <enum>QAbstractScrollArea::AdjustToContents</enum>
