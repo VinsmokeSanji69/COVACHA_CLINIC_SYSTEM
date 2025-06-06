@@ -267,6 +267,7 @@ class Ui_Doctor_Dashboard(object):
         self.UserPanel.setContentsMargins(-1, -1, 0, -1)
         self.UserPanel.setObjectName("UserPanel")
         self.UserInfo = QtWidgets.QVBoxLayout()
+        self.UserInfo.setContentsMargins(-1, -1, 7, -1)
         self.UserInfo.setSpacing(0)
         self.UserInfo.setObjectName("UserInfo")
         self.UserName = QtWidgets.QLabel(self.Header)
@@ -531,10 +532,10 @@ class Ui_Doctor_Dashboard(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.DashboardButton.setText(_translate("Form", "Dashboard"))
-        self.CheckUpButton.setText(_translate("Form", "Check Up"))
-        self.RecordsButton.setText(_translate("Form", "Records"))
-        self.pushButton_4.setText(_translate("Form", "Logout"))
+        self.DashboardButton.setText(_translate("Form", " Dashboard"))
+        self.CheckUpButton.setText(_translate("Form", " Check Up"))
+        self.RecordsButton.setText(_translate("Form", " Records"))
+        self.pushButton_4.setText(_translate("Form", " Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Dashboard"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Doctor"))

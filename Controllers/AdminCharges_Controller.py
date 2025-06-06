@@ -55,8 +55,6 @@ class AdminChargesController(QWidget):
 
         print("Admin Charges UI initialized!")
 
-        # Apply styles to the tables
-        self.apply_table_styles()
         self.refresh_tables()
 
         # Table Buttons - using the passed charges_ui instead of self.ui
@@ -196,8 +194,8 @@ class AdminChargesController(QWidget):
                 self.charges_ui.LaboratoryTestTable.setItem(row, 1, QtWidgets.QTableWidgetItem(lab_test_name))
                 self.charges_ui.LaboratoryTestTable.setItem(row, 2, QtWidgets.QTableWidgetItem(str(lab_price)))
 
-            self.charges_ui.LaboratoryTestTable.resizeColumnsToContents()
             self.charges_ui.LaboratoryTestTable.viewport().update()
+            self.charges_ui.LaboratoryTestTable.verticalHeader().setVisible(False)
 
         except Exception as e:
             print(f"Error populating LaboratoryTestTable: {e}")
@@ -214,29 +212,9 @@ class AdminChargesController(QWidget):
                 self.charges_ui.DoctorTable.setItem(row, 0, QTableWidgetItem(str(doctor["name"])))
                 self.charges_ui.DoctorTable.setItem(row, 1, QTableWidgetItem(formatted_rate))
 
-            self.charges_ui.DoctorTable.resizeColumnsToContents()
+            self.charges_ui.DoctorTable.verticalHeader().setVisible(False)
         except Exception as e:
             print(f"Error loading doctor table: {e}")
-
-    def apply_table_styles(self):
-        # Configure Laboratory Test Table
-        self.charges_ui.LaboratoryTestTable.setHorizontalHeaderLabels(["Test Code", "Laboratory Test", "Charge"])
-        self.charges_ui.LaboratoryTestTable.verticalHeader().setVisible(False)
-        self.charges_ui.LaboratoryTestTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-
-        # Configure Doctor Table (add your specific headers)
-        self.charges_ui.DoctorTable.setHorizontalHeaderLabels(["Doctor Name", "Rate"])  # Update with your actual headers
-        self.charges_ui.DoctorTable.verticalHeader().setVisible(False)
-        self.charges_ui.DoctorTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-
-        # Optional: Set column width policies
-        for table in [self.charges_ui.LaboratoryTestTable, self.charges_ui.DoctorTable]:
-            table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
-            table.horizontalHeader().setStretchLastSection(True)
-
-        # Connect signals to enforce single-table selection
-        self.charges_ui.LaboratoryTestTable.itemSelectionChanged.connect(lambda: self.clear_other_table_selection(self.charges_ui.DoctorTable))
-        self.charges_ui.DoctorTable.itemSelectionChanged.connect(lambda: self.clear_other_table_selection(self.charges_ui.LaboratoryTestTable))
 
     def clear_other_table_selection(self, table):
         if self.sender().selectedItems():  # If current table has a selection
