@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog,
     QStackedWidget, QHeaderView, QSizePolicy, QWidget
 from PyQt5.QtCore import QTimer, pyqtSlot, Qt
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
+from Controllers.ClientSocketController import DataRequest
 from Models.Doctor import Doctor
 from Models.Transaction import Transaction
 from Views.Staff_Dashboard import Ui_Staff_Dashboard
@@ -176,8 +177,8 @@ class StaffDashboardController(QMainWindow):
         """Fetch and display today's pending check-ups in the PendingTable."""
         try:
             # Fetch all pending check-ups
-            pending_checkups = CheckUp.get_pending_checkups()
-
+            pending_checkups = DataRequest.send_command("GET_PENDING_CHECKUP")
+            print("Server Response:", pending_checkups)
             # Get today's date in YYYYMMDD format
             today_date = datetime.now().strftime("%Y%m%d")
 

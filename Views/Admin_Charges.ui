@@ -20,7 +20,7 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;
@@ -115,7 +115,7 @@ QLabel {
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../Images/resources.qrc">
+         <iconset>
           <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
@@ -162,7 +162,7 @@ QLabel {
            <string>  Dashboard</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
@@ -185,7 +185,7 @@ QLabel {
            <string>  Staffs</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
           </property>
           <property name="iconSize">
@@ -208,7 +208,7 @@ QLabel {
            <string>  Records</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
@@ -231,7 +231,7 @@ QLabel {
            <string>  Transactions</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
           </property>
           <property name="iconSize">
@@ -256,7 +256,7 @@ QLabel {
            <string>  Charges</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/chart-no-axes-combined.svg</normaloff>:/lucide/icons/chart-no-axes-combined.svg</iconset>
           </property>
           <property name="iconSize">
@@ -299,7 +299,7 @@ QLabel {
            <string>  Profile</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
           </property>
           <property name="iconSize">
@@ -322,7 +322,7 @@ QLabel {
            <string>  Log Out</string>
           </property>
           <property name="icon">
-           <iconset resource="../Images/resources.qrc">
+           <iconset>
             <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
@@ -741,12 +741,22 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QPushButton" name="Icon">
                     <property name="text">
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="../Images/resources.qrc">
+                     <iconset>
                       <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
                     </property>
                     <property name="iconSize">
@@ -754,16 +764,6 @@ QComboBox QAbstractItemView {
                       <width>30</width>
                       <height>30</height>
                      </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
                     </property>
                    </widget>
                   </item>
@@ -922,8 +922,8 @@ QScrollBar::sub-line:vertical{
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>243</width>
-                       <height>568</height>
+                       <width>352</width>
+                       <height>572</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1037,8 +1037,8 @@ QTableWidget QHeaderView::section {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>379</width>
-                       <height>568</height>
+                       <width>351</width>
+                       <height>572</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">

@@ -27,11 +27,10 @@ DB_CONFIG = {
 
 # Socket server setup
 HOST = '0.0.0.0'  # Listen on all network interfaces
-PORT = 5432
+PORT = 6543
 
 # Admin MAC address (replace with your actual admin MAC)
 ADMIN_MAC_ADDRESS = "40-1A-58-BF-52-B8"
-
 
 class SocketServer:
     def __init__(self, host=HOST, port=PORT):
@@ -158,6 +157,11 @@ class SocketServer:
 
                     # Combine regular and admin methods
                     all_methods = {**db_methods}
+
+                    if command == "PING":
+                        response = {"status": "success", "message": "PONG"}
+                        connection.sendall(json.dumps(response).encode())
+                        continue  # Skip the rest and wait for the next command
 
                     if command not in all_methods:
                         raise ValueError(f"Invalid command: {command}")

@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget
+
+from Controllers.ClientSocketController import DataRequest
 from Controllers.StaffViewTransaction_Controller import StaffViewTransaction
 from Views.Staff_Transactions import Ui_Staff_Transactions as StaffTransactionUI
 from Models.Transaction import Transaction
@@ -24,7 +26,7 @@ class StaffTransactions(QWidget):
     def load_transaction_details(self):
         try:
             # Fetch all completed check-ups
-            checkups = CheckUp.get_all_checkups()
+            checkups = DataRequest.send_command("GET_ALL_CHECKUP")
             if not checkups:
                 # print("No completed check-ups found.")
                 return

@@ -1,3 +1,5 @@
+from itertools import count
+
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedWidget, QHeaderView, QSizePolicy
 
@@ -5,6 +7,10 @@ from Controllers.AdminPatients_Controller import AdminPatientsController
 from Controllers.AdminStaffs_Controller import AdminStaffsController
 from Controllers.AdminTransaction_Controller import AdminTransactionsController
 from Controllers.AdminCharges_Controller import AdminChargesController  # Add this import
+from Models.CheckUp import CheckUp
+from Models.Doctor import Doctor
+from Models.Patient import Patient
+from Models.Staff import Staff
 from Views.Admin_Charges import Ui_Admin_Charges
 from Views.Admin_Dashboard import Ui_Admin_Dashboard as AdminDashboardUI, Ui_Admin_Dashboard
 from Models.Admin import Admin
@@ -223,6 +229,67 @@ class AdminDashboardController(QMainWindow):
             self.ui.TotalStaff.setText(str(staff_count))
 
             print(f"Loaded counts - Doctors: {doctor_count}, Staff: {staff_count}")
+
+        except Exception as e:
+            print(f"Dashboard: {e}")
+
+    def initialize_overview(self):
+        try:
+            patients = Patient.get_all_patients()
+            staffs = Staff.get_all_staff()
+            doctors = Doctor.get_all_doctors()
+            checkups = CheckUp.get_all_checkups()
+
+            patient_count = count(patients)
+            staff_count = count(staffs)
+            doctor_count = count(doctors)
+            self.ui.TotalPatient.setText(str(patient_count))
+            self.ui.TotalDoctor.setText(str(staff_count))
+            self.ui.TotalStaff.setText(str(doctor_count))
+
+            if not patients:
+                return
+
+            child = adult = elderly = 0
+
+            for p in patients:
+                age = p.get('age', 0)
+                if age < 18:
+                    child += 1
+                elif age < 60:
+                    adult += 1
+                else:
+                    elderly += 1
+
+            total = len(patients)
+            self.ui.ChildPercent.setText(f"{child * 100 // total}%")
+            self.ui.AdultPercent.setText(f"{adult * 100 // total}%")
+            self.ui.ElderlyPercent.setText(f"{elderly * 100 // total}%")
+
+            diagnosis_1 = count()
+            diagnosis_percent_1 = count()
+            diagnosis_2 = count()
+            diagnosis_percent_2 = count()
+            self.ui.Diagnosis1.setText(str(diagnosis_1))
+            self.ui.Diagnose1Percent.setText(str(diagnosis_percent_1))
+            self.ui.Diagnosis2.setText(str(diagnosis_2))
+            self.ui.DiagnosePercent2.setText(str(diagnosis_percent_2))
+
+
+            self.ui.DocName1.setText(str())
+            self.ui.Specialty1.setText(str())
+            self.ui.PatCount1.setText(str())
+            self.ui.PatPercent1.setText(str())
+
+            self.ui.DocName2.setText(str())
+            self.ui.Specialty2.setText(str())
+            self.ui.PatCount2.setText(str())
+            self.ui.PatPercent2.setText(str())
+
+            self.ui.DocName3.setText(str())
+            self.ui.Specialty3.setText(str())
+            self.ui.PatCount3.setText(str())
+            self.ui.PatPercent3.setText(str())
 
         except Exception as e:
             print(f"Dashboard: {e}")
