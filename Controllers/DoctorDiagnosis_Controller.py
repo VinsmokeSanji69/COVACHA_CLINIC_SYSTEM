@@ -8,9 +8,9 @@ from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
-from docx import Document
+# from docx import Document
 import os
-from docx2pdf import convert
+# from docx2pdf import convert
 
 
 from Views.Doctor_Records import Ui_Doctor_Records

@@ -14,24 +14,23 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Doctor_Records(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1007, 753)
+        Form.resize(1007, 806)
         Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 10pt \"Satoshi Black\";\n"
+"    font: 900 17pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
 "    font-weight: bold;\n"
-"    font-size: 25px;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
 "}\n"
 "#NavBar {\n"
-"    background-color: #2E6E65;\n"
+"    background-color: #2E6E65; \n"
 "}\n"
 "QLabel {\n"
 "    font: 900 10pt \"Satoshi Black\";\n"
@@ -42,6 +41,7 @@ class Ui_Doctor_Records(object):
 "    qproperty-wordWrap: true;\n"
 "    background: transparent;\n"
 "}\n"
+"\n"
 "")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -61,7 +61,7 @@ class Ui_Doctor_Records(object):
         self.DashBoardButton = QtWidgets.QPushButton(self.NavBar)
         self.DashBoardButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashBoardButton.setIcon(icon)
         self.DashBoardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashBoardButton.setObjectName("DashBoardButton")
@@ -74,23 +74,26 @@ class Ui_Doctor_Records(object):
         self.MainButtons.setObjectName("MainButtons")
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
         self.DashboardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashboardButton.setObjectName("DashboardButton")
         self.MainButtons.addWidget(self.DashboardButton)
         self.CheckUpButton = QtWidgets.QPushButton(self.NavBar)
-        self.CheckUpButton.setStyleSheet("\n"
+        self.CheckUpButton.setStyleSheet("QPushButton{\n"
+"    font: 900 20pt \"Satoshi Black\";    \n"
+"}\n"
 "")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/square-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CheckUpButton.setIcon(icon2)
         self.CheckUpButton.setIconSize(QtCore.QSize(40, 40))
         self.CheckUpButton.setObjectName("CheckUpButton")
         self.MainButtons.addWidget(self.CheckUpButton)
         self.RecordsButton = QtWidgets.QPushButton(self.NavBar)
+        self.RecordsButton.setStyleSheet("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.RecordsButton.setIcon(icon3)
         self.RecordsButton.setIconSize(QtCore.QSize(40, 40))
         self.RecordsButton.setObjectName("RecordsButton")
@@ -101,17 +104,10 @@ class Ui_Doctor_Records(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.pushButton_5 = QtWidgets.QPushButton(self.NavBar)
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_5.setIcon(icon4)
-        self.pushButton_5.setIconSize(QtCore.QSize(40, 40))
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.verticalLayout_2.addWidget(self.pushButton_5)
         self.pushButton_4 = QtWidgets.QPushButton(self.NavBar)
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon5)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_4.setIcon(icon4)
         self.pushButton_4.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_4.setObjectName("pushButton_4")
         self.verticalLayout_2.addWidget(self.pushButton_4)
@@ -123,15 +119,12 @@ class Ui_Doctor_Records(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.MainBodyContainer.sizePolicy().hasHeightForWidth())
         self.MainBodyContainer.setSizePolicy(sizePolicy)
-        self.MainBodyContainer.setStyleSheet("#MainBodyContainer {\n"
-"    background-color: #f0f0f0;\n"
-"}\n"
-"\n"
-"#Header {\n"
-"    padding: 20px 20px;\n"
+        self.MainBodyContainer.setStyleSheet("#Header {\n"
+"    padding: 10px 20px;\n"
+"padding-top: 15px;\n"
 "}\n"
 "QLabel {\n"
-"    padding: 0px;\n"
+"    padding: 0px; \n"
 "}\n"
 "#UserType {\n"
 "    font: 300 10pt \"Lexend Light\";\n"
@@ -140,19 +133,17 @@ class Ui_Doctor_Records(object):
 "}\n"
 "#UserName {\n"
 "    font: 600 10pt \"Lexend SemiBold\";\n"
-"    font-size: 25px;\n"
+"    font-size: 20px;\n"
 "    color: #2B3752;\n"
 "}\n"
 "#InterfaceTitle{\n"
-"    font-size: 40px;\n"
+"    font-size: 35px;\n"
 "}\n"
 "QGraphicsView {\n"
-"    border: 2px solid #ccc;\n"
+"    border: 2px solid #ccc; \n"
 "    border-radius: 25px;\n"
-"    background: white;\n"
+"    background: white; \n"
 "}\n"
-"\n"
-"\n"
 "")
         self.MainBodyContainer.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MainBodyContainer.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -178,14 +169,14 @@ class Ui_Doctor_Records(object):
         self.UserInfo = QtWidgets.QVBoxLayout()
         self.UserInfo.setSpacing(0)
         self.UserInfo.setObjectName("UserInfo")
-        self.User = QtWidgets.QLabel(self.Header)
-        self.User.setAlignment(QtCore.Qt.AlignLeading)
-        self.User.setObjectName("User")
-        self.UserInfo.addWidget(self.User, 0, QtCore.Qt.AlignRight)
-        self.ID = QtWidgets.QLabel(self.Header)
-        self.ID.setAlignment(QtCore.Qt.AlignLeading)
-        self.ID.setObjectName("ID")
-        self.UserInfo.addWidget(self.ID, 0, QtCore.Qt.AlignRight)
+        self.UserName = QtWidgets.QLabel(self.Header)
+        self.UserName.setAlignment(QtCore.Qt.AlignLeading)
+        self.UserName.setObjectName("UserName")
+        self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight)
+        self.UserType = QtWidgets.QLabel(self.Header)
+        self.UserType.setAlignment(QtCore.Qt.AlignLeading)
+        self.UserType.setObjectName("UserType")
+        self.UserInfo.addWidget(self.UserType, 0, QtCore.Qt.AlignRight)
         self.UserPanel.addLayout(self.UserInfo)
         self.Profile = QtWidgets.QFrame(self.Header)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -289,17 +280,22 @@ class Ui_Doctor_Records(object):
         self.horizontalLayout_4.setContentsMargins(-1, 5, 0, 5)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.SearchButton.sizePolicy().hasHeightForWidth())
+        self.SearchButton.setSizePolicy(sizePolicy)
+        self.SearchButton.setText("")
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.SearchButton.setIcon(icon5)
+        self.SearchButton.setIconSize(QtCore.QSize(35, 35))
+        self.SearchButton.setObjectName("SearchButton")
+        self.horizontalLayout_4.addWidget(self.SearchButton, 0, QtCore.Qt.AlignLeft)
         self.Search = QtWidgets.QLineEdit(self.SearchBar)
         self.Search.setObjectName("Search")
         self.horizontalLayout_4.addWidget(self.Search)
-        self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
-        self.SearchButton.setText("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.SearchButton.setIcon(icon6)
-        self.SearchButton.setIconSize(QtCore.QSize(40, 40))
-        self.SearchButton.setObjectName("SearchButton")
-        self.horizontalLayout_4.addWidget(self.SearchButton)
         self.horizontalLayout_3.addWidget(self.SearchBar)
         spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
@@ -399,41 +395,25 @@ class Ui_Doctor_Records(object):
         sizePolicy.setHeightForWidth(self.AcceptedCheckUp.sizePolicy().hasHeightForWidth())
         self.AcceptedCheckUp.setSizePolicy(sizePolicy)
         self.AcceptedCheckUp.setStyleSheet("QTableWidget {\n"
-"    border: 2px solid white;\n"
-"    border-radius: 15px;\n"
-"    background-color: white;\n"
-"    border-color: #2e6e65;\n"
+"    background-color: #F4F7ED;\n"
+"    gridline-color: transparent;\n"
+"    border-radius: 10px;\n"
+"    border: 2px solid #2E6E65;\n"
 "}\n"
-"\n"
-"QHeaderView {\n"
+"QTableWidget::item {\n"
 "    border: none;\n"
-"    font: 700 16pt \"Arial\";\n"
-"    background-color: #2e6e65;\n"
-"    color: #f4f7ed;\n"
-"    padding: 0px;\n"
-"    margin: 0px;\n"
-"    border-top-left-radius: 10px;\n"
-"    border-top-right-radius: 10px;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
-"\n"
-"QHeaderView::section {\n"
-"    border: none;\n"
-"    text-align: left;\n"
-"    font: 700 12pt \"Arial\";\n"
-"    background-color: #2e6e65;\n"
-"    color: #f4f7ed;\n"
+"QTableWidget::item:selected {\n"
+"    background-color: rgba(46, 110, 101, 0.3);\n"
+"}\n"
+"QTableWidget QHeaderView::section {\n"
+"    background-color: #2E6E65;\n"
+"    color: white;\n"
 "    padding: 5px;\n"
-"    margin: 0px;\n"
-"}\n"
-"\n"
-"QHeaderView::section:first {\n"
-"    border-top-left-radius: 10px;\n"
-"}\n"
-"\n"
-"QHeaderView::section:last {\n"
-"    border-top-right-radius: 10px;\n"
-"}\n"
-"")
+"    font: 18px \"Lexend Medium\";\n"
+"    border: 2px solid #2E6E65;\n"
+"}")
         self.AcceptedCheckUp.setObjectName("AcceptedCheckUp")
         self.AcceptedCheckUp.setColumnCount(4)
         self.AcceptedCheckUp.setRowCount(0)
@@ -474,41 +454,25 @@ class Ui_Doctor_Records(object):
         self.verticalLayout_6.addWidget(self.SeeAllButton)
         self.DoneTable = QtWidgets.QTableWidget(self.MainBody)
         self.DoneTable.setStyleSheet("QTableWidget {\n"
-"    border: 2px solid white;\n"
-"    border-radius: 15px;\n"
-"    background-color: white;\n"
-"    border-color: #2e6e65;\n"
+"    background-color: #F4F7ED;\n"
+"    gridline-color: transparent;\n"
+"    border-radius: 10px;\n"
+"    border: 2px solid #2E6E65;\n"
 "}\n"
-"\n"
-"QHeaderView {\n"
+"QTableWidget::item {\n"
 "    border: none;\n"
-"    font: 700 16pt \"Arial\";\n"
-"    background-color: #2e6e65;\n"
-"    color: #f4f7ed;\n"
-"    padding: 0px;\n"
-"    margin: 0px;\n"
-"    border-top-left-radius: 10px;\n"
-"    border-top-right-radius: 10px;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
-"\n"
-"QHeaderView::section {\n"
-"    border: none;\n"
-"    text-align: left;\n"
-"    font: 700 12pt \"Arial\";\n"
-"    background-color: #2e6e65;\n"
-"    color: #f4f7ed;\n"
+"QTableWidget::item:selected {\n"
+"    background-color: rgba(46, 110, 101, 0.3);\n"
+"}\n"
+"QTableWidget QHeaderView::section {\n"
+"    background-color: #2E6E65;\n"
+"    color: white;\n"
 "    padding: 5px;\n"
-"    margin: 0px;\n"
-"}\n"
-"\n"
-"QHeaderView::section:first {\n"
-"    border-top-left-radius: 10px;\n"
-"}\n"
-"\n"
-"QHeaderView::section:last {\n"
-"    border-top-right-radius: 10px;\n"
-"}\n"
-"")
+"    font: 18px \"Lexend Medium\";\n"
+"    border: 2px solid #2E6E65;\n"
+"}")
         self.DoneTable.setObjectName("DoneTable")
         self.DoneTable.setColumnCount(4)
         self.DoneTable.setRowCount(0)
@@ -530,14 +494,13 @@ class Ui_Doctor_Records(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.DashboardButton.setText(_translate("Form", "Dashboard"))
-        self.CheckUpButton.setText(_translate("Form", "Check Up"))
-        self.RecordsButton.setText(_translate("Form", "Records"))
-        self.pushButton_5.setText(_translate("Form", "Profile"))
-        self.pushButton_4.setText(_translate("Form", "Logout"))
+        self.DashboardButton.setText(_translate("Form", " Dashboard"))
+        self.CheckUpButton.setText(_translate("Form", " Check Up"))
+        self.RecordsButton.setText(_translate("Form", " Records"))
+        self.pushButton_4.setText(_translate("Form", " Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Check Up List"))
-        self.User.setText(_translate("Form", "Roy Adrian Rondina"))
-        self.ID.setText(_translate("Form", "Doctor"))
+        self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
+        self.UserType.setText(_translate("Form", "Doctor"))
         self.SortByBox.setItemText(0, _translate("Form", "Sort By:"))
         self.SortOrderBox.setItemText(0, _translate("Form", "Sort Order:"))
         self.CheckUpLabel.setText(_translate("Form", "Check Ups"))

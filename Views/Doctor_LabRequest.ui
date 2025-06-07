@@ -223,23 +223,6 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_9">
-          <property name="text">
-           <string>Profile</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="pushButton_10">
           <property name="text">
            <string>Logout</string>
@@ -802,13 +785,12 @@ QScrollBar::sub-line:vertical{
                    <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
-	border-radius: 8px;
+	border-radius: 10px;
 	border: 2px solid #2E6E65;
 }
 QTableWidget::item {
 	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
+	font: 16pt &quot;Lexend&quot;;
 }
 QTableWidget::item:selected {
 	background-color: rgba(46, 110, 101, 0.3);
@@ -817,7 +799,7 @@ QTableWidget QHeaderView::section {
 	background-color: #2E6E65;
 	color: white;
 	padding: 5px;
-	font: 700 15pt &quot;Satoshi&quot;;
+	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
 }</string>
                   </property>

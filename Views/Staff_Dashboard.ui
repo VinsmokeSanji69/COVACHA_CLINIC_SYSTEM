@@ -205,9 +205,9 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="LogOutButton">
+         <widget class="QPushButton" name="LogoutButton">
           <property name="text">
-           <string>Logout</string>
+           <string> Logout</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -388,7 +388,7 @@ QGraphicsView {
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="UserType">
                <property name="text">
-                <string>Staff</string>
+                <string>Nurse</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>

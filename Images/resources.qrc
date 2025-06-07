@@ -29,5 +29,6 @@
     <file>icons/user-pen.svg</file>
     <file>icons/user-round-cog.svg</file>
     <file>icons/user-round-pen.svg</file>
+    <file>icons/hand-coins.svg</file>
   </qresource>
 </RCC>

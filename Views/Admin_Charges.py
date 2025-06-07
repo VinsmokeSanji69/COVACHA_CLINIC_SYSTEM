@@ -68,7 +68,7 @@ class Ui_Admin_Charges(object):
 "}")
         self.NavBarButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/lucide/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/align-justify.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.NavBarButton.setIcon(icon)
         self.NavBarButton.setIconSize(QtCore.QSize(35, 35))
         self.NavBarButton.setObjectName("NavBarButton")
@@ -82,7 +82,7 @@ class Ui_Admin_Charges(object):
         self.DashboardButton = QtWidgets.QPushButton(self.NavBar)
         self.DashboardButton.setStyleSheet("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/lucide/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/layout-dashboard.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.DashboardButton.setIcon(icon1)
         self.DashboardButton.setIconSize(QtCore.QSize(40, 40))
         self.DashboardButton.setObjectName("DashboardButton")
@@ -90,7 +90,7 @@ class Ui_Admin_Charges(object):
         self.StaffsButton = QtWidgets.QPushButton(self.NavBar)
         self.StaffsButton.setStyleSheet("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/user-round-pen.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.StaffsButton.setIcon(icon2)
         self.StaffsButton.setIconSize(QtCore.QSize(40, 40))
         self.StaffsButton.setObjectName("StaffsButton")
@@ -98,7 +98,7 @@ class Ui_Admin_Charges(object):
         self.PatientsButton = QtWidgets.QPushButton(self.NavBar)
         self.PatientsButton.setStyleSheet("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(":/lucide/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/file-text.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.PatientsButton.setIcon(icon3)
         self.PatientsButton.setIconSize(QtCore.QSize(40, 40))
         self.PatientsButton.setObjectName("PatientsButton")
@@ -106,7 +106,7 @@ class Ui_Admin_Charges(object):
         self.TransactionsButton = QtWidgets.QPushButton(self.NavBar)
         self.TransactionsButton.setStyleSheet("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(":/lucide/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/tickets.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.TransactionsButton.setIcon(icon4)
         self.TransactionsButton.setIconSize(QtCore.QSize(40, 40))
         self.TransactionsButton.setObjectName("TransactionsButton")
@@ -116,7 +116,7 @@ class Ui_Admin_Charges(object):
 "    font: 900 20pt \"Satoshi Black\";\n"
 "}")
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/lucide/icons/chart-no-axes-combined.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/hand-coins.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ChargesButton.setIcon(icon5)
         self.ChargesButton.setIconSize(QtCore.QSize(40, 40))
         self.ChargesButton.setObjectName("ChargesButton")
@@ -127,19 +127,11 @@ class Ui_Admin_Charges(object):
         self.SettingButtons = QtWidgets.QVBoxLayout()
         self.SettingButtons.setSpacing(15)
         self.SettingButtons.setObjectName("SettingButtons")
-        self.ProfileButton = QtWidgets.QPushButton(self.NavBar)
-        self.ProfileButton.setStyleSheet("")
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(":/lucide/icons/user-round-cog.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ProfileButton.setIcon(icon6)
-        self.ProfileButton.setIconSize(QtCore.QSize(40, 40))
-        self.ProfileButton.setObjectName("ProfileButton")
-        self.SettingButtons.addWidget(self.ProfileButton)
         self.LogOutButton = QtWidgets.QPushButton(self.NavBar)
         self.LogOutButton.setStyleSheet("")
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/lucide/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.LogOutButton.setIcon(icon7)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.LogOutButton.setIcon(icon6)
         self.LogOutButton.setIconSize(QtCore.QSize(40, 40))
         self.LogOutButton.setObjectName("LogOutButton")
         self.SettingButtons.addWidget(self.LogOutButton, 0, QtCore.Qt.AlignVCenter)
@@ -367,10 +359,10 @@ class Ui_Admin_Charges(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.Icon = QtWidgets.QPushButton(self.SearchBar)
         self.Icon.setText("")
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(":/lucide/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Icon.setIcon(icon8)
-        self.Icon.setIconSize(QtCore.QSize(30, 30))
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Icon.setIcon(icon7)
+        self.Icon.setIconSize(QtCore.QSize(35, 35))
         self.Icon.setObjectName("Icon")
         self.horizontalLayout_2.addWidget(self.Icon)
         self.Search = QtWidgets.QLineEdit(self.SearchBar)
@@ -459,23 +451,27 @@ class Ui_Admin_Charges(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 243, 568))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 247, 563))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.DoctorTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.DoctorTable.sizePolicy().hasHeightForWidth())
+        self.DoctorTable.setSizePolicy(sizePolicy)
         self.DoctorTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -484,10 +480,9 @@ class Ui_Admin_Charges(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
-"}\n"
-"")
+"}")
         self.DoctorTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.DoctorTable.setCornerButtonEnabled(True)
         self.DoctorTable.setColumnCount(2)
@@ -516,7 +511,7 @@ class Ui_Admin_Charges(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 379, 568))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 383, 563))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -526,13 +521,12 @@ class Ui_Admin_Charges(object):
         self.LaboratoryTestTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -541,10 +535,9 @@ class Ui_Admin_Charges(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
-"}\n"
-"")
+"}")
         self.LaboratoryTestTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.LaboratoryTestTable.setCornerButtonEnabled(True)
         self.LaboratoryTestTable.setColumnCount(3)
@@ -589,19 +582,17 @@ class Ui_Admin_Charges(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.NavBarButton.setToolTip(_translate("Form", "View Main Dashboard"))
         self.DashboardButton.setToolTip(_translate("Form", "View Main Dashboard"))
-        self.DashboardButton.setText(_translate("Form", "  Dashboard"))
+        self.DashboardButton.setText(_translate("Form", " Dashboard"))
         self.StaffsButton.setToolTip(_translate("Form", "View Staff Record"))
-        self.StaffsButton.setText(_translate("Form", "  Staffs"))
+        self.StaffsButton.setText(_translate("Form", " Staffs"))
         self.PatientsButton.setToolTip(_translate("Form", "View Patient Record"))
-        self.PatientsButton.setText(_translate("Form", "  Records"))
+        self.PatientsButton.setText(_translate("Form", " Records"))
         self.TransactionsButton.setToolTip(_translate("Form", "View Transactions "))
-        self.TransactionsButton.setText(_translate("Form", "  Transactions"))
+        self.TransactionsButton.setText(_translate("Form", " Transactions"))
         self.ChargesButton.setToolTip(_translate("Form", "View Reports and Overviews"))
-        self.ChargesButton.setText(_translate("Form", "  Charges"))
-        self.ProfileButton.setToolTip(_translate("Form", "View Profile Settings"))
-        self.ProfileButton.setText(_translate("Form", "  Profile"))
+        self.ChargesButton.setText(_translate("Form", " Charges"))
         self.LogOutButton.setToolTip(_translate("Form", "Log Out from your Account"))
-        self.LogOutButton.setText(_translate("Form", "  Log Out"))
+        self.LogOutButton.setText(_translate("Form", " Log Out"))
         self.InterfaceTitle.setText(_translate("Form", "System Charges"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Admin"))
@@ -620,4 +611,3 @@ class Ui_Admin_Charges(object):
         item.setText(_translate("Form", "Charge"))
         self.Modify.setText(_translate("Form", "Modify"))
         self.Delete.setText(_translate("Form", "Delete"))
-
