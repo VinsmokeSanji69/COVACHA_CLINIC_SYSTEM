@@ -41,7 +41,7 @@ class DoctorCheckUpListView(QMainWindow):
             print("All tables refreshed successfully!")
         except Exception as e:
             print(f"Error refreshing all tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def apply_table_styles(self):
         self.ui.LabTestTabe.setStyleSheet("""

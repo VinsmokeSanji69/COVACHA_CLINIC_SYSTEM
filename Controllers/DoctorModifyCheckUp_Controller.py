@@ -2,8 +2,12 @@ from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox
 from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
+# from docx import Document
+import os
+# from docx2pdf import convert
 
 class DoctorDiagnosisModify(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
@@ -31,7 +35,6 @@ class DoctorDiagnosisModify(QMainWindow):
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
-
             # Extract check-up data
             pat_id = checkup_details['pat_id']
             chck_bp = checkup_details['chck_bp']
@@ -39,28 +42,26 @@ class DoctorDiagnosisModify(QMainWindow):
             chck_height = checkup_details['chck_height']
             chck_weight = checkup_details['chck_weight']
             chckup_type = checkup_details['chckup_type']
-
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
-
             # Extract patient data
             pat_lname = patient_details['pat_lname']
             pat_fname = patient_details['pat_fname']
             pat_mname = patient_details['pat_mname']
             pat_dob = patient_details['pat_dob']
             pat_gender = patient_details['pat_gender']
-
             # Calculate age based on date of birth
             age = self.calculate_age(pat_dob)
-
             # Convert pat_dob to a string for display
             Birthday = pat_dob.strftime("%Y-%m-%d")
-
             # Step 3: Populate the UI
             self.populate_patient_info(pat_id, pat_lname, pat_fname, pat_mname, Birthday, age, pat_gender)
-            self.populate_checkup_info(self.checkup_id,chck_bp, chck_temp, chck_height, chck_weight, chckup_type)
+            self.populate_checkup_info(self.checkup_id, chck_bp, chck_temp, chck_height, chck_weight, chckup_type)
+
+            # Store patient_id as an instance variable
+            self.patient_id = pat_id  # Add this line
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load data: {e}")
@@ -175,51 +176,100 @@ class DoctorDiagnosisModify(QMainWindow):
             layout.addWidget(checkbox)
 
     def process_selected_tests(self):
-        """Process the selected checkboxes and update the database."""
+        """Process selected checkboxes and generate Lab Request PDF if applicable."""
+        selected_lab_names = []
+
+        for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
+            layout = frame.layout()
+            if layout:
+                for i in range(layout.count()):
+                    widget = layout.itemAt(i).widget()
+                    if isinstance(widget, QCheckBox) and widget.isChecked():
+                        lab_code = widget.property("lab_code")
+                        if lab_code:
+                            result = Laboratory.get_test_by_labcode(lab_code)
+                            if result:
+                                lab_name = result[0]['lab_test_name']
+                                selected_lab_names.append(lab_name)
+
+        # Handle "Other" text manually entered
+        other_text_value = self.ui.OtherText.text().strip()
+        if other_text_value:
+            selected_lab_names.append(other_text_value)
+
+        # If no lab test selected, open modal
+        if not selected_lab_names:
+            self.open_doctor_lab_result_modal()
+            return
+
+        # Save raw lab codes only (excluding custom entries) to DB
+        raw_lab_codes = [widget.property("lab_code")
+                         for frame in [self.ui.FirstFrame, self.ui.SecondFrame]
+                         for i in range(frame.layout().count())
+                         if isinstance((widget := frame.layout().itemAt(i).widget()), QCheckBox)
+                         and widget.isChecked()
+                         and widget.property("lab_code")]
+
+        success = CheckUp.update_lab_codes(self.checkup_id,
+                                           raw_lab_codes + ([other_text_value] if other_text_value else []))
+        if not success:
+            QMessageBox.critical(self, "Error", "Failed to update lab codes.")
+            return
+
         try:
-            # Collect selected lab codes from both frames
-            selected_lab_codes = []
-            for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
-                layout = frame.layout()
-                if layout:
-                    for i in range(layout.count()):
-                        widget = layout.itemAt(i).widget()
-                        if isinstance(widget, QCheckBox) and widget.isChecked():
-                            lab_code = widget.property("lab_code")
-                            if lab_code:  # Ensure lab_code is valid
-                                selected_lab_codes.append(lab_code)
-                            else:
-                                print(f"Warning: Checkbox at index {i} has no lab_code property.")
+            # Get full patient and doctor info
+            patient_info = Patient.get_patient_by_id(self.patient_id)
+            doctor_info = Doctor.get_doctor_by_id(self.doc_id)
+            if not patient_info or not doctor_info:
+                QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
+                return
 
-            # Add the OtherText value to the list if it exists
-            other_text_value = self.ui.OtherText.text().strip()
-            if other_text_value:
-                selected_lab_codes.append(other_text_value)
+            name = self.ui.PatName.text()
+            age = str(patient_info["age"])
+            gender = patient_info["gender"]
+            address = patient_info["address"]
+            today = datetime.today().strftime("%Y-%m-%d")
+            doctor_name = f"{doctor_info['doc_fname'].capitalize()} {doctor_info['doc_mname'].capitalize()} {doctor_info['doc_lname'].capitalize()}"
 
-            # Fetch existing lab codes for the check-upget_all_test
-            existing_lab_codes = CheckUp.get_lab_codes_by_chckid(self.checkup_id)
+            # Output paths
+            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            os.makedirs(output_dir, exist_ok=True)
+            word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{name}.docx")
+            pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{name}_LabRequest.pdf")
 
-            # Determine which lab codes to add and which to delete
-            lab_codes_to_add = set(selected_lab_codes) - set(existing_lab_codes)
-            lab_codes_to_delete = set(existing_lab_codes) - set(selected_lab_codes)
+            # Load the template
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\LabRequest.docx"
+            doc = Document(template_path)
 
-            # Add new lab codes
-            for lab_code in lab_codes_to_add:
-                success = CheckUp.add_lab_code(self.checkup_id, lab_code)
-                if not success:
-                    QMessageBox.critical(self, "Error", f"Failed to add lab code: {lab_code}")
-                    return
+            # Replace patient and doctor placeholders
+            placeholders = {
+                "{{name}}": name,
+                "{{age}}": age,
+                "{{gender}}": gender,
+                "{{address}}": address,
+                "{{date}}": today,
+                "{{doctor_name}}": doctor_name
+            }
+            for p in doc.paragraphs:
+                for key, val in placeholders.items():
+                    if key in p.text:
+                        p.text = p.text.replace(key, val)
 
-            # Delete removed lab codes
-            for lab_code in lab_codes_to_delete:
-                success = CheckUp.delete_lab_code(self.checkup_id, lab_code)
-                if not success:
-                    QMessageBox.critical(self, "Error", f"Failed to delete lab code: {lab_code}")
-                    return
+            # Fill in lab requests using test names
+            for i in range(1, 11):
+                tag = f"{{{{lab_request{i}}}}}"
+                lab_name = f"• {selected_lab_names[i - 1]}" if i <= len(selected_lab_names) else ""
+                for p in doc.paragraphs:
+                    if tag in p.text:
+                        p.text = p.text.replace(tag, lab_name)
 
-            # Notify the user of success
-            QMessageBox.information(self, "Success", "Lab tests updated successfully!")
+            # Save and convert
+            doc.save(word_output)
+            convert(word_output, pdf_output)
 
+            QMessageBox.information(self, "Success", f"PDF Lab Request created:\n{pdf_output}")
             self.close()
+
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to process selected tests: {e}")
+            QMessageBox.critical(self, "PDF Error", f"Failed to generate Lab Request PDF: {e}")
+

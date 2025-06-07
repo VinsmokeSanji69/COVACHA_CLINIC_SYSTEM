@@ -20,7 +20,7 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;	
@@ -127,7 +127,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -144,7 +144,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="TransactionsButton">
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -166,7 +166,7 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>Lab Request</string>
+           <string> Lab Request</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -204,26 +204,9 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="LogOutButton">
           <property name="text">
-           <string>Settings</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_10">
-          <property name="text">
-           <string>Logout</string>
+           <string> Logout</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -323,6 +306,33 @@ QPushButton {
       </property>
       <item>
        <widget class="QFrame" name="Header">
+        <property name="styleSheet">
+         <string notr="true">#Header {
+	padding: 10px 20px;
+	padding-top: 15px;
+}
+QLabel {
+    padding: 0px; 
+}
+#UserType {
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
+	color: #2B3752;
+}
+#UserName {
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
+	font-size: 20px;
+	color: #2B3752;
+}
+#InterfaceTitle{
+	font-size: 35px;
+}
+QGraphicsView {
+    border: 2px solid #ccc; 
+    border-radius: 25px;
+    background: white; 
+}</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -558,10 +568,9 @@ QComboBox QAbstractItemView {
     selection-background-color: #CCE3D0;
     border: 1px solid #2E6E65;
     border-radius: 2px;
-    outline: 0;
+    outline: 0;  
 	font: 300 12pt &quot;Lexend Light&quot;;
 }
-
 </string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -607,16 +616,16 @@ QComboBox QAbstractItemView {
                 <number>0</number>
                </property>
                <property name="leftMargin">
-                <number>0</number>
+                <number>10</number>
                </property>
                <property name="topMargin">
-                <number>5</number>
+                <number>0</number>
                </property>
                <property name="rightMargin">
                 <number>0</number>
                </property>
                <property name="bottomMargin">
-                <number>5</number>
+                <number>0</number>
                </property>
                <item>
                 <widget class="QPushButton" name="Icon">
@@ -629,7 +638,7 @@ QComboBox QAbstractItemView {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>40</width>
+                   <width>30</width>
                    <height>30</height>
                   </size>
                  </property>
@@ -662,35 +671,12 @@ QComboBox QAbstractItemView {
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">QComboBox {
-    background-color: #D9E4DC;
-    border: 2px solid #2E6E65;
-    border-radius: 10px;
-    padding: 5px 10px;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 30px;
-    border-left: 1px solid #2E6E65;
-    background-color: #D9E4DC;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-QComboBox::down-arrow {
+               <string notr="true">QComboBox::down-arrow {
     image: url(:/icons/icons/chevron-down.svg);
     width: 20px;
     height: 20px;
 }
-QComboBox QAbstractItemView {
-    background-color: #F4F7ED;
-    selection-background-color: #CCE3D0;
-    border: 1px solid #2E6E65;
-    border-radius: 2px;
-    outline: 0;  
-	font: 300 12pt &quot;Lexend Light&quot;;
-}</string>
+</string>
               </property>
               <item>
                <property name="text">
@@ -783,8 +769,8 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>700</width>
-                 <height>553</height>
+                 <width>690</width>
+                 <height>558</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6">

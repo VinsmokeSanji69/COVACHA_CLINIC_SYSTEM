@@ -233,7 +233,10 @@ class Ui_Staff_AddLabAttachment(object):
 "    font-weight: bold;\n"
 "    font-size: 20px;\n"
 "    color: #F4F7ED;\n"
-"}")
+"    text-align: center;\n"
+"}\n"
+"\n"
+"")
         self.Cancel.setObjectName("Cancel")
         self.horizontalLayout_2.addWidget(self.Cancel)
         self.UpdateButton = QtWidgets.QPushButton(self.widget)
@@ -251,6 +254,7 @@ class Ui_Staff_AddLabAttachment(object):
 "    font-weight: bold;\n"
 "    font-size: 20px;\n"
 "    color: #F4F7ED;\n"
+"    text-align: center;\n"
 "}")
         self.UpdateButton.setObjectName("UpdateButton")
         self.horizontalLayout_2.addWidget(self.UpdateButton)

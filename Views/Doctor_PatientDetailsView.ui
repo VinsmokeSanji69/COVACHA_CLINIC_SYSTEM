@@ -218,7 +218,7 @@ QGraphicsView {
              <bool>true</bool>
             </property>
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -251,6 +251,12 @@ QGraphicsView {
           </item>
           <item alignment="Qt::AlignTop">
            <widget class="QWidget" name="BackButtonCon" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet">
              <string notr="true">#Title{
 	font: 700 22pt &quot;Lexend&quot;;
@@ -306,7 +312,7 @@ QLabel {
               <item alignment="Qt::AlignRight">
                <widget class="QLabel" name="UserType">
                 <property name="text">
-                 <string>Admin</string>
+                 <string>Doctor</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>
@@ -501,15 +507,6 @@ QLabel {
                      </property>
                     </widget>
                    </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item alignment="Qt::AlignRight">
-                 <widget class="QWidget" name="widget_5" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_8">
-                   <property name="rightMargin">
-                    <number>15</number>
-                   </property>
                   </layout>
                  </widget>
                 </item>

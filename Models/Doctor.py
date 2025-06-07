@@ -224,6 +224,65 @@ class Doctor:
             if conn:
                 conn.close()
 
+    @staticmethod
+    def get_doctor(doctor_id):
+        conn = None
+        try:
+            conn = DBConnection.get_db_connection()
+            if not conn:
+                raise ConnectionError("Failed to establish database connection")
+
+            with conn.cursor() as cursor:
+                query = """
+                        SELECT doc_id, doc_lname, doc_fname, doc_mname, doc_specialty, 
+                               doc_license, doc_gender, doc_dob, doc_address, 
+                               doc_contact, doc_joined_date, doc_email, doc_rate
+                        FROM doctor 
+                        WHERE doc_id = %s
+                    """
+                cursor.execute(query, (doctor_id,))
+                result = cursor.fetchone()
+
+                if not result:
+                    return None
+
+                # Unpack the result tuple
+                (doc_id, last_name, first_name, middle_name, specialty,
+                 license, gender, dob, address, contact,
+                 joined_date, email, rate) = result
+
+                # Format names
+                last_name = last_name.title() if last_name else ""
+                first_name = first_name.title() if first_name else ""
+                middle_name = middle_name.title() if middle_name else ""
+                # Calculate age if DOB exists
+                age = calculate_age(dob)
+
+                return {
+                    "id": doc_id,
+                    "last_name": last_name,
+                    "first_name": first_name,
+                    "middle_name": middle_name,
+                    "specialty": specialty or "N/A",
+                    "license": license or "N/A",
+                    "gender": gender or "N/A",
+                    "dob": dob if dob else "N/A",
+                    "age": age or "N/A",
+                    "address": address or "N/A",
+                    "contact": contact or "N/A",
+                    "email": email or "N/A",
+                    "joined_date": joined_date if joined_date else "N/A",
+                    "rate": float(rate) if rate is not None else 0.0
+                }
+
+        except Exception as e:
+            print(f"Error fetching doctor: {str(e)}")
+            return None
+
+        finally:
+            if conn:
+                conn.close()
+
 def calculate_age(dob):
     if not dob:
         return None

@@ -1,14 +1,13 @@
 from datetime import date
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
-
-from Controllers.StaffTransactionList_Controllerr import StaffTransactionList
-from Views.Staff_TransactionProcess import Ui_MainWindow
+from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor, calculate_age
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from Models.Transaction import Transaction
+
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -46,15 +45,16 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
-class StaffTransactionProcess(QtWidgets.QMainWindow):
+
+class StaffTransactionProcess(QtWidgets.QDialog):
     def __init__(self, chck_id=None):
         super().__init__()
-        self.ui = Ui_MainWindow()  # Replace with your actual UI class
+        self.ui = Ui_Staff_Transaction_Process()
         self.ui.setupUi(self)
 
         # Store the chck_id
         self.chck_id = chck_id
-        # print(f"Staff transaction initialized with chck_id: {self.chck_id}")
+        self.existing_transaction = None  # Store existing transaction data
 
         # Apply table styles (if needed)
         self.apply_table_styles()
@@ -65,8 +65,67 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
         self.calculate_total_lab_charge()
         self.calculate_subtotal()
 
-        #save transaction
+        # save transaction
         self.ui.CompleteButton.clicked.connect(lambda: self.save_transaction_process(self.chck_id))
+        self.ui.PartialButton.clicked.connect(lambda: self.save_partial_transaction_process(self.chck_id))
+        self.ui.SeniorCheckBox.stateChanged.connect(self.apply_discount_if_senior)
+
+    def save_partial_transaction_process(self, chck_id):
+        """Save the transaction as Partial after confirming with the user."""
+        try:
+            # Parse discount and total
+            discount = float(self.ui.DiscountedAmount.text().replace("₱", "").replace(",", "").strip() or 0)
+            total_amount = float(self.ui.TotalAmount.text().replace("₱", "").replace(",", "").strip() or 0)
+
+            # Prepare the transaction data
+            trans_data = {
+                "discount": int(discount),
+                "base_charge": int(float(self.ui.DoctorCharge.text().replace("₱", "").replace(",", "").strip())),
+                "lab_charge": int(float(self.ui.TotalLabCharge.text().replace("₱", "").replace(",", "").strip())),
+                "total": int(total_amount),
+                "status": "Partial"
+            }
+
+            # Show confirmation dialog
+            confirmation_dialog = ConfirmationDialog(self)
+            if confirmation_dialog.exec_() == QtWidgets.QDialog.Rejected:
+                return
+
+            # Save the transaction with status Partial
+            Transaction.add_transaction(chck_id, trans_data)
+
+            QtWidgets.QMessageBox.information(self, "Saved", "Transaction has been saved as Partial.")
+
+            self.close()
+
+        except ValueError as ve:
+            QtWidgets.QMessageBox.critical(self, "Error", "Invalid value in DoctorCharge or TotalLabCharge.")
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to save transaction: {e}")
+
+    def apply_discount_if_senior(self):
+        try:
+            # Get subtotal
+            subtotal_text = self.ui.SubtotalAmount.text().replace("₱", "").replace(",", "").strip()
+            if not subtotal_text:
+                subtotal = 0.0
+            else:
+                subtotal = float(subtotal_text)
+
+            # Apply 20% discount if checkbox is checked
+            discount = 0.0
+            if self.ui.SeniorCheckBox.isChecked():
+                discount = subtotal * 0.20
+
+            # Calculate total after discount
+            total = subtotal - discount
+
+            # Update UI
+            self.ui.DiscountedAmount.setText(f"₱ {discount:,.2f}")
+            self.ui.TotalAmount.setText(f"₱ {total:,.2f}")
+
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to apply discount: {e}")
 
     def apply_table_styles(self):
         """Apply custom styles to the tables."""
@@ -123,10 +182,8 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
 
-            # Log the fetched checkup data for debugging
-            # print(f"Fetched checkup data: {checkup}")
+            print(f"Fetched checkup data: {checkup}")
 
-            # Ensure 'chck_id' exists in the checkup dictionary
             if 'chck_id' not in checkup:
                 raise KeyError(f"'chck_id' missing in checkup data: {checkup}")
 
@@ -138,7 +195,6 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             if not patient:
                 raise ValueError(f"No patient found for pat_id={pat_id}")
 
-            # Extract and format patient name
             full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
 
             # Fetch doctor details
@@ -151,24 +207,59 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
 
             docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
 
-            # Populate the UI with transaction details
-            self.ui.chck_ID.setText(str(checkup["chck_id"]))  # Ensure string conversion
-            self.ui.PatID.setText(str(checkup["pat_id"]))  # Ensure string conversion
+            # Populate UI fields
+            self.ui.chck_ID.setText(str(checkup["chck_id"]))
+            self.ui.PatID.setText(str(checkup["pat_id"]))
             self.ui.PatName.setText(full_name)
-            self.ui.PatAge.setText(str(calculate_age(patient['pat_dob'])))  # Now returns a string
-            self.ui.PatGender.setText(str(patient["pat_gender"]))  # Ensure string conversion
-            self.ui.DocID.setText(str(checkup["doc_id"]))  # Ensure string conversion
+            self.ui.PatAge.setText(str(calculate_age(patient['pat_dob'])))
+            self.ui.PatGender.setText(str(patient["pat_gender"]))
+            self.ui.DocID.setText(str(checkup["doc_id"]))
             self.ui.DocName.setText(docFullname)
-            self.ui.DocSpecialty.setText(str(doctor["doc_specialty"]))  # Ensure string conversion
-            self.ui.DoctorCharge.setText("₱ " + str(doctor["doc_rate"]))  # Ensure string conversion
+            self.ui.DoctorCharge.setText("₱ " + str(doctor["doc_rate"]))
+            self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))
+            self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))
 
-            self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))  # Ensure string conversion
-            self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))  # Ensure string conversion
+            # ✅ Check transaction
+            transaction = Transaction.get_transaction_by_chckid(self.chck_id)
 
-            # print(f"Transaction details loaded successfully for chck_id={self.chck_id}")
+            if transaction:
+                # Store existing transaction data
+                self.existing_transaction = transaction
+
+                # Transaction exists - check status
+                current_status = transaction.get("tran_status", "").strip()
+
+                if current_status.lower() == "completed":
+                    # Transaction is already completed - disable both buttons
+                    self.ui.PartialButton.setVisible(False)
+                    self.ui.CompleteButton.setEnabled(False)
+                    self.ui.CompleteButton.setText("Already Completed")
+                else:
+                    # Transaction exists but not completed (partial) - allow completion
+                    self.ui.PartialButton.setVisible(False)  # Hide partial button
+                    self.ui.CompleteButton.setEnabled(True)
+                    self.ui.CompleteButton.setText("Complete Transaction")
+
+                # Set discount checkbox based on existing transaction
+                discount = transaction.get("tran_discount", 0.0)
+                if discount > 0:
+                    self.ui.SeniorCheckBox.setChecked(True)
+                    self.ui.SeniorCheckBox.setEnabled(False)  # Make read-only
+                else:
+                    self.ui.SeniorCheckBox.setChecked(False)
+                    self.ui.SeniorCheckBox.setEnabled(True)
+            else:
+                # No transaction exists - show both buttons
+                self.existing_transaction = None
+                self.ui.PartialButton.setVisible(True)
+                self.ui.CompleteButton.setEnabled(True)
+                self.ui.CompleteButton.setText("Complete Transaction")
+                self.ui.SeniorCheckBox.setEnabled(True)
+                self.ui.SeniorCheckBox.setChecked(False)
+
         except Exception as e:
             print(f"Error loading transaction details: {e}")
-            # QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
     def calculate_age(dob):
         if not dob:
@@ -186,12 +277,9 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # print(f"Loading LabCharge Table for chck_id: {self.chck_id}")
-
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
             if not lab_tests:
-                # print("No laboratory tests found for this check-up.")
                 return
 
             # Clear the table before populating it
@@ -206,7 +294,6 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_details:
-                    # print(f"No details found for lab_code: {lab_code}")
                     continue
 
                 # Extract lab name and price
@@ -221,9 +308,7 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             # Resize columns to fit content
             self.ui.LabChargeTable.resizeColumnsToContents()
 
-            # print("LabCharge Table loaded successfully!")
         except Exception as e:
-            # print(f"Error loading LabCharge Table: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load LabCharge Table: {e}")
 
     def calculate_total_lab_charge(self):
@@ -233,12 +318,9 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # print(f"Calculating total lab charge for chck_id: {self.chck_id}")
-
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
             if not lab_tests:
-                # print("No laboratory tests found for this check-up.")
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
                 return
 
@@ -250,7 +332,6 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_details:
-                    # print(f"No details found for lab_code: {lab_code}")
                     continue
 
                 # Extract lab price
@@ -261,10 +342,8 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             # Step 3: Format the total lab charge and display it in the QLineEdit
             formatted_total = f"₱ {total_lab_charge:,.2f}"  # Format as currency with two decimal places
             self.ui.TotalLabCharge.setText(formatted_total)
-            # print(f"Total lab charge calculated successfully: {formatted_total}")
 
         except Exception as e:
-            # print(f"Error calculating total lab charge: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate total lab charge: {e}")
 
     def calculate_subtotal(self):
@@ -293,48 +372,53 @@ class StaffTransactionProcess(QtWidgets.QMainWindow):
             formatted_subtotal = f"₱ {subtotal:,.2f}"
             self.ui.SubtotalAmount.setText(formatted_subtotal)
             self.ui.TotalAmount.setText(formatted_subtotal)
-            # print(f"Subtotal calculated successfully: {formatted_subtotal}")
+            self.apply_discount_if_senior()
 
         except ValueError as ve:
-            # print(f"ValueError calculating subtotal: {ve}")
             QtWidgets.QMessageBox.critical(self, "Error", "Invalid value in DoctorCharge or TotalLabCharge.")
         except Exception as e:
-            # print(f"Error calculating subtotal: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate subtotal: {e}")
 
     def save_transaction_process(self, chck_id):
-        """Save the transaction after confirming with the user."""
+        """Save the transaction as Completed after confirming with the user."""
         try:
+            # Parse discount and total
+            discount = float(self.ui.DiscountedAmount.text().replace("₱", "").replace(",", "").strip() or 0)
+            total_amount = float(self.ui.TotalAmount.text().replace("₱", "").replace(",", "").strip() or 0)
+
             # Prepare the transaction data
             trans_data = {
-                "discount": 0,  # Store discount as an integer (default is 0)
+                "discount": int(discount),
                 "base_charge": int(float(self.ui.DoctorCharge.text().replace("₱", "").replace(",", "").strip())),
                 "lab_charge": int(float(self.ui.TotalLabCharge.text().replace("₱", "").replace(",", "").strip())),
+                "total": int(total_amount),
+                "status": "Completed"
             }
 
             # Show confirmation dialog
             confirmation_dialog = ConfirmationDialog(self)
             if confirmation_dialog.exec_() == QtWidgets.QDialog.Rejected:
-                # print("Transaction confirmation cancelled by the user.")
                 return
 
-            # Save the transaction
-            Transaction.add_transaction(chck_id, trans_data)
+            # Check if we're updating an existing transaction or creating a new one
+            if self.existing_transaction:
+                # Update existing transaction to "Completed"
+                Transaction.update_transaction_status(chck_id, trans_data)
+                QtWidgets.QMessageBox.information(self, "Success", "Transaction updated to Completed successfully!")
+            else:
+                # Create new transaction with "Completed" status
+                Transaction.add_transaction(chck_id, trans_data)
+                QtWidgets.QMessageBox.information(self, "Success", "Transaction completed and saved successfully!")
 
-            # Optionally, close the modal or refresh the UI after saving
-            # print("Transaction saved successfully!")
-            QtWidgets.QMessageBox.information(self, "Success", "Transaction has been confirmed and saved successfully!")
+            # Redirect to Transactions page in StaffDashboard
+            if self.parent() and hasattr(self.parent(), 'go_to_transactions'):
+                self.parent().go_to_transactions()
+                self.parent().staff_transactions.load_transaction_details()
 
-            # Open the StaffTransactionList window
-            self.staff_transaction_list_window = StaffTransactionList()
-            self.staff_transaction_list_window.show()
-
-            # Close the current modal
-            self.close()
+            # Close this modal
+            self.accept()  # Use accept() for QDialog
 
         except ValueError as ve:
-            # print(f"ValueError while preparing transaction data: {ve}")
             QtWidgets.QMessageBox.critical(self, "Error", "Invalid value in DoctorCharge or TotalLabCharge.")
         except Exception as e:
-            # print(f"Error saving transaction: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to save transaction: {e}")

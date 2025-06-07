@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
+from PyQt5 import QtCore
 from Views.Admin_AddLabTest import Ui_MainWindow as AdminLabTestUI
 from Models.LaboratoryTest import Laboratory
 
@@ -68,12 +69,14 @@ class AdminAddLabTest(QMainWindow):
             # Populate fields for modification
             self.ui.LabID.setText(self.lab_test.get("lab_code", ""))
             self.ui.LabID.setReadOnly(True)
+            self.ui.LabID.setFocusPolicy(QtCore.Qt.NoFocus)  # Prevents focus
             self.ui.LabName.setText(self.lab_test.get("lab_test_name", ""))
             self.ui.Price.setText(str(self.lab_test.get("lab_price", "")))
             self.ui.AddLabTest.setText("Update Test")
         else:
-            # New test - generate next ID
             self.prefill_lab_id()
+            self.ui.LabID.setReadOnly(True)
+            self.ui.LabID.setFocusPolicy(QtCore.Qt.NoFocus)
 
     def prefill_lab_id(self):
         next_id = Laboratory.get_next_lab_id()
@@ -112,7 +115,6 @@ class AdminAddLabTest(QMainWindow):
         return errors
 
     def validate_and_save_lab(self):
-        """Validate and save/update lab test"""
         errors = self.validate_form()
         if errors:
             QMessageBox.warning(self, "Validation Error", "\n".join(errors))
@@ -129,8 +131,6 @@ class AdminAddLabTest(QMainWindow):
         result = confirmation_dialog.exec()
 
         if result == QDialog.Accepted:
-
-            # Save or update based on mode
             if self.modify_mode:
                 success = Laboratory.update_lab_test(lab_data)
             else:
@@ -142,13 +142,15 @@ class AdminAddLabTest(QMainWindow):
                 self.clear_form()
 
                 # Notify parent to refresh tables
-                if self.parent and hasattr(self.parent, 'refresh_tables'):
-                    self.parent.refresh_tables()
+                parent = self.parent()
+                if parent and hasattr(parent, 'refresh_tables'):
+                    parent.refresh_tables()
+                self.close()
             else:
                 QMessageBox.critical(self, "Error", "Failed to save data to the database.")
-        else:  # User clicked "Cancel"
+        else:
             msg = "update" if self.modify_mode else "creation"
-            QMessageBox.information(self, "Cancelled", f"Lab Test {msg} cancelled.\n( Press any key to close )")
+            QMessageBox.information(self, "Cancelled", f"Lab Test {msg} cancelled.\n(Press any key to close)")
 
     def clear_form(self):
         """Clear form fields (for new entries)"""

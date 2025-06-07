@@ -5,7 +5,8 @@ from PyQt5 import QtCore, QtWidgets
 from pkg_resources import non_empty_lines
 
 from Views.Staff_AddLabAttachment import Ui_Staff_AddLabAttachment as StaffAddAttachmentUI
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFileDialog, \
+    QHeaderView, QSizePolicy
 from Models.CheckUp import CheckUp
 from Models.LaboratoryTest import Laboratory
 
@@ -123,6 +124,14 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
 
         # Hide the vertical header (row index)
         self.ui.LabTable.verticalHeader().setVisible(False)
+
+        # Responsive table
+        header = self.ui.LabTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.ui.LabTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.ui.LabTable.setWordWrap(True)
+        self.ui.LabTable.resizeRowsToContents()
 
     def load_staff_labattach_table(self):
         try:

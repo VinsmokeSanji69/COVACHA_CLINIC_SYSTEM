@@ -20,7 +20,7 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;	
@@ -127,7 +127,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="DashboardButton">
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -149,7 +149,7 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -166,7 +166,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="LabButton">
           <property name="text">
-           <string>Lab Request</string>
+           <string> Lab Request</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -203,23 +203,6 @@ QLabel {
         <property name="sizeConstraint">
          <enum>QLayout::SetNoConstraint</enum>
         </property>
-        <item>
-         <widget class="QPushButton" name="ProfileButton">
-          <property name="text">
-           <string> Settings</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QPushButton" name="pushButton_10">
           <property name="text">
@@ -263,7 +246,7 @@ QLabel {
 }
 #UserName_2 {
 	font: 600 10pt &quot;Lexend SemiBold&quot;;
-	font-size: 25px;
+	font-size: 20px;
 	color: #2B3752;
 }
 #InterfaceTitle{
@@ -529,6 +512,12 @@ QComboBox::drop-down {
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>290</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="styleSheet">
                <string notr="true">#SearchBar {
 	background-color: #F4F7ED;
@@ -580,22 +569,6 @@ QComboBox::drop-down {
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Maximum</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>10</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QComboBox" name="DiagnoseBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -603,9 +576,15 @@ QComboBox::drop-down {
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="styleSheet">
                <string notr="true">QComboBox {
-    background-color: #D9E4DC;
+    background-color: #F4F7ED;
     border: 2px solid #2E6E65;
     border-radius: 10px;
     padding: 5px 10px;
@@ -621,7 +600,7 @@ QComboBox::drop-down {
     border-bottom-right-radius: 8px;
 }
 QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
+    image: url(:/lucide/icons/chevron-down.svg);
     width: 20px;
     height: 20px;
 }
@@ -630,8 +609,14 @@ QComboBox QAbstractItemView {
     selection-background-color: #CCE3D0;
     border: 1px solid #2E6E65;
     border-radius: 2px;
-    outline: 0;
+    outline: 0;  
 	font: 300 12pt &quot;Lexend Light&quot;;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/icons/chevron-down.svg);
+    width: 20px;
+    height: 20px;
 }</string>
               </property>
               <property name="editable">
@@ -639,16 +624,22 @@ QComboBox QAbstractItemView {
               </property>
               <item>
                <property name="text">
-                <string>Sort By:</string>
+                <string>Sort By</string>
                </property>
               </item>
              </widget>
             </item>
             <item>
              <widget class="QComboBox" name="DateBox">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="styleSheet">
                <string notr="true">QComboBox {
-    background-color: #D9E4DC;
+    background-color: #F4F7ED;
     border: 2px solid #2E6E65;
     border-radius: 10px;
     padding: 5px 10px;
@@ -664,7 +655,7 @@ QComboBox::drop-down {
     border-bottom-right-radius: 8px;
 }
 QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
+    image: url(:/lucide/icons/chevron-down.svg);
     width: 20px;
     height: 20px;
 }
@@ -673,13 +664,19 @@ QComboBox QAbstractItemView {
     selection-background-color: #CCE3D0;
     border: 1px solid #2E6E65;
     border-radius: 2px;
-    outline: 0;
+    outline: 0;  
 	font: 300 12pt &quot;Lexend Light&quot;;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/icons/chevron-down.svg);
+    width: 20px;
+    height: 20px;
 }</string>
               </property>
               <item>
                <property name="text">
-                <string>Sort Order: </string>
+                <string>Sort Order </string>
                </property>
               </item>
              </widget>
@@ -761,7 +758,7 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>698</width>
+                 <width>688</width>
                  <height>634</height>
                 </rect>
                </property>
@@ -773,7 +770,7 @@ QScrollBar::sub-line:vertical{
                  <number>0</number>
                 </property>
                 <property name="topMargin">
-                 <number>5</number>
+                 <number>0</number>
                 </property>
                 <property name="rightMargin">
                  <number>0</number>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Admin_PatientDetails.ui'
+# Form implementation generated from reading ui file 'Doctor_PatientDetailsView.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
+class Ui_Doctor_PatientDetails_View(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -132,7 +132,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.BackButton)
         self.InterfaceTitle = QtWidgets.QLabel(self.Header)
         self.InterfaceTitle.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.InterfaceTitle.sizePolicy().hasHeightForWidth())
@@ -145,6 +145,11 @@ class Ui_MainWindow(object):
         self.InterfaceTitle.setObjectName("InterfaceTitle")
         self.horizontalLayout_3.addWidget(self.InterfaceTitle, 0, QtCore.Qt.AlignVCenter)
         self.BackButtonCon = QtWidgets.QWidget(self.Header)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.BackButtonCon.sizePolicy().hasHeightForWidth())
+        self.BackButtonCon.setSizePolicy(sizePolicy)
         self.BackButtonCon.setStyleSheet("#Title{\n"
 "    font: 700 22pt \"Lexend\";\n"
 "}\n"
@@ -162,6 +167,34 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.horizontalLayout_3.addWidget(self.BackButtonCon, 0, QtCore.Qt.AlignTop)
+        self.widget = QtWidgets.QWidget(self.BackButtonCon)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.widget.setObjectName("widget")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_5.setSpacing(0)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.Title = QtWidgets.QLabel(self.widget)
+        self.Title.setEnabled(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Title.sizePolicy().hasHeightForWidth())
+        self.Title.setSizePolicy(sizePolicy)
+        self.Title.setMinimumSize(QtCore.QSize(0, 30))
+        self.Title.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.Title.setTextFormat(QtCore.Qt.PlainText)
+        self.Title.setAlignment(QtCore.Qt.AlignLeading)
+        self.Title.setWordWrap(True)
+        self.Title.setObjectName("Title")
+        self.verticalLayout_5.addWidget(self.Title)
+        self.horizontalLayout.addWidget(self.widget)
+        self.horizontalLayout_3.addWidget(self.BackButtonCon)
         self.UserPanel = QtWidgets.QHBoxLayout()
         self.UserPanel.setContentsMargins(-1, -1, 0, -1)
         self.UserPanel.setObjectName("UserPanel")
@@ -257,12 +290,6 @@ class Ui_MainWindow(object):
         self.PatID.setObjectName("PatID")
         self.verticalLayout_7.addWidget(self.PatID, 0, QtCore.Qt.AlignTop)
         self.horizontalLayout_2.addWidget(self.widget_4)
-        self.widget_5 = QtWidgets.QWidget(self.PatBasic)
-        self.widget_5.setObjectName("widget_5")
-        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.widget_5)
-        self.verticalLayout_8.setContentsMargins(-1, -1, 15, -1)
-        self.verticalLayout_8.setObjectName("verticalLayout_8")
-        self.horizontalLayout_2.addWidget(self.widget_5, 0, QtCore.Qt.AlignRight)
         self.verticalLayout_6.addWidget(self.PatBasic, 0, QtCore.Qt.AlignTop)
         self.PatInfo = QtWidgets.QWidget(self.BodyLayout)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -600,7 +627,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.InterfaceTitle.setText(_translate("MainWindow", "Patient Details"))
         self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
-        self.UserType.setText(_translate("MainWindow", "Admin"))
+        self.UserType.setText(_translate("MainWindow", "Doctor"))
         self.PatName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
         self.PatID.setText(_translate("MainWindow", "100000003"))
         self.Header_3.setText(_translate("MainWindow", "General Information"))

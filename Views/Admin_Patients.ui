@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1095</width>
-    <height>569</height>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;	
@@ -116,7 +116,7 @@ QLabel {
         </property>
         <property name="icon">
          <iconset resource="../Images/resources.qrc">
-          <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
+          <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -159,11 +159,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
+            <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -182,11 +182,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Staffs</string>
+           <string> Staffs</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
+            <normaloff>:/icons/icons/user-round-pen.svg</normaloff>:/icons/icons/user-round-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -207,11 +207,11 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>  Records</string>
+           <string> Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
+            <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -230,11 +230,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
+            <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -253,11 +253,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Charges</string>
+           <string> Charges</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/chart-no-axes-combined.svg</normaloff>:/lucide/icons/chart-no-axes-combined.svg</iconset>
+            <normaloff>:/icons/icons/hand-coins.svg</normaloff>:/icons/icons/hand-coins.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -287,29 +287,6 @@ QLabel {
         <property name="spacing">
          <number>15</number>
         </property>
-        <item>
-         <widget class="QPushButton" name="ProfileButton">
-          <property name="toolTip">
-           <string>View Profile Settings</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>  Profile</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item alignment="Qt::AlignVCenter">
          <widget class="QPushButton" name="LogOutButton">
           <property name="toolTip">
@@ -319,11 +296,11 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>  Log Out</string>
+           <string> Log Out</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
-            <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
+            <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -422,6 +399,33 @@ QGraphicsView {
         </property>
         <property name="cursor">
          <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">#Header {
+	padding: 10px 20px;
+	padding-top: 15px;
+}
+QLabel {
+    padding: 0px; 
+}
+#UserType {
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
+	color: #2B3752;
+}
+#UserName {
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
+	font-size: 20px;
+	color: #2B3752;
+}
+#InterfaceTitle{
+	font-size: 35px;
+}
+QGraphicsView {
+    border: 2px solid #ccc; 
+    border-radius: 25px;
+    background: white; 
+}</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -741,6 +745,29 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
+                   <widget class="QPushButton" name="SearchButton">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../Images/resources.qrc">
+                      <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QLineEdit" name="Search">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -750,23 +777,6 @@ QComboBox QAbstractItemView {
                     </property>
                     <property name="text">
                      <string/>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="SearchButton">
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../Images/resources.qrc">
-                      <normaloff>:/lucide/icons/search.svg</normaloff>:/lucide/icons/search.svg</iconset>
-                    </property>
-                    <property name="iconSize">
-                     <size>
-                      <width>30</width>
-                      <height>30</height>
-                     </size>
                     </property>
                    </widget>
                   </item>
@@ -792,6 +802,14 @@ QComboBox QAbstractItemView {
                    <width>250</width>
                    <height>16777215</height>
                   </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox::down-arrow {
+    image: url(:/icons/icons/chevron-down.svg);
+    width: 20px;
+    height: 20px;
+}
+</string>
                  </property>
                  <item>
                   <property name="text">
@@ -829,6 +847,14 @@ QComboBox QAbstractItemView {
                    <width>250</width>
                    <height>16777215</height>
                   </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QComboBox::down-arrow {
+    image: url(:/icons/icons/chevron-down.svg);
+    width: 20px;
+    height: 20px;
+}
+</string>
                  </property>
                  <item>
                   <property name="text">
@@ -929,8 +955,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>670</width>
-                    <height>397</height>
+                    <width>672</width>
+                    <height>541</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1046,19 +1072,12 @@ QTableWidget QHeaderView::section {
                   <item>
                    <widget class="QPushButton" name="View">
                     <property name="text">
-                     <string>VIew</string>
+                     <string>View</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="Modify">
-                    <property name="text">
-                     <string>Modify</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="DeletePatient">
+                   <widget class="QPushButton" name="Delete">
                     <property name="text">
                      <string>Delete</string>
                     </property>
