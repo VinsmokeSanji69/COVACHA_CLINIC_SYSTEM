@@ -30,15 +30,12 @@ class StaffLabRequest(QWidget):
         """Load the details of the table containing check-up IDs with lab codes."""
         try:
             rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
-            print(rows)
             checkup_ids = [row[0] for row in rows]
 
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
             for checkup_id in checkup_ids:
-                print(checkup_id)
                 checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS",checkup_id)
-                print(checkup_details)
                 if not checkup_details:
                     continue
 
@@ -55,7 +52,6 @@ class StaffLabRequest(QWidget):
 
                 # Use static method to fetch lab attachments
                 lab_attachments = DataRequest.send_command("GET_LAB_ATTACHMENTS_BY_CHECKUP",checkup_id)
-
                 # Determine status
                 if not lab_attachments:
                     status = "No Results Yet"

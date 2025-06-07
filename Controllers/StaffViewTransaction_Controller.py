@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
 
 from Controllers.ClientSocketController import DataRequest
 from Views.Staff_ViewTransaction import Ui_MainWindow
-from Models.Doctor import Doctor, calculate_age
+from Models.Doctor import calculate_age
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -200,12 +200,11 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # print(f"Loading LabCharge Table for chck_id: {self.chck_id}")
-
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID",self.chck_id)
+            print("lab_tests",lab_tests)
+
             if not lab_tests:
-                # print("No laboratory tests found for this check-up.")
                 return
 
             # Clear the table before populating it
@@ -215,12 +214,12 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Step 2: Fetch lab name and price for each lab code
             for row, lab_test in enumerate(lab_tests):
                 lab_code = lab_test['lab_code']
-                lab_attachment = lab_test['lab_attachment']  # Optional: Handle attachments if needed
+                lab_attachment = lab_test['lab_attachment']
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE",lab_code)
+                print("lab_details",lab_details)
                 if not lab_details:
-                    # print(f"No details found for lab_code: {lab_code}")
                     continue
 
                 # Extract lab name and price
@@ -235,9 +234,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Resize columns to fit content
             self.ui.LabChargeTable.resizeColumnsToContents()
 
-            # print("LabCharge Table loaded successfully!")
         except Exception as e:
-            # print(f"Error loading LabCharge Table: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load LabCharge Table: {e}")
 
     def calculate_total_lab_charge(self):
@@ -247,12 +244,13 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # print(f"Calculating total lab charge for chck_id: {self.chck_id}")
 
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID",self.chck_id)
+
+            print("lab_tests",lab_tests)
+
             if not lab_tests:
-                # print("No laboratory tests found for this check-up.")
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
                 return
 
@@ -263,8 +261,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE",lab_code)
+                print("lab_details",lab_details)
                 if not lab_details:
-                    # print(f"No details found for lab_code: {lab_code}")
                     continue
 
                 # Extract lab price
@@ -275,10 +273,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Step 3: Format the total lab charge and display it in the QLineEdit
             formatted_total = f"₱ {total_lab_charge:,.2f}"  # Format as currency with two decimal places
             self.ui.TotalLabCharge.setText(formatted_total)
-            # print(f"Total lab charge calculated successfully: {formatted_total}")
 
         except Exception as e:
-            # print(f"Error calculating total lab charge: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate total lab charge: {e}")
     def apply_discount_if_senior(self):
         try:
@@ -331,11 +327,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             self.ui.SubtotalAmount.setText(formatted_subtotal)
             self.ui.TotalAmount.setText(formatted_subtotal)
             self.apply_discount_if_senior()
-            # print(f"Subtotal calculated successfully: {formatted_subtotal}")
 
         except ValueError as ve:
-            # print(f"ValueError calculating subtotal: {ve}")
             QtWidgets.QMessageBox.critical(self, "Error", "Invalid value in DoctorCharge or TotalLabCharge.")
         except Exception as e:
-            # print(f"Error calculating subtotal: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate subtotal: {e}")

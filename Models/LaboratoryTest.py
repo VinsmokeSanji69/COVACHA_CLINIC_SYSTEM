@@ -35,7 +35,6 @@ class Laboratory:
             numeric_part = int(last_lab_id.split("-")[1])
             next_numeric = numeric_part + 1
         else:
-            # Start with Lab-001 if no labs exist
             next_numeric = 1
 
         return f"Lab-{next_numeric:03d}"

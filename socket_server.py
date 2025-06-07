@@ -1,3 +1,4 @@
+import base64
 import json
 import threading
 import socket
@@ -146,6 +147,8 @@ class SocketServer:
             "GET_LAB_CODES_BY_CHECK_ID": CheckUp.get_lab_codes_by_chckid,
             "ADD_LAB_CODE": CheckUp.add_lab_code,
             "DELETE_LAB_CODE": CheckUp.delete_lab_code,
+            "GET_CHECKUPS_WITH_LAB_REQUESTS": CheckUp.get_checkups_with_lab_requests,
+            "GET_LAB_ATTACHMENTS_BY_CHECKUP": CheckUp.get_lab_attachments_by_checkup_id,
 
             # TRANSACTIONS
             "CREATE_TRANSACTION": Transaction.add_transaction,
@@ -173,25 +176,20 @@ class SocketServer:
 
         try:
             while True:
-                data = connection.recv(4096)  # Increased buffer size to match client
+                data = connection.recv(4096)
                 if not data:
                     break
 
                 try:
-                    # Parse the client info containing MAC address and command
                     client_info = json.loads(data.decode('utf-8', errors='ignore').strip())
                     client_mac = client_info.get("client_mac", "")
                     payload = client_info.get("command", "")
 
                     if not payload:
-                        response = {
-                            "status": "error",
-                            "message": "Empty command"
-                        }
-                        connection.sendall(json.dumps(response).encode())
+                        response = {"status": "error", "message": "Empty command"}
+                        connection.sendall(json.dumps(response).encode('utf-8'))
                         continue
 
-                    # Parse command and arguments
                     parts = payload.split(maxsplit=1)
                     command = parts[0].upper()
                     args_str = parts[1] if len(parts) > 1 else ""
@@ -203,12 +201,9 @@ class SocketServer:
                     else:
                         method = db_methods[command]
 
-                        # Handle arguments
                         if args_str:
                             try:
                                 args_data = json.loads(args_str)
-
-                                # Handle different argument formats
                                 if isinstance(args_data, dict):
                                     result = method(**args_data)
                                 elif isinstance(args_data, list):
@@ -216,22 +211,80 @@ class SocketServer:
                                 else:
                                     result = method(args_data)
                             except json.JSONDecodeError:
-                                # Fall back to legacy format if JSON parsing fails
                                 args = [arg.strip() for arg in args_str.split(",")] if "," in args_str else [args_str]
                                 result = method(*args)
                         else:
                             result = method()
 
-                        # Convert date strings to date objects if needed
-                        if isinstance(result, dict):
-                            for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
-                                if field in result and isinstance(result[field], str):
-                                    try:
-                                        result[field] = datetime.strptime(result[field], '%Y-%m-%d').date()
-                                    except ValueError:
-                                        pass
+                            # Handle the command result
+                        if command == "GET_LAB_ATTACHMENTS_BY_CHECKUP":
+                            # Special handling for lab attachments
+                            processed_result = []
+                            for item in result:
+                                print("Raw item:", item)  # Debug logging
 
-                        response = result if result is not None else {}
+                                if isinstance(item, tuple) and len(item) > 0:
+                                    # Handle tuple format [(None,), (<memory>,)] - keep as tuple
+                                    if item[0] is None:
+                                        processed_result.append((None,))
+                                    else:
+                                        try:
+                                            binary_data = bytes(item[0])
+                                            processed_result.append((
+                                                base64.b64encode(binary_data).decode('utf-8'),
+                                            ))
+                                        except Exception as e:
+                                            logging.error(f"Failed to process tuple binary data: {str(e)}")
+                                            processed_result.append(None)
+                                else:
+                                    processed_result.append(item)
+
+                            response = processed_result
+
+                        elif isinstance(result, list):
+                            processed_result = []
+                            for item in result:
+                                if isinstance(item, dict) and 'lab_attachment' in item:
+                                    processed_item = item.copy()
+
+                                    try:
+                                        if item['lab_attachment'] is None:
+                                            processed_item['lab_attachment'] = None
+                                        else:
+                                                # Convert memoryview/bytes to base64
+                                            if isinstance(item['lab_attachment'], memoryview):
+                                                binary_data = bytes(item['lab_attachment'])
+                                            elif isinstance(item['lab_attachment'], bytes):
+                                                binary_data = item['lab_attachment']
+                                            else:
+                                                binary_data = bytes(item['lab_attachment'])
+
+                                            processed_item['lab_attachment'] = base64.b64encode(binary_data).decode(
+                                                    'utf-8')
+
+                                    except Exception as e:
+                                        processed_item['lab_attachment'] = None
+                                        processed_item['error'] = str(e)
+                                        logging.error(f"Failed to process lab_attachment: {str(e)}")
+
+                                    processed_result.append(processed_item)
+                                else:
+                                    processed_result.append(item)
+
+                            response = processed_result
+                        else:
+                            # Normal processing for other commands
+                            if isinstance(result, dict):
+                                # Convert date strings to date objects
+                                for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
+                                    if field in result and isinstance(result[field], str):
+                                        try:
+                                            result[field] = datetime.strptime(result[field], '%Y-%m-%d').date()
+                                        except ValueError:
+                                            pass
+                            response = result if result is not None else {}
+
+                        print("Final response:", response)
 
                 except PermissionError as e:
                     msg = f"Permission denied: {str(e)}"
@@ -261,6 +314,7 @@ class SocketServer:
             logging.error(f"Critical error with {ip}: {str(e)}", exc_info=True)
         finally:
             connection.close()
+
 
     def _run_server(self):
         """Main command server loop"""

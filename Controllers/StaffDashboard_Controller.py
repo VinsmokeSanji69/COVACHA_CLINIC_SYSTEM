@@ -164,7 +164,7 @@ class StaffDashboardController(QMainWindow):
                 self.login_window.show()
             else:
                 from Views.LogIn import LogInWindow
-                from Controllers.Login_Controller import LoginController
+                from Controllers.LogIn_Controller import LoginController
 
                 login_window = LogInWindow()
                 LoginController(login_window)
