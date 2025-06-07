@@ -1,8 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
-from Models.DB_Connection import DBConnection
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Staff_LabRequest import Ui_Staff_LabRequest as StaffLabRequestUI
 from PyQt5.QtWidgets import QMessageBox, QWidget
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
@@ -14,14 +12,10 @@ class StaffLabRequest(QWidget):
         self.labreq_ui = labreq_ui
         self.ui.setupUi(self)
         self.load_staff_labrequest_table()
-        # print("Staff Lab Request UI initialized!")
-
 
         # Connect buttons (if the button exists)
         if hasattr(self.labreq_ui, 'Modify'):
-            # print("Modify exists")
             self.labreq_ui.Modify.clicked.connect(self.open_form)
-            # print("Modify connected to open_add_user_form!")
         else:
             print("Modify is missing!")
 
@@ -29,29 +23,27 @@ class StaffLabRequest(QWidget):
         """Reload data into the tables"""
         try:
             self.load_staff_labrequest_table()
-            # print("Tables refreshed successfully!")
         except Exception as e:
-            # print(f"Error refreshing tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
         try:
-            rows = CheckUp.get_checkups_with_lab_requests()
+            rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
             checkup_ids = [row[0] for row in rows]
 
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
             for checkup_id in checkup_ids:
-                checkup_details = CheckUp.get_checkup_details(checkup_id)
+                checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS",checkup_id)
                 if not checkup_details:
                     continue
 
                 pat_id = checkup_details['pat_id']
                 doc_id = checkup_details['doc_id']
 
-                patient_details = Patient.get_patient_details(pat_id)
-                doctor_details = Doctor.get_doctor(doc_id)
+                patient_details = DataRequest.send_command("GET_PATIENT_DETAILS",pat_id)
+                doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID",doc_id)
                 if not patient_details or not doctor_details:
                     continue
 
@@ -59,8 +51,7 @@ class StaffLabRequest(QWidget):
                 doctor_name = f"{doctor_details['last_name'].capitalize()}, {doctor_details['first_name'].capitalize()}"
 
                 # Use static method to fetch lab attachments
-                lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
-
+                lab_attachments = DataRequest.send_command("GET_LAB_ATTACHMENTS_BY_CHECKUP",checkup_id)
                 # Determine status
                 if not lab_attachments:
                     status = "No Results Yet"
@@ -89,7 +80,6 @@ class StaffLabRequest(QWidget):
 
     def open_form(self):
         """Open the Staff Add Attachment form with parameters from the selected row."""
-        # print("Opening Add User Form...")
         try:
             # Get the currently selected row in the LabRequestTable
             selected_row = self.labreq_ui.LabRequestTable.currentRow()
@@ -121,8 +111,6 @@ class StaffLabRequest(QWidget):
                 refresh_table = self.refresh_table
             )
             self.staff_attach_window.show()
-            # print("Staff Attach Form shown successfully!")
 
         except Exception as e:
-            # print(f"Error opening Staff Attach Form: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open Staff Attach Form: {e}")

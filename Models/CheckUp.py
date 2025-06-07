@@ -360,14 +360,12 @@ class CheckUp:
         """Insert each lab_code as a separate row in the checkup_lab_tests table."""
         conn = DBConnection.get_db_connection()
         if not conn:
-            #print("Failed to connect to the database.")
             return False
 
         try:
             with conn.cursor() as cursor:
                 # Validate checkup_id
                 if not checkup_id:
-                    #print("Invalid checkup_id provided.")
                     return False
 
                 # Delete existing lab codes for the given checkup_id
@@ -379,7 +377,6 @@ class CheckUp:
                 # Insert each lab_code as a new row
                 for lab_code in lab_codes:
                     if len(lab_code) > 20:  # Validate lab_code length
-                        #print(f"Lab code '{lab_code}' exceeds the maximum length of 20 characters.")
                         continue
 
                     cursor.execute("""
@@ -392,7 +389,6 @@ class CheckUp:
                 return True
 
         except Exception as e:
-            #print(f"Database error while updating lab codes: {e}")
             conn.rollback()
             return False
 
@@ -419,7 +415,6 @@ class CheckUp:
                     for row in result
                 ]
         except Exception as e:
-           # print(f"Error fetching laboratory test details: {e}")
             return []
         finally:
             if conn:
@@ -444,7 +439,6 @@ class CheckUp:
                 conn.commit()
                 return True
         except Exception as e:
-           # print(f"Error updating lab attachment: {e}")
             conn.rollback()
             return False
         finally:
@@ -534,11 +528,9 @@ class CheckUp:
             cursor.execute(query, (chck_id,))
             conn.commit()
 
-            #print(f"Check-up status updated to 'Completed' for chck_id: {chck_id}")
             return True
 
         except Exception as e:
-            #print(f"Error changing check-up status to Completed: {e}")
             if conn:
                 conn.rollback()  # Roll back in case of failure
             return False
@@ -546,7 +538,6 @@ class CheckUp:
         finally:
             if conn:
                 conn.close()
-                #print("Database connection closed.")
 
     @staticmethod
     def get_lab_codes_by_chckid(chck_id):
@@ -568,7 +559,6 @@ class CheckUp:
                     return [row[0] for row in results]  # Extract the first element (lab_code) from each tuple
                 return []
         except Exception as e:
-            #print(f"Error retrieving lab codes for chck_id {chck_id}: {e}")
             return []
         finally:
             if conn:
@@ -589,11 +579,9 @@ class CheckUp:
             cursor.execute(query, (chck_id, lab_code))
             conn.commit()
 
-            #print(f"Added lab code {lab_code} for chck_id: {chck_id}")
             return True
 
         except Exception as e:
-            #print(f"Error adding lab code {lab_code} for chck_id {chck_id}: {e}")
             if conn:
                 conn.rollback()  # Roll back in case of failure
             return False
@@ -601,7 +589,6 @@ class CheckUp:
         finally:
             if conn:
                 conn.close()
-                #print("Database connection closed.")
 
     @staticmethod
     def delete_lab_code(chck_id, lab_code):
@@ -622,11 +609,9 @@ class CheckUp:
             cursor.execute(query, (chck_id, lab_code))
             conn.commit()
 
-            #print(f"Deleted lab code {lab_code} for chck_id: {chck_id}")
             return True
 
         except Exception as e:
-            #print(f"Error deleting lab code {lab_code} for chck_id {chck_id}: {e}")
             if conn:
                 conn.rollback()  # Roll back in case of failure
             return False
@@ -634,7 +619,6 @@ class CheckUp:
         finally:
             if conn:
                 conn.close()
-                #print("Database connection closed.")
 
     @staticmethod
     def get_checkups_with_lab_requests():
@@ -663,6 +647,7 @@ class CheckUp:
                     )
                 )
                 return sorted_rows
+
         except Exception as e:
             raise RuntimeError(f"Database query failed: {e}")
         finally:
@@ -685,6 +670,8 @@ class CheckUp:
                         WHERE chck_id = %s;
                     """, (checkup_id,))
                 return cursor.fetchall()
+
+
         except Exception as e:
             raise RuntimeError(f"Failed to fetch lab attachments: {e}")
         finally:

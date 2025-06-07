@@ -1,3 +1,4 @@
+import base64
 import json
 import threading
 import socket
@@ -10,7 +11,7 @@ from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
-# import psutils
+# import psutil
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -35,7 +36,7 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "ClinicSystem",
     "user": "postgres",
-    "password": "sphinxclub012"
+    "password": "admin123"
 }
 
 # Server configuration
@@ -44,7 +45,7 @@ DISCOVERY_PORT = 50000
 COMMAND_PORT = 6543
 
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
-ADMIN_MAC_ADDRESS = "40-1A-58-BF-52-B8"
+ADMIN_MAC_ADDRESS = "74-04-F1-4E-E6-02"
 
 
 class SocketServer:
@@ -70,6 +71,7 @@ class SocketServer:
                             mac = addr.address.replace('-', ':').lower()
                             if mac.count(':') == 5:
                                 return mac
+            print(self.server_mac)
             return self.server_mac  # Fallback to hardcoded MAC
         except Exception:
             return self.server_mac
@@ -105,10 +107,8 @@ class SocketServer:
         return client_mac == self.admin_mac
 
     def handle_doctor_staff(self, connection, address):
-        """Handle client connections with robust error handling"""
         ip, port = address
         is_admin = self.is_admin_connection(ip)
-        print(f"Connected by {address} (Admin: {is_admin})")
         logging.info(f"Connection from {address} (Admin: {is_admin})")
 
         db_methods = {
@@ -123,7 +123,7 @@ class SocketServer:
 
             # DOCTOR
             "GET_DOCTOR": Doctor.get_doctor,
-            "GET_DOCTOR_BY_ID": Doctor.get_doctor_by_id,
+            "GET_DOCTOR_BY_ID": Doctor.get_doctor,
 
             # STAFF
             "GET_STAFF": Staff.get_staff,
@@ -155,7 +155,6 @@ class SocketServer:
             "UPDATE_TRANSACTION": Transaction.update_transaction,
             "GET_TRANSACTION_BY_CHECKUP_ID": Transaction.get_transaction_by_chckid1,
             "GET_ALL_TRANSACTION": Transaction.get_all_transaction,
-            "UPDATE_TRANSACTION_STATUS": Transaction.update_transaction_status,
 
             # PRESCRIPTIONS
             "CREATE_PRESCRIPTION": Prescription.add_presscription,
@@ -172,108 +171,150 @@ class SocketServer:
             "COUNT_ALL_TEST": Laboratory.count_all_test,
             "CHECK_LAB_CODE_EXISTS": Laboratory.lab_code_exists,
             "GET_LAB_TEST": Laboratory.get_lab_test,
-            "UPDATE_LAB_TEST": Laboratory.update_lab_test,
+            "UPDATE_LAB_TEST": Laboratory.update_lab_test
         }
 
         try:
             while True:
-                data = connection.recv(1024)
+                data = connection.recv(4096)
                 if not data:
                     break
 
-                decoded_data = data.decode('utf-8', errors='ignore').strip()
-                logging.debug(f"Received raw data: {decoded_data}")
-
-                if not decoded_data:
-                    continue
-
                 try:
-                    # Improved command parsing that handles multiple formats
-                    command = None
-                    args = None
+                    client_info = json.loads(data.decode('utf-8', errors='ignore').strip())
+                    client_mac = client_info.get("client_mac", "")
+                    payload = client_info.get("command", "")
 
-                    # Case 1: Pure JSON input
-                    if decoded_data.startswith('{') and decoded_data.endswith('}'):
-                        try:
-                            json_data = json.loads(decoded_data)
-                            if isinstance(json_data, dict):
-                                command = json_data.get("command", "").upper()
-                                args = json_data.get("args", {})
-                        except json.JSONDecodeError:
-                            pass
+                    if not payload:
+                        response = {"status": "error", "message": "Empty command"}
+                        connection.sendall(json.dumps(response).encode('utf-8'))
+                        continue
 
-                    # Case 2: Space-separated command with arguments
-                    if command is None:
-                        parts = decoded_data.split(maxsplit=1)
-                        command = parts[0].upper()
-                        args = parts[1] if len(parts) > 1 else None
+                    parts = payload.split(maxsplit=1)
+                    command = parts[0].upper()
+                    args_str = parts[1] if len(parts) > 1 else ""
 
-                    # Case 3: Command with brackets [10000]
-                    if args and args.startswith('[') and args.endswith(']'):
-                        args = args[1:-1]  # Remove brackets
-
-                    # Process the command
                     if command == "PING":
                         response = {"status": "success", "message": "PONG"}
                     elif command not in db_methods:
-                        response = {
-                            "status": "error",
-                            "message": f"Unknown command: {command}",
-                            "valid_commands": list(db_methods.keys())
-                        }
+                        raise ValueError(f"Unknown command: {command}")
                     else:
                         method = db_methods[command]
 
-                        try:
-                            # Handle different argument formats
-                            if args is None:
-                                result = method()
-                            elif isinstance(args, dict):
-                                result = method(**args)
-                            else:
-                                # For space-separated arguments
-                                if isinstance(args, str):
-                                    args = [arg.strip() for arg in args.split(",")]
-                                result = method(*args) if isinstance(args, list) else method(args)
+                        if args_str:
+                            try:
+                                args_data = json.loads(args_str)
+                                if isinstance(args_data, dict):
+                                    result = method(**args_data)
+                                elif isinstance(args_data, list):
+                                    result = method(*args_data)
+                                else:
+                                    result = method(args_data)
+                            except json.JSONDecodeError:
+                                args = [arg.strip() for arg in args_str.split(",")] if "," in args_str else [args_str]
+                                result = method(*args)
+                        else:
+                            result = method()
 
-                            # Format the response
-                            if result is None:
-                                response = {"status": "success"}
-                            elif isinstance(result, (dict, list)):
-                                response = result
-                            else:
-                                response = result
+                            # Handle the command result
+                        if command == "GET_LAB_ATTACHMENTS_BY_CHECKUP":
+                            # Special handling for lab attachments
+                            processed_result = []
+                            for item in result:
+                                print("Raw item:", item)  # Debug logging
 
-                        except Exception as e:
-                            response = {
-                                "status": "error",
-                                "message": f"Error executing {command}: {str(e)}"
-                            }
-                            logging.error(f"Command execution error: {command}", exc_info=True)
+                                if isinstance(item, tuple) and len(item) > 0:
+                                    # Handle tuple format [(None,), (<memory>,)] - keep as tuple
+                                    if item[0] is None:
+                                        processed_result.append((None,))
+                                    else:
+                                        try:
+                                            binary_data = bytes(item[0])
+                                            processed_result.append((
+                                                base64.b64encode(binary_data).decode('utf-8'),
+                                            ))
+                                        except Exception as e:
+                                            logging.error(f"Failed to process tuple binary data: {str(e)}")
+                                            processed_result.append(None)
+                                else:
+                                    processed_result.append(item)
 
-                except Exception as e:
+                            response = processed_result
+
+                        elif isinstance(result, list):
+                            processed_result = []
+                            for item in result:
+                                if isinstance(item, dict) and 'lab_attachment' in item:
+                                    processed_item = item.copy()
+
+                                    try:
+                                        if item['lab_attachment'] is None:
+                                            processed_item['lab_attachment'] = None
+                                        else:
+                                                # Convert memoryview/bytes to base64
+                                            if isinstance(item['lab_attachment'], memoryview):
+                                                binary_data = bytes(item['lab_attachment'])
+                                            elif isinstance(item['lab_attachment'], bytes):
+                                                binary_data = item['lab_attachment']
+                                            else:
+                                                binary_data = bytes(item['lab_attachment'])
+
+                                            processed_item['lab_attachment'] = base64.b64encode(binary_data).decode(
+                                                    'utf-8')
+
+                                    except Exception as e:
+                                        processed_item['lab_attachment'] = None
+                                        processed_item['error'] = str(e)
+                                        logging.error(f"Failed to process lab_attachment: {str(e)}")
+
+                                    processed_result.append(processed_item)
+                                else:
+                                    processed_result.append(item)
+
+                            response = processed_result
+                        else:
+                            # Normal processing for other commands
+                            if isinstance(result, dict):
+                                # Convert date strings to date objects
+                                for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
+                                    if field in result and isinstance(result[field], str):
+                                        try:
+                                            result[field] = datetime.strptime(result[field], '%Y-%m-%d').date()
+                                        except ValueError:
+                                            pass
+                            response = result if result is not None else {}
+
+                        print("Final response:", response)
+
+                except PermissionError as e:
+                    msg = f"Permission denied: {str(e)}"
+                    logging.warning(f"Admin attempt failed from {ip}: {msg}")
                     response = {
                         "status": "error",
-                        "message": f"Invalid request format: {str(e)}"
+                        "message": msg,
+                        "code": "PERMISSION_DENIED"
                     }
-                    logging.error(f"Request parsing error", exc_info=True)
+                except Exception as e:
+                    msg = f"Error processing command: {str(e)}"
+                    logging.error(msg, exc_info=True)
+                    response = {
+                        "status": "error",
+                        "message": msg
+                    }
 
                 # Send response
                 try:
                     encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
+                    logging.debug(f"Sending response: {response}")
                     connection.sendall(encoded_response)
                 except Exception as e:
                     logging.error(f"Failed to send response: {e}")
-                    break
 
         except Exception as e:
-            logging.error(f"Critical error in connection handler: {e}", exc_info=True)
+            logging.error(f"Critical error with {ip}: {str(e)}", exc_info=True)
         finally:
-            try:
-                connection.close()
-            except:
-                pass
-            logging.info(f"Connection closed with {address}")
+            connection.close()
+
 
     def _run_server(self):
         """Main command server loop"""
@@ -297,7 +338,9 @@ class SocketServer:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             s.bind(('0.0.0.0', DISCOVERY_PORT))
-            print(f"🔍 Discovery server running (MAC: {self.server_mac})")
+
+            # HARDCODE THE CORRECT MAC ADDRESS HERE
+            SERVER_MAC = "74:04:F1:4E:E6:02"  # From your Wi-Fi adapter
 
             while self.running:
                 try:
@@ -312,7 +355,7 @@ class SocketServer:
 
                             response = {
                                 "type": "DISCOVERY_RESPONSE",
-                                "mac": self.server_mac,  # Always use the hardcoded MAC
+                                "mac": SERVER_MAC,  # Use the hardcoded MAC
                                 "ip": socket.gethostbyname(socket.gethostname()),
                                 "port": COMMAND_PORT,
                                 "name": "ClinicServer"
@@ -325,7 +368,7 @@ class SocketServer:
                         logging.warning(f"Invalid discovery request from {addr}")
 
                 except Exception as e:
-                    if self.running:
+                    if self.running:  # Only log if we didn't stop intentionally
                         logging.error(f"Discovery error: {e}")
 
     def start(self):
@@ -347,7 +390,6 @@ class SocketServer:
             )
             self.discovery_thread.start()
 
-            print(f"🚀 Servers started - Discovery: {DISCOVERY_PORT}, Commands: {COMMAND_PORT}")
 
     def stop(self):
         """Stop both servers gracefully"""
@@ -363,4 +405,3 @@ class SocketServer:
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
                 s.sendto(b'', ('localhost', DISCOVERY_PORT))
             self.discovery_thread.join(timeout=1)
-            print("🛑 Servers stopped")
