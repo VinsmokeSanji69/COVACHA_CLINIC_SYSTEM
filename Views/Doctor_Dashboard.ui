@@ -40,16 +40,7 @@ QLabel {
     qproperty-wordWrap: true;
 	background: transparent;
 }
-#User, #UserSpecialty {
-	color: #F4F7ED;
-}
-#DoctorSidePanel {
-	 background-color: #2E6E65;
-}
-
-#RecentText {
-	color: #F4F7ED;
-}</string>
+</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -246,85 +237,30 @@ QLabel {
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">#MainBodyContainer {
-	background-color: #f0f0f0;
+      <string notr="true">#Header {
+	padding: 10px 20px;
+padding-top: 15px;
 }
-
-QGraphicsView {
-    border: 2px solid #ccc;
-    border-radius: 100px;
-    background: white;
+QLabel {
+    padding: 0px; 
 }
-
-#TotalPatientOverview {
-	border: 2px solid #2E6E65;
-	border-radius: 15px;
-	color: #2E6E65;
-	text-align: left top;
-}
-
-#DiagnosisButton, #TEXT {
-	background-color: #2E6E65;
-	text-align: left top;
-}
-
-#InterfaceTitle  {
-	font-size: 40px;
-}
-
-#DoctorSidePanel {
-	background-color: #b9cec4;
-}
-
-#SeeAllButton {
-	text-align: right;
-	color: #2E6E65;
-	font-size: 18px
-}
-
-#Line {
-	background-color: gray;
-}
-
-#RecentText {
-	color: #2E6E65;
-}
-
-#User {
+#UserType {
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
 	color: #2B3752;
 }
-
-#UserSpecialty {
-	color: #2B3752;
-	font-size: 14px;
-	text-align: center;
-	text-align: center;
-    qproperty-alignment: AlignCenter;
-}
-
-QFrame#Histories QFrame {
-    background-color: #8fb1a8;
-}
-
-#TotalLabel {
-	font-size: 25px;
-}
-
-#TotalInfo {
-	color: #2b3752;
-	font-size: 40px;
-}
-
-#TotalDescription {
-	color: #2b3752;
-	font-weight: 300;
-	font-size: 12px;
-}
-
-#AddCheckUpButton {
-	text-align: center;
-	background-color: #2e6e65;
+#UserName {
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
 	font-size: 20px;
+	color: #2B3752;
+}
+#InterfaceTitle{
+	font-size: 35px;
+}
+QGraphicsView {
+    border: 2px solid #ccc; 
+    border-radius: 25px;
+    background: white; 
 }
 </string>
      </property>
@@ -847,6 +783,11 @@ QGraphicsView {
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
               </property>
               <property name="styleSheet">
                <string notr="true">QTableWidget {

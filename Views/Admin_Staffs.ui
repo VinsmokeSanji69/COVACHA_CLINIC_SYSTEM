@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1199</width>
-    <height>820</height>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,27 +20,26 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
     qproperty-wordWrap: true;
 	background: transparent;
 }
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -364,7 +363,6 @@ QGraphicsView {
     border-radius: 25px;
     background: white; 
 }
-
 </string>
      </property>
      <property name="frameShape">
@@ -699,6 +697,72 @@ QComboBox QAbstractItemView {
                 <number>0</number>
                </property>
                <item>
+                <widget class="QWidget" name="SearchBar" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>290</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>400</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>5</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>5</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="Icon">
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../Images/resources.qrc">
+                      <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>30</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
                 <spacer name="horizontalSpacer">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -851,7 +915,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>297</height>
+                       <height>308</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -883,6 +947,11 @@ QScrollBar::sub-line:vertical{
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
@@ -1097,7 +1166,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>288</height>
+                       <height>297</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -1124,6 +1193,11 @@ QScrollBar::sub-line:vertical{
                       </property>
                       <item>
                        <widget class="QTableWidget" name="StaffTable">
+                        <property name="font">
+                         <font>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

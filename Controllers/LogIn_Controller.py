@@ -67,14 +67,6 @@ class LoginController:
             # Check if the user is a staff member
             staff = self._get_user(conn, "staff", user_id)
             if staff:
-                # # DEBUG: Print verification details before checking
-                # print("\n--- DEBUG INFO ---")
-                # print(f"Input password: {password}")
-                # print(f"Stored hash: {staff[3]}")
-                # print(f"Generated SHA-256: {hashlib.sha256(password.encode()).hexdigest()}")
-                # print(f"Verification result: {self._verify_hashed_password(password, staff[3])}")
-                # print("------------------\n")
-
                 if self._verify_hashed_password(password, staff[3]):
                     # Route to StaffDashboardController for non-admin staff
                     if user_id != self.ADMIN_ID:

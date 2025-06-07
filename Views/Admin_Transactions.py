@@ -15,36 +15,32 @@ class Ui_Admin_Transactions(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1133, 690)
-        Form.setStyleSheet("#centralwidget {\n"
-"    background-color: #f0f0f0;\n"
-"}\n"
-"*{\n"
+        Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 16pt \"Satoshi Black\";\n"
+"    font: 900 17pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
-"    font-weight: bold;    \n"
+"    font-weight: bold;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
 "}\n"
 "#NavBar {\n"
-"    background-color: #2E6E65; \n"
+"    background-color: #2E6E65;\n"
 "}\n"
 "QLabel {\n"
 "    font: 900 10pt \"Satoshi Black\";\n"
-"    font-size: 20px;\n"
+"    font-size: 25px;\n"
 "    font-weight: bold;\n"
 "    color: #2E6E65;\n"
 "    qproperty-alignment: \'AlignLeft\';\n"
 "    qproperty-wordWrap: true;\n"
 "    background: transparent;\n"
 "}\n"
-"\n"
 "")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -172,7 +168,6 @@ class Ui_Admin_Transactions(object):
 "    border-radius: 25px;\n"
 "    background: white; \n"
 "}\n"
-"\n"
 "")
         self.MainBodyContainer.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MainBodyContainer.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -430,13 +425,16 @@ class Ui_Admin_Transactions(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 676, 513))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 716, 517))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.TransactionTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.TransactionTable.setFont(font)
         self.TransactionTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"

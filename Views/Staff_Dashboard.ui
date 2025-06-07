@@ -732,8 +732,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>816</width>
-                    <height>532</height>
+                    <width>857</width>
+                    <height>543</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -754,6 +754,11 @@ QScrollBar::sub-line:vertical{
                    </property>
                    <item>
                     <widget class="QTableWidget" name="PendingTable">
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

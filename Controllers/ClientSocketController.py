@@ -4,7 +4,7 @@ import uuid
 from functools import lru_cache
 from datetime import datetime, date
 
-from socket_server import CustomJSONEncoder
+# from socket_server import CustomJSONEncoder
 
 PORT_DISCOVERY = 50000
 PORT_COMMAND = 6543

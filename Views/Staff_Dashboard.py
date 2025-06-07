@@ -401,13 +401,16 @@ class Ui_Staff_Dashboard(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 816, 532))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 857, 543))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_7.setContentsMargins(0, 11, 0, 0)
         self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.PendingTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PendingTable.setFont(font)
         self.PendingTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"

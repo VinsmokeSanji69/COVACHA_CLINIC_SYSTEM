@@ -206,7 +206,7 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="LogOutButton">
           <property name="text">
            <string> Logout</string>
           </property>
@@ -694,7 +694,7 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>678</width>
+                 <width>706</width>
                  <height>581</height>
                 </rect>
                </property>
@@ -716,6 +716,11 @@ QScrollBar::sub-line:vertical{
                 </property>
                 <item>
                  <widget class="QTableWidget" name="DoneTable">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

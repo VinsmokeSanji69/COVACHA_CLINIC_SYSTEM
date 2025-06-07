@@ -11,37 +11,36 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Admin_Staff(object):
+class Ui_Admin_Staff    (object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1199, 820)
+        Form.resize(1199, 853)
         Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
 "    border: 0px;\n"
 "}\n"
 "QPushButton {\n"
-"    font: 900 16pt \"Satoshi Black\";\n"
+"    font: 900 17pt \"Satoshi Black\";\n"
 "    background-color: transparent;\n"
 "     border-radius: 10px;\n"
-"    font-weight: bold;    \n"
+"    font-weight: bold;\n"
 "    color: #F4F7ED;\n"
 "    text-align: left;\n"
 "    padding: 5px 5px;\n"
 "}\n"
 "#NavBar {\n"
-"    background-color: #2E6E65; \n"
+"    background-color: #2E6E65;\n"
 "}\n"
 "QLabel {\n"
 "    font: 900 10pt \"Satoshi Black\";\n"
-"    font-size: 20px;\n"
+"    font-size: 25px;\n"
 "    font-weight: bold;\n"
 "    color: #2E6E65;\n"
 "    qproperty-alignment: \'AlignLeft\';\n"
 "    qproperty-wordWrap: true;\n"
 "    background: transparent;\n"
 "}\n"
-"\n"
 "")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -171,7 +170,6 @@ class Ui_Admin_Staff(object):
 "    border-radius: 25px;\n"
 "    background: white; \n"
 "}\n"
-"\n"
 "")
         self.MainBodyContainer.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MainBodyContainer.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -347,6 +345,36 @@ class Ui_Admin_Staff(object):
         self.horizontalLayout.setContentsMargins(0, -1, 0, -1)
         self.horizontalLayout.setSpacing(5)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.SearchBar = QtWidgets.QWidget(self.Buttons)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
+        self.SearchBar.setSizePolicy(sizePolicy)
+        self.SearchBar.setMinimumSize(QtCore.QSize(290, 0))
+        self.SearchBar.setMaximumSize(QtCore.QSize(400, 16777215))
+        self.SearchBar.setObjectName("SearchBar")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.SearchBar)
+        self.horizontalLayout_2.setContentsMargins(0, 5, 0, 5)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.Icon = QtWidgets.QPushButton(self.SearchBar)
+        self.Icon.setText("")
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Icon.setIcon(icon7)
+        self.Icon.setIconSize(QtCore.QSize(30, 30))
+        self.Icon.setObjectName("Icon")
+        self.horizontalLayout_2.addWidget(self.Icon)
+        self.Search = QtWidgets.QLineEdit(self.SearchBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Search.sizePolicy().hasHeightForWidth())
+        self.Search.setSizePolicy(sizePolicy)
+        self.Search.setObjectName("Search")
+        self.horizontalLayout_2.addWidget(self.Search)
+        self.horizontalLayout.addWidget(self.SearchBar)
         spacerItem2 = QtWidgets.QSpacerItem(30, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem2)
         self.AddUserButton = QtWidgets.QPushButton(self.Buttons)
@@ -424,7 +452,7 @@ class Ui_Admin_Staff(object):
         self.DoctorScrollArea.setWidgetResizable(True)
         self.DoctorScrollArea.setObjectName("DoctorScrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 774, 297))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 774, 308))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -441,6 +469,9 @@ class Ui_Admin_Staff(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DoctorTable.sizePolicy().hasHeightForWidth())
         self.DoctorTable.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.DoctorTable.setFont(font)
         self.DoctorTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -554,7 +585,7 @@ class Ui_Admin_Staff(object):
         self.StaffScrollArea.setWidgetResizable(True)
         self.StaffScrollArea.setObjectName("StaffScrollArea")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 774, 288))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 774, 297))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -566,6 +597,9 @@ class Ui_Admin_Staff(object):
         self.verticalLayout_10.setSpacing(0)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.StaffTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents_2)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.StaffTable.setFont(font)
         self.StaffTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"

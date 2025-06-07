@@ -651,51 +651,6 @@ QComboBox QAbstractItemView {
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="Specialty">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
-    width: 20px;
-    height: 20px;
-}
-</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>Gynecologist</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Pediatrician</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Opthalmologist</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -769,8 +724,8 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>690</width>
-                 <height>558</height>
+                 <width>732</width>
+                 <height>560</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -791,6 +746,11 @@ QScrollBar::sub-line:vertical{
                 </property>
                 <item>
                  <widget class="QTableWidget" name="LabRequestTable">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

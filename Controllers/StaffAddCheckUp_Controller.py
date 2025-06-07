@@ -2,7 +2,7 @@ import datetime
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-from ClientSocketController import DataRequest
+# from ClientSocketController import DataRequest
 from Views.Staff_AddCheckUp import Ui_Staff_AddCheckUp as StaffCheckUpUi
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):

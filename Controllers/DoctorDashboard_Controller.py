@@ -135,16 +135,11 @@ class DoctorDashboardController(QMainWindow):
         self.doctor_checkup = DoctorCheckUpList(self.doc_id, self.records_ui)
 
         self.load_pending_checkups()
-        # self.get_accepted_checkup()
-        # self.get_done_checkup()
-        #
-        # self.get_done_checkup()
 
         self.apply_table_styles(self.dashboard_ui.PatientDetails)
         self.apply_table_styles(self.checkup_ui.AcceptedCheckUp)
         self.apply_table_styles(self.checkup_ui.DoneTable)
         self.apply_table_styles(self.records_ui.DoneTable)
-
 
 
     def setup_pages(self):
@@ -179,11 +174,13 @@ class DoctorDashboardController(QMainWindow):
         self.checkup_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.checkup_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
         self.checkup_ui.RecordsButton.clicked.connect(self.go_to_records)
+        self.checkup_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect records page buttons
         self.records_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.records_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
         self.records_ui.RecordsButton.clicked.connect(self.go_to_records)
+        self.records_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect the Accept Check-Up button
         self.dashboard_ui.AcceptCheckUp.clicked.connect(self.accept_checkup)
@@ -212,7 +209,7 @@ class DoctorDashboardController(QMainWindow):
                 self.login_window.show()
             else:
                 from Views.LogIn import LogInWindow
-                from Controllers.Login_Controller import LoginController
+                from Controllers.LogIn_Controller import LoginController
 
                 login_window = LogInWindow()
                 LoginController(login_window)

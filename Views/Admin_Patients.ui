@@ -23,24 +23,23 @@ QPushButton {
 	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
     qproperty-wordWrap: true;
 	background: transparent;
 }
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -352,7 +351,6 @@ QGraphicsView {
     border-radius: 25px;
     background: white; 
 }
-
 </string>
      </property>
      <property name="frameShape">
@@ -865,8 +863,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>672</width>
-                    <height>541</height>
+                    <width>703</width>
+                    <height>545</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -887,6 +885,11 @@ QScrollBar::sub-line:vertical{
                    </property>
                    <item>
                     <widget class="QTableWidget" name="PatientTable">
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
