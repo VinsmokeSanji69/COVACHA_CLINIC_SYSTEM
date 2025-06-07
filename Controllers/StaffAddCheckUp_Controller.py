@@ -2,7 +2,8 @@ import datetime
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
-# from ClientSocketController import DataRequest
+from Models.Patient import Patient
+from Models.CheckUp import CheckUp
 from Views.Staff_AddCheckUp import Ui_Staff_AddCheckUp as StaffCheckUpUi
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -101,7 +102,7 @@ class StaffAddCheckUp(QMainWindow):
 
         try:
             # Check if the patient already exists in the database
-            patient = DataRequest.send_command("GET_PATIENT_BY_NAME", fname, lname)
+            patient = Patient.get_patient_by_name(fname, lname)
             print(f"Query result: {patient}")  # Debug: Log the query result
 
             if patient:
@@ -138,7 +139,7 @@ class StaffAddCheckUp(QMainWindow):
                 self.ui.Age.clear()
 
                 # Generate a new patient ID
-                new_pat_id = DataRequest.send_command("CREATE_PATIENT", {
+                new_pat_id = Patient.create_new_patient( {
                     "first_name": fname,
                     "last_name": lname,
                     "middle_name": "",
@@ -237,9 +238,9 @@ class StaffAddCheckUp(QMainWindow):
         # print(f"Data to be saved: {data}")
 
         # Save or update patient information
-        if DataRequest.send_command("UPDATE_OR_CREATE_PATIENT",data):
+        if Patient.update_or_create_patient(data):
             # Save check-up data
-            if DataRequest.send_command("CREATE_CHECKUP",data):
+            if CheckUp.save_checkup(data):
                 QMessageBox.information(self, "Success", "Check-up added successfully!")
                 self.clear_form()
 

@@ -158,6 +158,9 @@ class AdminPatientsController(QMainWindow):
                 self.display_no_records_message()
                 return
 
+            # Sort by diagnosed_date as string in descending order (YYYY-MM-DD format)
+            patients.sort(key=lambda p: p.get("diagnosed_date", ""), reverse=True)
+
             self.records_ui.PatientTable.setColumnCount(4)
             self.records_ui.PatientTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Recent Diagnosis", "Date"])
             self.records_ui.PatientTable.verticalHeader().setVisible(False)
