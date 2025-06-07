@@ -102,7 +102,7 @@ class StaffTransactionModal(QMainWindow):
                 if not doctor:
                     docFullname = "Unknown Doctor"
                 else:
-                    docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+                    docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
                 # Extract patient name
                 full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"

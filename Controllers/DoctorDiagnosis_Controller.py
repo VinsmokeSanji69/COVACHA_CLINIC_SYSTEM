@@ -8,9 +8,9 @@ from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
-# from docx import Document
+from docx import Document
 import os
-# from docx2pdf import convert
+from docx2pdf import convert
 
 
 from Views.Doctor_Records import Ui_Doctor_Records
@@ -228,7 +228,7 @@ class DoctorDiagnosis(QMainWindow):
         try:
             # Get full patient and doctor info
             patient_info = Patient.get_patient_by_id(self.patient_id)
-            doctor_info = Doctor.get_doctor_by_id(self.doc_id)
+            doctor_info = Doctor.get_doctor(self.doc_id)
             if not patient_info or not doctor_info:
                 QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
                 return
@@ -238,7 +238,7 @@ class DoctorDiagnosis(QMainWindow):
             gender = patient_info["gender"]
             address = patient_info["address"]
             today = datetime.today().strftime("%Y-%m-%d")
-            doctor_name = f"{doctor_info['doc_fname'].capitalize()} {doctor_info['doc_mname'].capitalize()} {doctor_info['doc_lname'].capitalize()}"
+            doctor_name = f"{doctor_info['first_name'].capitalize()} {doctor_info['middle_name'].capitalize()} {doctor_info['last_name'].capitalize()}"
 
             # Output paths
             output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
