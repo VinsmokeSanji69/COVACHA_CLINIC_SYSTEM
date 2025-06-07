@@ -716,16 +716,6 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
                    <widget class="QPushButton" name="SearchIcon">
                     <property name="text">
                      <string/>
@@ -739,6 +729,16 @@ QComboBox QAbstractItemView {
                       <width>35</width>
                       <height>35</height>
                      </size>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
                     </property>
                    </widget>
                   </item>
@@ -834,8 +834,8 @@ QScrollBar::sub-line:horizontal{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>716</width>
-                    <height>517</height>
+                    <width>676</width>
+                    <height>513</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">

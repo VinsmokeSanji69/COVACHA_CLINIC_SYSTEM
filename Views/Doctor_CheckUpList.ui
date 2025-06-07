@@ -605,9 +605,6 @@ QComboBox QAbstractItemView {
                 <number>5</number>
                </property>
                <item>
-                <widget class="QLineEdit" name="Search"/>
-               </item>
-               <item>
                 <widget class="QPushButton" name="SearchIcon">
                  <property name="text">
                   <string/>
@@ -623,6 +620,9 @@ QComboBox QAbstractItemView {
                   </size>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="Search"/>
                </item>
               </layout>
              </widget>
@@ -694,7 +694,7 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>706</width>
+                 <width>678</width>
                  <height>581</height>
                 </rect>
                </property>
