@@ -246,7 +246,7 @@ QLabel {
 }
 #UserName_2 {
 	font: 600 10pt &quot;Lexend SemiBold&quot;;
-	font-size: 25px;
+	font-size: 20px;
 	color: #2B3752;
 }
 #InterfaceTitle{
@@ -546,9 +546,6 @@ QComboBox::drop-down {
                 <number>5</number>
                </property>
                <item>
-                <widget class="QLineEdit" name="Search"/>
-               </item>
-               <item>
                 <widget class="QPushButton" name="SearchButton">
                  <property name="text">
                   <string/>
@@ -564,6 +561,9 @@ QComboBox::drop-down {
                   </size>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="Search"/>
                </item>
               </layout>
              </widget>
@@ -758,8 +758,8 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>738</width>
-                 <height>631</height>
+                 <width>688</width>
+                 <height>634</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_2">

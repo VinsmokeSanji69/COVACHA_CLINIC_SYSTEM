@@ -206,7 +206,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="LogOutButton">
           <property name="text">
-           <string>Logout</string>
+           <string> Logout</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -628,9 +628,6 @@ QComboBox QAbstractItemView {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLineEdit" name="Search"/>
-               </item>
-               <item>
                 <widget class="QPushButton" name="Icon">
                  <property name="text">
                   <string/>
@@ -646,6 +643,9 @@ QComboBox QAbstractItemView {
                   </size>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="Search"/>
                </item>
               </layout>
              </widget>
@@ -769,8 +769,8 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>740</width>
-                 <height>560</height>
+                 <width>690</width>
+                 <height>558</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6">

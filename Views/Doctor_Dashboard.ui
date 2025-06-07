@@ -141,7 +141,7 @@ QLabel {
 </string>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -161,7 +161,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Check Up</string>
+           <string> Check Up</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -178,7 +178,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="RecordsButton">
           <property name="text">
-           <string>Records</string>
+           <string> Records</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -218,7 +218,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="pushButton_4">
           <property name="text">
-           <string>Logout</string>
+           <string> Logout</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -438,6 +438,9 @@ QGraphicsView {
                <layout class="QVBoxLayout" name="UserInfo">
                 <property name="spacing">
                  <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>7</number>
                 </property>
                 <item alignment="Qt::AlignRight">
                  <widget class="QLabel" name="UserName">

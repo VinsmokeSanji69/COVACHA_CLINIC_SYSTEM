@@ -41,12 +41,8 @@ class AdminPatientDetailsController(QMainWindow):
         self.ui = AdminPatientDetailsUI()
         self.ui.setupUi(self)
 
-        self.ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        self.ui.ChargesButton.clicked.connect(self.view_charges_ui)
         self.ui.BackButton.clicked.connect(self.view_staff_ui)
-        self.ui.StaffsButton.clicked.connect(self.view_staff_ui)
         self.ui.ViewCheckupButton.clicked.connect(self.view_checkup_details)
-
         self.initialize_patient_details()
 
     def view_checkup_details(self):

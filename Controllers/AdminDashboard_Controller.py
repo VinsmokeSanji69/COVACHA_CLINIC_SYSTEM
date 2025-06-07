@@ -1,3 +1,4 @@
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedWidget, QHeaderView, QSizePolicy
 
@@ -98,13 +99,23 @@ class AdminDashboardController(QMainWindow):
         self.transactions_ui.TransactionTable.resizeRowsToContents()
 
         # Responsive for Admin Charges
-        self.charges_ui.DoctorTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        header = self.charges_ui.DoctorTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.charges_ui.DoctorTable.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         self.charges_ui.DoctorTable.setWordWrap(True)
         self.charges_ui.DoctorTable.resizeRowsToContents()
+
+        header = self.charges_ui.LaboratoryTestTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
 
         self.charges_ui.LaboratoryTestTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.charges_ui.LaboratoryTestTable.setWordWrap(True)
         self.charges_ui.LaboratoryTestTable.resizeRowsToContents()
+
+
+
+
 
     def setup_pages(self):
         """Set up complete pages with navbar and content"""
@@ -174,6 +185,8 @@ class AdminDashboardController(QMainWindow):
         self.charges_ui.PatientsButton.clicked.connect(self.go_to_records)
         self.charges_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.charges_ui.ChargesButton.clicked.connect(self.go_to_charges)
+
+
 
     @pyqtSlot()
     def go_to_dashboard(self):

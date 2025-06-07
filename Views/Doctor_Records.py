@@ -119,15 +119,12 @@ class Ui_Doctor_Records(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.MainBodyContainer.sizePolicy().hasHeightForWidth())
         self.MainBodyContainer.setSizePolicy(sizePolicy)
-        self.MainBodyContainer.setStyleSheet("#MainBodyContainer {\n"
-"    background-color: #f0f0f0;\n"
-"}\n"
-"\n"
-"#Header {\n"
-"    padding: 20px 20px;\n"
+        self.MainBodyContainer.setStyleSheet("#Header {\n"
+"    padding: 10px 20px;\n"
+"padding-top: 15px;\n"
 "}\n"
 "QLabel {\n"
-"    padding: 0px;\n"
+"    padding: 0px; \n"
 "}\n"
 "#UserType {\n"
 "    font: 300 10pt \"Lexend Light\";\n"
@@ -136,19 +133,17 @@ class Ui_Doctor_Records(object):
 "}\n"
 "#UserName {\n"
 "    font: 600 10pt \"Lexend SemiBold\";\n"
-"    font-size: 25px;\n"
+"    font-size: 20px;\n"
 "    color: #2B3752;\n"
 "}\n"
 "#InterfaceTitle{\n"
-"    font-size: 40px;\n"
+"    font-size: 35px;\n"
 "}\n"
 "QGraphicsView {\n"
-"    border: 2px solid #ccc;\n"
+"    border: 2px solid #ccc; \n"
 "    border-radius: 25px;\n"
-"    background: white;\n"
+"    background: white; \n"
 "}\n"
-"\n"
-"\n"
 "")
         self.MainBodyContainer.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.MainBodyContainer.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -174,14 +169,14 @@ class Ui_Doctor_Records(object):
         self.UserInfo = QtWidgets.QVBoxLayout()
         self.UserInfo.setSpacing(0)
         self.UserInfo.setObjectName("UserInfo")
-        self.User = QtWidgets.QLabel(self.Header)
-        self.User.setAlignment(QtCore.Qt.AlignLeading)
-        self.User.setObjectName("User")
-        self.UserInfo.addWidget(self.User, 0, QtCore.Qt.AlignRight)
-        self.ID = QtWidgets.QLabel(self.Header)
-        self.ID.setAlignment(QtCore.Qt.AlignLeading)
-        self.ID.setObjectName("ID")
-        self.UserInfo.addWidget(self.ID, 0, QtCore.Qt.AlignRight)
+        self.UserName = QtWidgets.QLabel(self.Header)
+        self.UserName.setAlignment(QtCore.Qt.AlignLeading)
+        self.UserName.setObjectName("UserName")
+        self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight)
+        self.UserType = QtWidgets.QLabel(self.Header)
+        self.UserType.setAlignment(QtCore.Qt.AlignLeading)
+        self.UserType.setObjectName("UserType")
+        self.UserInfo.addWidget(self.UserType, 0, QtCore.Qt.AlignRight)
         self.UserPanel.addLayout(self.UserInfo)
         self.Profile = QtWidgets.QFrame(self.Header)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -285,17 +280,22 @@ class Ui_Doctor_Records(object):
         self.horizontalLayout_4.setContentsMargins(-1, 5, 0, 5)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.Search = QtWidgets.QLineEdit(self.SearchBar)
-        self.Search.setObjectName("Search")
-        self.horizontalLayout_4.addWidget(self.Search)
         self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.SearchButton.sizePolicy().hasHeightForWidth())
+        self.SearchButton.setSizePolicy(sizePolicy)
         self.SearchButton.setText("")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.SearchButton.setIcon(icon5)
-        self.SearchButton.setIconSize(QtCore.QSize(40, 40))
+        self.SearchButton.setIconSize(QtCore.QSize(35, 35))
         self.SearchButton.setObjectName("SearchButton")
-        self.horizontalLayout_4.addWidget(self.SearchButton)
+        self.horizontalLayout_4.addWidget(self.SearchButton, 0, QtCore.Qt.AlignLeft)
+        self.Search = QtWidgets.QLineEdit(self.SearchBar)
+        self.Search.setObjectName("Search")
+        self.horizontalLayout_4.addWidget(self.Search)
         self.horizontalLayout_3.addWidget(self.SearchBar)
         spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
@@ -494,13 +494,13 @@ class Ui_Doctor_Records(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.DashboardButton.setText(_translate("Form", "Dashboard"))
-        self.CheckUpButton.setText(_translate("Form", "Check Up"))
-        self.RecordsButton.setText(_translate("Form", "Records"))
-        self.pushButton_4.setText(_translate("Form", "Logout"))
+        self.DashboardButton.setText(_translate("Form", " Dashboard"))
+        self.CheckUpButton.setText(_translate("Form", " Check Up"))
+        self.RecordsButton.setText(_translate("Form", " Records"))
+        self.pushButton_4.setText(_translate("Form", " Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Check Up List"))
-        self.User.setText(_translate("Form", "Roy Adrian Rondina"))
-        self.ID.setText(_translate("Form", "Doctor"))
+        self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
+        self.UserType.setText(_translate("Form", "Doctor"))
         self.SortByBox.setItemText(0, _translate("Form", "Sort By:"))
         self.SortOrderBox.setItemText(0, _translate("Form", "Sort Order:"))
         self.CheckUpLabel.setText(_translate("Form", "Check Ups"))

@@ -207,7 +207,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="LogoutButton">
           <property name="text">
-           <string>Logout</string>
+           <string> Logout</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -388,7 +388,7 @@ QGraphicsView {
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="UserType">
                <property name="text">
-                <string>Staff</string>
+                <string>Nurse</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
@@ -507,7 +507,7 @@ QGraphicsView {
 #Day {
 	color: #2e6e65;
 	font-weight: 300;
-	font-size: 19px
+	font-size: 16px
 }
 
 </string>
@@ -732,8 +732,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>863</width>
-                    <height>534</height>
+                    <width>816</width>
+                    <height>532</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
