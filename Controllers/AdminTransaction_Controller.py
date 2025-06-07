@@ -24,9 +24,8 @@ class AdminTransactionsController(QWidget):
         self.ui = AdminTransactionUI()
         self.transactions_ui = transactions_ui
         self.ui.setupUi(self)
-
+        self.transactions_ui.SearchIcon.clicked.connect(self.apply_search_filter)
         print("Admin Transactions UI initialized!")
-
         self.transactions_ui.ViewTransaction.clicked.connect(self.view_transaction)
         self.refresh_tables()
 
@@ -61,51 +60,67 @@ class AdminTransactionsController(QWidget):
         except Exception as e:
             print(f"Error refreshing tables: {e}")
 
-    def load_transaction_table(self):
+    def apply_search_filter(self):
+        search_text = self.transactions_ui.Search.text().strip().lower()
+        self.load_transaction_table(search_text)
+
+    def load_transaction_table(self, search_term=None):
         try:
             transactions = Transaction.get_all_transaction()
-            self.transactions_ui.TransactionTable.setRowCount(len(transactions))
-            self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
-            self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+            filtered_transactions = []
 
-            row = 0  # Use explicit index if skipping rows
             for transaction in transactions:
-                # --- ADD DEBUG AND VALIDATION HERE ---
                 if "chck_id" not in transaction:
                     print("Missing 'chck_id' in transaction data:", transaction)
                     continue
-                # --- END OF ADDED SECTION ---
 
                 chck_id = transaction["chck_id"]
-
-                # Fetch checkup details safely
                 checkup = CheckUp.get_checkup_details(chck_id)
                 if not checkup:
-                    print(f"Skipping transaction with invalid or missing checkup: chck_id={chck_id}")
+                    print(f"Skipping transaction with invalid checkup: chck_id={chck_id}")
                     continue
 
                 pat_id = checkup.get("pat_id")
                 if not pat_id:
-                    print(f"Skipping checkup with missing patient ID: chck_id={chck_id}")
                     continue
 
                 patient = Patient.get_patient_details(int(pat_id))
                 if not patient:
-                    print(f"Skipping checkup with missing patient data: pat_id={pat_id}")
                     continue
 
                 name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
+                diagnosis = checkup["chck_diagnoses"]
+                date_str = safe_date_format(checkup["chck_date"])
 
-                self.transactions_ui.TransactionTable.setItem(row, 0, QTableWidgetItem(str(chck_id)))
-                self.transactions_ui.TransactionTable.setItem(row, 1, QTableWidgetItem(name))
-                self.transactions_ui.TransactionTable.setItem(row, 2, QTableWidgetItem(checkup["chck_diagnoses"]))
-                self.transactions_ui.TransactionTable.setItem(row, 3,
-                                                              QTableWidgetItem(safe_date_format(checkup["chck_date"])))
+                if search_term:
+                    combined_text = f"{name} {diagnosis} {date_str}".lower()
+                    if search_term not in combined_text:
+                        continue
 
-                row += 1
+                filtered_transactions.append((chck_id, name, diagnosis, date_str))
 
-            # Optional: Set actual row count if filtering skipped rows
-            self.transactions_ui.TransactionTable.setRowCount(row)
+            # Update the table
+            table = self.transactions_ui.TransactionTable
+            table.clearContents()
+            table.setRowCount(0)
+            table.verticalHeader().setVisible(False)
+            table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
+            if not filtered_transactions:
+                table.setRowCount(1)
+                table.setColumnCount(4)  # Ensure correct column count
+                table.setItem(0, 0, QTableWidgetItem("No Records Found"))
+                table.setSpan(0, 0, 1, 4)  # Span across all columns
+                for col in range(1, 4):  # Clear remaining cells
+                    table.setItem(0, col, QTableWidgetItem(""))
+                return
+
+            table.setRowCount(len(filtered_transactions))
+            for row, (chck_id, name, diagnosis, date_str) in enumerate(filtered_transactions):
+                table.setItem(row, 0, QTableWidgetItem(str(chck_id)))
+                table.setItem(row, 1, QTableWidgetItem(name))
+                table.setItem(row, 2, QTableWidgetItem(diagnosis))
+                table.setItem(row, 3, QTableWidgetItem(date_str))
 
         except Exception as e:
             print(f"Error loading transaction table: {e}")

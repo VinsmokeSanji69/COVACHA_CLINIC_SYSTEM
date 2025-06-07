@@ -605,7 +605,10 @@ QComboBox QAbstractItemView {
                 <number>5</number>
                </property>
                <item>
-                <widget class="QPushButton" name="Icon">
+                <widget class="QLineEdit" name="Search"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="SearchIcon">
                  <property name="text">
                   <string/>
                  </property>
@@ -621,55 +624,7 @@ QComboBox QAbstractItemView {
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QLineEdit" name="Search"/>
-               </item>
               </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="StatusBox">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>180</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="editable">
-               <bool>false</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>Status</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="TypeBox">
-              <property name="minimumSize">
-               <size>
-                <width>180</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <item>
-               <property name="text">
-                <string>Type</string>
-               </property>
-              </item>
              </widget>
             </item>
             <item>

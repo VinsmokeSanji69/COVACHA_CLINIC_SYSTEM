@@ -260,113 +260,6 @@ class Ui_Doctor_Records(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.SearchBarContainer)
         self.horizontalLayout_3.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.SearchBar = QtWidgets.QWidget(self.SearchBarContainer)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
-        self.SearchBar.setSizePolicy(sizePolicy)
-        self.SearchBar.setStyleSheet("#SearchBar {\n"
-"    background-color: #F4F7ED;\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 15px;\n"
-"}\n"
-"#Search{\n"
-"    background-color: transparent ;\n"
-"    font: 300 14pt \"Lexend Light\";\n"
-"}")
-        self.SearchBar.setObjectName("SearchBar")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.SearchBar)
-        self.horizontalLayout_4.setContentsMargins(-1, 5, 0, 5)
-        self.horizontalLayout_4.setSpacing(0)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SearchButton.sizePolicy().hasHeightForWidth())
-        self.SearchButton.setSizePolicy(sizePolicy)
-        self.SearchButton.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.SearchButton.setIcon(icon5)
-        self.SearchButton.setIconSize(QtCore.QSize(35, 35))
-        self.SearchButton.setObjectName("SearchButton")
-        self.horizontalLayout_4.addWidget(self.SearchButton, 0, QtCore.Qt.AlignLeft)
-        self.Search = QtWidgets.QLineEdit(self.SearchBar)
-        self.Search.setObjectName("Search")
-        self.horizontalLayout_4.addWidget(self.Search)
-        self.horizontalLayout_3.addWidget(self.SearchBar)
-        spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem2)
-        self.SortByBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        self.SortByBox.setStyleSheet("QComboBox {\n"
-"    background-color: #D9E4DC;\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 10px;\n"
-"    padding: 5px 10px;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}\n"
-"QComboBox::drop-down {\n"
-"    subcontrol-origin: padding;\n"
-"    subcontrol-position: top right;\n"
-"    width: 30px;\n"
-"    border-left: 1px solid #2E6E65;\n"
-"    background-color: #D9E4DC;\n"
-"    border-top-right-radius: 8px;\n"
-"    border-bottom-right-radius: 8px;\n"
-"}\n"
-"QComboBox::down-arrow {\n"
-"    image: url(:/icons/icons/chevron-down.svg);\n"
-"    width: 20px;\n"
-"    height: 20px;\n"
-"}\n"
-"QComboBox QAbstractItemView {\n"
-"    background-color: #F4F7ED;\n"
-"    selection-background-color: #CCE3D0;\n"
-"    border: 1px solid #2E6E65;\n"
-"    border-radius: 2px;\n"
-"    outline: 0;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}")
-        self.SortByBox.setObjectName("SortByBox")
-        self.SortByBox.addItem("")
-        self.horizontalLayout_3.addWidget(self.SortByBox)
-        self.SortOrderBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        self.SortOrderBox.setStyleSheet("QComboBox {\n"
-"    background-color: #D9E4DC;\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 10px;\n"
-"    padding: 5px 10px;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}\n"
-"QComboBox::drop-down {\n"
-"    subcontrol-origin: padding;\n"
-"    subcontrol-position: top right;\n"
-"    width: 30px;\n"
-"    border-left: 1px solid #2E6E65;\n"
-"    background-color: #D9E4DC;\n"
-"    border-top-right-radius: 8px;\n"
-"    border-bottom-right-radius: 8px;\n"
-"}\n"
-"QComboBox::down-arrow {\n"
-"    image: url(:/icons/icons/chevron-down.svg);\n"
-"    width: 20px;\n"
-"    height: 20px;\n"
-"}\n"
-"QComboBox QAbstractItemView {\n"
-"    background-color: #F4F7ED;\n"
-"    selection-background-color: #CCE3D0;\n"
-"    border: 1px solid #2E6E65;\n"
-"    border-radius: 2px;\n"
-"    outline: 0;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}")
-        self.SortOrderBox.setObjectName("SortOrderBox")
-        self.SortOrderBox.addItem("")
-        self.horizontalLayout_3.addWidget(self.SortOrderBox)
-        spacerItem3 = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem3)
         self.verticalLayout_6.addWidget(self.SearchBarContainer)
         self.CheckUpLabel = QtWidgets.QLabel(self.MainBody)
         self.CheckUpLabel.setObjectName("CheckUpLabel")
@@ -504,8 +397,6 @@ class Ui_Doctor_Records(object):
         self.InterfaceTitle.setText(_translate("Form", "Check Up List"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Doctor"))
-        self.SortByBox.setItemText(0, _translate("Form", "Sort By:"))
-        self.SortOrderBox.setItemText(0, _translate("Form", "Sort Order:"))
         self.CheckUpLabel.setText(_translate("Form", "Check Ups"))
         item = self.AcceptedCheckUp.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Check Up ID"))

@@ -5,6 +5,8 @@ from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList as DoctorCheckUpListU
 from Controllers.DoctorCheckUpListView_Controller import DoctorCheckUpListView
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+import datetime
+
 
 class DoctorCheckUpList(QWidget):
     def __init__(self, doc_id, records_ui):
@@ -28,6 +30,9 @@ class DoctorCheckUpList(QWidget):
         # Apply table styles
         self.apply_table_styles()
 
+        self.records_ui.SearchIcon.clicked.connect(self.filter_table)
+        self.is_filtering = False
+
         # Populate the DoneTable
         self.refresh_tables()
 
@@ -50,9 +55,66 @@ class DoctorCheckUpList(QWidget):
             print(f"Staff Error: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load patient details: {e}")
 
+    def filter_table(self):
+        keyword = self.records_ui.Search.text().strip().lower()
+        self.is_filtering = True  # ⛔ Pause auto-refresh
+
+        if not keyword:
+            self.is_filtering = False
+            self.populate_done_table(self.completed_checkups)
+            return
+
+        filtered = []
+
+        for checkup in self.completed_checkups:
+            pat_id = checkup['pat_id']
+            chck_diagnoses = checkup['chck_diagnoses']
+            chck_date = checkup['chck_date']
+
+            if isinstance(chck_date, str):
+                try:
+                    chck_date = datetime.datetime.strptime(chck_date, "%Y-%m-%d")
+                except ValueError:
+                    pass
+
+            patient = Patient.get_patient_details(pat_id)
+            if not patient:
+                continue
+
+            full_name = f"{patient['pat_lname']}, {patient['pat_fname']}"
+            values_to_check = [
+                str(pat_id).lower(),
+                full_name.lower(),
+                str(chck_diagnoses).lower(),
+                chck_date.strftime("%Y-%m-%d").lower() if isinstance(chck_date, datetime.datetime) else str(
+                    chck_date).lower()
+            ]
+
+            if any(keyword in value for value in values_to_check):
+                filtered.append(checkup)
+
+        if not filtered:
+            self.show_no_records_message()
+        else:
+            self.populate_done_table(filtered)
+
+    def show_no_records_message(self):
+        self.records_ui.DoneTable.clearContents()
+        self.records_ui.DoneTable.setRowCount(1)
+        self.records_ui.DoneTable.setColumnCount(4)
+
+        no_data_item = QtWidgets.QTableWidgetItem("No records found.")
+        no_data_item.setTextAlignment(Qt.AlignCenter)
+        self.records_ui.DoneTable.setItem(0, 0, no_data_item)
+
+        # Merge cells visually (optional)
+        self.records_ui.DoneTable.setSpan(0, 0, 1, 4)
+
     def refresh_tables(self):
+        if self.is_filtering:
+            return  # ✅ Skip auto-refresh when filtering
+
         try:
-            # ✅ Defensive checks to avoid deleted widget access
             if not self.records_ui or not hasattr(self.records_ui, 'DoneTable') or not self.records_ui.DoneTable:
                 print("DoneTable or UI is no longer valid.")
                 return
@@ -70,7 +132,7 @@ class DoctorCheckUpList(QWidget):
             print(f"Runtime error: {e} (likely UI was destroyed)")
         except Exception as e:
             print(f"Error refreshing tables: {e}")
-            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+
 
     def cleanup(self):
         if hasattr(self, 'refresh_timer') and self.refresh_timer.isActive():
@@ -136,10 +198,6 @@ class DoctorCheckUpList(QWidget):
             if isinstance(chck_date, str):
                 chck_date = datetime.datetime.strptime(chck_date, "%Y-%m-%d")
 
-            # Update checkup if:
-            # - patient not in dict yet
-            # - or current date is newer
-            # - or same date but higher chck_id
             if pat_id not in latest_checkups:
                 latest_checkups[pat_id] = checkup
             else:
@@ -180,6 +238,8 @@ class DoctorCheckUpList(QWidget):
             self.records_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(full_name))
             self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(chck_diagnoses))
             self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(chck_date.strftime("%Y-%m-%d")))
+
+
 
     def view_patient(self):
         try:

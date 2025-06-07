@@ -58,12 +58,9 @@ class AdminStaffsController(QWidget):
         self.refresh_tables()
 
         self.staff_ui.AddUserButton.clicked.connect(self.open_add_user_form)
-        # self.staff_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
         self.staff_ui.ChargesButton.clicked.connect(self.view_charges_ui)
         self.staff_ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
         self.staff_ui.PatientsButton.clicked.connect(self.view_patient_ui)
-        self.staff_ui.ViewDoctor.clicked.connect(lambda: self.view_staff_member("doctor"))
-        self.staff_ui.ViewStaff.clicked.connect(lambda: self.view_staff_member("staff"))
         self.staff_ui.DeleteStaff.clicked.connect(lambda: self.delete_record("staff"))
         self.staff_ui.DeleteDoctor.clicked.connect(lambda: self.delete_record("doctor"))
         self.staff_ui.ModifyStaff.clicked.connect(lambda: self.modify_staff("staff"))
@@ -100,33 +97,6 @@ class AdminStaffsController(QWidget):
             QMessageBox.warning(self, "Input Error", str(ve))
         except Exception as e:
             error_msg = f"Failed to select {table_type if table_type else 'staff'}: {str(e)}"
-            QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
-
-    def view_staff_member(self, table_type=None):
-        try:
-            table = self.staff_ui.DoctorTable if table_type == "doctor" else self.staff_ui.StaffTable
-
-            selected_row = table.currentRow()
-            if selected_row == -1:
-                QMessageBox.warning(self, "Selection Error",
-                                    f"Please select a {table_type} from the table.")
-                return
-
-            staff_id_item = table.item(selected_row, 0)
-            if not staff_id_item:
-                raise ValueError(f"No {table_type} ID found in selected row")
-
-            staff_id = staff_id_item.text().strip()
-            if not staff_id:
-                raise ValueError(f"{table_type.capitalize()} ID is empty")
-
-            self.view_staff_details_ui(staff_id)
-
-        except ValueError as ve:
-            QMessageBox.warning(self, "Input Error", str(ve))
-        except Exception as e:
-            error_msg = f"Failed to select {table_type}: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
             print(error_msg)
 
@@ -169,37 +139,6 @@ class AdminStaffsController(QWidget):
             error_msg = f"Error deleting {record_type}: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
             print(error_msg)
-
-    def view_staff_details_ui(self, staff_id):
-        try:
-            if not staff_id or not str(staff_id).strip():
-                raise ValueError("Invalid staff ID provided")
-
-            from Controllers.AdminStaffDetails_Controller import AdminStaffDetailsController
-            self.staff_details = AdminStaffDetailsController(staff_id)
-
-            if not hasattr(self.staff_details, 'show'):
-                raise AttributeError("Controller missing required 'show' method")
-
-            self.staff_details.show()
-            self.hide()
-
-            if not self.staff_details.isVisible():
-                raise RuntimeError("Details window failed to display")
-
-        except ImportError as e:
-            error_msg = f"Failed to import controller: {str(e)}"
-            print(error_msg)
-            QMessageBox.critical(self, "System Error",
-                                 "The staff details module could not be loaded.\n"
-                                 f"Error: {error_msg}")
-
-        except Exception as e:
-            error_msg = f"Failed to show staff details: {str(e)}"
-            print(error_msg)
-            QMessageBox.critical(self, "Error",
-                                 f"Could not display staff details for ID {staff_id}.\n"
-                                 f"Error: {error_msg}")
 
     def refresh_tables(self):
         """Reload data into the tables"""

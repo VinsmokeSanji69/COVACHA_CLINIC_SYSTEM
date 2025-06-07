@@ -451,7 +451,7 @@ QGraphicsView {
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="UserName">
                <property name="text">
-                <string>Roy Adrian Rondina</string>
+                <string>ADMIN</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
@@ -721,7 +721,17 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
-                   <widget class="QPushButton" name="Icon">
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="SearchIcon">
                     <property name="text">
                      <string/>
                     </property>
@@ -737,94 +747,7 @@ QComboBox QAbstractItemView {
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                   </widget>
-                  </item>
                  </layout>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="Diagnosis">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>250</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="editable">
-                  <bool>true</bool>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Ingrown</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Kabag</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Panuhot</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="Status">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>250</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Date Diagnosed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Gender</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Name (Aphabetical)</string>
-                  </property>
-                 </item>
                 </widget>
                </item>
                <item>
