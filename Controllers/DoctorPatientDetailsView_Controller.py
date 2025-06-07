@@ -1,8 +1,6 @@
 from datetime import datetime
-
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Views.Doctor_PatientDetailsView import Ui_Doctor_PatientDetails_View

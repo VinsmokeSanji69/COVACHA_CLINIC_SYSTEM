@@ -2,10 +2,8 @@ import sys
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLineEdit, QMessageBox
 from Views.LogIn import Ui_Login as LOGIN
-
 # Add root path for imports
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-
 from Controllers.LogIn_Controller import LoginController
 from socket_server import SocketServer
 

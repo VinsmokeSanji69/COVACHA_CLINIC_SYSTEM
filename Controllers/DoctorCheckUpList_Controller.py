@@ -34,10 +34,10 @@ class DoctorCheckUpList(QWidget):
         # Connect the ViewPatientButton to the view_detials_checkup method
         self.records_ui.ViewPatientButton.clicked.connect(self.view_patient)
 
-        # Initialize a QTimer for automatic refresh
+        # ✅ Initialize safe QTimer
         self.refresh_timer = QTimer(self)
-        self.refresh_timer.timeout.connect(self.refresh_tables)  # Connect to refresh_tables method
-        self.refresh_timer.start(30000)  # Refresh every 30 seconds (30000 ms)
+        self.refresh_timer.timeout.connect(self.refresh_tables)
+        self.refresh_timer.start(5000)
 
     def view_patient_details_ui(self, patient_id):
         print("View Patient Button clicked!")
@@ -86,24 +86,31 @@ class DoctorCheckUpList(QWidget):
             print(error_msg)
 
     def refresh_tables(self):
-        """Reload data into the tables."""
         try:
-            # Fetch fresh data from the database
-            checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
-            if not checkups:
-                print("No check-ups found for this doctor.")
+            # ✅ Defensive checks to avoid deleted widget access
+            if not self.records_ui or not hasattr(self.records_ui, 'DoneTable') or not self.records_ui.DoneTable:
+                print("DoneTable or UI is no longer valid.")
                 return
 
-            # Filter completed check-ups
-            self.completed_checkups = [checkup for checkup in checkups if checkup['chck_status'] == "Completed"]
+            checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+            if not checkups:
+                print("No check-ups found.")
+                return
 
-            # Repopulate the DoneTable with fresh data
+            self.completed_checkups = [checkup for checkup in checkups if checkup['chck_status'] == "Completed"]
+            self.records_ui.DoneTable.setRowCount(0)
             self.populate_done_table(self.completed_checkups)
 
-            print("Tables refreshed successfully!")
+        except RuntimeError as e:
+            print(f"Runtime error: {e} (likely UI was destroyed)")
         except Exception as e:
             print(f"Error refreshing tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+
+    def cleanup(self):
+        if hasattr(self, 'refresh_timer') and self.refresh_timer.isActive():
+            self.refresh_timer.stop()
+            print("DoctorCheckUpList timer stopped.")
 
     def apply_table_styles(self):
         self.ui.DoneTable.setStyleSheet("""

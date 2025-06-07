@@ -9,7 +9,10 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+try:
+    import sip
+except ImportError:
+    pass
 
 class Ui_Doctor_CheckUpList(object):
     def setupUi(self, Form):

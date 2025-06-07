@@ -82,286 +82,6 @@ QLabel {
      <number>0</number>
     </property>
     <item>
-     <widget class="QWidget" name="NavBar" native="true">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="leftMargin">
-        <number>10</number>
-       </property>
-       <property name="topMargin">
-        <number>10</number>
-       </property>
-       <property name="rightMargin">
-        <number>10</number>
-       </property>
-       <property name="bottomMargin">
-        <number>10</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="NavBarButton">
-         <property name="toolTip">
-          <string>View Main Dashboard</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-	padding: 10px 8px;
-}</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/lucide/icons/align-justify.svg</normaloff>:/lucide/icons/align-justify.svg</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>35</width>
-           <height>35</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Preferred</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>10</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="MainButtons">
-         <property name="spacing">
-          <number>20</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetNoConstraint</enum>
-         </property>
-         <item>
-          <widget class="QPushButton" name="DashboardButton">
-           <property name="toolTip">
-            <string>View Main Dashboard</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>  Dashboard</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/layout-dashboard.svg</normaloff>:/lucide/icons/layout-dashboard.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="StaffsButton">
-           <property name="toolTip">
-            <string>View Staff Record</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>  Staffs</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/user-round-pen.svg</normaloff>:/lucide/icons/user-round-pen.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="PatientsButton">
-           <property name="toolTip">
-            <string>View Patient Record</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton{
-	font: 900 20pt &quot;Satoshi Black&quot;;	
-}
-</string>
-           </property>
-           <property name="text">
-            <string>  Records</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/file-text.svg</normaloff>:/lucide/icons/file-text.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="TransactionsButton">
-           <property name="toolTip">
-            <string>View Transactions </string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>  Transactions</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/tickets.svg</normaloff>:/lucide/icons/tickets.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="ChargesButton">
-           <property name="toolTip">
-            <string>View Reports and Overviews</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>  Charges</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/hand-coins.svg</normaloff>:/lucide/icons/hand-coins.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="SettingButtons">
-         <property name="spacing">
-          <number>15</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="ProfileButton">
-           <property name="toolTip">
-            <string>View Profile Settings</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>  Profile</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/user-round-cog.svg</normaloff>:/lucide/icons/user-round-cog.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item alignment="Qt::AlignVCenter">
-          <widget class="QPushButton" name="LogOutButton">
-           <property name="toolTip">
-            <string>Log Out from your Account</string>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>  Log Out</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>:/lucide/icons/log-out.svg</normaloff>:/lucide/icons/log-out.svg</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
      <widget class="QFrame" name="MainBodyContainer">
       <property name="enabled">
        <bool>true</bool>
@@ -466,7 +186,7 @@ QGraphicsView {
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item alignment="Qt::AlignTop">
+          <item>
            <widget class="QWidget" name="BackButtonCon" native="true">
             <property name="styleSheet">
              <string notr="true">#Title{
@@ -481,7 +201,7 @@ QLabel {
 }
 </string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+            <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
              <property name="spacing">
               <number>6</number>
              </property>
@@ -497,36 +217,7 @@ QLabel {
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item alignment="Qt::AlignLeft">
-              <widget class="QPushButton" name="BackButton">
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
-	background-color: #2E6E65;
- 	border-radius: 10px;
-	font-weight: bold;	
-	font-size: 25px;
-	color: #F4F7ED;
-	text-align: left;
-	padding: 5px 5px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/lucide/icons/arrow-left.svg</normaloff>:/lucide/icons/arrow-left.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>40</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignVCenter">
+             <item>
               <widget class="QWidget" name="widget" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -556,7 +247,7 @@ QLabel {
                 <property name="bottomMargin">
                  <number>0</number>
                 </property>
-                <item alignment="Qt::AlignTop">
+                <item>
                  <widget class="QLabel" name="Title">
                   <property name="enabled">
                    <bool>true</bool>
@@ -576,7 +267,7 @@ QLabel {
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>30</height>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="text">
@@ -826,52 +517,6 @@ QLabel {
                    <property name="rightMargin">
                     <number>15</number>
                    </property>
-                   <item>
-                    <widget class="QPushButton" name="EditPatientButton">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>45</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>250</width>
-                       <height>45</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-	font: 900 10pt &quot;Satoshi Black&quot;;
-	background-color:  #2E6E65;
-	border-radius: 10px;
-	font-weight: bold;	
-	font-size: 20px;
-	color: #F4F7ED;
-	padding: 5px 30px;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>Edit Patient</string>
-                     </property>
-                     <property name="icon">
-                      <iconset>
-                       <normaloff>:/lucide/icons/square-pen.svg</normaloff>:/lucide/icons/square-pen.svg</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>30</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
                   </layout>
                  </widget>
                 </item>
@@ -1456,7 +1101,7 @@ Line {
                           <rect>
                            <x>0</x>
                            <y>0</y>
-                           <width>396</width>
+                           <width>617</width>
                            <height>559</height>
                           </rect>
                          </property>
@@ -1599,8 +1244,6 @@ QTableWidget QHeaderView::section {
      </widget>
     </item>
    </layout>
-   <zorder>MainBodyContainer</zorder>
-   <zorder>NavBar</zorder>
   </widget>
  </widget>
  <resources>

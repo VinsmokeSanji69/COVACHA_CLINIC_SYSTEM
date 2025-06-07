@@ -205,24 +205,7 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="ProfileButton">
-          <property name="text">
-           <string>Profile</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../Images/resources.qrc">
-            <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="LogoutButton">
+         <widget class="QPushButton" name="LogOutButton">
           <property name="text">
            <string>Logout</string>
           </property>
@@ -749,8 +732,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>863</width>
-                    <height>538</height>
+                    <width>816</width>
+                    <height>532</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">

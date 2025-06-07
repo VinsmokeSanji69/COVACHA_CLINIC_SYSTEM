@@ -36,39 +36,13 @@ class StaffLabRequest(QWidget):
 
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
-        conn = DBConnection.get_db_connection()
-        if not conn:
-            QMessageBox.critical(self, "Database Error", "Failed to connect to the database.")
-            return
-
         try:
-            # Query to fetch all checkup IDs with associated lab codes along with check_date
-            query = """
-                SELECT DISTINCT clt.chck_id, c.chck_date
-                FROM checkup_lab_tests clt
-                JOIN checkup c ON clt.chck_id = c.chck_id;
-            """
-            with conn.cursor() as cursor:
-                cursor.execute(query)
-                rows = cursor.fetchall()
+            rows = CheckUp.get_checkups_with_lab_requests()
+            checkup_ids = [row[0] for row in rows]
 
-                # Sort by chck_date (descending), then split and sort chck_id numerically (descending)
-                checkup_ids = [
-                    row[0] for row in sorted(
-                        rows,
-                        key=lambda x: (
-                            -int(x[1].strftime("%Y%m%d")),  # Descending by date as integer
-                            -int(x[0].split("-")[1])  # Descending by numeric suffix
-                        )
-                    )
-                ]
-
-            # Clear the table before populating it
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
-            # Iterate over the sorted checkup_ids
             for checkup_id in checkup_ids:
-                # Fetch check-up details
                 checkup_details = CheckUp.get_checkup_details(checkup_id)
                 if not checkup_details:
                     continue
@@ -76,7 +50,6 @@ class StaffLabRequest(QWidget):
                 pat_id = checkup_details['pat_id']
                 doc_id = checkup_details['doc_id']
 
-                # Fetch patient and doctor details
                 patient_details = Patient.get_patient_details(pat_id)
                 doctor_details = Doctor.get_doctor_by_id(doc_id)
                 if not patient_details or not doctor_details:
@@ -85,14 +58,8 @@ class StaffLabRequest(QWidget):
                 patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
                 doctor_name = f"{doctor_details['doc_lname'].capitalize()}, {doctor_details['doc_fname'].capitalize()}"
 
-                # Fetch lab attachments using a new cursor
-                with conn.cursor() as cursor:  # Create a new cursor here
-                    cursor.execute("""
-                        SELECT lab_attachment
-                        FROM checkup_lab_tests
-                        WHERE chck_id = %s;
-                    """, (checkup_id,))
-                    lab_attachments = cursor.fetchall()
+                # Use static method to fetch lab attachments
+                lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
 
                 # Determine status
                 if not lab_attachments:
@@ -115,15 +82,10 @@ class StaffLabRequest(QWidget):
                 self.labreq_ui.LabRequestTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(doctor_name))
                 self.labreq_ui.LabRequestTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem(status))
 
-            # print("Lab Request Table loaded successfully!")
-
+        except ConnectionError as ce:
+            QMessageBox.critical(self, "Database Error", str(ce))
         except Exception as e:
-            # print(f"Error loading lab request table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load lab request table: {e}")
-
-        finally:
-            if conn:
-                conn.close()
 
     def open_form(self):
         """Open the Staff Add Attachment form with parameters from the selected row."""

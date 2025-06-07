@@ -208,7 +208,7 @@ class DoctorDiagnosis(QMainWindow):
 
         # If no lab test selected, open modal
         if not selected_lab_names:
-            self.ViewRecords()
+            self.open_doctor_lab_result_modal()
             return
 
         # Save raw lab codes only (excluding custom entries) to DB
@@ -284,12 +284,12 @@ class DoctorDiagnosis(QMainWindow):
 
         self.ViewRecords()
 
-    # def open_doctor_lab_result_modal(self):
-    #     try:
-    #         # Instantiate and show the DoctorLabResult modal
-    #         self.doctor_lab_result = DoctorLabResult(checkup_id=self.checkup_id)
-    #         self.doctor_lab_result.show()
-    #         self.close()
-    #     except Exception as e:
-    #         print(f"Error opening DoctorLabResult modal: {e}")
-    #         QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")
+    def open_doctor_lab_result_modal(self):
+        try:
+            # Instantiate and show the DoctorLabResult modal
+            self.doctor_lab_result = DoctorLabResult(checkup_id=self.checkup_id)
+            self.doctor_lab_result.show()
+            self.close()
+        except Exception as e:
+            print(f"Error opening DoctorLabResult modal: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")

@@ -2,9 +2,9 @@ from PyQt5 import QtWidgets, QtCore, Qt
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, \
     QWidget, QSizePolicy, QHeaderView, QStackedWidget, QMainWindow
-
 from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Controllers.DoctorDiagnosis_Controller import DoctorDiagnosis
+from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Controllers.DoctorRecords_Controller import DoctorRecords
 # from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
@@ -13,6 +13,7 @@ from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Views.Doctor_Records import Ui_Doctor_Records
 import datetime
+
 
 
 class ConfirmationDialog(QDialog):
@@ -53,8 +54,9 @@ class ConfirmationDialog(QDialog):
 
 
 class DoctorDashboardController(QMainWindow):
-    def __init__(self, doc_id, fname, lname, specialty):
+    def __init__(self, doc_id, fname, lname, specialty, login_window=None):
         super().__init__()
+        self.login_window = login_window
         self.doc_id = doc_id
         self.setWindowTitle("Doctor Dashboard")
 
@@ -145,6 +147,7 @@ class DoctorDashboardController(QMainWindow):
         self.apply_table_styles(self.records_ui.DoneTable)
 
 
+
     def setup_pages(self):
         """Set up complete pages with navbar and content"""
         # Dashboard page
@@ -171,6 +174,7 @@ class DoctorDashboardController(QMainWindow):
         self.dashboard_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.dashboard_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
         self.dashboard_ui.RecordsButton.clicked.connect(self.go_to_records)
+        self.dashboard_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect checkup  page buttons
         self.checkup_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
@@ -185,6 +189,38 @@ class DoctorDashboardController(QMainWindow):
         # Connect the Accept Check-Up button
         self.dashboard_ui.AcceptCheckUp.clicked.connect(self.accept_checkup)
 
+    @pyqtSlot()
+    def logout(self):
+        """Return to the login screen and clear the credentials."""
+        try:
+            # 1. Cleanup and delete all tracked windows
+            for window in getattr(self, "open_windows", []):
+                if window and hasattr(window, "deleteLater"):
+                    window.deleteLater()
+
+            # 2. Close and delete dashboard safely
+            if hasattr(self, "cleanup"):
+                self.cleanup()
+            if hasattr(self, "hide"):
+                self.hide()  # Prefer hide over deleteLater to avoid premature deletion
+            if hasattr(self, "deleteLater"):
+                QTimer.singleShot(0, self.deleteLater)  # Delay deletion
+
+            # 3. Show login window
+            if hasattr(self, "login_window") and self.login_window:
+                self.login_window.ui.UserIDInput.clear()
+                self.login_window.ui.PasswordInput.clear()
+                self.login_window.show()
+            else:
+                from Views.LogIn import LogInWindow
+                from Controllers.Login_Controller import LoginController
+
+                login_window = LogInWindow()
+                LoginController(login_window)
+                login_window.show()
+
+        except Exception as e:
+            print("Logout error:", e)
 
     @pyqtSlot()
     def go_to_dashboard(self):
@@ -251,49 +287,6 @@ class DoctorDashboardController(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def apply_table_styles(self, table_widget):
-        """Apply custom styles to the given table widget."""
-
-        table_widget.setStyleSheet("""
-            QTableWidget {
-                background-color: #F4F7ED;
-                gridline-color: transparent;
-                border-radius: 10px;
-            }
-            QTableWidget::item {
-                border: none;
-                font: 16pt "Lexend";
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(46, 110, 101, 0.3);
-            }
-            QTableWidget QHeaderView::section {
-                background-color: #2E6E65;
-                color: white;
-                padding: 5px;
-                font: 18px "Lexend Medium";
-                border: 2px solid #2E6E65;
-            }
-
-            /* Scroll Area CSS */
-            QScrollBar:vertical {
-                background: transparent;
-                width: 10px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical {
-                background: #C0C0C0;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background: #A0A0A0;
-            }
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical{
-                background: none;
-                border: none;
-            }
-        """)
-
         # Ensure horizontal headers are visible
         table_widget.horizontalHeader().setVisible(True)
 
@@ -412,5 +405,4 @@ class DoctorDashboardController(QMainWindow):
         except Exception as e:
             print(f"Error opening DoctorDiagnosis window: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
-
 
