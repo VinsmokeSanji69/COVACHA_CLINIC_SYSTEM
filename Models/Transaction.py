@@ -111,6 +111,42 @@ class Transaction():
                 conn.close()
 
     @staticmethod
+    def get_transaction_by_chckid1(chck_id):
+        """Fetch complete transaction details for a given chck_id."""
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            print("Failed to establish database connection.")
+            return {}  # Return empty dict instead of None
+
+        try:
+            with conn.cursor() as cursor:
+                query = """
+                    SELECT tran_discount, tran_base_charge, tran_lab_charge, tran_status
+                    FROM transaction 
+                    WHERE chck_id = %s;
+                """
+                cursor.execute(query, (chck_id,))
+                result = cursor.fetchone()
+
+                if result:
+                    return {
+                        'tran_discount': float(result[0]) if result[0] is not None else 0.0,
+                        'tran_base_charge': float(result[1]) if result[1] is not None else 0.0,
+                        'tran_lab_charge': float(result[2]) if result[2] is not None else 0.0,
+                        'tran_status': result[3] if result[3] is not None else "Pending"
+                    }
+                else:
+                    return {}  # Return empty dict if no record found
+
+        except Exception as e:
+            print(f"Error fetching transaction for chck_id={chck_id}: {e}")
+            return {}  # Return empty dict on error
+
+        finally:
+            if conn and not conn.closed:
+                conn.close()
+
+    @staticmethod
     def get_transaction_by_chckid(chck_id):
         """Fetch complete transaction details for a given chck_id."""
         conn = DBConnection.get_db_connection()

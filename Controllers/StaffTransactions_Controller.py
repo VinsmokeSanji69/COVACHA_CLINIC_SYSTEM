@@ -4,10 +4,6 @@ from PyQt5.QtWidgets import QWidget
 from Controllers.ClientSocketController import DataRequest
 from Controllers.StaffViewTransaction_Controller import StaffViewTransaction
 from Views.Staff_Transactions import Ui_Staff_Transactions as StaffTransactionUI
-from Models.Transaction import Transaction
-from Models.Doctor import Doctor
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
 
 class StaffTransactions(QWidget):
     def __init__(self, transactions_ui):
@@ -20,19 +16,16 @@ class StaffTransactions(QWidget):
 
 
         if hasattr(self.transactions_ui, 'ViewButton'):
-            # print('ViewButton exist')
             self.transactions_ui.ViewButton.clicked.connect(self.view_transaction)
 
     def load_transaction_details(self):
         try:
             # Fetch all completed check-ups
             checkups = DataRequest.send_command("GET_ALL_CHECKUP")
-            if not checkups:
-                # print("No completed check-ups found.")
-                return
 
             # Fetch all transactions to determine their status
-            transactions = Transaction.get_all_transaction()
+            transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
+
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
 
             # Debug: Log all chck_id from transactions
@@ -46,19 +39,17 @@ class StaffTransactions(QWidget):
             for row, checkup in enumerate(checkups):
                 chck_id = checkup['chck_id'].strip().lower()
 
-                # Debug: Log the current chck_id
-                # print(f"Processing chck_id: {chck_id}")
-
                 # Fetch patient details
                 pat_id = checkup['pat_id']
-                patient = Patient.get_patient_details(pat_id)
+                patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
                 if not patient:
-                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Fetch doctor details
                 doc_id = checkup['doc_id']
-                doctor = Doctor.get_doctor_by_id(doc_id)
+                doctor = DataRequest.send_command("GET_DOCTOR_BY_ID",doc_id)
+
                 if not doctor:
                     # print(f"No doctor found for doc_id={doc_id}")
                     continue
@@ -72,10 +63,14 @@ class StaffTransactions(QWidget):
 
                 # Insert data into the table
                 self.transactions_ui.TransactionTable.insertRow(row)
-                self.transactions_ui.TransactionTable.setItem(row, 0,QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
-                self.transactions_ui.TransactionTable.setItem(row, 1,QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
-                self.transactions_ui.TransactionTable.setItem(row, 2,QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
-                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(tran_status))  # Transaction Status
+                self.transactions_ui.TransactionTable.setItem(row, 0,
+                                                              QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
+                self.transactions_ui.TransactionTable.setItem(row, 1,
+                                                              QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
+                self.transactions_ui.TransactionTable.setItem(row, 2,
+                                                              QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
+                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(
+                    tran_status))  # Transaction Status
 
         except Exception as e:
             # print(f"Error loading transaction details: {e}")
@@ -83,8 +78,10 @@ class StaffTransactions(QWidget):
 
         self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.transactions_ui.TransactionTable.horizontalHeader().setVisible(True)
-        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
+
 
     def view_transaction(self):
         try:
@@ -109,9 +106,6 @@ class StaffTransactions(QWidget):
                 return
 
             chck_id = chck_id_item.text().strip()
-
-            # Debug: Log the retrieved chck_id
-            # print(f"Selected chck_id: {chck_id}")
 
             # Ensure chck_id is a valid string
             if not isinstance(chck_id, str) or not chck_id:

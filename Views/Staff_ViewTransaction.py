@@ -585,7 +585,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 847, 233))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 847, 235))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
@@ -638,6 +638,7 @@ class Ui_MainWindow(object):
 "    background-color: transparent;\n"
 "    border-bottom: 2px solid #2E6E65;\n"
 "    font: 900 14pt \"Satoshi Black\";\n"
+"font-size: 19px;\n"
 "}")
         self.TotalLabCharge.setObjectName("TotalLabCharge")
         self.horizontalLayout_7.addWidget(self.TotalLabCharge)
@@ -670,6 +671,9 @@ class Ui_MainWindow(object):
         self.label_38.setObjectName("label_38")
         self.verticalLayout_20.addWidget(self.label_38)
         self.SeniorCheckBox = QtWidgets.QCheckBox(self.frame_8)
+        self.SeniorCheckBox.setStyleSheet("QCheckBox {\n"
+"font-size: 19px;\n"
+"}")
         self.SeniorCheckBox.setObjectName("SeniorCheckBox")
         self.verticalLayout_20.addWidget(self.SeniorCheckBox)
         self.horizontalLayout_10.addWidget(self.frame_8, 0, QtCore.Qt.AlignTop)

@@ -2,17 +2,14 @@ from PyQt5 import QtCore, QtWidgets, uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog, QVBoxLayout, QPushButton, \
     QStackedWidget, QHeaderView, QSizePolicy, QWidget
 from PyQt5.QtCore import QTimer, pyqtSlot, Qt
+from Views.Staff_Dashboard import Ui_Staff_Dashboard
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
 from Controllers.ClientSocketController import DataRequest
-from Models.Doctor import Doctor
-from Models.Transaction import Transaction
-from Views.Staff_Dashboard import Ui_Staff_Dashboard
 from Controllers.StaffAddCheckUp_Controller import StaffAddCheckUp
 from Controllers.StaffLabRequest_Controller import StaffLabRequest
 from Controllers.StaffTransactionModal_Controller import StaffTransactionModal
 from Controllers.StaffTransactions_Controller import StaffTransactions
-from Models.CheckUp import CheckUp
-from  Models.Patient import Patient
+
 from datetime import datetime
 
 from Views.Staff_LabRequest import Ui_Staff_LabRequest
@@ -177,8 +174,8 @@ class StaffDashboardController(QMainWindow):
         """Fetch and display today's pending check-ups in the PendingTable."""
         try:
             # Fetch all pending check-ups
-            pending_checkups = DataRequest.send_command("GET_PENDING_CHECKUP")
-            print("Server Response:", pending_checkups)
+            pending_checkups  = DataRequest.send_command("GET_PENDING_CHECKUP")
+
             # Get today's date in YYYYMMDD format
             today_date = datetime.now().strftime("%Y%m%d")
 
@@ -208,7 +205,7 @@ class StaffDashboardController(QMainWindow):
                 chck_type = checkup["chckup_type"]
 
                 # Fetch patient details
-                patient = Patient.get_patient_by_id(pat_id)
+                patient = DataRequest.send_command("GET_PATIENT_BY_ID",pat_id)
                 if not patient:
                     continue
 

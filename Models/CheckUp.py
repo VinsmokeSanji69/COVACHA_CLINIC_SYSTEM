@@ -634,3 +634,57 @@ class CheckUp:
             if conn:
                 conn.close()
                 #print("Database connection closed.")
+
+    @staticmethod
+    def get_checkups_with_lab_requests():
+        """
+        Fetch all unique check-up IDs with associated lab codes and checkup dates.
+        Returns a sorted list of tuples (chck_id, chck_date).
+        """
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            raise ConnectionError("Failed to connect to the database.")
+
+        try:
+            query = """
+                        SELECT DISTINCT clt.chck_id, c.chck_date
+                        FROM checkup_lab_tests clt
+                        JOIN checkup c ON clt.chck_id = c.chck_id;
+                    """
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                sorted_rows = sorted(
+                    rows,
+                    key=lambda x: (
+                        -int(x[1].strftime("%Y%m%d")),
+                        -int(x[0].split("-")[1])
+                    )
+                )
+                return sorted_rows
+        except Exception as e:
+            raise RuntimeError(f"Database query failed: {e}")
+        finally:
+            conn.close()
+
+    @staticmethod
+    def get_lab_attachments_by_checkup_id(checkup_id):
+        """
+        Fetch all lab_attachment values for a given checkup ID.
+        """
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            raise ConnectionError("Failed to connect to the database.")
+
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                            SELECT lab_attachment
+                            FROM checkup_lab_tests
+                            WHERE chck_id = %s;
+                        """, (checkup_id,))
+                return cursor.fetchall()
+        except Exception as e:
+            raise RuntimeError(f"Failed to fetch lab attachments: {e}")
+        finally:
+            conn.close()

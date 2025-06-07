@@ -127,7 +127,7 @@ QLabel {
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>Dashboard</string>
+           <string> Dashboard</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -144,7 +144,7 @@ QLabel {
         <item>
          <widget class="QPushButton" name="TransactionsButton">
           <property name="text">
-           <string>Transactions</string>
+           <string> Transactions</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -166,7 +166,7 @@ QLabel {
 }</string>
           </property>
           <property name="text">
-           <string>Lab Request</string>
+           <string> Lab Request</string>
           </property>
           <property name="icon">
            <iconset resource="../Images/resources.qrc">
@@ -769,7 +769,7 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>747</width>
+                 <width>740</width>
                  <height>560</height>
                 </rect>
                </property>

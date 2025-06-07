@@ -22,8 +22,7 @@ class LogIn(QMainWindow):
 
         # OPTIONAL: ping the server on startup
         response = DataRequest.send_command("ping")
-        if response.get("status") != "ok":
-            QMessageBox.critical(self, "Connection Error", response.get("message", "Unknown error"))
+
 
 if __name__ == "__main__":
     try:
