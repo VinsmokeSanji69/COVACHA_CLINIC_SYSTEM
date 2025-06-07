@@ -1,11 +1,9 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QWidget
-
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Transaction import Transaction
 from Views.Admin_Transactions import Ui_Admin_Transactions as AdminTransactionUI
-
 def safe_date_format(date_value, date_format="%B %d, %Y"):
     if not date_value:
         return "N/A"
@@ -64,21 +62,53 @@ class AdminTransactionsController(QWidget):
             print(f"Error refreshing tables: {e}")
 
     def load_transaction_table(self):
-        transactions = Transaction.get_all_transaction()  # Assume this returns a list of transactions
-        self.transactions_ui.TransactionTable.setRowCount(len(transactions))
-        self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
-        self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        try:
+            transactions = Transaction.get_all_transaction()
+            self.transactions_ui.TransactionTable.setRowCount(len(transactions))
+            self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
+            self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-        for row, transaction in enumerate(transactions):
-            checkup = CheckUp.get_checkup_details(transaction["chck_id"])
-            patient = Patient.get_patient_details(int(checkup["pat_id"]))
-            name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
+            row = 0  # Use explicit index if skipping rows
+            for transaction in transactions:
+                # --- ADD DEBUG AND VALIDATION HERE ---
+                if "chck_id" not in transaction:
+                    print("Missing 'chck_id' in transaction data:", transaction)
+                    continue
+                # --- END OF ADDED SECTION ---
 
-            # Populate table columns
-            self.transactions_ui.TransactionTable.setItem(row, 0, QTableWidgetItem(str(transaction["chck_id"])))
-            self.transactions_ui.TransactionTable.setItem(row, 1, QTableWidgetItem(name))
-            self.transactions_ui.TransactionTable.setItem(row, 2, QTableWidgetItem(checkup["chck_diagnoses"]))
-            self.transactions_ui.TransactionTable.setItem(row, 3, QTableWidgetItem(safe_date_format(checkup["chck_date"])))
+                chck_id = transaction["chck_id"]
+
+                # Fetch checkup details safely
+                checkup = CheckUp.get_checkup_details(chck_id)
+                if not checkup:
+                    print(f"Skipping transaction with invalid or missing checkup: chck_id={chck_id}")
+                    continue
+
+                pat_id = checkup.get("pat_id")
+                if not pat_id:
+                    print(f"Skipping checkup with missing patient ID: chck_id={chck_id}")
+                    continue
+
+                patient = Patient.get_patient_details(int(pat_id))
+                if not patient:
+                    print(f"Skipping checkup with missing patient data: pat_id={pat_id}")
+                    continue
+
+                name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
+
+                self.transactions_ui.TransactionTable.setItem(row, 0, QTableWidgetItem(str(chck_id)))
+                self.transactions_ui.TransactionTable.setItem(row, 1, QTableWidgetItem(name))
+                self.transactions_ui.TransactionTable.setItem(row, 2, QTableWidgetItem(checkup["chck_diagnoses"]))
+                self.transactions_ui.TransactionTable.setItem(row, 3,
+                                                              QTableWidgetItem(safe_date_format(checkup["chck_date"])))
+
+                row += 1
+
+            # Optional: Set actual row count if filtering skipped rows
+            self.transactions_ui.TransactionTable.setRowCount(row)
+
+        except Exception as e:
+            print(f"Error loading transaction table: {e}")
 
     def view_transaction_details_ui(self, transaction_id):
         try:

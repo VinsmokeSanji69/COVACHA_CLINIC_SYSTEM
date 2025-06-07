@@ -2,7 +2,6 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QDialogButtonBox, QLabel, QVBoxLayout, \
     QWidget
 from PyQt5.uic.Compiler.qtproxies import QtCore
-
 from Models import LaboratoryTest
 from Models.Doctor import Doctor
 from Views.Admin_Charges import Ui_Admin_Charges as AdminChargesUI
@@ -165,7 +164,7 @@ class AdminChargesController(QWidget):
                 if doc_name_clean == current_name:
                     doc_id = doctor.get("id")
                     if doc_id is not None:
-                        return int(doc_id)  # Ensure ID is returned as integer
+                        return int(doc_id)
                     break
 
             print(f"No doctor found with name: {doc_name}")

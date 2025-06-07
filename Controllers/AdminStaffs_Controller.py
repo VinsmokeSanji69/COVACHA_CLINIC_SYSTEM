@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, \
     QWidget
-
 from Controllers.AdminModifyUser_Controller import AdminModifyUserController
 from Views.Admin_Staffs import Ui_Admin_Staff as AdminStaffsUI
 from Controllers.AdminAddUser_Controller import AdminAddUserController
@@ -72,28 +71,35 @@ class AdminStaffsController(QWidget):
 
     def modify_staff(self, table_type=None):
         try:
-            table = self.staff_ui.DoctorTable if table_type == "doctor" else self.staff_ui.StaffTable
+            # Determine which table to use based on table_type
+            if table_type == "doctor":
+                table = self.staff_ui.DoctorTable
+            else:
+                # Optionally handle general staff or raise an error if table_type is None/invalid
+                table = self.staff_ui.StaffTable
 
             selected_row = table.currentRow()
             if selected_row == -1:
                 QMessageBox.warning(self, "Selection Error",
-                                    f"Please select a {table_type} from the table.")
+                                    f"Please select a {table_type if table_type else 'staff member'} from the table.")
                 return
 
+            # Get the staff ID from the first column of the selected row
             staff_id_item = table.item(selected_row, 0)
             if not staff_id_item:
-                raise ValueError(f"No {table_type} ID found in selected row")
+                raise ValueError(f"No {table_type if table_type else 'staff'} ID found in selected row")
 
             staff_id = staff_id_item.text().strip()
             if not staff_id:
-                raise ValueError(f"{table_type.capitalize()} ID is empty")
+                raise ValueError(f"{table_type.capitalize() if table_type else 'Staff'} ID is empty")
 
+            # Open the modification form with the correct staff ID and type
             self.modify_user_form(staff_id, table_type)
 
         except ValueError as ve:
             QMessageBox.warning(self, "Input Error", str(ve))
         except Exception as e:
-            error_msg = f"Failed to select {table_type}: {str(e)}"
+            error_msg = f"Failed to select {table_type if table_type else 'staff'}: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
             print(error_msg)
 
@@ -234,13 +240,25 @@ class AdminStaffsController(QWidget):
 
     def modify_user_form(self, staff_id, record_type):
         try:
-            staff = 2 if record_type == "doctor" else Staff.get_staff(int(staff_id))
+            if record_type == "doctor":
+                # Use the Doctor class's static method
+                staff = Doctor.get_doctor(staff_id)
+            else:
+                # Assume Staff is another class with get_staff() as a static or instance method
+                staff = Staff.get_staff(int(staff_id))
 
-            self.add_user_window = AdminModifyUserController(parent=self, staff_details = staff, staff_type = record_type)
+            if not staff:
+                QMessageBox.critical(self, "Error", f"{record_type.capitalize()} details could not be loaded.")
+                return
+
+            # Open the form
+            self.add_user_window = AdminModifyUserController(parent=self, staff_details=staff, staff_type=record_type)
             self.add_user_window.show()
             print("Add User Form shown successfully!")
+
         except Exception as e:
             print(f"Error opening Add User Form: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open modification form: {str(e)}")
 
     def open_add_user_form(self):
         print("Opening Add User Form")
