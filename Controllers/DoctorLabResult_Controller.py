@@ -11,8 +11,8 @@ from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from Models.Prescription import Prescription
 from datetime import datetime, date
-# from docx import Document
-# from docx2pdf import convert
+from docx import Document
+from docx2pdf import convert
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):

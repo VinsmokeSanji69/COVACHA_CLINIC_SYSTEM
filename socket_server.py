@@ -9,6 +9,7 @@ import uuid
 from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
+
 import psutils
 
 
@@ -53,10 +54,8 @@ class SocketServer:
         self.running = False
         self.server_thread = None
         self.discovery_thread = None
-        # Normalize MAC to lowercase with colons
         self.admin_mac = ADMIN_MAC_ADDRESS.lower().replace('-', ':')
-        # Hardcoded server MAC to ensure consistency
-        self.server_mac = self.admin_mac  # Use the same as admin MAC
+        self.server_mac = self.admin_mac
 
     def _get_active_mac_address(self):
         """Get MAC address of the active network interface"""
@@ -106,7 +105,7 @@ class SocketServer:
         return client_mac == self.admin_mac
 
     def handle_doctor_staff(self, connection, address):
-        """Handle client connections (existing implementation)"""
+        """Handle client connections with robust error handling"""
         ip, port = address
         is_admin = self.is_admin_connection(ip)
         print(f"Connected by {address} (Admin: {is_admin})")
@@ -174,7 +173,6 @@ class SocketServer:
             "CHECK_LAB_CODE_EXISTS": Laboratory.lab_code_exists,
             "GET_LAB_TEST": Laboratory.get_lab_test,
             "UPDATE_LAB_TEST": Laboratory.update_lab_test,
-
         }
 
         try:
@@ -187,90 +185,95 @@ class SocketServer:
                 logging.debug(f"Received raw data: {decoded_data}")
 
                 if not decoded_data:
-                    continue  # Skip empty data
+                    continue
 
-                command = None
-                args_str = ""
                 try:
-                    parts = decoded_data.split(maxsplit=1)
-                    command = parts[0].upper()
-                    args_str = parts[1] if len(parts) > 1 else ""
+                    # Improved command parsing that handles multiple formats
+                    command = None
+                    args = None
 
+                    # Case 1: Pure JSON input
+                    if decoded_data.startswith('{') and decoded_data.endswith('}'):
+                        try:
+                            json_data = json.loads(decoded_data)
+                            if isinstance(json_data, dict):
+                                command = json_data.get("command", "").upper()
+                                args = json_data.get("args", {})
+                        except json.JSONDecodeError:
+                            pass
+
+                    # Case 2: Space-separated command with arguments
+                    if command is None:
+                        parts = decoded_data.split(maxsplit=1)
+                        command = parts[0].upper()
+                        args = parts[1] if len(parts) > 1 else None
+
+                    # Case 3: Command with brackets [10000]
+                    if args and args.startswith('[') and args.endswith(']'):
+                        args = args[1:-1]  # Remove brackets
+
+                    # Process the command
                     if command == "PING":
                         response = {"status": "success", "message": "PONG"}
                     elif command not in db_methods:
-                        raise ValueError(f"Unknown command: {command}")
+                        response = {
+                            "status": "error",
+                            "message": f"Unknown command: {command}",
+                            "valid_commands": list(db_methods.keys())
+                        }
                     else:
                         method = db_methods[command]
 
-                        # Enhanced argument handling
-                        if args_str:
-                            try:
-                                # First try to parse as JSON
-                                args_data = json.loads(args_str)
+                        try:
+                            # Handle different argument formats
+                            if args is None:
+                                result = method()
+                            elif isinstance(args, dict):
+                                result = method(**args)
+                            else:
+                                # For space-separated arguments
+                                if isinstance(args, str):
+                                    args = [arg.strip() for arg in args.split(",")]
+                                result = method(*args) if isinstance(args, list) else method(args)
 
-                                # Handle different JSON argument formats
-                                if isinstance(args_data, dict):
-                                    # Keyword arguments
-                                    result = method(**args_data)
-                                elif isinstance(args_data, list):
-                                    # Positional arguments
-                                    result = method(*args_data)
-                                else:
-                                    # Single argument
-                                    result = method(args_data)
-                            except json.JSONDecodeError:
-                                # Fall back to legacy comma-separated format
-                                args = [arg.strip() for arg in args_str.split(",")] if "," in args_str else [args_str]
-                                result = method(*args)
-                        else:
-                            # No arguments
-                            result = method()
+                            # Format the response
+                            if result is None:
+                                response = {"status": "success"}
+                            elif isinstance(result, (dict, list)):
+                                response = result
+                            else:
+                                response = result
 
-                        # Convert date strings in arguments to date objects
-                        if isinstance(result, dict):
-                            for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
-                                if field in result and isinstance(result[field], str):
-                                    try:
-                                        result[field] = datetime.strptime(result[field], '%Y-%m-%d').date()
-                                    except ValueError:
-                                        pass
+                        except Exception as e:
+                            response = {
+                                "status": "error",
+                                "message": f"Error executing {command}: {str(e)}"
+                            }
+                            logging.error(f"Command execution error: {command}", exc_info=True)
 
-                        # Validate result type
-                        if not isinstance(result, (dict, list, type(None))):
-                            logging.warning(f"Unexpected return type from {command}: {type(result)}")
-                            raise TypeError(f"{command} returned invalid type: {type(result)}")
-
-                        response = result if isinstance(result, (dict, list)) else {}
-
-                except PermissionError as e:
-                    msg = f"Permission denied: {str(e)}"
-                    logging.warning(f"Admin attempt failed from {ip}: {msg}")
-                    response = {
-                        "status": "error",
-                        "message": msg,
-                        "code": "PERMISSION_DENIED"
-                    }
                 except Exception as e:
-                    msg = f"Error processing {command}: {str(e)}"
-                    logging.error(msg, exc_info=True)
                     response = {
                         "status": "error",
-                        "message": msg
+                        "message": f"Invalid request format: {str(e)}"
                     }
+                    logging.error(f"Request parsing error", exc_info=True)
 
                 # Send response
                 try:
-                    encoded_response = CustomJSONEncoder().encode(response).encode('utf-8')
-                    logging.debug(f"Sending response: {response}")
+                    encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
                     connection.sendall(encoded_response)
                 except Exception as e:
                     logging.error(f"Failed to send response: {e}")
+                    break
 
         except Exception as e:
-            logging.error(f"Critical error with {ip}: {str(e)}", exc_info=True)
+            logging.error(f"Critical error in connection handler: {e}", exc_info=True)
         finally:
-            connection.close()
+            try:
+                connection.close()
+            except:
+                pass
+            logging.info(f"Connection closed with {address}")
 
     def _run_server(self):
         """Main command server loop"""

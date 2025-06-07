@@ -6,7 +6,6 @@ from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Controllers.DoctorDiagnosis_Controller import DoctorDiagnosis
 from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Controllers.DoctorRecords_Controller import DoctorRecords
-# from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Dashboard import Ui_Doctor_Dashboard
 from Models.CheckUp import CheckUp

@@ -162,8 +162,10 @@ class DoctorPatientDetailsViewController(QMainWindow):
 
     def view_checkup_details_ui(self, checkup_id):
         try:
+            print("Trying to open DoctorLabResult")
             from Controllers.DoctorLabResult_Controller import DoctorLabResult
             self.checkup_detail_window = DoctorLabResult(checkup_id=checkup_id, view=True)
+            print("Successfully created DoctorLabResult")
             self.checkup_detail_window.show()
             self.hide()
         except Exception as e:

@@ -150,12 +150,25 @@ class DoctorRecords(QWidget):
 
         except Exception as e:
             print(f"Error refreshing tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def populate_accepted_checkups(self, checkups):
         # Clear existing rows
         self.checkup_ui.AcceptedCheckUp.clearContents()
         self.checkup_ui.AcceptedCheckUp.setRowCount(0)
+
+        if not checkups:
+            # If no checkups, show a single row with the message
+            self.checkup_ui.AcceptedCheckUp.setRowCount(1)
+            self.checkup_ui.AcceptedCheckUp.setColumnCount(1)  # Only one column for the message
+            item = QtWidgets.QTableWidgetItem("No Accepted Check Ups")
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.checkup_ui.AcceptedCheckUp.setItem(0, 0, item)
+            self.checkup_ui.AcceptedCheckUp.setSpan(0, 0, 1, 4)  # Span across all 4 columns
+            return
+
+        # Restore the correct number of columns in case they were changed
+        self.checkup_ui.AcceptedCheckUp.setColumnCount(4)
 
         # Populate the table
         for row, checkup in enumerate(checkups):
@@ -185,8 +198,11 @@ class DoctorRecords(QWidget):
         self.checkup_ui.DoneTable.clearContents()
         self.checkup_ui.DoneTable.setRowCount(0)
 
+        # Sort checkups by chck_id in descending order
+        sorted_checkups = sorted(checkups, key=lambda x: x['chck_id'], reverse=True)
+
         # Populate the table
-        for row, checkup in enumerate(checkups):
+        for row, checkup in enumerate(sorted_checkups):
             chck_id = checkup['chck_id']
             pat_id = checkup['pat_id']
             chck_diagnoses = checkup['chck_diagnoses']
