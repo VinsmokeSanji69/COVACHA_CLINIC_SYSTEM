@@ -446,7 +446,7 @@ QGraphicsView {
              <item alignment="Qt::AlignRight">
               <widget class="QLabel" name="UserName">
                <property name="text">
-                <string>Roy Adrian Rondina</string>
+                <string>ADMIN</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
@@ -716,7 +716,17 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
-                   <widget class="QPushButton" name="Icon">
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="SearchIcon">
                     <property name="text">
                      <string/>
                     </property>
@@ -729,16 +739,6 @@ QComboBox QAbstractItemView {
                       <width>35</width>
                       <height>35</height>
                      </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
                     </property>
                    </widget>
                   </item>
