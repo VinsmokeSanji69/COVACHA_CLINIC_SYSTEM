@@ -50,7 +50,6 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
-
 class DoctorLabResult(QMainWindow):
     def __init__(self, checkup_id=None, parent=None, refresh_callback=None, view = False):
         super().__init__(parent)
@@ -59,6 +58,7 @@ class DoctorLabResult(QMainWindow):
         self.checkup_id = checkup_id
         self.refresh_callback = refresh_callback
         print(f"Check_Up Id: {self.checkup_id}")
+        print(f"Opening DoctorLabResult with checkup_id = {checkup_id}")
 
         # Load and display data related to the checkup ID
         self.load_data()
@@ -445,7 +445,7 @@ class DoctorLabResult(QMainWindow):
         print(f"Retrieved lab code: {lab_code}")
 
         # Fetch the file path from the CheckUp model
-        file_path = Laboratory.get_lab_attachment(checkup_id, lab_code)
+        file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
             return

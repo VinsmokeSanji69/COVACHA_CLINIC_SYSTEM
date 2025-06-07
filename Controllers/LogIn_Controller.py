@@ -196,7 +196,7 @@ class LoginController:
 
         if password == admin[3]:  # Plaintext comparison
             # Show the admin dashboard modally
-            self.admin_dashboard = AdminDashboardController()
+            self.admin_dashboard = AdminDashboardController(login_window=self.login_window)
             self.admin_dashboard.show()
             self.login_window.close()
 
