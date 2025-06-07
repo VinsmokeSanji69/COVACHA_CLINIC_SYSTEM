@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QTableWidgetItem, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QTableWidgetItem, QMainWindow, QMessageBox, QHeaderView, QSizePolicy
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Doctor import Doctor
@@ -36,6 +36,11 @@ class StaffTransactionModal(QMainWindow):
 
         # Set selection behavior
         self.ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
+        header = self.ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def load_pending_transaction(self):
         """Fetch and display pending check-ups in the TransactionTable."""
@@ -93,7 +98,7 @@ class StaffTransactionModal(QMainWindow):
                     continue
 
                 # Fetch doctor details
-                doctor = Doctor.get_doctor_by_id(doc_id)
+                doctor = Doctor.get_doctor(doc_id)
                 if not doctor:
                     docFullname = "Unknown Doctor"
                 else:

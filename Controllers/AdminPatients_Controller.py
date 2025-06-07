@@ -168,34 +168,49 @@ class AdminPatientsController(QMainWindow):
 
     def load_table(self, patients):
         try:
+            # Clear table
             self.records_ui.PatientTable.setRowCount(0)
-            self.records_ui.PatientTable.setRowCount(len(patients))
 
-            # Configure table properties first
+            # Set headers only once (can move to __init__ if needed)
+            self.records_ui.PatientTable.setHorizontalHeaderLabels([
+                "Patient ID", "Name", "Recent Diagnosis", "Date"
+            ])
+
+            # Configure table properties
             self.records_ui.PatientTable.verticalHeader().setVisible(False)
-            self.records_ui.PatientTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)  # Moved up
-            self.records_ui.PatientTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Recent Diagnosis", "Date"])
+            self.records_ui.PatientTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-            # Populate the table
-            for row, patient in enumerate(patients):
-                id = str(patient.get("id", ""))
+            # Handle empty list case
+            if not patients:
+                self.records_ui.PatientTable.setRowCount(1)
+                no_data_item = QtWidgets.QTableWidgetItem("No matching records found")
+                no_data_item.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.records_ui.PatientTable.setItem(0, 0, no_data_item)
+                self.records_ui.PatientTable.setColumnSpan(0, 4)  # Span across all columns
+                return
+
+            # Populate table dynamically without pre-setting row count
+            for patient in patients:
+                row_position = self.records_ui.PatientTable.rowCount()
+                self.records_ui.PatientTable.insertRow(row_position)
+
+                id = str(patient.get("id", "N/A"))
                 name = patient.get("name", "N/A")
-                diagnosis = patient.get("recent_diagnosis", "No diagnosis")
-                date = patient.get("diagnosed_date", "No date") if patient.get("diagnosed_date") else "No date"
+                diagnosis = patient.get("recent_diagnosis", "N/A")
+                date = patient.get("diagnosed_date", "N/A")
 
-                # Insert row items
-                self.records_ui.PatientTable.insertRow(row)
-                self.records_ui.PatientTable.setItem(row, 0, QtWidgets.QTableWidgetItem(id))
-                self.records_ui.PatientTable.setItem(row, 1, QtWidgets.QTableWidgetItem(name))
-                self.records_ui.PatientTable.setItem(row, 2, QtWidgets.QTableWidgetItem(diagnosis))
-                self.records_ui.PatientTable.setItem(row, 3, QtWidgets.QTableWidgetItem(date))
+                self.records_ui.PatientTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(id))
+                self.records_ui.PatientTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(name))
+                self.records_ui.PatientTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(diagnosis))
+                self.records_ui.PatientTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem(date))
 
-            # Adjust table appearance
+            # Adjust appearance
             self.records_ui.PatientTable.resizeColumnsToContents()
             self.records_ui.PatientTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
             print(f"Error populating Patient Table: {e}")
+            QMessageBox.critical(self, "Table Error", f"Failed to display patient data: {str(e)}")
 
 
     def view_patient_details_ui(self, patient_id):

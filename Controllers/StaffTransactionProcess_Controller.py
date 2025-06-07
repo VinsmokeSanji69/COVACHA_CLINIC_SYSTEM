@@ -201,11 +201,11 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             doc_id = checkup.get("doc_id")
             if not doc_id:
                 raise ValueError("Missing 'doc_id' in checkup data.")
-            doctor = Doctor.get_doctor_by_id(doc_id)
+            doctor = Doctor.get_doctor(doc_id)
             if not doctor:
                 raise ValueError(f"No doctor found for doc_id={doc_id}")
 
-            docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+            docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
             # Populate UI fields
             self.ui.chck_ID.setText(str(checkup["chck_id"]))

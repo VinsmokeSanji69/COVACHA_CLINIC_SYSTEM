@@ -156,6 +156,7 @@ class AdminDashboardController(QMainWindow):
         self.staff_ui.PatientsButton.clicked.connect(self.go_to_records)
         self.staff_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.staff_ui.ChargesButton.clicked.connect(self.go_to_charges)
+        self.staff_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect records page buttons
         self.records_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
@@ -163,6 +164,8 @@ class AdminDashboardController(QMainWindow):
         self.records_ui.PatientsButton.clicked.connect(self.go_to_records)
         self.records_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.records_ui.ChargesButton.clicked.connect(self.go_to_charges)
+        self.records_ui.LogOutButton.clicked.connect(self.logout)
+
 
         # Connect transactions page buttons
         self.transactions_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
@@ -170,6 +173,8 @@ class AdminDashboardController(QMainWindow):
         self.transactions_ui.PatientsButton.clicked.connect(self.go_to_records)
         self.transactions_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.transactions_ui.ChargesButton.clicked.connect(self.go_to_charges)
+        self.transactions_ui.LogOutButton.clicked.connect(self.logout)
+
 
         # Connect charges page buttons
         self.charges_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
@@ -177,6 +182,8 @@ class AdminDashboardController(QMainWindow):
         self.charges_ui.PatientsButton.clicked.connect(self.go_to_records)
         self.charges_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.charges_ui.ChargesButton.clicked.connect(self.go_to_charges)
+        self.charges_ui.LogOutButton.clicked.connect(self.logout)
+
 
     @pyqtSlot()
     def logout(self):

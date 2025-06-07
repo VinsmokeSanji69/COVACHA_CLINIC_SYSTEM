@@ -54,14 +54,8 @@ class AdminStaffsController(QWidget):
         self.staff_ui = staff_ui
         self.ui.setupUi(self)
 
-        print("Admin Staffs UI initialized!")
         self.refresh_tables()
 
-        self.staff_ui.AddUserButton.clicked.connect(self.open_add_user_form)
-        # self.staff_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        self.staff_ui.ChargesButton.clicked.connect(self.view_charges_ui)
-        self.staff_ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
-        self.staff_ui.PatientsButton.clicked.connect(self.view_patient_ui)
         self.staff_ui.ViewDoctor.clicked.connect(lambda: self.view_staff_member("doctor"))
         self.staff_ui.ViewStaff.clicked.connect(lambda: self.view_staff_member("staff"))
         self.staff_ui.DeleteStaff.clicked.connect(lambda: self.delete_record("staff"))

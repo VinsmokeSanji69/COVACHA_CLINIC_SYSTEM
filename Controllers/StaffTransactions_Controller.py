@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QHeaderView, QSizePolicy
 from Controllers.StaffViewTransaction_Controller import StaffViewTransaction
 from Views.Staff_Transactions import Ui_Staff_Transactions as StaffTransactionUI
 from Models.Transaction import Transaction
@@ -51,13 +51,13 @@ class StaffTransactions(QWidget):
 
                 # Fetch doctor details
                 doc_id = checkup['doc_id']
-                doctor = Doctor.get_doctor_by_id(doc_id)
+                doctor = Doctor.get_doctor(doc_id)
                 if not doctor:
                     continue
 
                 # Format names
                 pat_full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                doc_full_name = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+                doc_full_name = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
                 # Get transaction status
                 tran_status = transaction_dict.get(chck_id, "Pending")

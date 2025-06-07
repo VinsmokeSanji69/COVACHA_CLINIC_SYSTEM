@@ -51,12 +51,12 @@ class StaffLabRequest(QWidget):
                 doc_id = checkup_details['doc_id']
 
                 patient_details = Patient.get_patient_details(pat_id)
-                doctor_details = Doctor.get_doctor_by_id(doc_id)
+                doctor_details = Doctor.get_doctor(doc_id)
                 if not patient_details or not doctor_details:
                     continue
 
                 patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
-                doctor_name = f"{doctor_details['doc_lname'].capitalize()}, {doctor_details['doc_fname'].capitalize()}"
+                doctor_name = f"{doctor_details['last_name'].capitalize()}, {doctor_details['first_name'].capitalize()}"
 
                 # Use static method to fetch lab attachments
                 lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
