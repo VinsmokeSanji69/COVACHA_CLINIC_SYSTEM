@@ -223,6 +223,7 @@ class DoctorDashboardController(QMainWindow):
         """Switch to the dashboard page"""
         print("Navigating to Dashboard")
         self.page_stack.setCurrentWidget(self.dashboard_page)
+        self.load_pending_checkups()
         self.update_time_labels()
 
     @pyqtSlot()
