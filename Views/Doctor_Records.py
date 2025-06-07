@@ -260,47 +260,6 @@ class Ui_Doctor_Records(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.SearchBarContainer)
         self.horizontalLayout_3.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.SearchBar = QtWidgets.QWidget(self.SearchBarContainer)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SearchBar.sizePolicy().hasHeightForWidth())
-        self.SearchBar.setSizePolicy(sizePolicy)
-        self.SearchBar.setStyleSheet("#SearchBar {\n"
-"    background-color: #F4F7ED;\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 15px;\n"
-"}\n"
-"#Search{\n"
-"    background-color: transparent ;\n"
-"    font: 300 14pt \"Lexend Light\";\n"
-"}")
-        self.SearchBar.setObjectName("SearchBar")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.SearchBar)
-        self.horizontalLayout_4.setContentsMargins(-1, 5, 0, 5)
-        self.horizontalLayout_4.setSpacing(0)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.SearchButton = QtWidgets.QPushButton(self.SearchBar)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SearchButton.sizePolicy().hasHeightForWidth())
-        self.SearchButton.setSizePolicy(sizePolicy)
-        self.SearchButton.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(":/icons/icons/search.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.SearchButton.setIcon(icon5)
-        self.SearchButton.setIconSize(QtCore.QSize(35, 35))
-        self.SearchButton.setObjectName("SearchButton")
-        self.horizontalLayout_4.addWidget(self.SearchButton, 0, QtCore.Qt.AlignLeft)
-        self.Search = QtWidgets.QLineEdit(self.SearchBar)
-        self.Search.setObjectName("Search")
-        self.horizontalLayout_4.addWidget(self.Search)
-        self.horizontalLayout_3.addWidget(self.SearchBar)
-        spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem2)
-        spacerItem3 = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem3)
         self.verticalLayout_6.addWidget(self.SearchBarContainer)
         self.CheckUpLabel = QtWidgets.QLabel(self.MainBody)
         self.CheckUpLabel.setObjectName("CheckUpLabel")
@@ -328,9 +287,6 @@ class Ui_Doctor_Records(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.AcceptedCheckUp.sizePolicy().hasHeightForWidth())
         self.AcceptedCheckUp.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.AcceptedCheckUp.setFont(font)
         self.AcceptedCheckUp.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -393,9 +349,6 @@ class Ui_Doctor_Records(object):
         self.SeeAllButton.setObjectName("SeeAllButton")
         self.verticalLayout_6.addWidget(self.SeeAllButton, 0, QtCore.Qt.AlignLeft)
         self.DoneTable = QtWidgets.QTableWidget(self.MainBody)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.DoneTable.setFont(font)
         self.DoneTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
