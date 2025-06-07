@@ -12,14 +12,10 @@ class StaffLabRequest(QWidget):
         self.labreq_ui = labreq_ui
         self.ui.setupUi(self)
         self.load_staff_labrequest_table()
-        # print("Staff Lab Request UI initialized!")
-
 
         # Connect buttons (if the button exists)
         if hasattr(self.labreq_ui, 'Modify'):
-            # print("Modify exists")
             self.labreq_ui.Modify.clicked.connect(self.open_form)
-            # print("Modify connected to open_add_user_form!")
         else:
             print("Modify is missing!")
 
@@ -27,21 +23,22 @@ class StaffLabRequest(QWidget):
         """Reload data into the tables"""
         try:
             self.load_staff_labrequest_table()
-            # print("Tables refreshed successfully!")
         except Exception as e:
-            # print(f"Error refreshing tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
         try:
             rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
+            print(rows)
             checkup_ids = [row[0] for row in rows]
 
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
             for checkup_id in checkup_ids:
+                print(checkup_id)
                 checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS",checkup_id)
+                print(checkup_details)
                 if not checkup_details:
                     continue
 
@@ -87,7 +84,6 @@ class StaffLabRequest(QWidget):
 
     def open_form(self):
         """Open the Staff Add Attachment form with parameters from the selected row."""
-        # print("Opening Add User Form...")
         try:
             # Get the currently selected row in the LabRequestTable
             selected_row = self.labreq_ui.LabRequestTable.currentRow()
@@ -119,8 +115,6 @@ class StaffLabRequest(QWidget):
                 refresh_table = self.refresh_table
             )
             self.staff_attach_window.show()
-            # print("Staff Attach Form shown successfully!")
 
         except Exception as e:
-            # print(f"Error opening Staff Attach Form: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open Staff Attach Form: {e}")

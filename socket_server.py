@@ -5,19 +5,24 @@ import logging
 import subprocess
 import re
 import platform
+import uuid
 from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
+import psutil
+
+
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (date, datetime)):
-            return obj.isoformat()  # Converts to ISO format string: "YYYY-MM-DD"
+            return obj.isoformat()
         return super().default(obj)
+
 
 logging.basicConfig(filename='server.log', level=logging.DEBUG)
 
-# Import your models (unchanged)
+# Import your models
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
@@ -30,41 +35,60 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "ClinicSystem",
     "user": "postgres",
-    "password": "sphinxclub012"
+    "password": "admin123"
 }
 
-# Socket server setup
+# Server configuration
 HOST = '0.0.0.0'
-PORT = 6543
+DISCOVERY_PORT = 50000
+COMMAND_PORT = 6543
 
-# Admin MAC address (replace with your actual admin MAC)
-ADMIN_MAC_ADDRESS = "40-1A-58-BF-52-B8"
+# Admin MAC address from your ipconfig (Wi-Fi adapter)
+ADMIN_MAC_ADDRESS = "74-04-F1-4E-E6-02"
 
 
 class SocketServer:
-    def __init__(self, host=HOST, port=PORT):
+    def __init__(self, host=HOST, port=COMMAND_PORT):
         self.host = host
         self.port = port
         self.running = False
         self.server_thread = None
-        self.admin_mac = ADMIN_MAC_ADDRESS.lower()
+        self.discovery_thread = None
+        self.admin_mac = ADMIN_MAC_ADDRESS.lower().replace('-', ':')
+        self.server_mac = self.admin_mac
+
+    def _get_active_mac_address(self):
+        """Get MAC address of the active network interface"""
+        try:
+            interfaces = psutil.net_if_addrs()
+            preferred_interfaces = ['Wi-Fi', 'Ethernet', 'eth0', 'wlan0']
+
+            for interface in preferred_interfaces:
+                if interface in interfaces:
+                    for addr in interfaces[interface]:
+                        if addr.family == psutil.AF_LINK:
+                            mac = addr.address.replace('-', ':').lower()
+                            if mac.count(':') == 5:
+                                return mac
+            print(self.server_mac)
+            return self.server_mac  # Fallback to hardcoded MAC
+        except Exception:
+            return self.server_mac
 
     @staticmethod
-    @lru_cache(maxsize=32)  # Cache MAC lookups for performance
+    @lru_cache(maxsize=32)
     def get_mac_from_ip(ip_address):
         """Get MAC address for a given IP using ARP"""
         try:
             if platform.system() == "Windows":
-                # Windows ARP command
                 arp_output = subprocess.check_output(["arp", "-a", ip_address]).decode('utf-8', errors='ignore')
                 mac_match = re.search(r"([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})", arp_output)
             else:
-                # Linux/Mac OS ARP command
                 arp_output = subprocess.check_output(["arp", "-n", ip_address]).decode('utf-8', errors='ignore')
                 mac_match = re.search(r"(([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2}))", arp_output)
 
             if mac_match:
-                return mac_match.group(0).lower().replace('-', ':')  # Normalize format
+                return mac_match.group(0).lower().replace('-', ':')
             return None
         except Exception as e:
             logging.warning(f"Could not get MAC for {ip_address}: {str(e)}")
@@ -84,7 +108,6 @@ class SocketServer:
     def handle_doctor_staff(self, connection, address):
         ip, port = address
         is_admin = self.is_admin_connection(ip)
-        print(f"Connected by {address} (Admin: {is_admin})")
         logging.info(f"Connection from {address} (Admin: {is_admin})")
 
         db_methods = {
@@ -123,15 +146,12 @@ class SocketServer:
             "GET_LAB_CODES_BY_CHECK_ID": CheckUp.get_lab_codes_by_chckid,
             "ADD_LAB_CODE": CheckUp.add_lab_code,
             "DELETE_LAB_CODE": CheckUp.delete_lab_code,
-            "GET_CHECKUPS_WITH_LAB_REQUESTS": CheckUp.get_checkups_with_lab_requests,
-            "GET_LAB_ATTACHMENTS_BY_CHECKUP": CheckUp.get_lab_attachments_by_checkup_id,
 
             # TRANSACTIONS
             "CREATE_TRANSACTION": Transaction.add_transaction,
             "UPDATE_TRANSACTION": Transaction.update_transaction,
             "GET_TRANSACTION_BY_CHECKUP_ID": Transaction.get_transaction_by_chckid1,
             "GET_ALL_TRANSACTION": Transaction.get_all_transaction,
-            "UPDATE_TRANSACTION_STATUS": Transaction.update_transaction_status,
 
             # PRESCRIPTIONS
             "CREATE_PRESCRIPTION": Prescription.add_presscription,
@@ -148,26 +168,31 @@ class SocketServer:
             "COUNT_ALL_TEST": Laboratory.count_all_test,
             "CHECK_LAB_CODE_EXISTS": Laboratory.lab_code_exists,
             "GET_LAB_TEST": Laboratory.get_lab_test,
-            "UPDATE_LAB_TEST": Laboratory.update_lab_test,
-
+            "UPDATE_LAB_TEST": Laboratory.update_lab_test
         }
 
         try:
             while True:
-                data = connection.recv(1024)
+                data = connection.recv(4096)  # Increased buffer size to match client
                 if not data:
                     break
 
-                decoded_data = data.decode('utf-8', errors='ignore').strip()
-                logging.debug(f"Received raw data: {decoded_data}")
-
-                if not decoded_data:
-                    continue  # Skip empty data
-
-                command = None
-                args_str = ""
                 try:
-                    parts = decoded_data.split(maxsplit=1)
+                    # Parse the client info containing MAC address and command
+                    client_info = json.loads(data.decode('utf-8', errors='ignore').strip())
+                    client_mac = client_info.get("client_mac", "")
+                    payload = client_info.get("command", "")
+
+                    if not payload:
+                        response = {
+                            "status": "error",
+                            "message": "Empty command"
+                        }
+                        connection.sendall(json.dumps(response).encode())
+                        continue
+
+                    # Parse command and arguments
+                    parts = payload.split(maxsplit=1)
                     command = parts[0].upper()
                     args_str = parts[1] if len(parts) > 1 else ""
 
@@ -178,31 +203,26 @@ class SocketServer:
                     else:
                         method = db_methods[command]
 
-                        # Enhanced argument handling
+                        # Handle arguments
                         if args_str:
                             try:
-                                # First try to parse as JSON
                                 args_data = json.loads(args_str)
 
-                                # Handle different JSON argument formats
+                                # Handle different argument formats
                                 if isinstance(args_data, dict):
-                                    # Keyword arguments
                                     result = method(**args_data)
                                 elif isinstance(args_data, list):
-                                    # Positional arguments
                                     result = method(*args_data)
                                 else:
-                                    # Single argument
                                     result = method(args_data)
                             except json.JSONDecodeError:
-                                # Fall back to legacy comma-separated format
+                                # Fall back to legacy format if JSON parsing fails
                                 args = [arg.strip() for arg in args_str.split(",")] if "," in args_str else [args_str]
                                 result = method(*args)
                         else:
-                            # No arguments
                             result = method()
 
-                        # Convert date strings in arguments to date objects
+                        # Convert date strings to date objects if needed
                         if isinstance(result, dict):
                             for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
                                 if field in result and isinstance(result[field], str):
@@ -211,12 +231,7 @@ class SocketServer:
                                     except ValueError:
                                         pass
 
-                        # Validate result type
-                        if not isinstance(result, (dict, list, type(None))):
-                            logging.warning(f"Unexpected return type from {command}: {type(result)}")
-                            raise TypeError(f"{command} returned invalid type: {type(result)}")
-
-                        response = result if isinstance(result, (dict, list)) else {}
+                        response = result if result is not None else {}
 
                 except PermissionError as e:
                     msg = f"Permission denied: {str(e)}"
@@ -227,7 +242,7 @@ class SocketServer:
                         "code": "PERMISSION_DENIED"
                     }
                 except Exception as e:
-                    msg = f"Error processing {command}: {str(e)}"
+                    msg = f"Error processing command: {str(e)}"
                     logging.error(msg, exc_info=True)
                     response = {
                         "status": "error",
@@ -236,7 +251,7 @@ class SocketServer:
 
                 # Send response
                 try:
-                    encoded_response = CustomJSONEncoder().encode(response).encode('utf-8')
+                    encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
                     logging.debug(f"Sending response: {response}")
                     connection.sendall(encoded_response)
                 except Exception as e:
@@ -248,12 +263,12 @@ class SocketServer:
             connection.close()
 
     def _run_server(self):
-        """Main server loop"""
+        """Main command server loop"""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind((self.host, self.port))
             s.listen(5)
-            print(f"✅ Waiting for connections on {self.host}:{self.port}")
+            print(f"✅ Command server running on {self.host}:{self.port}")
 
             while self.running:
                 conn, addr = s.accept()
@@ -264,21 +279,75 @@ class SocketServer:
                 )
                 client_thread.start()
 
+    def _run_discovery_server(self):
+        """Handle UDP discovery requests with fixed MAC address"""
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            s.bind(('0.0.0.0', DISCOVERY_PORT))
+
+            # HARDCODE THE CORRECT MAC ADDRESS HERE
+            SERVER_MAC = "74:04:F1:4E:E6:02"  # From your Wi-Fi adapter
+
+            while self.running:
+                try:
+                    data, addr = s.recvfrom(1024)
+                    ip, port = addr
+
+                    try:
+                        request = json.loads(data.decode())
+                        if request.get("type") == "DISCOVERY_REQUEST":
+                            client_mac = request.get("client_mac", "unknown")
+                            logging.info(f"Discovery request from {ip} (Client MAC: {client_mac})")
+
+                            response = {
+                                "type": "DISCOVERY_RESPONSE",
+                                "mac": SERVER_MAC,  # Use the hardcoded MAC
+                                "ip": socket.gethostbyname(socket.gethostname()),
+                                "port": COMMAND_PORT,
+                                "name": "ClinicServer"
+                            }
+
+                            s.sendto(json.dumps(response).encode(), addr)
+                            logging.debug(f"Sent discovery response to {addr}")
+
+                    except json.JSONDecodeError:
+                        logging.warning(f"Invalid discovery request from {addr}")
+
+                except Exception as e:
+                    if self.running:  # Only log if we didn't stop intentionally
+                        logging.error(f"Discovery error: {e}")
+
     def start(self):
-        """Start the socket server in a background thread"""
+        """Start both servers"""
         if not self.running:
             self.running = True
+
+            # Start command server
             self.server_thread = threading.Thread(
                 target=self._run_server,
                 daemon=True
             )
             self.server_thread.start()
 
+            # Start discovery server
+            self.discovery_thread = threading.Thread(
+                target=self._run_discovery_server,
+                daemon=True
+            )
+            self.discovery_thread.start()
+
+
     def stop(self):
-        """Stop the server gracefully"""
+        """Stop both servers gracefully"""
         if self.running:
             self.running = False
-            # Unblock the accept() call with a dummy connection
+
+            # Stop command server
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.connect((self.host, self.port))
+                s.connect((self.host, COMMAND_PORT))
             self.server_thread.join(timeout=1)
+
+            # Stop discovery server
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                s.sendto(b'', ('localhost', DISCOVERY_PORT))
+            self.discovery_thread.join(timeout=1)

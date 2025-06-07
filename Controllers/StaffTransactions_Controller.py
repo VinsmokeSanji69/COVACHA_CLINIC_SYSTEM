@@ -22,14 +22,11 @@ class StaffTransactions(QWidget):
         try:
             # Fetch all completed check-ups
             checkups = DataRequest.send_command("GET_ALL_CHECKUP")
-
             # Fetch all transactions to determine their status
             transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
-
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
 
             # Debug: Log all chck_id from transactions
-            # print(f"All transaction chck_id: {list(transaction_dict.keys())}")
 
             # Clear the table before populating it
             self.transactions_ui.TransactionTable.clearContents()
@@ -51,7 +48,6 @@ class StaffTransactions(QWidget):
                 doctor = DataRequest.send_command("GET_DOCTOR_BY_ID",doc_id)
 
                 if not doctor:
-                    # print(f"No doctor found for doc_id={doc_id}")
                     continue
 
                 # Format patient and doctor names
@@ -73,7 +69,6 @@ class StaffTransactions(QWidget):
                     tran_status))  # Transaction Status
 
         except Exception as e:
-            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
         self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
@@ -121,7 +116,6 @@ class StaffTransactions(QWidget):
             self.staff_transaction_view.show()
 
         except Exception as e:
-            # print(f"Error while viewing transaction: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"An error occurred: {e}")
 
 
