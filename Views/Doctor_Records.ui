@@ -208,7 +208,7 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="QPushButton" name="LogOutButton">
           <property name="text">
            <string> Logout</string>
           </property>
