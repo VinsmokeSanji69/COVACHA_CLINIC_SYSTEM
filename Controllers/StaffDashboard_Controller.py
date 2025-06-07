@@ -17,8 +17,9 @@ from Views.Staff_Transactions import Ui_Staff_Transactions
 
 
 class StaffDashboardController(QMainWindow):
-    def __init__(self, staff_id=None):
+    def __init__(self, staff_id=None, login_window=None):
         super().__init__()
+        self.login_window = login_window
         self.setWindowTitle("Staff Dashboard")
 
         # Store staff ID
@@ -119,6 +120,7 @@ class StaffDashboardController(QMainWindow):
         self.dashboard_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.dashboard_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.dashboard_ui.LabButton.clicked.connect(self.go_to_labreq)
+        self.dashboard_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect transactions page buttons
         self.transactions_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
@@ -138,6 +140,38 @@ class StaffDashboardController(QMainWindow):
         if hasattr(self.dashboard_ui, 'AddTransactionButton'):
             self.dashboard_ui.AddTransactionButton.clicked.connect(self.open_transaction_modal)
 
+    @pyqtSlot()
+    def logout(self):
+        """Return to the login screen and clear the credentials."""
+        try:
+            # 1. Cleanup and delete all tracked windows
+            for window in getattr(self, "open_windows", []):
+                if window and hasattr(window, "deleteLater"):
+                    window.deleteLater()
+
+            # 2. Close and delete dashboard safely
+            if hasattr(self, "cleanup"):
+                self.cleanup()
+            if hasattr(self, "hide"):
+                self.hide()  # Prefer hide over deleteLater to avoid premature deletion
+            if hasattr(self, "deleteLater"):
+                QTimer.singleShot(0, self.deleteLater)  # Delay deletion
+
+            # 3. Show login window
+            if hasattr(self, "login_window") and self.login_window:
+                self.login_window.ui.UserIDInput.clear()
+                self.login_window.ui.PasswordInput.clear()
+                self.login_window.show()
+            else:
+                from Views.LogIn import LogInWindow
+                from Controllers.Login_Controller import LoginController
+
+                login_window = LogInWindow()
+                LoginController(login_window)
+                login_window.show()
+
+        except Exception as e:
+            print("Logout error:", e)
 
     @pyqtSlot()
     def go_to_dashboard(self):

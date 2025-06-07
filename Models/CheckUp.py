@@ -647,10 +647,10 @@ class CheckUp:
 
         try:
             query = """
-                        SELECT DISTINCT clt.chck_id, c.chck_date
-                        FROM checkup_lab_tests clt
-                        JOIN checkup c ON clt.chck_id = c.chck_id;
-                    """
+                    SELECT DISTINCT clt.chck_id, c.chck_date
+                    FROM checkup_lab_tests clt
+                    JOIN checkup c ON clt.chck_id = c.chck_id;
+                """
             with conn.cursor() as cursor:
                 cursor.execute(query)
                 rows = cursor.fetchall()
@@ -679,10 +679,10 @@ class CheckUp:
         try:
             with conn.cursor() as cursor:
                 cursor.execute("""
-                            SELECT lab_attachment
-                            FROM checkup_lab_tests
-                            WHERE chck_id = %s;
-                        """, (checkup_id,))
+                        SELECT lab_attachment
+                        FROM checkup_lab_tests
+                        WHERE chck_id = %s;
+                    """, (checkup_id,))
                 return cursor.fetchall()
         except Exception as e:
             raise RuntimeError(f"Failed to fetch lab attachments: {e}")

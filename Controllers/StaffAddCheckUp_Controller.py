@@ -2,10 +2,8 @@ import datetime
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
+from ClientSocketController import DataRequest
 from Views.Staff_AddCheckUp import Ui_Staff_AddCheckUp as StaffCheckUpUi
-from Models.Patient import Patient
-from Models.CheckUp import CheckUp
-
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -94,47 +92,44 @@ class StaffAddCheckUp(QMainWindow):
         lname = self.ui.Lname.text().strip()
 
         # Log input values for debugging
-        # print(f"Checking for patient: {fname}, {lname}")
+        print(f"Checking for patient: {fname}, {lname}")
 
         # Do nothing if either Fname or Lname is empty
         if not fname or not lname:
-            # print("One or both fields are empty. Skipping check.")
+            print("One or both fields are empty. Skipping check.")
             return
 
         try:
             # Check if the patient already exists in the database
-            patient = Patient.get_patient_by_name(fname, lname)
-            # print(f"Query result: {patient}")  # Debug: Log the query result
+            patient = DataRequest.send_command("GET_PATIENT_BY_NAME", fname, lname)
+            print(f"Query result: {patient}")  # Debug: Log the query result
 
             if patient:
-                # print("Patient found. Prefilling form...")
-                # Temporarily disconnect editingFinished signals to prevent recursion
-                self.ui.Fname.editingFinished.disconnect(self.check_patient_existence)
-                self.ui.Lname.editingFinished.disconnect(self.check_patient_existence)
+                # Ensure the response is a dictionary
+                if not isinstance(patient, dict):
+                    raise ValueError("Unexpected response format from GET_PATIENT_BY_NAME")
 
                 # Prefill all patient information
-                self.ui.ID.setText(str(patient["id"]))
-                self.ui.Mname.setText(patient["middle_name"])
-                self.ui.Gender.setCurrentText(patient["gender"])
-
-                # Ensure dob is properly formatted as a string
-                dob_str = patient["dob"].strftime("%Y-%m-%d") if isinstance(patient["dob"], datetime.date) else patient[
-                    "dob"]
+                self.ui.ID.setText(str(patient.get("id", "")))
+                self.ui.Mname.setText(patient.get("middle_name", ""))
+                self.ui.Gender.setCurrentText(patient.get("gender", ""))
+                # Handle dob formatting
+                dob_str = patient.get("dob", "")
+                if isinstance(dob_str, datetime.date):
+                    dob_str = dob_str.strftime("%Y-%m-%d")
+                elif isinstance(dob_str, str):
+                    pass
+                else:
+                    raise ValueError("Invalid date format for DOB")
                 self.ui.Dob.setDate(QDate.fromString(dob_str, "yyyy-MM-dd"))
-
-                self.ui.Address.setText(patient["address"])
-                self.ui.Contact.setText(patient["contact"])
+                self.ui.Address.setText(patient.get("address", ""))
+                self.ui.Contact.setText(patient.get("contact", ""))
                 self.calculate_age()  # Update age based on DOB
-
-                # Reconnect editingFinished signals
-                self.ui.Fname.editingFinished.connect(self.check_patient_existence)
-                self.ui.Lname.editingFinished.connect(self.check_patient_existence)
-
                 QMessageBox.information(self, "Patient Found",
                                         "Patient already exists. Information has been prefilled.")
             else:
                 # Clear fields for a new patient
-                # print("Patient not found. Generating new patient ID...")
+                print("Patient not found. Generating new patient ID...")
                 self.ui.Mname.clear()
                 self.ui.Gender.setCurrentIndex(-1)
                 self.ui.Dob.setDate(QDate(1990, 1, 1))
@@ -143,7 +138,7 @@ class StaffAddCheckUp(QMainWindow):
                 self.ui.Age.clear()
 
                 # Generate a new patient ID
-                new_pat_id = Patient.create_new_patient({
+                new_pat_id = DataRequest.send_command("CREATE_PATIENT", {
                     "first_name": fname,
                     "last_name": lname,
                     "middle_name": "",
@@ -152,15 +147,16 @@ class StaffAddCheckUp(QMainWindow):
                     "address": "",
                     "contact": ""
                 })
+
                 if new_pat_id:
                     self.ui.ID.setText(str(new_pat_id))
-                    # print(f"Generated new patient ID: {new_pat_id}")
+                    print(f"Generated new patient ID: {new_pat_id}")
                     QMessageBox.information(self, "New Patient", "A new patient ID has been generated.")
                 else:
                     QMessageBox.critical(self, "Error", "Failed to generate a new patient ID.")
 
         except Exception as e:
-            # print(f"Error in check_patient_existence: {e}")
+            print(f"Error in check_patient_existence: {e}")
             QMessageBox.critical(self, "Error", "An error occurred while checking patient existence.")
 
 
@@ -241,9 +237,9 @@ class StaffAddCheckUp(QMainWindow):
         # print(f"Data to be saved: {data}")
 
         # Save or update patient information
-        if Patient.update_or_create_patient(data):
+        if DataRequest.send_command("UPDATE_OR_CREATE_PATIENT",data):
             # Save check-up data
-            if CheckUp.save_checkup(data):
+            if DataRequest.send_command("CREATE_CHECKUP",data):
                 QMessageBox.information(self, "Success", "Check-up added successfully!")
                 self.clear_form()
 
