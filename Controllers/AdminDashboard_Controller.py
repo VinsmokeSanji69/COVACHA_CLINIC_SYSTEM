@@ -1,3 +1,5 @@
+from itertools import count
+
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedWidget, QHeaderView, QSizePolicy
@@ -29,7 +31,6 @@ class AdminDashboardController(QMainWindow):
 
         print("Admin Dashboard UI initialized!")
 
-        self.load_counts()
 
         # Create central widget
         self.central_widget = QWidget()
@@ -49,6 +50,7 @@ class AdminDashboardController(QMainWindow):
 
         # Initialize pages
         self.setup_pages()
+        self.initialize_overview()
 
         # Setup timer for time updates
         self.timer = QTimer(self)
@@ -57,7 +59,7 @@ class AdminDashboardController(QMainWindow):
 
         # Connect navigation buttons - will be connected for each page
         self.connect_all_buttons()
-
+        self.initialize_overview()
         # Initialize controller instances AFTER setting up pages
         self.admin_staff = AdminStaffsController(self.staff_ui)
         self.admin_records = AdminPatientsController(self.records_ui)
@@ -206,7 +208,7 @@ class AdminDashboardController(QMainWindow):
                 self.login_window.show()
             else:
                 from Views.LogIn import LogInWindow
-                from Controllers.Login_Controller import LoginController
+                from Controllers.LogIn_Controller import LoginController
 
                 login_window = LogInWindow()
                 LoginController(login_window)
@@ -266,21 +268,6 @@ class AdminDashboardController(QMainWindow):
         if hasattr(ui, 'Month'):
             ui.Month.setText(f"{now.strftime('%B')} {now.day}, {now.year}")
 
-    def load_counts(self):
-        try:
-            # Count doctors
-            doctor_count = Admin.count_doctor()
-            self.ui.TotalDoctor.setText(str(doctor_count))
-
-            # Count staff
-            staff_count = Admin.count_staff()
-            self.ui.TotalStaff.setText(str(staff_count))
-
-            print(f"Loaded counts - Doctors: {doctor_count}, Staff: {staff_count}")
-
-        except Exception as e:
-            print(f"Dashboard: {e}")
-
     def initialize_overview(self):
         try:
             patients = Patient.get_all_patients()
@@ -288,12 +275,15 @@ class AdminDashboardController(QMainWindow):
             doctors = Doctor.get_all_doctors()
             checkups = CheckUp.get_all_checkups()
 
-            patient_count = count(patients)
-            staff_count = count(staffs)
-            doctor_count = count(doctors)
-            self.ui.TotalPatient.setText(str(patient_count))
-            self.ui.TotalDoctor.setText(str(staff_count))
-            self.ui.TotalStaff.setText(str(doctor_count))
+            patient_count = len(patients)
+            staff_count = len(staffs)
+            doctor_count = len(doctors)
+
+            print(patient_count, staff_count, doctor_count)
+
+            self.dashboard_ui.TotalPatient.setText(str(patient_count))
+            self.dashboard_ui.TotalDoctor.setText(str(doctor_count))
+            self.dashboard_ui.TotalStaff.setText(str(staff_count))
 
             if not patients:
                 return
@@ -310,34 +300,119 @@ class AdminDashboardController(QMainWindow):
                     elderly += 1
 
             total = len(patients)
-            self.ui.ChildPercent.setText(f"{child * 100 // total}%")
-            self.ui.AdultPercent.setText(f"{adult * 100 // total}%")
-            self.ui.ElderlyPercent.setText(f"{elderly * 100 // total}%")
+            self.dashboard_ui.ChildPercent.setText(f"{child * 100 // total}%")
+            self.dashboard_ui.AdultPercent.setText(f"{adult * 100 // total}%")
+            self.dashboard_ui.ElderlyPercent.setText(f"{elderly * 100 // total}%")
 
-            diagnosis_1 = count()
-            diagnosis_percent_1 = count()
-            diagnosis_2 = count()
-            diagnosis_percent_2 = count()
-            self.ui.Diagnosis1.setText(str(diagnosis_1))
-            self.ui.Diagnose1Percent.setText(str(diagnosis_percent_1))
-            self.ui.Diagnosis2.setText(str(diagnosis_2))
-            self.ui.DiagnosePercent2.setText(str(diagnosis_percent_2))
+            # TOP 3 DIAGNOSES LOGIC
+            diagnosis_counts = {}
 
+            # Count occurrences of each diagnosis
+            for checkup in checkups:
+                diagnosis = checkup.get('chck_diagnoses')
+                if diagnosis:  # Only count if diagnosis exists
+                    diagnosis_counts[diagnosis] = diagnosis_counts.get(diagnosis, 0) + 1
 
-            self.ui.DocName1.setText(str())
-            self.ui.Specialty1.setText(str())
-            self.ui.PatCount1.setText(str())
-            self.ui.PatPercent1.setText(str())
+            # Sort diagnoses by count (descending) and get top 3
+            # Get top 3 diagnoses (sorted by frequency)
+            top_diagnoses = sorted(
+                [(d, c) for d, c in diagnosis_counts.items() if d],  # Filter out empty diagnoses
+                key=lambda x: x[1],
+                reverse=True
+            )[:3]
 
-            self.ui.DocName2.setText(str())
-            self.ui.Specialty2.setText(str())
-            self.ui.PatCount2.setText(str())
-            self.ui.PatPercent2.setText(str())
+            # Initialize all values as empty strings
+            diagnosis_data = [
+                {"name": " ", "percent": " "},  # Diagnosis 1
+                {"name": " ", "percent": " "},  # Diagnosis 2
+                {"name": " ", "percent": " "}  # Diagnosis 3
+            ]
 
-            self.ui.DocName3.setText(str())
-            self.ui.Specialty3.setText(str())
-            self.ui.PatCount3.setText(str())
-            self.ui.PatPercent3.setText(str())
+            # Fill available diagnoses
+            for i, (diagnosis, count) in enumerate(top_diagnoses):
+                if i < 3:  # Only fill up to 3 slots
+                    diagnosis_data[i] = {
+                        "name": diagnosis if diagnosis else " ",
+                        "percent": f"{round((count / len(checkups)) * 100)}%" if len(checkups) > 0 else " "
+                    }
 
+            # Update UI
+            self.dashboard_ui.Diagnosis1.setText(diagnosis_data[0]["name"])
+            self.dashboard_ui.Diagnosis1Percent.setText(diagnosis_data[0]["percent"])
+            self.dashboard_ui.Diagnosis2.setText(diagnosis_data[1]["name"])
+            self.dashboard_ui.Diagnosis2Percent.setText(diagnosis_data[1]["percent"])
+            self.dashboard_ui.Diagnosis3.setText(diagnosis_data[2]["name"])
+            self.dashboard_ui.Diagnosis3Percent.setText(diagnosis_data[2]["percent"])
+
+            # Count patients per doctor
+            doctor_patient_counts = {}
+            for checkup in checkups:
+                doc_id = checkup.get('doc_id')
+                if doc_id:
+                    doctor_patient_counts[doc_id] = doctor_patient_counts.get(doc_id, 0) + 1
+
+            # Create list of (doctor, patient_count) tuples
+            doctor_stats = []
+            for doctor in doctors:
+                doc_id = doctor.get('id')
+                if doc_id in doctor_patient_counts:
+                    doctor_stats.append({
+                        'doctor': doctor,
+                        'patient_count': doctor_patient_counts[doc_id]
+                    })
+
+            # Sort by patient count (descending) and get top 3
+            top_doctors = sorted(doctor_stats,
+                                 key=lambda x: x['patient_count'],
+                                 reverse=True)[:3]
+
+            # Prepare UI data (3 slots)
+            doctor_ui_data = [
+                {'name': " ", 'specialty': " ", 'count': " ", 'percent': " "},
+                {'name': " ", 'specialty': " ", 'count': " ", 'percent': " "},
+                {'name': " ", 'specialty': " ", 'count': " ", 'percent': " "}
+            ]
+
+            # Calculate total patients for percentage
+            total_patients = sum(doctor_patient_counts.values()) or 1  # Avoid division by zero
+
+            # Fill available data
+            for i, doc_data in enumerate(top_doctors):
+                if i >= 3:
+                    break
+
+                doctor = doc_data['doctor']
+                count = doc_data['patient_count']
+
+                # Extract last name (from "Last, First M")
+                full_name = doctor.get('name', ', ')
+                last_name = full_name.split(',')[0].strip()
+
+                doctor_ui_data[i] = {
+                    'name': "Dr. "+last_name,
+                    'specialty': doctor.get('specialty', ' '),
+                    'count': str(count),
+                    'percent': f"{round((count / total_patients) * 100)}%"
+                }
+
+            # Update UI - Doctor 1
+            self.dashboard_ui.DoctorName1.setText(doctor_ui_data[0]['name'])
+            self.dashboard_ui.Specialty1.setText(doctor_ui_data[0]['specialty'])
+            self.dashboard_ui.PatientCount1.setText(doctor_ui_data[0]['count'])
+            self.dashboard_ui.PatientPercentage1.setText(doctor_ui_data[0]['percent'])
+
+            # Update UI - Doctor 2
+            self.dashboard_ui.DoctorName2.setText(doctor_ui_data[1]['name'])
+            self.dashboard_ui.Specialty2.setText(doctor_ui_data[1]['specialty'])
+            self.dashboard_ui.PatientCount2.setText(doctor_ui_data[1]['count'])
+            self.dashboard_ui.PatientPercentage2.setText(doctor_ui_data[1]['percent'])
+
+            # Update UI - Doctor 3
+            self.dashboard_ui.DoctorName3.setText(doctor_ui_data[2]['name'])
+            self.dashboard_ui.Specialty3.setText(doctor_ui_data[2]['specialty'])
+            self.dashboard_ui.PatientCount3.setText(doctor_ui_data[2]['count'])
+            self.dashboard_ui.PatientPercentage3.setText(doctor_ui_data[2]['percent'])
+
+            print("Overviews Initialized")
         except Exception as e:
             print(f"Dashboard: {e}")

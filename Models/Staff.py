@@ -196,7 +196,6 @@ class Staff:
                         "joined_date": joined_date.strftime('%B %d, %Y') if joined_date else "N/A"
                     })
 
-                print(f"Fetched staff: {staffs}")
                 return staffs
 
         except Exception as e:
