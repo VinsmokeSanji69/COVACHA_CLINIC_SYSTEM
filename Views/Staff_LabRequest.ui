@@ -632,6 +632,11 @@ QComboBox QAbstractItemView {
                </item>
                <item>
                 <widget class="QPushButton" name="SearchIcon">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+	background-color: transparent;
+}</string>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -641,8 +646,8 @@ QComboBox QAbstractItemView {
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>30</width>
-                   <height>30</height>
+                   <width>35</width>
+                   <height>35</height>
                   </size>
                  </property>
                 </widget>

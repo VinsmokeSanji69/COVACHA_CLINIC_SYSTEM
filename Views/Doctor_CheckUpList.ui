@@ -605,6 +605,9 @@ QComboBox QAbstractItemView {
                 <number>5</number>
                </property>
                <item>
+                <widget class="QLineEdit" name="Search"/>
+               </item>
+               <item>
                 <widget class="QPushButton" name="SearchIcon">
                  <property name="text">
                   <string/>
@@ -620,9 +623,6 @@ QComboBox QAbstractItemView {
                   </size>
                  </property>
                 </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="Search"/>
                </item>
               </layout>
              </widget>

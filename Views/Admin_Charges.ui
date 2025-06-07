@@ -716,6 +716,16 @@ QComboBox QAbstractItemView {
                    <number>5</number>
                   </property>
                   <item>
+                   <widget class="QLineEdit" name="Search">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QPushButton" name="Icon">
                     <property name="text">
                      <string/>
@@ -729,16 +739,6 @@ QComboBox QAbstractItemView {
                       <width>35</width>
                       <height>35</height>
                      </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
                     </property>
                    </widget>
                   </item>
@@ -897,8 +897,8 @@ QScrollBar::sub-line:vertical{
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>328</width>
-                       <height>561</height>
+                       <width>244</width>
+                       <height>557</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1021,8 +1021,8 @@ QTableWidget QHeaderView::section {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>327</width>
-                       <height>561</height>
+                       <width>380</width>
+                       <height>557</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">
