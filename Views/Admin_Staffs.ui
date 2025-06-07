@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1199</width>
-    <height>820</height>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,27 +20,26 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
     qproperty-wordWrap: true;
 	background: transparent;
 }
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -364,7 +363,6 @@ QGraphicsView {
     border-radius: 25px;
     background: white; 
 }
-
 </string>
      </property>
      <property name="frameShape">
@@ -765,43 +763,6 @@ QComboBox QAbstractItemView {
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="Specialty">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>200</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Gynecologist</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Pediatrician</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Opthalmologist</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
                 <spacer name="horizontalSpacer">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -954,7 +915,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>292</height>
+                       <height>308</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -986,6 +947,11 @@ QScrollBar::sub-line:vertical{
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
@@ -1207,7 +1173,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>288</height>
+                       <height>297</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -1234,6 +1200,11 @@ QScrollBar::sub-line:vertical{
                       </property>
                       <item>
                        <widget class="QTableWidget" name="StaffTable">
+                        <property name="font">
+                         <font>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1005</width>
-    <height>671</height>
+    <height>707</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,27 +20,26 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
     qproperty-wordWrap: true;
 	background: transparent;
 }
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -329,17 +328,20 @@ QLabel {
      </property>
      <property name="styleSheet">
       <string notr="true">#Header {
-	padding: 20px 20px;
+	padding: 10px 20px;
+padding-top: 15px;
 }
 QLabel {
     padding: 0px; 
 }
 #UserType {
-	font: 500 12pt &quot;Satoshi&quot;;
+	font: 300 10pt &quot;Lexend Light&quot;;
+	font-size: 15px;
 	color: #2B3752;
 }
 #UserName {
-	font: 900 16pt &quot;Satoshi&quot;;
+	font: 600 10pt &quot;Lexend SemiBold&quot;;
+	font-size: 20px;
 	color: #2B3752;
 }
 #InterfaceTitle{
@@ -350,12 +352,6 @@ QGraphicsView {
     border-radius: 25px;
     background: white; 
 }
-#NotificationBox{
-	background-color: #F4F7ED;
-	border: 2px solid #2E6E65;
-	border-radius: 15px;
-}
-
 </string>
      </property>
      <property name="frameShape">

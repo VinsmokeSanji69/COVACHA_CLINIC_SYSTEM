@@ -90,7 +90,7 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../Images/resources.qrc">
            <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
@@ -131,7 +131,7 @@ QLabel {
             <string>Dashboard</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
            </property>
            <property name="iconSize">
@@ -148,7 +148,7 @@ QLabel {
             <string>Records</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
            </property>
            <property name="iconSize">
@@ -165,7 +165,7 @@ QLabel {
             <string>Patients</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/user-round-pen.svg</normaloff>:/icons/icons/user-round-pen.svg</iconset>
            </property>
            <property name="iconSize">
@@ -205,7 +205,7 @@ QLabel {
             <string>Settings</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
            </property>
            <property name="iconSize">
@@ -222,7 +222,7 @@ QLabel {
             <string>Logout</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
            </property>
            <property name="iconSize">
@@ -1061,10 +1061,6 @@ QComboBox QAbstractItemView {
                      </property>
                      <property name="text">
                       <string>Proceed Check Up</string>
-                     </property>
-                     <property name="icon">
-                      <iconset>
-                       <normaloff>:/icons/icons/ticket-plus.svg</normaloff>:/icons/icons/ticket-plus.svg</iconset>
                      </property>
                      <property name="iconSize">
                       <size>

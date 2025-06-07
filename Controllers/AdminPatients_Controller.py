@@ -30,16 +30,6 @@ class AdminPatientsController(QMainWindow):
         self.records_ui.View.clicked.connect(self.view_patient)
         self.records_ui.SearchButton.clicked.connect(self.filter_tables)
 
-        SortBy = ["Date", "Name", "Diagnosis", "Status"]
-        SortOrder = ["Ascending", "Descending"]
-        self.records_ui.SortByBox.clear()
-        self.records_ui.SortByBox.addItems(SortBy)
-        self.records_ui.SortByBox.setCurrentIndex(0)
-        self.records_ui.SortOrderBox.clear()
-        self.records_ui.SortOrderBox.addItems(SortOrder)
-        self.records_ui.SortOrderBox.setCurrentIndex(0)
-        self.records_ui.SortByBox.currentIndexChanged.connect(self.refresh_tables)
-        self.records_ui.SortOrderBox.currentIndexChanged.connect(self.refresh_tables)
         self.refresh_tables()
 
 

@@ -104,13 +104,13 @@ class Ui_Doctor_Records(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.pushButton_4 = QtWidgets.QPushButton(self.NavBar)
+        self.LogOutButton = QtWidgets.QPushButton(self.NavBar)
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(":/icons/icons/log-out.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_4.setIcon(icon4)
-        self.pushButton_4.setIconSize(QtCore.QSize(40, 40))
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.verticalLayout_2.addWidget(self.pushButton_4)
+        self.LogOutButton.setIcon(icon4)
+        self.LogOutButton.setIconSize(QtCore.QSize(40, 40))
+        self.LogOutButton.setObjectName("LogOutButton")
+        self.verticalLayout_2.addWidget(self.LogOutButton)
         self.verticalLayout.addLayout(self.verticalLayout_2)
         self.horizontalLayout.addWidget(self.NavBar)
         self.MainBodyContainer = QtWidgets.QFrame(Form)
@@ -299,72 +299,6 @@ class Ui_Doctor_Records(object):
         self.horizontalLayout_3.addWidget(self.SearchBar)
         spacerItem2 = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
-        self.SortByBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        self.SortByBox.setStyleSheet("QComboBox {\n"
-"    background-color: #D9E4DC;\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 10px;\n"
-"    padding: 5px 10px;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}\n"
-"QComboBox::drop-down {\n"
-"    subcontrol-origin: padding;\n"
-"    subcontrol-position: top right;\n"
-"    width: 30px;\n"
-"    border-left: 1px solid #2E6E65;\n"
-"    background-color: #D9E4DC;\n"
-"    border-top-right-radius: 8px;\n"
-"    border-bottom-right-radius: 8px;\n"
-"}\n"
-"QComboBox::down-arrow {\n"
-"    image: url(:/icons/icons/chevron-down.svg);\n"
-"    width: 20px;\n"
-"    height: 20px;\n"
-"}\n"
-"QComboBox QAbstractItemView {\n"
-"    background-color: #F4F7ED;\n"
-"    selection-background-color: #CCE3D0;\n"
-"    border: 1px solid #2E6E65;\n"
-"    border-radius: 2px;\n"
-"    outline: 0;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}")
-        self.SortByBox.setObjectName("SortByBox")
-        self.SortByBox.addItem("")
-        self.horizontalLayout_3.addWidget(self.SortByBox)
-        self.SortOrderBox = QtWidgets.QComboBox(self.SearchBarContainer)
-        self.SortOrderBox.setStyleSheet("QComboBox {\n"
-"    background-color: #D9E4DC;\n"
-"    border: 2px solid #2E6E65;\n"
-"    border-radius: 10px;\n"
-"    padding: 5px 10px;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}\n"
-"QComboBox::drop-down {\n"
-"    subcontrol-origin: padding;\n"
-"    subcontrol-position: top right;\n"
-"    width: 30px;\n"
-"    border-left: 1px solid #2E6E65;\n"
-"    background-color: #D9E4DC;\n"
-"    border-top-right-radius: 8px;\n"
-"    border-bottom-right-radius: 8px;\n"
-"}\n"
-"QComboBox::down-arrow {\n"
-"    image: url(:/icons/icons/chevron-down.svg);\n"
-"    width: 20px;\n"
-"    height: 20px;\n"
-"}\n"
-"QComboBox QAbstractItemView {\n"
-"    background-color: #F4F7ED;\n"
-"    selection-background-color: #CCE3D0;\n"
-"    border: 1px solid #2E6E65;\n"
-"    border-radius: 2px;\n"
-"    outline: 0;\n"
-"    font: 300 12pt \"Lexend Light\";\n"
-"}")
-        self.SortOrderBox.setObjectName("SortOrderBox")
-        self.SortOrderBox.addItem("")
-        self.horizontalLayout_3.addWidget(self.SortOrderBox)
         spacerItem3 = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem3)
         self.verticalLayout_6.addWidget(self.SearchBarContainer)
@@ -394,6 +328,9 @@ class Ui_Doctor_Records(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.AcceptedCheckUp.sizePolicy().hasHeightForWidth())
         self.AcceptedCheckUp.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.AcceptedCheckUp.setFont(font)
         self.AcceptedCheckUp.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -456,6 +393,9 @@ class Ui_Doctor_Records(object):
         self.SeeAllButton.setObjectName("SeeAllButton")
         self.verticalLayout_6.addWidget(self.SeeAllButton, 0, QtCore.Qt.AlignLeft)
         self.DoneTable = QtWidgets.QTableWidget(self.MainBody)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.DoneTable.setFont(font)
         self.DoneTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -500,12 +440,10 @@ class Ui_Doctor_Records(object):
         self.DashboardButton.setText(_translate("Form", " Dashboard"))
         self.CheckUpButton.setText(_translate("Form", " Check Up"))
         self.RecordsButton.setText(_translate("Form", " Records"))
-        self.pushButton_4.setText(_translate("Form", " Logout"))
+        self.LogOutButton.setText(_translate("Form", " Logout"))
         self.InterfaceTitle.setText(_translate("Form", "Check Up List"))
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Doctor"))
-        self.SortByBox.setItemText(0, _translate("Form", "Sort By:"))
-        self.SortOrderBox.setItemText(0, _translate("Form", "Sort Order:"))
         self.CheckUpLabel.setText(_translate("Form", "Check Ups"))
         item = self.AcceptedCheckUp.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Check Up ID"))

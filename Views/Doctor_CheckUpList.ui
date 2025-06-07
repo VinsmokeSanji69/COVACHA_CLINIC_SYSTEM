@@ -206,7 +206,7 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="LogOutButton">
           <property name="text">
            <string> Logout</string>
           </property>
@@ -628,51 +628,6 @@ QComboBox QAbstractItemView {
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="StatusBox">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>180</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="editable">
-               <bool>false</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>Status</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="TypeBox">
-              <property name="minimumSize">
-               <size>
-                <width>180</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <item>
-               <property name="text">
-                <string>Type</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer_4">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -739,7 +694,7 @@ QScrollBar::sub-line:vertical{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>678</width>
+                 <width>706</width>
                  <height>581</height>
                 </rect>
                </property>
@@ -761,6 +716,11 @@ QScrollBar::sub-line:vertical{
                 </property>
                 <item>
                  <widget class="QTableWidget" name="DoneTable">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

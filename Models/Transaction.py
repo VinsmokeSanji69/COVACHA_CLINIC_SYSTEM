@@ -157,7 +157,7 @@ class Transaction():
         try:
             with conn.cursor() as cursor:
                 query = """
-                    SELECT tran_discount, tran_base_charge, tran_lab_charge, tran_status
+                    SELECT chck_id, tran_discount, tran_base_charge, tran_lab_charge, tran_status
                     FROM transaction 
                     WHERE chck_id = %s;
                 """
@@ -165,12 +165,12 @@ class Transaction():
                 result = cursor.fetchone()
 
                 if result:
-                    # Return complete transaction data
                     return {
-                        'tran_discount': float(result[0]) if result[0] is not None else 0.0,
-                        'tran_base_charge': float(result[1]) if result[1] is not None else 0.0,
-                        'tran_lab_charge': float(result[2]) if result[2] is not None else 0.0,
-                        'tran_status': result[3] if result[3] is not None else "Pending"
+                        'chck_id': result[0],
+                        'tran_discount': float(result[1]) if result[1] is not None else 0.0,
+                        'tran_base_charge': float(result[2]) if result[2] is not None else 0.0,
+                        'tran_lab_charge': float(result[3]) if result[3] is not None else 0.0,
+                        'tran_status': result[4] if result[4] is not None else "Pending"
                     }
                 else:
                     return None
@@ -178,11 +178,10 @@ class Transaction():
         except Exception as e:
             print(f"Error fetching transaction for chck_id={chck_id}: {e}")
             return None
-
         finally:
-            # Check if the connection is still open before closing it
-            if conn and not conn.closed:
+            if conn:
                 conn.close()
+
 
     @staticmethod
     def get_all_transaction():

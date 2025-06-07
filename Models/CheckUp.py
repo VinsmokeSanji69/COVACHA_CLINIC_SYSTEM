@@ -165,7 +165,7 @@ class CheckUp:
             with conn.cursor() as cursor:
                 cursor.execute("""
                     SELECT chck_id, chck_bp, chck_height, chck_weight, chck_temp, pat_id,
-                           chck_status, doc_id, chckup_type, chck_date, chck_diagnoses, chck_notes
+                           chck_status, doc_id, chckup_type, chck_date, chck_diagnoses, chck_notes, staff_id
                     FROM checkup
                     WHERE chck_id = %s;
                 """, (checkup_id,))
@@ -183,7 +183,8 @@ class CheckUp:
                         'chckup_type': result[8],
                         'chck_date': result[9],
                         'chck_diagnoses': result[10],
-                        'chck_notes': result[11]
+                        'chck_notes': result[11],
+                        'staff_id' : result[12]
                     }
                 return None
         except Exception as e:
@@ -346,6 +347,7 @@ class CheckUp:
                 return True
 
         except Exception as e:
+            #print(f"Database error while updating doc_id: {e}")
             conn.rollback()
             return False
 
@@ -453,10 +455,10 @@ class CheckUp:
         try:
             with conn.cursor() as cursor:
                 cursor.execute("""
-                    SELECT lab_attachment
-                    FROM checkup_lab_tests
-                    WHERE chck_id = %s AND lab_code = %s;
-                """, (chck_id, lab_code))
+                       SELECT lab_attachment
+                       FROM checkup_lab_tests
+                       WHERE chck_id = %s AND lab_code = %s;
+                   """, (chck_id, lab_code))
                 result = cursor.fetchone()
 
                 if result:
@@ -467,6 +469,7 @@ class CheckUp:
                     return lab_attachment
                 return None
         except Exception as e:
+            print(f"Error fetching lab attachment: {e}")
             return None
         finally:
             if conn:

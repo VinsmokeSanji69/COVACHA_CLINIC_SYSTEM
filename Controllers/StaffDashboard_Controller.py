@@ -112,8 +112,6 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.setupUi(self.labreq_page)
         self.page_stack.addWidget(self.labreq_page)
 
-
-
     def connect_all_buttons(self):
         """Connect navigation buttons for all pages"""
         # Connect dashboard page buttons
@@ -126,11 +124,13 @@ class StaffDashboardController(QMainWindow):
         self.transactions_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.transactions_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.transactions_ui.LabButton.clicked.connect(self.go_to_labreq)
+        self.transactions_ui.LogOutButton.clicked.connect(self.logout)  # Add this line
 
         # Connect labreq page buttons
         self.labreq_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.labreq_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.labreq_ui.LabButton.clicked.connect(self.go_to_labreq)
+        self.labreq_ui.LogOutButton.clicked.connect(self.logout)  # Add this line
 
         # # Connect buttons
         if hasattr(self.dashboard_ui, 'AddCheckUpButton'):
@@ -153,9 +153,9 @@ class StaffDashboardController(QMainWindow):
             if hasattr(self, "cleanup"):
                 self.cleanup()
             if hasattr(self, "hide"):
-                self.hide()  # Prefer hide over deleteLater to avoid premature deletion
+                self.hide()
             if hasattr(self, "deleteLater"):
-                QTimer.singleShot(0, self.deleteLater)  # Delay deletion
+                QTimer.singleShot(0, self.deleteLater)
 
             # 3. Show login window
             if hasattr(self, "login_window") and self.login_window:
@@ -164,6 +164,7 @@ class StaffDashboardController(QMainWindow):
                 self.login_window.show()
             else:
                 from Views.LogIn import LogInWindow
+                from Controllers.LogIn_Controller import LoginController
                 from Controllers.LogIn_Controller import LoginController
 
                 login_window = LogInWindow()
