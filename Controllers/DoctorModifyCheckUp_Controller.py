@@ -5,9 +5,9 @@ from Models.Patient import Patient
 from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
-# from docx import Document
+from docx import Document
 import os
-# from docx2pdf import convert
+from docx2pdf import convert
 
 class DoctorDiagnosisModify(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
@@ -219,7 +219,7 @@ class DoctorDiagnosisModify(QMainWindow):
         try:
             # Get full patient and doctor info
             patient_info = Patient.get_patient_by_id(self.patient_id)
-            doctor_info = Doctor.get_doctor_by_id(self.doc_id)
+            doctor_info = Doctor.get_doctor(self.doc_id)
             if not patient_info or not doctor_info:
                 QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
                 return
@@ -229,7 +229,7 @@ class DoctorDiagnosisModify(QMainWindow):
             gender = patient_info["gender"]
             address = patient_info["address"]
             today = datetime.today().strftime("%Y-%m-%d")
-            doctor_name = f"{doctor_info['doc_fname'].capitalize()} {doctor_info['doc_mname'].capitalize()} {doctor_info['doc_lname'].capitalize()}"
+            doctor_name = f"{doctor_info['first_name']} {doctor_info['middle_name']} {doctor_info['last_name']}" if doctor_info else "N/A"
 
             # Output paths
             output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"

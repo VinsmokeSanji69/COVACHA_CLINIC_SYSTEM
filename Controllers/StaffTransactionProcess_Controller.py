@@ -215,7 +215,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             self.ui.PatGender.setText(str(patient["pat_gender"]))
             self.ui.DocID.setText(str(checkup["doc_id"]))
             self.ui.DocName.setText(docFullname)
-            self.ui.DoctorCharge.setText("₱ " + str(doctor["doc_rate"]))
+            self.ui.DoctorCharge.setText("₱ " + str(doctor["rate"]))
             self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))
             self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))
 
