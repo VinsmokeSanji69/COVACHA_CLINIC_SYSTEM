@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import Images.resources
 
 class Ui_Admin_Dashboard(object):
     def setupUi(self, Form):

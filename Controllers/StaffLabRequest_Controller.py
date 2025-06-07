@@ -48,7 +48,7 @@ class StaffLabRequest(QWidget):
                     continue
 
                 patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
-                doctor_name = f"{doctor_details['doc_lname'].capitalize()}, {doctor_details['doc_fname'].capitalize()}"
+                doctor_name = f"{doctor_details['last_name'].capitalize()}, {doctor_details['first_name'].capitalize()}"
 
                 # Use static method to fetch lab attachments
                 lab_attachments = DataRequest.send_command("GET_LAB_ATTACHMENTS_BY_CHECKUP",checkup_id)

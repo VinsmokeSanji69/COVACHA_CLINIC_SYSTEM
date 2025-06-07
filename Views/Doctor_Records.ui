@@ -565,6 +565,11 @@ QComboBox::drop-down {
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
               <property name="styleSheet">
                <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
@@ -685,6 +690,11 @@ text-allign: left;
          </item>
          <item>
           <widget class="QTableWidget" name="DoneTable">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
