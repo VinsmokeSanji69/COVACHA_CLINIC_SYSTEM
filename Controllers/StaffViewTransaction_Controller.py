@@ -113,7 +113,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not doctor:
                 raise ValueError(f"No doctor found for doc_id={doc_id}")
 
-            docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+            docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
             # Check if a transaction exists for this check-up ID
             transaction = DataRequest.send_command("GET_TRANSACTION_BY_CHECKUP_ID", self.chck_id)
@@ -141,7 +141,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             self.ui.DocID.setText(str(checkup["doc_id"]))  # Ensure string conversion
             self.ui.DocName.setText(docFullname)
             # self.ui.DocSpecialty.setText(str(doctor["doc_specialty"]))  # Ensure string conversion
-            self.ui.DoctorCharge.setText("₱ " + str(doctor["doc_rate"]))  # Ensure string conversion
+            self.ui.DoctorCharge.setText("₱ " + str(doctor["rate"]))  # Ensure string conversion
 
             self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))  # Ensure string conversion
             self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))  # Ensure string conversion
