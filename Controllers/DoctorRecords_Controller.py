@@ -24,7 +24,7 @@ class DoctorRecords(QWidget):
         # Initialize a QTimer for automatic refresh
         self.refresh_timer = QTimer(self)
         self.refresh_timer.timeout.connect(self.refresh_tables)  # Connect to refresh_tables method
-        self.refresh_timer.start(30000)  # Refresh every 30 seconds (30000 ms)
+        self.refresh_timer.start(5000)
 
 
         # Fetch all check-ups for the doctor
@@ -48,32 +48,9 @@ class DoctorRecords(QWidget):
         self.checkup_ui.ModifyCheckUp.clicked.connect(self.ModifyCheckUp)
         self.ui.SeeAllButton.clicked.connect(lambda: self.see_all_checkup_list(self.doc_id))
 
-        # Search functionality
-        self.ui.SearchButton.clicked.connect(self.filter_tables)
-
     def refresh_tables(self):
-        """Refresh the tables based on the current search query and sorting options."""
+        """Refresh both AcceptedCheckUp and DoneTable with the latest data without applying any filters or sorting."""
         try:
-            # Get the search query from the QLineEdit
-            search_query = self.checkup_ui.Search.text().strip().lower()
-
-            # Get the selected sorting options
-            sort_by = self.checkup_ui.SortByBox.currentText()
-            sort_order = self.checkup_ui.SortOrderBox.currentText()
-
-            # Determine the key to sort by
-            if sort_by == "Date":
-                sort_key = "chck_date"
-            elif sort_by == "Name":
-                sort_key = "full_name"
-            elif sort_by == "Diagnosis":
-                sort_key = "chck_diagnoses"
-            else:
-                sort_key = None
-
-            # Determine the sorting order (ascending or descending)
-            reverse_order = True if sort_order == "Descending" else False
-
             # Fetch all check-ups for the doctor
             checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
             if not checkups:
@@ -84,59 +61,12 @@ class DoctorRecords(QWidget):
             accepted_checkups = [checkup for checkup in checkups if checkup['chck_status'] != "Completed"]
             completed_checkups = [checkup for checkup in checkups if checkup['chck_status'] == "Completed"]
 
-            # Filter and sort accepted check-ups
-            filtered_accepted_checkups = []
-            for checkup in accepted_checkups:
-                pat_id = checkup['pat_id']
-                patient = Patient.get_patient_details(pat_id)
-                if not patient:
-                    continue
-
-                # Check if the search query matches the patient's last name or first name
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                if search_query in full_name.lower():
-                    checkup["full_name"] = full_name  # Add full_name to the checkup dictionary
-                    filtered_accepted_checkups.append(checkup)
-
-            # Apply sorting to filtered accepted check-ups
-            if sort_key:
-                if sort_key == "full_name":
-                    # Sort by full_name (case-insensitive)
-                    filtered_accepted_checkups.sort(key=lambda x: x[sort_key].lower(), reverse=reverse_order)
-                else:
-                    # Sort by other keys (e.g., chck_date, chck_diagnoses)
-                    filtered_accepted_checkups.sort(key=lambda x: x.get(sort_key, ""), reverse=reverse_order)
-
-            # Filter and sort completed check-ups
-            filtered_completed_checkups = []
-            for checkup in completed_checkups:
-                pat_id = checkup['pat_id']
-                patient = Patient.get_patient_details(pat_id)
-                if not patient:
-                    continue
-
-                # Check if the search query matches the patient's last name or first name
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                if search_query in full_name.lower():
-                    checkup["full_name"] = full_name  # Add full_name to the checkup dictionary
-                    filtered_completed_checkups.append(checkup)
-
-            # Apply sorting to filtered completed check-ups
-            if sort_key:
-                if sort_key == "full_name":
-                    # Sort by full_name (case-insensitive)
-                    filtered_completed_checkups.sort(key=lambda x: x[sort_key].lower(), reverse=reverse_order)
-                else:
-                    # Sort by other keys (e.g., chck_date, chck_diagnoses)
-                    filtered_completed_checkups.sort(key=lambda x: x.get(sort_key, ""), reverse=reverse_order)
-
-            # Repopulate the tables with filtered and sorted data
-            self.populate_accepted_checkups(filtered_accepted_checkups)
-            self.populate_done_table(filtered_completed_checkups)
+            # Repopulate both tables with unfiltered data
+            self.populate_accepted_checkups(accepted_checkups)
+            self.populate_done_table(completed_checkups)
 
         except Exception as e:
             print(f"Error refreshing tables: {e}")
-            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def populate_accepted_checkups(self, checkups):
         # Clear existing rows
@@ -252,94 +182,6 @@ class DoctorRecords(QWidget):
         except Exception as e:
             print(f"Error opening DoctorCheckUp list window: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
-
-    def filter_tables(self):
-        """Filter rows in both tables based on the search input and sort them."""
-        try:
-            # Get the search query from the QLineEdit
-            search_query = self.ui.Search.text().strip().lower()
-
-            # Get the selected sorting options
-            sort_by = self.ui.SortByBox.currentText()
-            sort_order = self.ui.SortOrderBox.currentText()
-
-            # Determine the key to sort by
-            if sort_by == "Date":
-                sort_key = "chck_date"
-            elif sort_by == "Name":
-                sort_key = "full_name"
-            elif sort_by == "Diagnosis":
-                sort_key = "chck_diagnoses"
-            else:
-                sort_key = None
-
-            # Determine the sorting order (ascending or descending)
-            reverse_order = True if sort_order == "Descending" else False
-
-            # Filter accepted check-ups
-            filtered_accepted_checkups = []
-            for checkup in self.accepted_checkups:
-                pat_id = checkup['pat_id']
-                patient = Patient.get_patient_details(pat_id)
-                if not patient:
-                    continue
-
-                # Check if the search query matches the patient's last name or first name
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                if search_query in full_name.lower():
-                    checkup["full_name"] = full_name  # Add full_name to the checkup dictionary
-                    filtered_accepted_checkups.append(checkup)
-
-            # Filter completed check-ups
-            filtered_completed_checkups = []
-            for checkup in self.completed_checkups:
-                pat_id = checkup['pat_id']
-                patient = Patient.get_patient_details(pat_id)
-                if not patient:
-                    continue
-
-                # Check if the search query matches the patient's last name or first name
-                full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                if search_query in full_name.lower():
-                    checkup["full_name"] = full_name  # Add full_name to the checkup dictionary
-                    filtered_completed_checkups.append(checkup)
-
-            # Apply sorting if a valid sort key is selected
-            if sort_key:
-                if sort_key == "full_name":
-                    # Sort by full_name (case-insensitive)
-                    filtered_accepted_checkups.sort(key=lambda x: x[sort_key].lower(), reverse=reverse_order)
-                    filtered_completed_checkups.sort(key=lambda x: x[sort_key].lower(), reverse=reverse_order)
-                else:
-                    # Sort by other keys (e.g., chck_date, chck_diagnoses)
-                    filtered_accepted_checkups.sort(key=lambda x: x.get(sort_key, ""), reverse=reverse_order)
-                    filtered_completed_checkups.sort(key=lambda x: x.get(sort_key, ""), reverse=reverse_order)
-
-            # Handle the case where no matching records are found in AcceptedCheckUp
-            if not filtered_accepted_checkups:
-                self.ui.AcceptedCheckUp.setRowCount(1)  # Add one row for the message
-                no_data_item = QtWidgets.QTableWidgetItem("No matching records found")
-                no_data_item.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.AcceptedCheckUp.setItem(0, 0, no_data_item)
-                self.ui.AcceptedCheckUp.setSpan(0, 0, 1, self.ui.AcceptedCheckUp.columnCount())
-            else:
-                # Repopulate the table with filtered data
-                self.populate_accepted_checkups(filtered_accepted_checkups)
-
-            # Handle the case where no matching records are found in DoneTable
-            if not filtered_completed_checkups:
-                self.ui.DoneTable.setRowCount(1)  # Add one row for the message
-                no_data_item = QtWidgets.QTableWidgetItem("No matching records found")
-                no_data_item.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.ui.DoneTable.setItem(0, 0, no_data_item)
-                self.ui.DoneTable.setSpan(0, 0, 1, self.ui.DoneTable.columnCount())
-            else:
-                # Repopulate the table with filtered data
-                self.populate_done_table(filtered_completed_checkups)
-
-        except Exception as e:
-            print(f"Error filtering tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to filter tables: {e}")
 
     def ModifyCheckUp(self):
         # Get the currently selected row in the AcceptedCheckUp table

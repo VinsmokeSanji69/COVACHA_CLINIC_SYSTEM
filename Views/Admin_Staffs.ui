@@ -1042,13 +1042,6 @@ QTableWidget QHeaderView::section {
                       <number>0</number>
                      </property>
                      <item>
-                      <widget class="QPushButton" name="ViewDoctor">
-                       <property name="text">
-                        <string>View</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
                       <widget class="QPushButton" name="ModifyDoctor">
                        <property name="text">
                         <string>Modify</string>
@@ -1294,13 +1287,6 @@ QTableWidget QHeaderView::section {
                      <property name="bottomMargin">
                       <number>0</number>
                      </property>
-                     <item>
-                      <widget class="QPushButton" name="ViewStaff">
-                       <property name="text">
-                        <string>View</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item>
                       <widget class="QPushButton" name="ModifyStaff">
                        <property name="text">
