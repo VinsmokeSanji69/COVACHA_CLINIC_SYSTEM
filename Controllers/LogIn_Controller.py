@@ -67,13 +67,13 @@ class LoginController:
             # Check if the user is a staff member
             staff = self._get_user(conn, "staff", user_id)
             if staff:
-                # DEBUG: Print verification details before checking
-                print("\n--- DEBUG INFO ---")
-                print(f"Input password: {password}")
-                print(f"Stored hash: {staff[3]}")
-                print(f"Generated SHA-256: {hashlib.sha256(password.encode()).hexdigest()}")
-                print(f"Verification result: {self._verify_hashed_password(password, staff[3])}")
-                print("------------------\n")
+                # # DEBUG: Print verification details before checking
+                # print("\n--- DEBUG INFO ---")
+                # print(f"Input password: {password}")
+                # print(f"Stored hash: {staff[3]}")
+                # print(f"Generated SHA-256: {hashlib.sha256(password.encode()).hexdigest()}")
+                # print(f"Verification result: {self._verify_hashed_password(password, staff[3])}")
+                # print("------------------\n")
 
                 if self._verify_hashed_password(password, staff[3]):
                     # Route to StaffDashboardController for non-admin staff
@@ -242,22 +242,25 @@ class LoginController:
             return False
 
     def _show_dashboard(self, dashboard_controller, user):
+        # 1. create the dashboard and give it a reference to the login window
         if dashboard_controller == DoctorDashboardController:
-            # Pass doc_id, fname, lname, and specialty to DoctorDashboardController
             self.dashboard = dashboard_controller(
                 doc_id=user[0],
                 fname=user[1],
                 lname=user[2],
-                specialty=user[3]
+                specialty=user[3],
+                login_window=self.login_window  # ← NEW
             )
         elif dashboard_controller == StaffDashboardController:
-            # Pass only the staff_id to the StaffDashboardController
-            self.dashboard = dashboard_controller(staff_id=user[0])
+            self.dashboard = dashboard_controller(
+                staff_id=user[0],
+                login_window=self.login_window
+            )
         else:
-            self.dashboard = dashboard_controller()
+            self.dashboard = dashboard_controller(login_window=self.login_window)
 
-        # Close the login window
-        self.login_window.close()
+        # 2. “hide”, don’t close, so we can bring it back later
+        self.login_window.hide()
 
-        # Show the dashboard
+        # 3. show dashboard
         self.dashboard.show()

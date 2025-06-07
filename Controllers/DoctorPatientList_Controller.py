@@ -39,7 +39,7 @@ class DoctorPatientList(QMainWindow):
             print("Tables refreshed successfully!")
         except Exception as e:
             print(f"Error refreshing tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def apply_table_styles(self):
         self.ui.DoneTable.setStyleSheet("""

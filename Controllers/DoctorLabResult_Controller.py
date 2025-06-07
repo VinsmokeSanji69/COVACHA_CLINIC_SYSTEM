@@ -3,7 +3,6 @@ import subprocess
 import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDialog, QDialogButtonBox, QApplication
-from Models import Prescription
 from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Controllers.DoctorAddPrescription_Controller import DoctorAddPrescription
 from Models.CheckUp import CheckUp
@@ -12,8 +11,8 @@ from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from Models.Prescription import Prescription
 from datetime import datetime, date
-# from docx import Document
-# from docx2pdf import convert
+from docx import Document
+from docx2pdf import convert
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -446,7 +445,7 @@ class DoctorLabResult(QMainWindow):
         print(f"Retrieved lab code: {lab_code}")
 
         # Fetch the file path from the CheckUp model
-        file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
+        file_path = Laboratory.get_lab_attachment(checkup_id, lab_code)
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
             return

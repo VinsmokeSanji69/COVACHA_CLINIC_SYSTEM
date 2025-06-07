@@ -844,10 +844,15 @@ QTableWidget QHeaderView::section {
            </layout>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignLeft">
           <widget class="QPushButton" name="SeeAllButton">
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+text-allign: left;
+}</string>
+           </property>
            <property name="text">
-            <string>See all</string>
+            <string>Recent Completed Check Ups</string>
            </property>
           </widget>
          </item>

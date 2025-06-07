@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList as DoctorCheckUpListUI
 from Controllers.DoctorCheckUpListView_Controller import DoctorCheckUpListView
@@ -34,10 +34,10 @@ class DoctorCheckUpList(QWidget):
         # Connect the ViewPatientButton to the view_detials_checkup method
         self.records_ui.ViewPatientButton.clicked.connect(self.view_patient)
 
-        # Initialize a QTimer for automatic refresh
+        # ✅ Initialize safe QTimer
         self.refresh_timer = QTimer(self)
-        self.refresh_timer.timeout.connect(self.refresh_tables)  # Connect to refresh_tables method
-        self.refresh_timer.start(30000)  # Refresh every 30 seconds (30000 ms)
+        self.refresh_timer.timeout.connect(self.refresh_tables)
+        self.refresh_timer.start(5000)
 
     def view_patient_details_ui(self, patient_id):
         print("View Patient Button clicked!")
@@ -50,60 +50,32 @@ class DoctorCheckUpList(QWidget):
             print(f"Staff Error: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load patient details: {e}")
 
-    def view_patient(self):
+    def refresh_tables(self):
         try:
-            selected_row = self.records_ui.DoneTable.currentRow()
-            if selected_row == -1:
-                print("no row selected")
+            # ✅ Defensive checks to avoid deleted widget access
+            if not self.records_ui or not hasattr(self.records_ui, 'DoneTable') or not self.records_ui.DoneTable:
+                print("DoneTable or UI is no longer valid.")
                 return
 
-            # Get the Check Up ID (chck_id) from the selected row
-            chck_id_item = self.records_ui.DoneTable.item(selected_row, 0)
-            if not chck_id_item:
-                raise ValueError(f"No Check Up ID found in selected row")
-
-            chck_id = chck_id_item.text().strip()
-            if not chck_id:
-                raise ValueError(f"Check Up ID is empty")
-
-            # Fetch the patient_id associated with this checkup
-            checkup_details = CheckUp.get_checkup_details(chck_id)
-            if not checkup_details:
-                raise ValueError(f"No checkup details found for ID: {chck_id}")
-
-            patient_id = checkup_details.get('pat_id')
-            if not patient_id:
-                raise ValueError(f"No patient ID found for checkup ID: {chck_id}")
-
-            # Open the DoctorPatientDetailsViewController with the patient_id
-            self.view_patient_details_ui(int(patient_id))
-
-        except ValueError as ve:
-            QMessageBox.warning(self, "Input Error", str(ve))
-        except Exception as e:
-            error_msg = f"Failed to select patient: {str(e)}"
-            QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
-
-    def refresh_tables(self):
-        """Reload data into the tables."""
-        try:
-            # Fetch fresh data from the database
             checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
             if not checkups:
-                print("No check-ups found for this doctor.")
+                print("No check-ups found.")
                 return
 
-            # Filter completed check-ups
             self.completed_checkups = [checkup for checkup in checkups if checkup['chck_status'] == "Completed"]
-
-            # Repopulate the DoneTable with fresh data
+            self.records_ui.DoneTable.setRowCount(0)
             self.populate_done_table(self.completed_checkups)
 
-            print("Tables refreshed successfully!")
+        except RuntimeError as e:
+            print(f"Runtime error: {e} (likely UI was destroyed)")
         except Exception as e:
             print(f"Error refreshing tables: {e}")
-            QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+
+    def cleanup(self):
+        if hasattr(self, 'refresh_timer') and self.refresh_timer.isActive():
+            self.refresh_timer.stop()
+            print("DoctorCheckUpList timer stopped.")
 
     def apply_table_styles(self):
         self.ui.DoneTable.setStyleSheet("""
@@ -150,32 +122,98 @@ class DoctorCheckUpList(QWidget):
         self.ui.DoneTable.verticalHeader().setVisible(False)
 
     def populate_done_table(self, checkups):
-        # Clear existing rows
         self.records_ui.DoneTable.clearContents()
         self.records_ui.DoneTable.setRowCount(0)
 
-        # Populate the table
-        for row, checkup in enumerate(checkups):
+        latest_checkups = {}
+
+        for checkup in checkups:
+            pat_id = checkup['pat_id']
+            chck_date = checkup['chck_date']
             chck_id = checkup['chck_id']
+
+            # Convert date string to datetime object if needed
+            if isinstance(chck_date, str):
+                chck_date = datetime.datetime.strptime(chck_date, "%Y-%m-%d")
+
+            # Update checkup if:
+            # - patient not in dict yet
+            # - or current date is newer
+            # - or same date but higher chck_id
+            if pat_id not in latest_checkups:
+                latest_checkups[pat_id] = checkup
+            else:
+                existing = latest_checkups[pat_id]
+                existing_date = existing['chck_date']
+                existing_id = existing['chck_id']
+
+                # Convert existing date string if needed
+                if isinstance(existing_date, str):
+                    existing_date = datetime.datetime.strptime(existing_date, "%Y-%m-%d")
+
+                # Compare dates first
+                if chck_date > existing_date:
+                    latest_checkups[pat_id] = checkup
+                elif chck_date == existing_date:
+                    # Same date, compare chck_id lexicographically
+                    if chck_id > existing_id:
+                        latest_checkups[pat_id] = checkup
+        for row, checkup in enumerate(latest_checkups.values()):
             pat_id = checkup['pat_id']
             chck_diagnoses = checkup['chck_diagnoses']
             chck_date = checkup['chck_date']
 
-            # Fetch patient details
             patient = Patient.get_patient_details(pat_id)
             if not patient:
                 print(f"No patient found for pat_id={pat_id}")
                 continue
 
-            # Extract and format patient name
             full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
 
-            # Add row to the table
             self.records_ui.DoneTable.insertRow(row)
-            self.records_ui.DoneTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))
+
+            # Store full checkup object in UserRole
+            id_item = QtWidgets.QTableWidgetItem(str(pat_id))
+            id_item.setData(Qt.UserRole, checkup)
+            self.records_ui.DoneTable.setItem(row, 0, id_item)
+
             self.records_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(full_name))
             self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(chck_diagnoses))
-            self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(str(chck_date)))
+            self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(chck_date.strftime("%Y-%m-%d")))
+
+    def view_patient(self):
+        try:
+            selected_row = self.records_ui.DoneTable.currentRow()
+            if selected_row == -1:
+                QMessageBox.information(self, "Selection Required", "Please select a row.")
+                return
+
+            # Get the QTableWidgetItem from column 0 (which holds pat_id and user data)
+            item = self.records_ui.DoneTable.item(selected_row, 0)
+            if not item:
+                raise ValueError("No data found in selected row.")
+
+            # Retrieve the full checkup object stored in UserRole
+            checkup = item.data(Qt.UserRole)
+            if not checkup:
+                raise ValueError("No checkup data found for selected row.")
+
+            # Extract chck_id and pat_id from the checkup dict
+            chck_id = checkup.get('chck_id')
+            patient_id = checkup.get('pat_id')
+
+            if not chck_id or not patient_id:
+                raise ValueError("Incomplete checkup data: missing chck_id or pat_id")
+
+            # Open the patient details UI with the correct patient ID
+            self.view_patient_details_ui(int(patient_id))
+
+        except ValueError as ve:
+            QMessageBox.warning(self, "Input Error", str(ve))
+        except Exception as e:
+            error_msg = f"Failed to select patient: {str(e)}"
+            QMessageBox.critical(self, "Error", error_msg)
+            print(error_msg)
 
     def view_detials_checkup(self):
         """Handle viewing details of the selected check-up."""
@@ -187,7 +225,7 @@ class DoctorCheckUpList(QWidget):
                 return
 
             # Retrieve the chck_id from the selected row
-            chck_id = self.records_ui.DoneTable.item(selected_row, 0).text()  # Column 0 contains chck_id
+            chck_id = self.records_ui.DoneTable.item(selected_row, 0).text()
             print(f"Selected Check-Up ID: {chck_id}")
 
             # Open the DoctorCheckUpListView modal

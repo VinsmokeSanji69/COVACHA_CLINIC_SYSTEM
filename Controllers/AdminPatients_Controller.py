@@ -27,10 +27,6 @@ class AdminPatientsController(QMainWindow):
         self.records_ui = records_ui
         self.ui.setupUi(self)
 
-        # self.ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        # self.ui.ChargesButton.clicked.connect(self.view_charges_ui)
-        # self.ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
-        # self.ui.StaffsButton.clicked.connect(self.view_staff_ui)
         self.records_ui.View.clicked.connect(self.view_patient)
         self.records_ui.SearchButton.clicked.connect(self.filter_tables)
 
