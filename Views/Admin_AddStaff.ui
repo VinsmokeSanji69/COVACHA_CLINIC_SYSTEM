@@ -542,6 +542,11 @@ QCalendarWidget QTableView {
                        <height>35</height>
                       </size>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -591,6 +596,11 @@ QCalendarWidget QTableView {
                        <width>16777215</width>
                        <height>35</height>
                       </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
                      </property>
                     </widget>
                    </item>
@@ -647,6 +657,11 @@ QCalendarWidget QTableView {
                        <width>16777215</width>
                        <height>35</height>
                       </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
                      </property>
                     </widget>
                    </item>
@@ -805,6 +820,11 @@ QCalendarWidget QTableView {
                     <height>35</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -860,6 +880,15 @@ QCalendarWidget QTableView {
                     <width>16777215</width>
                     <height>35</height>
                    </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Lexend Light</family>
+                    <pointsize>12</pointsize>
+                    <weight>37</weight>
+                    <italic>false</italic>
+                    <bold>false</bold>
+                   </font>
                   </property>
                  </widget>
                 </item>
@@ -978,6 +1007,11 @@ QCalendarWidget QTableView {
                     <height>35</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -1034,6 +1068,15 @@ QCalendarWidget QTableView {
                     <height>35</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <family>Lexend Light</family>
+                    <pointsize>12</pointsize>
+                    <weight>37</weight>
+                    <italic>false</italic>
+                    <bold>false</bold>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -1085,7 +1128,146 @@ QCalendarWidget QTableView {
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">color: black;</string>
+                   <string notr="true">/* QDateEdit */
+QDateEdit {
+    background-color: #F4F7ED;
+    border: 1px solid #2E6E65;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font: 300 12pt &quot;Lexend Light&quot;;
+    color: black;
+}
+
+/* Dropdown button */
+QDateEdit::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border-left: 1px solid #2E6E65;
+    background-color: #D9E4DC;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Dropdown arrow styling */
+QDateEdit::down-arrow {
+    image: url(:/lucide/icons/calendar.svg);
+    width: 16px;
+    height: 16px;
+}
+
+/* QCalendarWidget - Main Container */
+QCalendarWidget {
+    background-color: #F4F7ED;
+    border: 1px solid #2E6E65;
+    border-radius: 8px;
+    font: 300 12pt &quot;Lexend Light&quot;;
+}
+
+/* Navigation Bar (Month/Year controls) */
+QCalendarWidget QWidget#qt_calendar_navigationbar {
+    background-color: #D9E4DC;
+    border-bottom: 1px solid #2E6E65;
+}
+
+/* Hide navigation arrows (left/right buttons) */
+QCalendarWidget QToolButton#qt_calendar_prevmonth,
+QCalendarWidget QToolButton#qt_calendar_nextmonth {
+    qproperty-visible: false;
+    width: 0px;
+    height: 0px;
+    border: none;
+    background: transparent;
+}
+
+/* Month/Year buttons */
+QCalendarWidget QToolButton {
+    background-color: #D9E4DC;
+    border: 1px solid #2E6E65;
+    border-radius: 4px;
+    font: 300 11pt &quot;Lexend Light&quot;;
+    color: black;
+    padding: 4px 8px;
+    margin: 2px;
+}
+
+QCalendarWidget QToolButton:hover {
+    background-color: #2E6E65;
+    color: white;
+}
+
+/* Month/Year dropdown */
+QCalendarWidget QSpinBox {
+    background-color: #F4F7ED;
+    border: 1px solid #2E6E65;
+    border-radius: 4px;
+    font: 300 11pt &quot;Lexend Light&quot;;
+    color: black;
+    padding: 2px 4px;
+}
+
+/* Calendar table - Multiple selectors to ensure coverage */
+QCalendarWidget QTableView {
+    background-color: #F4F7ED;
+    alternate-background-color: #F4F7ED;
+    gridline-color: #D9E4DC;
+    selection-background-color: #2E6E65;
+    selection-color: white;
+    font: 300 11pt &quot;Lexend Light&quot;;
+    color: black;
+}
+
+QCalendarWidget QAbstractItemView {
+    background-color: #F4F7ED;
+    alternate-background-color: #F4F7ED;
+    selection-background-color: #2E6E65;
+    selection-color: white;
+    font: 300 11pt &quot;Lexend Light&quot;;
+    color: black;
+}
+
+/* Force all child widgets to have proper background */
+QCalendarWidget * {
+    background-color: #F4F7ED;
+    color: black;
+}
+
+/* Header row (days of week) */
+QCalendarWidget QHeaderView::section {
+    background-color: #D9E4DC;
+    color: black;
+    border: 1px solid #2E6E65;
+    font: 300 10pt &quot;Lexend Light&quot;;
+    padding: 4px;
+}
+
+/* Date cells */
+QCalendarWidget QAbstractItemView::item {
+    border: none;
+    padding: 4px;
+}
+
+/* Hover effect on dates */
+QCalendarWidget QAbstractItemView::item:hover {
+    background-color: #2E6E65;
+    color: white;
+    border-radius: 4px;
+}
+
+/* Selected date */
+QCalendarWidget QAbstractItemView::item:selected {
+    background-color: #2E6E65;
+    color: white;
+    border-radius: 4px;
+}
+
+/* Today's date */
+QCalendarWidget QAbstractItemView::item:focus {
+    background-color: #2E6E65;
+    color: white;
+    border: 2px solid #1A4A42;
+    border-radius: 4px;
+}</string>
                   </property>
                   <property name="calendarPopup">
                    <bool>true</bool>
@@ -1170,6 +1352,11 @@ QCalendarWidget QTableView {
                     <height>35</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -1226,6 +1413,11 @@ QCalendarWidget QTableView {
                     <height>35</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -1281,6 +1473,11 @@ QCalendarWidget QTableView {
                     <width>16777215</width>
                     <height>35</height>
                    </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
                   </property>
                  </widget>
                 </item>

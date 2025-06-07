@@ -51,20 +51,6 @@ class DoctorRecords(QWidget):
         # Search functionality
         self.ui.SearchButton.clicked.connect(self.filter_tables)
 
-        # Initialize SortBy and SortOrder combo boxes
-        SortBy = ["Date", "Name", "Diagnosis"]
-        SortOrder = ["Ascending", "Descending"]
-        self.ui.SortByBox.addItems(SortBy)
-        self.ui.SortByBox.setCurrentIndex(0)
-        self.ui.SortOrderBox.addItems(SortOrder)
-        self.ui.SortOrderBox.setCurrentIndex(0)
-
-        # Connect signals for sorting
-        self.ui.SortByBox.currentIndexChanged.connect(self.refresh_tables)
-        self.ui.SortOrderBox.currentIndexChanged.connect(self.refresh_tables)
-
-
-
     def refresh_tables(self):
         """Refresh the tables based on the current search query and sorting options."""
         try:

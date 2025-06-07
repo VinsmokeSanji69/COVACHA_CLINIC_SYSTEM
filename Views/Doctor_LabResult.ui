@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1165</width>
-    <height>800</height>
+    <height>815</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -313,8 +313,8 @@ QScrollBar::sub-line:vertical{
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1104</width>
-               <height>896</height>
+               <width>1115</width>
+               <height>856</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_24">
@@ -1371,7 +1371,7 @@ QScrollBar::sub-line:vertical{
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>942</width>
+                            <width>953</width>
                             <height>200</height>
                            </rect>
                           </property>
@@ -1655,7 +1655,7 @@ QScrollBar::sub-line:vertical{
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>942</width>
+                         <width>953</width>
                          <height>200</height>
                         </rect>
                        </property>

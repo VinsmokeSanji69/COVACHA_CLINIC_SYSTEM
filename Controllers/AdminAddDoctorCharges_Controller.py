@@ -59,6 +59,8 @@ class AdminDoctorCharges(QMainWindow):
         self.initialize_doctor_details()
         self.ui.ModifyCharges.clicked.connect(self.validate_and_save_charges)
 
+        self.ui.Cancel.clicked.connect(self.close)
+
         print("AdminAddLabTest initialized successfully!")
 
     def initialize_doctor_details(self):

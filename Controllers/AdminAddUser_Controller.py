@@ -258,25 +258,25 @@ class AdminAddUserController(QMainWindow):
         self.ui.Fname.setFocus()
 
     def apply_styles(self):
-        # Style for QDateEdit
-        dateedit_style = """
-            QDateEdit {
-                background-color: #F4F7ED;
-                border: 1px solid #2E6E65;
-                border-radius: 10px;
-                padding: 5px 10px;
-                font: 300 12pt "Lexend Light";
-                color: black; /* Set text color to black */
-            }
-            /* Dropdown arrow styling */
-            QDateEdit::down-arrow {
-                image: url(:/lucide/icons/calendar.svg);
-                width: 20px;
-                height: 20px;
-            }
-        """
-        self.ui.DateJoined.setStyleSheet(dateedit_style)
-        self.ui.Dob.setStyleSheet(dateedit_style)
+        # # Style for QDateEdit
+        # dateedit_style = """
+        #     QDateEdit {
+        #         background-color: #F4F7ED;
+        #         border: 1px solid #2E6E65;
+        #         border-radius: 10px;
+        #         padding: 5px 10px;
+        #         font: 300 12pt "Lexend Light";
+        #         color: black; /* Set text color to black */
+        #     }
+        #     /* Dropdown arrow styling */
+        #     QDateEdit::down-arrow {
+        #         image: url(:/lucide/icons/calendar.svg);
+        #         width: 20px;
+        #         height: 20px;
+        #     }
+        # """
+        # self.ui.DateJoined.setStyleSheet(dateedit_style)
+        # self.ui.Dob.setStyleSheet(dateedit_style)
         # Style for QComboBox
         combobox_style = """
             QComboBox {

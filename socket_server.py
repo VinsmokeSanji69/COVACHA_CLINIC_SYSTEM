@@ -10,7 +10,7 @@ from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
-import psutils
+# import psutils
 
 
 class CustomJSONEncoder(JSONEncoder):
