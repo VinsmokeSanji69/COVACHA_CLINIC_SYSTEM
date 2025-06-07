@@ -108,7 +108,7 @@ QLabel {
           <string/>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../Images/resources.qrc">
            <normaloff>:/icons/icons/align-justify.svg</normaloff>:/icons/icons/align-justify.svg</iconset>
          </property>
          <property name="iconSize">
@@ -149,7 +149,7 @@ QLabel {
             <string>Dashboard</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/layout-dashboard.svg</normaloff>:/icons/icons/layout-dashboard.svg</iconset>
            </property>
            <property name="iconSize">
@@ -166,7 +166,7 @@ QLabel {
             <string>Records</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/file-text.svg</normaloff>:/icons/icons/file-text.svg</iconset>
            </property>
            <property name="iconSize">
@@ -183,7 +183,7 @@ QLabel {
             <string>Transactions</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/tickets.svg</normaloff>:/icons/icons/tickets.svg</iconset>
            </property>
            <property name="iconSize">
@@ -223,7 +223,7 @@ QLabel {
             <string>Settings</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/user-round-cog.svg</normaloff>:/icons/icons/user-round-cog.svg</iconset>
            </property>
            <property name="iconSize">
@@ -240,7 +240,7 @@ QLabel {
             <string>Logout</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="../Images/resources.qrc">
              <normaloff>:/icons/icons/log-out.svg</normaloff>:/icons/icons/log-out.svg</iconset>
            </property>
            <property name="iconSize">
@@ -280,7 +280,7 @@ QLabel {
 	font-size: 15px;
 	color: #2B3752;
 }
-#UserName {
+#User {
 	font: 600 10pt &quot;Lexend SemiBold&quot;;
 	font-size: 25px;
 	color: #2B3752;
@@ -321,7 +321,7 @@ QGraphicsView {
        <item>
         <widget class="QFrame" name="Header">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -347,11 +347,17 @@ QGraphicsView {
           </property>
           <item>
            <widget class="QPushButton" name="pushButton_6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="../Images/resources.qrc">
               <normaloff>:/icons/icons/circle-arrow-left.svg</normaloff>:/icons/icons/circle-arrow-left.svg</iconset>
             </property>
             <property name="iconSize">
@@ -365,7 +371,7 @@ QGraphicsView {
           <item>
            <widget class="QLabel" name="InterfaceTitle">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -387,6 +393,12 @@ QGraphicsView {
               </property>
               <item alignment="Qt::AlignRight">
                <widget class="QLabel" name="User">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="text">
                  <string>Roy Adrian Rondina</string>
                 </property>
@@ -750,7 +762,7 @@ QComboBox QAbstractItemView {
                    <item>
                     <widget class="QWidget" name="PatientInfo" native="true">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
@@ -983,7 +995,7 @@ QComboBox QAbstractItemView {
                    <item>
                     <widget class="QWidget" name="DoctorInfo" native="true">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
@@ -1079,47 +1091,6 @@ QComboBox QAbstractItemView {
                          <property name="bottomMargin">
                           <number>0</number>
                          </property>
-                         <item>
-                          <widget class="QFrame" name="frame_4">
-                           <property name="frameShape">
-                            <enum>QFrame::StyledPanel</enum>
-                           </property>
-                           <property name="frameShadow">
-                            <enum>QFrame::Raised</enum>
-                           </property>
-                           <layout class="QVBoxLayout" name="verticalLayout_18">
-                            <property name="spacing">
-                             <number>0</number>
-                            </property>
-                            <property name="leftMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>0</number>
-                            </property>
-                            <item>
-                             <widget class="QLabel" name="label_25">
-                              <property name="text">
-                               <string>Specialty</string>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="QLabel" name="label_27">
-                              <property name="text">
-                               <string>Ophthalmologist</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
                          <item>
                           <widget class="QFrame" name="frame_3">
                            <property name="frameShape">
@@ -1409,18 +1380,10 @@ QComboBox QAbstractItemView {
                           </widget>
                          </item>
                          <item>
-                          <widget class="QComboBox" name="comboBox">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
+                          <widget class="QCheckBox" name="checkBox">
+                           <property name="text">
+                            <string>Senior</string>
                            </property>
-                           <item>
-                            <property name="text">
-                             <string>Seniors</string>
-                            </property>
-                           </item>
                           </widget>
                          </item>
                         </layout>
@@ -1556,7 +1519,7 @@ QComboBox QAbstractItemView {
                    </size>
                   </property>
                   <property name="text">
-                   <string>Cancel Transaction</string>
+                   <string>Partial</string>
                   </property>
                  </widget>
                 </item>
