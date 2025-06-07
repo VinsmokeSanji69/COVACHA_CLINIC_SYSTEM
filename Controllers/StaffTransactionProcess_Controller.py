@@ -1,12 +1,10 @@
 from datetime import date
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
+
+from Controllers.ClientSocketController import DataRequest
+from Models.Doctor import calculate_age
 from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
-from Models.CheckUp import CheckUp
-from Models.Doctor import Doctor, calculate_age
-from Models.Patient import Patient
-from Models.LaboratoryTest import Laboratory
-from Models.Transaction import Transaction
 
 
 class ConfirmationDialog(QDialog):
@@ -91,8 +89,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             if confirmation_dialog.exec_() == QtWidgets.QDialog.Rejected:
                 return
 
-            # Save the transaction with status Partial
-            Transaction.add_transaction(chck_id, trans_data)
+            DataRequest.send_command("CREATE_TRANSACTION",chck_id, trans_data)
 
             QtWidgets.QMessageBox.information(self, "Saved", "Transaction has been saved as Partial.")
 
@@ -178,7 +175,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
                 raise ValueError("No check-up ID provided.")
 
             # Fetch check-up details from the database
-            checkup = CheckUp.get_checkup_details(self.chck_id)
+            checkup = DataRequest.send_command("GET_CHECKUP_DETAILS",self.chck_id)
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
 
@@ -191,7 +188,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             pat_id = checkup.get("pat_id")
             if not pat_id:
                 raise ValueError("Missing 'pat_id' in checkup data.")
-            patient = Patient.get_patient_details(pat_id)
+            patient = DataRequest.send_command("GET_PATIENT_DETAILS",pat_id)
             if not patient:
                 raise ValueError(f"No patient found for pat_id={pat_id}")
 
@@ -201,7 +198,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             doc_id = checkup.get("doc_id")
             if not doc_id:
                 raise ValueError("Missing 'doc_id' in checkup data.")
-            doctor = Doctor.get_doctor_by_id(doc_id)
+
+            doctor = DataRequest.send_command("GET_DOCTOR_BY_ID",doc_id)
             if not doctor:
                 raise ValueError(f"No doctor found for doc_id={doc_id}")
 
@@ -220,7 +218,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))
 
             # ✅ Check transaction
-            transaction = Transaction.get_transaction_by_chckid(self.chck_id)
+            transaction = DataRequest.send_command("GET_TRANSACTION_BY_CHECKUP_ID",self.chck_id)
 
             if transaction:
                 # Store existing transaction data
@@ -261,6 +259,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
+    @staticmethod
     def calculate_age(dob):
         if not dob:
             return None
@@ -278,7 +277,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
                 raise ValueError("No check-up ID provided.")
 
             # Step 1: Fetch all lab codes associated with the chck_id
-            lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID",self.chck_id)
             if not lab_tests:
                 return
 
@@ -292,7 +291,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
                 lab_attachment = lab_test['lab_attachment']  # Optional: Handle attachments if needed
 
                 # Fetch lab details (name and price) from the Laboratory model
-                lab_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE",lab_code)
                 if not lab_details:
                     continue
 
@@ -319,7 +318,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
                 raise ValueError("No check-up ID provided.")
 
             # Step 1: Fetch all lab codes associated with the chck_id
-            lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID",self.chck_id)
             if not lab_tests:
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
                 return
@@ -330,7 +329,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
                 lab_code = lab_test['lab_code']
 
                 # Fetch lab details (name and price) from the Laboratory model
-                lab_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE",lab_code)
                 if not lab_details:
                     continue
 
@@ -403,11 +402,11 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             # Check if we're updating an existing transaction or creating a new one
             if self.existing_transaction:
                 # Update existing transaction to "Completed"
-                Transaction.update_transaction_status(chck_id, trans_data)
+                DataRequest.send_command("UPDATE_TRANSACTION_STATUS",chck_id, trans_data)
                 QtWidgets.QMessageBox.information(self, "Success", "Transaction updated to Completed successfully!")
             else:
                 # Create new transaction with "Completed" status
-                Transaction.add_transaction(chck_id, trans_data)
+                DataRequest.send_command("CREATE_TRANSACTION",chck_id, trans_data)
                 QtWidgets.QMessageBox.information(self, "Success", "Transaction completed and saved successfully!")
 
             # Redirect to Transactions page in StaffDashboard

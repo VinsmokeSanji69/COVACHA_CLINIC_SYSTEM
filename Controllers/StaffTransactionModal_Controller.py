@@ -1,9 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem, QMainWindow, QMessageBox
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
-from Models.Transaction import Transaction
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Staff_TransactionsList import Ui_Staff_TransactionList
 from Controllers.StaffTransactionProcess_Controller import StaffTransactionProcess
 
@@ -41,12 +39,12 @@ class StaffTransactionModal(QMainWindow):
         """Fetch and display pending check-ups in the TransactionTable."""
         try:
             # Fetch all transactions to determine which check-ups are already completed
-            transactions = Transaction.get_all_transaction()
+            transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
             # Create a mapping of chck_id to tran_status
             transaction_status_map = {tran['chck_id']: tran['tran_status'] for tran in transactions}
 
             # Fetch all check-ups from the database
-            pending_checkups = CheckUp.get_all_checkups()
+            pending_checkups = DataRequest.send_command("GET_ALL_CHECKUP")
 
             # Clear the table before populating it
             self.ui.TransactionTable.setRowCount(0)
@@ -88,12 +86,12 @@ class StaffTransactionModal(QMainWindow):
                 doc_id = checkup['doc_id']
 
                 # Fetch patient details
-                patient = Patient.get_patient_by_id(pat_id)
+                patient = DataRequest.send_command("GET_PATIENT_BY_ID",pat_id)
                 if not patient:
                     continue
 
                 # Fetch doctor details
-                doctor = Doctor.get_doctor_by_id(doc_id)
+                doctor = DataRequest.send_command("GET_DOCTOR_BY_ID",doc_id)
                 if not doctor:
                     docFullname = "Unknown Doctor"
                 else:

@@ -8,7 +8,7 @@ class DBConnection:
             conn = psycopg2.connect(
                 dbname="ClinicSystem",
                 user="postgres",
-                password="sphinxclub012",
+                password="admin123",
                 host="localhost",
                 port="5432"
             )
