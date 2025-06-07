@@ -20,7 +20,7 @@
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
 	font-weight: bold;
@@ -33,14 +33,13 @@ QPushButton {
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
     qproperty-wordWrap: true;
 	background: transparent;
 }
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -332,7 +331,7 @@ QLabel {
 padding-top: 15px;
 }
 QLabel {
-    padding: 0px;
+    padding: 0px; 
 }
 #UserType {
 	font: 300 10pt &quot;Lexend Light&quot;;
@@ -348,11 +347,10 @@ QLabel {
 	font-size: 35px;
 }
 QGraphicsView {
-    border: 2px solid #ccc;
+    border: 2px solid #ccc; 
     border-radius: 25px;
-    background: white;
+    background: white; 
 }
-
 </string>
      </property>
      <property name="frameShape">
@@ -899,8 +897,8 @@ QScrollBar::sub-line:vertical{
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>247</width>
-                       <height>563</height>
+                       <width>328</width>
+                       <height>561</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -926,6 +924,11 @@ QScrollBar::sub-line:vertical{
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>12</pointsize>
+                         </font>
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
@@ -1018,8 +1021,8 @@ QTableWidget QHeaderView::section {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>383</width>
-                       <height>563</height>
+                       <width>327</width>
+                       <height>561</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1040,6 +1043,11 @@ QTableWidget QHeaderView::section {
                       </property>
                       <item>
                        <widget class="QTableWidget" name="LaboratoryTestTable">
+                        <property name="font">
+                         <font>
+                          <pointsize>12</pointsize>
+                         </font>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

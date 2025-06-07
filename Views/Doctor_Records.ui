@@ -208,7 +208,7 @@ QLabel {
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="QPushButton" name="LogOutButton">
           <property name="text">
            <string> Logout</string>
           </property>
@@ -590,86 +590,6 @@ QComboBox::drop-down {
              </spacer>
             </item>
             <item>
-             <widget class="QComboBox" name="SortByBox">
-              <property name="styleSheet">
-               <string notr="true">QComboBox {
-    background-color: #D9E4DC;
-    border: 2px solid #2E6E65;
-    border-radius: 10px;
-    padding: 5px 10px;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 30px;
-    border-left: 1px solid #2E6E65;
-    background-color: #D9E4DC;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
-    width: 20px;
-    height: 20px;
-}
-QComboBox QAbstractItemView {
-    background-color: #F4F7ED;
-    selection-background-color: #CCE3D0;
-    border: 1px solid #2E6E65;
-    border-radius: 2px;
-    outline: 0;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>Sort By:</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="SortOrderBox">
-              <property name="styleSheet">
-               <string notr="true">QComboBox {
-    background-color: #D9E4DC;
-    border: 2px solid #2E6E65;
-    border-radius: 10px;
-    padding: 5px 10px;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 30px;
-    border-left: 1px solid #2E6E65;
-    background-color: #D9E4DC;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-QComboBox::down-arrow {
-    image: url(:/icons/icons/chevron-down.svg);
-    width: 20px;
-    height: 20px;
-}
-QComboBox QAbstractItemView {
-    background-color: #F4F7ED;
-    selection-background-color: #CCE3D0;
-    border: 1px solid #2E6E65;
-    border-radius: 2px;
-    outline: 0;
-	font: 300 12pt &quot;Lexend Light&quot;;
-}</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>Sort Order:</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -737,6 +657,11 @@ QComboBox QAbstractItemView {
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
               </property>
               <property name="styleSheet">
                <string notr="true">QTableWidget {
@@ -858,6 +783,11 @@ text-allign: left;
          </item>
          <item>
           <widget class="QTableWidget" name="DoneTable">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="styleSheet">
             <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

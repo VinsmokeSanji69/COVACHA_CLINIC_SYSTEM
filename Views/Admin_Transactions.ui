@@ -14,36 +14,32 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#centralwidget {
-	background-color: #f0f0f0;
-}
-*{
+   <string notr="true">*{
 	padding: 0px;
 	margin: 0px;
 	border: 0px;
 }
 QPushButton {
-	font: 900 16pt &quot;Satoshi Black&quot;;
+	font: 900 17pt &quot;Satoshi Black&quot;;
 	background-color: transparent;
  	border-radius: 10px;
-	font-weight: bold;	
+	font-weight: bold;
 	color: #F4F7ED;
 	text-align: left;
 	padding: 5px 5px;
 }
 #NavBar {
-    background-color: #2E6E65; 
+    background-color: #2E6E65;
 }
 QLabel {
 	font: 900 10pt &quot;Satoshi Black&quot;;
-	font-size: 20px;
+	font-size: 25px;
 	font-weight: bold;
 	color: #2E6E65;
 	qproperty-alignment: 'AlignLeft';
     qproperty-wordWrap: true;
 	background: transparent;
 }
-
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -355,7 +351,6 @@ QGraphicsView {
     border-radius: 25px;
     background: white; 
 }
-
 </string>
      </property>
      <property name="frameShape">
@@ -751,83 +746,6 @@ QComboBox QAbstractItemView {
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="Diagnosis">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>250</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="editable">
-                  <bool>true</bool>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Ingrown</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Kabag</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Panuhot</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="Status">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>250</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Date Diagnosed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Gender</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Name (Aphabetical)</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
                 <spacer name="horizontalSpacer">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -916,8 +834,8 @@ QScrollBar::sub-line:horizontal{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>676</width>
-                    <height>513</height>
+                    <width>716</width>
+                    <height>517</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -938,6 +856,11 @@ QScrollBar::sub-line:horizontal{
                    </property>
                    <item>
                     <widget class="QTableWidget" name="TransactionTable">
+                     <property name="font">
+                      <font>
+                       <pointsize>12</pointsize>
+                      </font>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QTableWidget {
 	background-color: #F4F7ED;

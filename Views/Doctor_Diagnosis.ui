@@ -1109,10 +1109,6 @@ QComboBox::drop-down {
                      <property name="text">
                       <string>Proceed Check Up</string>
                      </property>
-                     <property name="icon">
-                      <iconset>
-                       <normaloff>:/icons/icons/ticket-plus.svg</normaloff>:/icons/icons/ticket-plus.svg</iconset>
-                     </property>
                      <property name="iconSize">
                       <size>
                        <width>40</width>
