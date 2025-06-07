@@ -11,7 +11,7 @@ from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
-import psutil
+# import psutil
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -123,7 +123,7 @@ class SocketServer:
 
             # DOCTOR
             "GET_DOCTOR": Doctor.get_doctor,
-            "GET_DOCTOR_BY_ID": Doctor.get_doctor_by_id,
+            "GET_DOCTOR_BY_ID": Doctor.get_doctor,
 
             # STAFF
             "GET_STAFF": Staff.get_staff,

@@ -52,7 +52,7 @@ class StaffTransactions(QWidget):
 
                 # Format patient and doctor names
                 pat_full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                doc_full_name = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+                doc_full_name = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
                 # Determine the transaction status
                 tran_status = transaction_dict.get(chck_id, "Pending")
