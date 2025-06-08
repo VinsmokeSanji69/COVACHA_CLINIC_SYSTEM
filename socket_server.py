@@ -284,7 +284,7 @@ class SocketServer:
                                             pass
                             response = result if result is not None else {}
 
-                        print("Final response:", response)
+                        #print("Final response:", response)
 
                 except PermissionError as e:
                     msg = f"Permission denied: {str(e)}"
