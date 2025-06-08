@@ -124,31 +124,33 @@ class LoginController:
             # Check if the user is a doctor (5-digit ID)
             if len(user_id) == 5 and user_id.isdigit():
                 doctor = self._get_user(conn, "doctor", user_id)
-                if doctor and self._verify_hashed_password(password, doctor[4]):
-                    self._show_dashboard(DoctorDashboardController, doctor)
-                    return
-                else:
-                    QMessageBox.warning(
-                        self.login_window,
-                        "Login Failed",
-                        "Incorrect doctor password"
-                    )
-                    return
+                if doctor:
+                    is_active = doctor[5]
+                    if not is_active:
+                        QMessageBox.warning(self.login_window, "Login Failed", "This account does not exist")
+                        return
+
+                    if self._verify_hashed_password(password, doctor[4]):
+                        self._show_dashboard(DoctorDashboardController, doctor)
+                        return
+                    else:
+                        QMessageBox.warning(self.login_window, "Login Failed", "Incorrect doctor password")
+                        return
 
             # Check if the user is a staff member
             staff = self._get_user(conn, "staff", user_id)
             if staff:
+                is_active = staff[4]
+                if not is_active:
+                    QMessageBox.warning(self.login_window, "Login Failed", "This account does not exist")
+                    return
+
                 if self._verify_hashed_password(password, staff[3]):
-                    # Route to StaffDashboardController for non-admin staff
                     if user_id != self.ADMIN_ID:
                         self._show_dashboard(StaffDashboardController, staff)
                     return
                 else:
-                    QMessageBox.warning(
-                        self.login_window,
-                        "Login Failed",
-                        "Incorrect staff password"
-                    )
+                    QMessageBox.warning(self.login_window, "Login Failed", "Incorrect staff password")
                     return
 
             # If no match found in any table
@@ -200,16 +202,16 @@ class LoginController:
             )
 
     def _get_user(self, conn, table, user_id):
-        """Generic user retrieval from database"""
+        """Generic user retrieval from database with is_active check"""
         cursor = conn.cursor()
         if table == "staff":
             cursor.execute(
-                "SELECT staff_id, staff_fname, staff_lname, staff_password FROM staff WHERE staff_id = %s",
+                "SELECT staff_id, staff_fname, staff_lname, staff_password, is_active FROM staff WHERE staff_id = %s",
                 (user_id,)
             )
         elif table == "doctor":
             cursor.execute(
-                "SELECT doc_id, doc_fname, doc_lname, doc_specialty, doc_password FROM doctor WHERE doc_id = %s",
+                "SELECT doc_id, doc_fname, doc_lname, doc_specialty, doc_password, is_active FROM doctor WHERE doc_id = %s",
                 (user_id,)
             )
         return cursor.fetchone()
