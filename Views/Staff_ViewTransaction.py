@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1267, 845)
+        MainWindow.resize(1267, 835)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -585,13 +585,16 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 847, 233))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 847, 235))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_14.setSpacing(0)
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.LabChargeTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LabChargeTable.setFont(font)
         self.LabChargeTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -634,6 +637,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.addWidget(self.label_26, 0, QtCore.Qt.AlignVCenter)
         self.TotalLabCharge = QtWidgets.QLineEdit(self.widget_15)
         self.TotalLabCharge.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("Satoshi Black")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(99)
+        self.TotalLabCharge.setFont(font)
         self.TotalLabCharge.setStyleSheet("QLineEdit {\n"
 "    background-color: transparent;\n"
 "    border-bottom: 2px solid #2E6E65;\n"
@@ -670,6 +680,9 @@ class Ui_MainWindow(object):
         self.label_38.setObjectName("label_38")
         self.verticalLayout_20.addWidget(self.label_38)
         self.SeniorCheckBox = QtWidgets.QCheckBox(self.frame_8)
+        self.SeniorCheckBox.setStyleSheet("QCheckBox {\n"
+"font-size: 19px;\n"
+"}")
         self.SeniorCheckBox.setObjectName("SeniorCheckBox")
         self.verticalLayout_20.addWidget(self.SeniorCheckBox)
         self.horizontalLayout_10.addWidget(self.frame_8, 0, QtCore.Qt.AlignTop)

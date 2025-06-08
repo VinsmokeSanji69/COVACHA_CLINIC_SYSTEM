@@ -2,17 +2,18 @@ from PyQt5 import QtWidgets, QtCore, Qt
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, \
     QWidget, QSizePolicy, QHeaderView, QStackedWidget, QMainWindow
-
 from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Controllers.DoctorDiagnosis_Controller import DoctorDiagnosis
-from Controllers.DoctorRecords_Controller import DoctorRecords
 from Controllers.DoctorPatientList_Controller import DoctorPatientList
+from Controllers.DoctorRecords_Controller import DoctorRecords
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Dashboard import Ui_Doctor_Dashboard
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Models.Doctor import Doctor
 from Views.Doctor_Records import Ui_Doctor_Records
 import datetime
+
 
 
 class ConfirmationDialog(QDialog):
@@ -53,8 +54,9 @@ class ConfirmationDialog(QDialog):
 
 
 class DoctorDashboardController(QMainWindow):
-    def __init__(self, doc_id, fname, lname, specialty):
+    def __init__(self, doc_id, fname, lname, specialty, login_window=None):
         super().__init__()
+        self.login_window = login_window
         self.doc_id = doc_id
         self.setWindowTitle("Doctor Dashboard")
 
@@ -112,7 +114,6 @@ class DoctorDashboardController(QMainWindow):
         self.checkup_ui.AcceptedCheckUp.resizeRowsToContents()
 
         # Responsive table for Dashboard Page
-        # PatientDetails (?)
         header = self.dashboard_ui.PatientDetails.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
 
@@ -134,15 +135,14 @@ class DoctorDashboardController(QMainWindow):
         self.doctor_checkup = DoctorCheckUpList(self.doc_id, self.records_ui)
 
         self.load_pending_checkups()
-        # self.get_accepted_checkup()
-        # self.get_done_checkup()
-        #
-        # self.get_done_checkup()
 
         self.apply_table_styles(self.dashboard_ui.PatientDetails)
         self.apply_table_styles(self.checkup_ui.AcceptedCheckUp)
         self.apply_table_styles(self.checkup_ui.DoneTable)
         self.apply_table_styles(self.records_ui.DoneTable)
+
+        total_patients = Doctor.count_total_patients_by_doctor(self.doc_id)
+        self.dashboard_ui.Total.setText(str(total_patients))
 
 
     def setup_pages(self):
@@ -171,51 +171,82 @@ class DoctorDashboardController(QMainWindow):
         self.dashboard_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.dashboard_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
         self.dashboard_ui.RecordsButton.clicked.connect(self.go_to_records)
+        self.dashboard_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect checkup  page buttons
         self.checkup_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.checkup_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
         self.checkup_ui.RecordsButton.clicked.connect(self.go_to_records)
+        self.checkup_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect records page buttons
         self.records_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.records_ui.CheckUpButton.clicked.connect(self.go_to_checkup_list)
         self.records_ui.RecordsButton.clicked.connect(self.go_to_records)
+        self.records_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect the Accept Check-Up button
         self.dashboard_ui.AcceptCheckUp.clicked.connect(self.accept_checkup)
 
+    @pyqtSlot()
+    def logout(self):
+        """Return to the login screen and clear the credentials."""
+        try:
+            # 1. Cleanup and delete all tracked windows
+            for window in getattr(self, "open_windows", []):
+                if window and hasattr(window, "deleteLater"):
+                    window.deleteLater()
+
+            # 2. Close and delete dashboard safely
+            if hasattr(self, "cleanup"):
+                self.cleanup()
+            if hasattr(self, "hide"):
+                self.hide()  # Prefer hide over deleteLater to avoid premature deletion
+            if hasattr(self, "deleteLater"):
+                QTimer.singleShot(0, self.deleteLater)  # Delay deletion
+
+            # 3. Show login window
+            if hasattr(self, "login_window") and self.login_window:
+                self.login_window.ui.UserIDInput.clear()
+                self.login_window.ui.PasswordInput.clear()
+                self.login_window.show()
+            else:
+                from Views.LogIn import LogInWindow
+                from Controllers.LogIn_Controller import LoginController
+
+                login_window = LogInWindow()
+                LoginController(login_window)
+                login_window.show()
+
+        except Exception as e:
+            pass
 
     @pyqtSlot()
     def go_to_dashboard(self):
         """Switch to the dashboard page"""
-        print("Navigating to Dashboard")
         self.page_stack.setCurrentWidget(self.dashboard_page)
+        self.load_pending_checkups()
         self.update_time_labels()
 
     @pyqtSlot()
     def go_to_checkup_list(self):
         """Switch to the transactions page"""
-        print("Navigating to Check Up List")
         self.page_stack.setCurrentWidget(self.checkup_page)
         self.update_time_labels()
 
     @pyqtSlot()
     def go_to_records(self):
         """Switch to the records page"""
-        print("Navigating to Records")
         self.page_stack.setCurrentWidget(self.records_page)
         self.update_time_labels()
 
     def ViewPatient(self):
-        print("PatientButton clicked!")
         try:
             # Instantiate and show the AdminStaffsController window
             self.patient_controller = DoctorPatientList(self.doc_id)
             self.patient_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def update_time_labels(self):
@@ -240,60 +271,15 @@ class DoctorDashboardController(QMainWindow):
             ui.Month.setText(f"{now.strftime('%B')} {now.day}, {now.year}")
 
     def ViewRecord(self):
-        print("RecordButton clicked!")
         try:
             # Instantiate and show the AdminStaffsController window
             self.record_controller = DoctorRecords(self.doc_id)
             self.record_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def apply_table_styles(self, table_widget):
-        """Apply custom styles to the given table widget."""
-
-        table_widget.setStyleSheet("""
-            QTableWidget {
-                background-color: #F4F7ED;
-                gridline-color: transparent;
-                border-radius: 10px;
-            }
-            QTableWidget::item {
-                border: none;
-                font: 16pt "Lexend";
-            }
-            QTableWidget::item:selected {
-                background-color: rgba(46, 110, 101, 0.3);
-            }
-            QTableWidget QHeaderView::section {
-                background-color: #2E6E65;
-                color: white;
-                padding: 5px;
-                font: 18px "Lexend Medium";
-                border: 2px solid #2E6E65;
-            }
-
-            /* Scroll Area CSS */
-            QScrollBar:vertical {
-                background: transparent;
-                width: 10px;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical {
-                background: #C0C0C0;
-                border-radius: 5px;
-            }
-            QScrollBar::handle:vertical:hover {
-                background: #A0A0A0;
-            }
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical{
-                background: none;
-                border: none;
-            }
-        """)
-
         # Ensure horizontal headers are visible
         table_widget.horizontalHeader().setVisible(True)
 
@@ -319,7 +305,6 @@ class DoctorDashboardController(QMainWindow):
 
             # Check if there are no pending check-ups
             if not pending_checkups:
-                print("No pending check-ups found.")
 
                 # Add a single row with the message "No Patient Yet"
                 self.dashboard_ui.PatientDetails.insertRow(0)
@@ -339,7 +324,6 @@ class DoctorDashboardController(QMainWindow):
                 # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
                 if not patient:
-                    print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Extract patient name and capitalize the first letter of each word
@@ -360,7 +344,7 @@ class DoctorDashboardController(QMainWindow):
             self.dashboard_ui.PatientDetails.setColumnWidth(2, 200)
 
         except Exception as e:
-            print(f"Error loading pending check-ups: {e}")
+            pass
 
     def accept_checkup(self):
         """Handle the Accept Check-Up button click."""
@@ -371,36 +355,25 @@ class DoctorDashboardController(QMainWindow):
                 QMessageBox.warning(self, "Selection Error", "Please select a check-up to accept.")
                 return
 
-            print("Selected row:", selected_row)
-
             # Get the check-up ID from the selected row
             chck_id = self.dashboard_ui.PatientDetails.item(selected_row, 0).text()  # Assuming chck_id is in column 0
-            print(f"Selected check-up ID: {chck_id}")
-
             # Show confirmation dialog
             confirmation_dialog = ConfirmationDialog(self)
             if confirmation_dialog.exec_() == QDialog.Rejected:
-                print("Check-up acceptance cancelled by the user.")
                 return
-
-            print("User confirmed acceptance.")
 
             # Update the check-up status to "On going" and assign the doctor's ID
             success = CheckUp.update_doc_id(chck_id, self.doc_id)
             if success:
-                print("Check-up accepted successfully in the database.")
                 # Open the DoctorDiagnosis form with the selected CheckUp ID
                 self.open_diagnosis_form(chck_id)
             else:
-                print("Failed to update check-up in the database.")
                 QMessageBox.critical(self, "Error", "Failed to accept check-up. Please try again.")
 
         except Exception as e:
-            print(f"An error occurred: {e}")
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
 
     def open_diagnosis_form(self, checkup_id):
-        print(f"Opening DoctorDiagnosis form with CheckUp ID: {checkup_id}")
         try:
             diagnosis_window = DoctorDiagnosis(
                 checkup_id=checkup_id,
@@ -408,9 +381,6 @@ class DoctorDashboardController(QMainWindow):
                 parent=self
             )
             diagnosis_window.show()
-            print("DoctorDiagnosis window opened successfully.")
         except Exception as e:
-            print(f"Error opening DoctorDiagnosis window: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
-
 

@@ -7,7 +7,6 @@ from Views.Admin_AddStaff import Ui_MainWindow as AdminAddUserUI
 import hashlib
 from Models.Staff import Staff
 from Models.Doctor import Doctor
-
 # Add this to make other controllers work
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
@@ -214,9 +213,7 @@ class AdminModifyUserController(QMainWindow):
                     success = Doctor.update(staff_data)
 
                 if success:
-                    QMessageBox.information(self, "Success", "Account created successfully!")
-                    self.clear_form()
-
+                    QMessageBox.information(self, "Success", "Updated successfully!")
                     # Notify parent to refresh tables
                     if self.parent and hasattr(self.parent, 'refresh_tables'):
                         self.parent.refresh_tables()
@@ -226,7 +223,6 @@ class AdminModifyUserController(QMainWindow):
                 QMessageBox.information(self, "Cancelled", "Account creation cancelled.\n( Press any key to close )")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to add staff: {str(e)}")
-            print(f"Error: {str(e)}")
 
     def validate_form(self):
         """Validate all form fields"""

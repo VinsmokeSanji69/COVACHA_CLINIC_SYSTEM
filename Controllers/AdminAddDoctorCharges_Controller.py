@@ -1,6 +1,5 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
-
 from Models.Doctor import Doctor
 from Views.Admin_AddDoctorCharges import Ui_MainWindow as AdminAddChargesUI
 from Models.LaboratoryTest import Laboratory
@@ -43,11 +42,12 @@ class ConfirmationDialog(QDialog):
 
 
 class AdminDoctorCharges(QMainWindow):
-    def __init__(self, doc_id ,parent=None):
+    def __init__(self, doc_id ,parent=None, charges_ui = None):
         super().__init__(parent)
         self.doc_id = doc_id
         self.ui = AdminAddChargesUI()
         self.ui.setupUi(self)
+        self.charges_ui = charges_ui
 
         # Set window properties
         self.setWindowTitle("Add Doctor Charges")
@@ -59,7 +59,8 @@ class AdminDoctorCharges(QMainWindow):
         self.initialize_doctor_details()
         self.ui.ModifyCharges.clicked.connect(self.validate_and_save_charges)
 
-        print("AdminAddLabTest initialized successfully!")
+        self.ui.Cancel.clicked.connect(self.close)
+
 
     def initialize_doctor_details(self):
         try:
@@ -82,10 +83,9 @@ class AdminDoctorCharges(QMainWindow):
             self.ui.DocRate.setText(str(doctor_details.get("rate", 0.0)))  # Default to 0.0 if rate missing
 
         except ValueError as ve:
-            print(f"Warning: {str(ve)}")
+            pass
         except Exception as e:
-            print(f"Error initializing doctor details: {e}")
-
+            pass
     def validate_form(self):
         errors = []
         # Validate Price
@@ -98,6 +98,8 @@ class AdminDoctorCharges(QMainWindow):
         return errors
 
     def validate_and_save_charges(self):
+        from Controllers.AdminCharges_Controller import AdminChargesController
+
         errors = self.validate_form()
         if errors:
             QMessageBox.warning(self, "Validation Error", "\n".join(errors))
@@ -109,7 +111,7 @@ class AdminDoctorCharges(QMainWindow):
             return
 
         doctor = {
-            "doctor_id": self.doc_id ,
+            "doctor_id": self.doc_id,
             "new_rate": self.ui.DocRate.text().strip()
         }
 
@@ -117,16 +119,21 @@ class AdminDoctorCharges(QMainWindow):
         success = Doctor.update_doctor_rate(doctor)
         if success:
             QMessageBox.information(self, "Success", "Doctor rate modified successfully!")
-            self.view_charges_ui()
+            try:
+                from Controllers.AdminCharges_Controller import AdminChargesController
+                if isinstance(self.parent(), AdminChargesController):
+                    self.parent().refresh_tables()
+            except Exception as e:
+                pass
+            self.close()
         else:
-            QMessageBox.critical(self, "Error", "Failed to add laboratory test.")
+            QMessageBox.critical(self, "Error", "Failed to modify doctor rate.")
 
     def view_charges_ui(self):
         try:
             from Controllers.AdminCharges_Controller import AdminChargesController
-            self.admin_charges_controller = AdminChargesController()
+            self.admin_charges_controller = AdminChargesController(self.charges_ui)
             self.admin_charges_controller.show()
             self.close()
         except Exception as e:
-            print(f"Staff Details Error: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")

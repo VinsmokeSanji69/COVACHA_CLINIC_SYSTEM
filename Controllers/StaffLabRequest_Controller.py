@@ -1,10 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
+from Views.Staff_LabRequest import Ui_Staff_LabRequest as StaffLabRequestUI
+from PyQt5.QtWidgets import QMessageBox, QWidget
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Doctor import Doctor
-from Models.DB_Connection import DBConnection
-from Views.Staff_LabRequest import Ui_Staff_LabRequest as StaffLabRequestUI
-from PyQt5.QtWidgets import QMessageBox, QWidget
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
 
 class StaffLabRequest(QWidget):
@@ -14,50 +13,64 @@ class StaffLabRequest(QWidget):
         self.labreq_ui = labreq_ui
         self.ui.setupUi(self)
         self.load_staff_labrequest_table()
-        # print("Staff Lab Request UI initialized!")
-
+        self.labreq_ui.SearchIcon.clicked.connect(self.filter_lab_request_table)
 
         # Connect buttons (if the button exists)
         if hasattr(self.labreq_ui, 'Modify'):
-            # print("Modify exists")
             self.labreq_ui.Modify.clicked.connect(self.open_form)
-            # print("Modify connected to open_add_user_form!")
-        else:
-            print("Modify is missing!")
+
+
+    def filter_lab_request_table(self):
+        search_text = self.labreq_ui.Search.text().strip().lower()
+        if not search_text:
+            self.load_staff_labrequest_table()
+            return
+
+        found = False
+        table = self.labreq_ui.LabRequestTable
+        row_count = table.rowCount()
+
+        # Clear previous highlights/selections
+        for row in range(row_count):
+            table.setRowHidden(row, True)
+
+        for row in range(row_count):
+            # Search in Patient Name and Doctor Name columns
+            patient_item = table.item(row, 1)
+            doctor_item = table.item(row, 2)
+
+            if patient_item and doctor_item:
+                patient_name = patient_item.text().lower()
+                doctor_name = doctor_item.text().lower()
+
+                if search_text in patient_name or search_text in doctor_name:
+                    table.setRowHidden(row, False)
+                    found = True
+
+        if not found:
+            table.setRowCount(0)
+            table.setRowCount(1)
+            table.setSpan(0, 0, 1, 4)  # Merge all columns for the message
+            not_found_item = QtWidgets.QTableWidgetItem("No Found Records")
+            not_found_item.setTextAlignment(QtCore.Qt.AlignCenter)
+            table.setItem(0, 0, not_found_item)
 
     def refresh_table(self):
         """Reload data into the tables"""
         try:
             self.load_staff_labrequest_table()
-            # print("Tables refreshed successfully!")
         except Exception as e:
-            # print(f"Error refreshing tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
-        conn = DBConnection.get_db_connection()
-        if not conn:
-            QMessageBox.critical(self, "Database Error", "Failed to connect to the database.")
-            return
-
         try:
-            # Query to fetch all checkup IDs with associated lab codes
-            query = """
-                SELECT DISTINCT clt.chck_id
-                FROM checkup_lab_tests clt
-                JOIN checkup c ON clt.chck_id = c.chck_id;
-            """
-            with conn.cursor() as cursor:
-                cursor.execute(query)
-                checkup_ids = [row[0] for row in cursor.fetchall()]
+            rows = CheckUp.get_checkups_with_lab_requests()
+            checkup_ids = [row[0] for row in rows]
 
-            # Clear the table before populating it
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
-            # Populate the table with filtered data
             for checkup_id in checkup_ids:
-                # Fetch check-up details
                 checkup_details = CheckUp.get_checkup_details(checkup_id)
                 if not checkup_details:
                     continue
@@ -65,73 +78,44 @@ class StaffLabRequest(QWidget):
                 pat_id = checkup_details['pat_id']
                 doc_id = checkup_details['doc_id']
 
-                # Fetch patient details
                 patient_details = Patient.get_patient_details(pat_id)
-                if not patient_details:
+                doctor_details = Doctor.get_doctor(doc_id)
+                if not patient_details or not doctor_details:
                     continue
 
-                # Format patient name (lname, fname)
                 patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
+                doctor_name = f"{doctor_details['last_name'].capitalize()}, {doctor_details['first_name'].capitalize()}"
 
-                # Fetch doctor details
-                doctor_details = Doctor.get_doctor_by_id(doc_id)
-                if not doctor_details:
-                    continue
-
-                # Format doctor name (lname, fname)
-                doctor_name = f"{doctor_details['doc_lname'].capitalize()}, {doctor_details['doc_fname'].capitalize()}"
-
-                # Fetch all lab attachments for this chck_id
-                query = """
-                    SELECT lab_attachment
-                    FROM checkup_lab_tests
-                    WHERE chck_id = %s;
-                """
-                with conn.cursor() as cursor:
-                    cursor.execute(query, (checkup_id,))
-                    lab_attachments = cursor.fetchall()
-
-                # Determine the status based on lab_attachment values
+                # Use static method to fetch lab attachments
+                lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
+                # Determine status
                 if not lab_attachments:
                     status = "No Results Yet"
                 else:
-                    # Separate NULL and non-NULL lab_attachment values
                     null_count = sum(1 for lab_attachment in lab_attachments if lab_attachment[0] is None)
                     total_count = len(lab_attachments)
-
                     if null_count == total_count:
-                        # All lab_attachment values are NULL
                         status = "No Results Yet"
                     elif null_count > 0:
-                        # Some lab_attachment values are NULL
                         status = "Incomplete"
                     else:
-                        # All lab_attachment values are non-NULL
                         status = "Completed"
 
-                # Add a new row to the table
-                row_position = self.ui.LabRequestTable.rowCount()
+                # Add to table
+                row_position = self.labreq_ui.LabRequestTable.rowCount()
                 self.labreq_ui.LabRequestTable.insertRow(row_position)
-
-                # Insert data into the table
                 self.labreq_ui.LabRequestTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(str(checkup_id)))
                 self.labreq_ui.LabRequestTable.setItem(row_position, 1, QtWidgets.QTableWidgetItem(patient_name))
                 self.labreq_ui.LabRequestTable.setItem(row_position, 2, QtWidgets.QTableWidgetItem(doctor_name))
                 self.labreq_ui.LabRequestTable.setItem(row_position, 3, QtWidgets.QTableWidgetItem(status))
 
-            # print("Lab Request Table loaded successfully!")
-
+        except ConnectionError as ce:
+            QMessageBox.critical(self, "Database Error", str(ce))
         except Exception as e:
-            # print(f"Error loading lab request table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load lab request table: {e}")
-
-        finally:
-            if conn:
-                conn.close()
 
     def open_form(self):
         """Open the Staff Add Attachment form with parameters from the selected row."""
-        # print("Opening Add User Form...")
         try:
             # Get the currently selected row in the LabRequestTable
             selected_row = self.labreq_ui.LabRequestTable.currentRow()
@@ -163,8 +147,6 @@ class StaffLabRequest(QWidget):
                 refresh_table = self.refresh_table
             )
             self.staff_attach_window.show()
-            # print("Staff Attach Form shown successfully!")
 
         except Exception as e:
-            # print(f"Error opening Staff Attach Form: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open Staff Attach Form: {e}")

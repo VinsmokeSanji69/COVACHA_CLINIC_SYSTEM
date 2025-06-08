@@ -6,9 +6,12 @@ from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Controllers.DoctorRecords_Controller import DoctorRecords
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
-
+from docx import Document
+import os
+from docx2pdf import convert
 from Views.Doctor_Records import Ui_Doctor_Records
 
 
@@ -21,8 +24,6 @@ class DoctorDiagnosis(QMainWindow):
         # Store the checkup ID, doc_id, and reference to the DoctorDashboard
         self.checkup_id = checkup_id
         self.doc_id = doc_id
-
-        print(f"DoctorDiagnosis initialized successfully with CheckUp ID: {checkup_id} and doc_id: {doc_id}")
 
         # Load and display data related to the checkup ID
         self.load_data()
@@ -66,10 +67,111 @@ class DoctorDiagnosis(QMainWindow):
 
             # Step 3: Populate the UI
             self.populate_patient_info(pat_id, pat_lname, pat_fname, pat_mname, Birthday, age, pat_gender)
-            self.populate_checkup_info(self.checkup_id,chck_bp, chck_temp, chck_height, chck_weight, chckup_type)
-
+            self.populate_checkup_info(self.checkup_id, chck_bp, chck_temp, chck_height, chck_weight, chckup_type)
+            # Store patient_id as an instance variable
+            self.patient_id = pat_id  # Add this line to store patient_id
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load data: {e}")
+
+    def process_selected_tests(self):
+        """Process selected checkboxes and generate Lab Request PDF if applicable."""
+        selected_lab_names = []
+        for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
+            layout = frame.layout()
+            if layout:
+                for i in range(layout.count()):
+                    widget = layout.itemAt(i).widget()
+                    if isinstance(widget, QCheckBox) and widget.isChecked():
+                        lab_code = widget.property("lab_code")
+                        if lab_code:
+                            result = Laboratory.get_test_by_labcode(lab_code)
+                            if result:
+                                lab_name = result[0]['lab_test_name']
+                                selected_lab_names.append(lab_name)
+
+        if not selected_lab_names:
+            self.ViewRecords()
+            return
+
+        raw_lab_codes = [widget.property("lab_code")
+                         for frame in [self.ui.FirstFrame, self.ui.SecondFrame]
+                         for i in range(frame.layout().count())
+                         if isinstance((widget := frame.layout().itemAt(i).widget()), QCheckBox)
+                         and widget.isChecked()
+                         and widget.property("lab_code")]
+
+        success = CheckUp.update_lab_codes(self.checkup_id, raw_lab_codes)
+
+        if not success:
+            QMessageBox.critical(self, "Error", "Failed to update lab codes.")
+            return
+
+        try:
+            patient_info = Patient.get_patient_by_id(self.patient_id)
+            doctor_info = Doctor.get_doctor(self.doc_id)
+            if not patient_info or not doctor_info:
+                QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
+                return
+
+            name = self.ui.PatName.text()
+            age = str(patient_info.get("age", ""))
+            gender = patient_info.get("gender", "")
+            address = patient_info.get("address", "")
+            today = datetime.today().strftime("%Y-%m-%d")
+            doctor_name = f"{doctor_info['first_name'].capitalize()} {doctor_info['middle_name'].capitalize()} {doctor_info['last_name'].capitalize()}"
+
+            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            os.makedirs(output_dir, exist_ok=True)
+
+            word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{name}.docx")
+            pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{name}_LabRequest.pdf")
+
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\LabRequest.docx"
+
+            if not os.path.exists(template_path):
+                QMessageBox.critical(self, "Template Error", "Lab Request template not found.")
+                return
+
+            doc = Document(template_path)
+            placeholders = {
+                "{{name}}": name,
+                "{{age}}": age,
+                "{{gender}}": gender,
+                "{{address}}": address,
+                "{{date}}": today,
+                "{{doctor_name}}": doctor_name
+            }
+
+            for p in doc.paragraphs:
+                for key, val in placeholders.items():
+                    if key in p.text:
+                        p.text = p.text.replace(key, val)
+
+            for i in range(1, 11):
+                tag = f"{{{{lab_request{i}}}}}"
+                lab_name = f"• {selected_lab_names[i - 1]}" if i <= len(selected_lab_names) else ""
+                for p in doc.paragraphs:
+                    if tag in p.text:
+                        p.text = p.text.replace(tag, lab_name)
+
+            doc.save(word_output)
+
+            # Try converting to PDF
+            try:
+                convert(word_output, pdf_output)
+                QMessageBox.information(self, "Success", f"PDF Lab Request created:\n{pdf_output}")
+            except Exception as conv_err:
+                QMessageBox.warning(self, "Conversion Failed",
+                                    f"Word document was saved but PDF conversion failed.\n\n"
+                                    f"Reason: {conv_err}\n\n"
+                                    f"Please ensure Microsoft Word is installed and the file is not open.")
+                return
+
+        except Exception as e:
+            QMessageBox.critical(self, "PDF Error", f"Unexpected error while generating Lab Request:\n{e}")
+            return
+
+        self.ViewRecords()
 
     def calculate_age(self, dob):
         """Calculate the age based on the date of birth."""
@@ -134,7 +236,6 @@ class DoctorDiagnosis(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to display lab tests: {e}")
 
     def ViewRecords(self):
-        print("Opening Doctor Records...")
         try:
             self.close()
 
@@ -145,15 +246,12 @@ class DoctorDiagnosis(QMainWindow):
                     dashboard = widget
                     break
             else:
-                print("Error: DoctorDashboard window not found.")
                 return
 
             # Switch to the Checkup Page
             dashboard.page_stack.setCurrentWidget(dashboard.checkup_page)
-            print("Switched to Doctor Records (Checkup Page).")
 
         except Exception as e:
-            print(f"Error loading Doctor Records: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load Doctor Records: {e}")
 
     def clear_layout(self, layout):
@@ -180,45 +278,6 @@ class DoctorDiagnosis(QMainWindow):
             checkbox.setProperty("lab_code", lab_code)
             layout.addWidget(checkbox)
 
-    def process_selected_tests(self):
-        """Process the selected checkboxes and store the lab codes."""
-        # Collect selected lab codes from both frames
-        selected_lab_codes = []
-
-        for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
-            layout = frame.layout()
-            if layout:
-                for i in range(layout.count()):
-                    widget = layout.itemAt(i).widget()
-                    if isinstance(widget, QCheckBox) and widget.isChecked():
-                        lab_code = widget.property("lab_code")
-                        if lab_code:  # Ensure lab_code is valid
-                            selected_lab_codes.append(lab_code)
-                        else:
-                            print(f"Warning: Checkbox at index {i} has no lab_code property.")
-
-        # Check if OtherText has a value
-        other_text_value = self.ui.OtherText.text().strip()  # Get the value and remove extra spaces
-
-        # Add the OtherText value to the list if it exists
-        if other_text_value:
-            selected_lab_codes.append(other_text_value)
-
-        # Check if no checkboxes are selected and OtherText is empty
-        if not selected_lab_codes and not other_text_value:
-            # Open the DoctorLabResult modal
-            self.open_doctor_lab_result_modal()
-        else:
-            # Update the database with the selected lab codes
-            success = CheckUp.update_lab_codes(self.checkup_id, selected_lab_codes)
-            if not success:
-                QMessageBox.critical(self, "Error", "Failed to update lab codes.")
-                return
-
-            # Proceed to ViewRecords
-            QMessageBox.information(self, "Success", f"Selected Lab Codes: {', '.join(selected_lab_codes)}")
-            self.ViewRecords()
-
     def open_doctor_lab_result_modal(self):
         try:
             # Instantiate and show the DoctorLabResult modal
@@ -226,5 +285,4 @@ class DoctorDiagnosis(QMainWindow):
             self.doctor_lab_result.show()
             self.close()
         except Exception as e:
-            print(f"Error opening DoctorLabResult modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")

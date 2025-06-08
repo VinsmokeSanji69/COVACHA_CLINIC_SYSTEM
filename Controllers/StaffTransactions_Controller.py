@@ -2,10 +2,10 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget
 from Controllers.StaffViewTransaction_Controller import StaffViewTransaction
 from Views.Staff_Transactions import Ui_Staff_Transactions as StaffTransactionUI
-from Models.Transaction import Transaction
 from Models.Doctor import Doctor
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Models.Transaction import Transaction
 
 class StaffTransactions(QWidget):
     def __init__(self, transactions_ui):
@@ -13,85 +13,145 @@ class StaffTransactions(QWidget):
         self.ui = StaffTransactionUI()
         self.transactions_ui = transactions_ui
         self.ui.setupUi(self)
+
+        self.all_checkups = []
         self.load_transaction_details()
+
         if hasattr(self.transactions_ui, 'ViewButton'):
-            # print('ViewButton exist')
             self.transactions_ui.ViewButton.clicked.connect(self.view_transaction)
+
+        if hasattr(self.transactions_ui, 'SearchIcon'):
+            self.transactions_ui.SearchIcon.clicked.connect(self.search_transactions)
 
     def load_transaction_details(self):
         try:
-            # Fetch all completed check-ups
             checkups = CheckUp.get_all_checkups()
-            if not checkups:
-                # print("No completed check-ups found.")
-                return
-
-            # Fetch all transactions to determine their status
+            checkups.sort(key=lambda c: c['chck_id'], reverse=True)
             transactions = Transaction.get_all_transaction()
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
 
-            # Debug: Log all chck_id from transactions
-            # print(f"All transaction chck_id: {list(transaction_dict.keys())}")
-
-            # Clear the table before populating it
+            self.all_checkups = []  # Store for search use
             self.transactions_ui.TransactionTable.clearContents()
             self.transactions_ui.TransactionTable.setRowCount(0)
 
-            # Populate the table
-            for row, checkup in enumerate(checkups):
+            for checkup in checkups:
                 chck_id = checkup['chck_id'].strip().lower()
-
-                # Debug: Log the current chck_id
-                # print(f"Processing chck_id: {chck_id}")
-
-                # Fetch patient details
                 pat_id = checkup['pat_id']
                 patient = Patient.get_patient_details(pat_id)
                 if not patient:
-                    # print(f"No patient found for pat_id={pat_id}")
                     continue
 
-                # Fetch doctor details
                 doc_id = checkup['doc_id']
-                doctor = Doctor.get_doctor_by_id(doc_id)
+                doctor = Doctor.get_doctor(doc_id)
                 if not doctor:
-                    # print(f"No doctor found for doc_id={doc_id}")
                     continue
 
-                # Format patient and doctor names
                 pat_full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                doc_full_name = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
-
-                # Determine the transaction status
+                doc_full_name = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
                 tran_status = transaction_dict.get(chck_id, "Pending")
 
-                # Debug: Log the transaction status
-                # print(f"Transaction status for chck_id {chck_id}: {tran_status}")
+                self.all_checkups.append({
+                    'chck_id': checkup['chck_id'],
+                    'patient_name': pat_full_name,
+                    'doctor_name': doc_full_name,
+                    'tran_status': tran_status
+                })
 
-                # Insert data into the table
-                self.transactions_ui.TransactionTable.insertRow(row)
-                self.transactions_ui.TransactionTable.setItem(row, 0,
-                                                              QtWidgets.QTableWidgetItem(str(chck_id)))  # Check-up ID
-                self.transactions_ui.TransactionTable.setItem(row, 1,
-                                                              QtWidgets.QTableWidgetItem(pat_full_name))  # Patient Name
-                self.transactions_ui.TransactionTable.setItem(row, 2,
-                                                              QtWidgets.QTableWidgetItem(doc_full_name))  # Doctor Name
-                self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(
-                    tran_status))  # Transaction Status
-
-            # Resize columns to fit content
-            self.transactions_ui.TransactionTable.resizeColumnsToContents()
-
-            # print("Transaction details loaded successfully!")
+            self.populate_transaction_table(self.all_checkups)
 
         except Exception as e:
-            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
         self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.transactions_ui.TransactionTable.horizontalHeader().setVisible(True)
-        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
+
+    def load_transaction_details(self):
+        try:
+            checkups = CheckUp.get_all_checkups()
+            checkups.sort(key=lambda c: c['chck_id'], reverse=True)
+            transactions = Transaction.get_all_transaction()
+            transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
+
+            self.all_checkups = []  # Store for search use
+            self.transactions_ui.TransactionTable.clearContents()
+            self.transactions_ui.TransactionTable.setRowCount(0)
+
+            for checkup in checkups:
+                chck_id = checkup['chck_id'].strip().lower()
+                pat_id = checkup['pat_id']
+                patient = Patient.get_patient_details(pat_id)
+                if not patient:
+                    continue
+
+                doc_id = checkup['doc_id']
+                doctor = Doctor.get_doctor(doc_id)
+                if not doctor:
+                    continue
+
+                pat_full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
+                doc_full_name = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
+                tran_status = transaction_dict.get(chck_id, "Pending")
+
+                self.all_checkups.append({
+                    'chck_id': checkup['chck_id'],
+                    'patient_name': pat_full_name,
+                    'doctor_name': doc_full_name,
+                    'tran_status': tran_status
+                })
+
+            self.populate_transaction_table(self.all_checkups)
+
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
+
+        self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.transactions_ui.TransactionTable.horizontalHeader().setVisible(True)
+        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(
+            QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
+
+    def populate_transaction_table(self, checkup_data):
+        self.transactions_ui.TransactionTable.setRowCount(0)
+
+        if not checkup_data:
+            self.transactions_ui.TransactionTable.setRowCount(1)
+            self.transactions_ui.TransactionTable.setColumnCount(
+                4)  # Assuming 4 columns (chck_id, patient, doctor, status)
+
+            item = QtWidgets.QTableWidgetItem("No Records Found")
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            item.setFlags(QtCore.Qt.ItemIsEnabled)  # Make it non-editable
+
+            self.transactions_ui.TransactionTable.setItem(0, 0, item)
+            for col in range(1, 4):  # Empty other columns
+                self.transactions_ui.TransactionTable.setItem(0, col, QtWidgets.QTableWidgetItem(""))
+
+            return
+
+        for row, item in enumerate(checkup_data):
+            self.transactions_ui.TransactionTable.insertRow(row)
+            self.transactions_ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(item['chck_id']))
+            self.transactions_ui.TransactionTable.setItem(row, 1, QtWidgets.QTableWidgetItem(item['patient_name']))
+            self.transactions_ui.TransactionTable.setItem(row, 2, QtWidgets.QTableWidgetItem(item['doctor_name']))
+            self.transactions_ui.TransactionTable.setItem(row, 3, QtWidgets.QTableWidgetItem(item['tran_status']))
+
+    def search_transactions(self):
+        keyword = self.transactions_ui.Search.text().strip().lower()
+        if not keyword:
+            self.populate_transaction_table(self.all_checkups)
+            return
+
+        filtered = [
+            checkup for checkup in self.all_checkups
+            if keyword in checkup['chck_id'].lower()
+               or keyword in checkup['patient_name'].lower()
+               or keyword in checkup['doctor_name'].lower()
+               or keyword in checkup['tran_status'].lower()
+        ]
+        self.populate_transaction_table(filtered)
 
     def view_transaction(self):
         try:
@@ -117,9 +177,6 @@ class StaffTransactions(QWidget):
 
             chck_id = chck_id_item.text().strip()
 
-            # Debug: Log the retrieved chck_id
-            # print(f"Selected chck_id: {chck_id}")
-
             # Ensure chck_id is a valid string
             if not isinstance(chck_id, str) or not chck_id:
                 QtWidgets.QMessageBox.critical(
@@ -134,7 +191,6 @@ class StaffTransactions(QWidget):
             self.staff_transaction_view.show()
 
         except Exception as e:
-            # print(f"Error while viewing transaction: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"An error occurred: {e}")
 
 

@@ -2,16 +2,14 @@ from PyQt5 import QtCore, QtWidgets, uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog, QVBoxLayout, QPushButton, \
     QStackedWidget, QHeaderView, QSizePolicy, QWidget
 from PyQt5.QtCore import QTimer, pyqtSlot, Qt
-from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
-from Models.Doctor import Doctor
-from Models.Transaction import Transaction
 from Views.Staff_Dashboard import Ui_Staff_Dashboard
+from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
+from Controllers.ClientSocketController import DataRequest
 from Controllers.StaffAddCheckUp_Controller import StaffAddCheckUp
 from Controllers.StaffLabRequest_Controller import StaffLabRequest
 from Controllers.StaffTransactionModal_Controller import StaffTransactionModal
 from Controllers.StaffTransactions_Controller import StaffTransactions
-from Models.CheckUp import CheckUp
-from  Models.Patient import Patient
+
 from datetime import datetime
 
 from Views.Staff_LabRequest import Ui_Staff_LabRequest
@@ -19,8 +17,9 @@ from Views.Staff_Transactions import Ui_Staff_Transactions
 
 
 class StaffDashboardController(QMainWindow):
-    def __init__(self, staff_id=None):
+    def __init__(self, staff_id=None, login_window=None):
         super().__init__()
+        self.login_window = login_window
         self.setWindowTitle("Staff Dashboard")
 
         # Store staff ID
@@ -55,6 +54,22 @@ class StaffDashboardController(QMainWindow):
 
         # Start with dashboard view
         self.go_to_dashboard()
+
+        # Responsive for Staff Dashboard Page
+        header = self.dashboard_ui.PendingTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.dashboard_ui.PendingTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.dashboard_ui.PendingTable.setWordWrap(True)
+        self.dashboard_ui.PendingTable.resizeRowsToContents()
+
+        # Responsive for Staff Transaction Page
+        header = self.transactions_ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.transactions_ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.transactions_ui.TransactionTable.setWordWrap(True)
+        self.transactions_ui.TransactionTable.resizeRowsToContents()
 
         # Responsive table for LabReq Page
         header = self.labreq_ui.LabRequestTable.horizontalHeader()
@@ -97,34 +112,67 @@ class StaffDashboardController(QMainWindow):
         self.labreq_ui.setupUi(self.labreq_page)
         self.page_stack.addWidget(self.labreq_page)
 
-
-
     def connect_all_buttons(self):
         """Connect navigation buttons for all pages"""
         # Connect dashboard page buttons
         self.dashboard_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.dashboard_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.dashboard_ui.LabButton.clicked.connect(self.go_to_labreq)
+        self.dashboard_ui.LogOutButton.clicked.connect(self.logout)
 
         # Connect transactions page buttons
         self.transactions_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.transactions_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.transactions_ui.LabButton.clicked.connect(self.go_to_labreq)
+        self.transactions_ui.LogOutButton.clicked.connect(self.logout)  # Add this line
 
         # Connect labreq page buttons
         self.labreq_ui.DashboardButton.clicked.connect(self.go_to_dashboard)
         self.labreq_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.labreq_ui.LabButton.clicked.connect(self.go_to_labreq)
+        self.labreq_ui.LogOutButton.clicked.connect(self.logout)  # Add this line
 
         # # Connect buttons
         if hasattr(self.dashboard_ui, 'AddCheckUpButton'):
             self.dashboard_ui.AddCheckUpButton.clicked.connect(self.open_checkup_user_form)
         else:
-            # print("Missing!")
             pass
         if hasattr(self.dashboard_ui, 'AddTransactionButton'):
             self.dashboard_ui.AddTransactionButton.clicked.connect(self.open_transaction_modal)
 
+    @pyqtSlot()
+    def logout(self):
+        """Return to the login screen and clear the credentials."""
+        try:
+            # 1. Cleanup and delete all tracked windows
+            for window in getattr(self, "open_windows", []):
+                if window and hasattr(window, "deleteLater"):
+                    window.deleteLater()
+
+            # 2. Close and delete dashboard safely
+            if hasattr(self, "cleanup"):
+                self.cleanup()
+            if hasattr(self, "hide"):
+                self.hide()
+            if hasattr(self, "deleteLater"):
+                QTimer.singleShot(0, self.deleteLater)
+
+            # 3. Show login window
+            if hasattr(self, "login_window") and self.login_window:
+                self.login_window.ui.UserIDInput.clear()
+                self.login_window.ui.PasswordInput.clear()
+                self.login_window.show()
+            else:
+                from Views.LogIn import LogInWindow
+                from Controllers.LogIn_Controller import LoginController
+                from Controllers.LogIn_Controller import LoginController
+
+                login_window = LogInWindow()
+                LoginController(login_window)
+                login_window.show()
+
+        except Exception as e:
+            pass
 
     @pyqtSlot()
     def go_to_dashboard(self):
@@ -134,6 +182,7 @@ class StaffDashboardController(QMainWindow):
     @pyqtSlot()
     def go_to_transactions(self):
         self.page_stack.setCurrentWidget(self.transactions_page)
+        self.staff_transactions.load_transaction_details()
         self.update_time_labels()
 
     @pyqtSlot()
@@ -159,7 +208,7 @@ class StaffDashboardController(QMainWindow):
         """Fetch and display today's pending check-ups in the PendingTable."""
         try:
             # Fetch all pending check-ups
-            pending_checkups = CheckUp.get_pending_checkups()
+            pending_checkups  = DataRequest.send_command("GET_PENDING_CHECKUP")
 
             # Get today's date in YYYYMMDD format
             today_date = datetime.now().strftime("%Y%m%d")
@@ -190,7 +239,7 @@ class StaffDashboardController(QMainWindow):
                 chck_type = checkup["chckup_type"]
 
                 # Fetch patient details
-                patient = Patient.get_patient_by_id(pat_id)
+                patient = DataRequest.send_command("GET_PATIENT_BY_ID",pat_id)
                 if not patient:
                     continue
 
@@ -207,41 +256,33 @@ class StaffDashboardController(QMainWindow):
             self.dashboard_ui.PendingTable.setColumnWidth(2, 200)
 
         except Exception as e:
-            print(f"Error loading pending check-ups: {e}")
+            pass
 
     def open_checkup_user_form(self):
-        # print("Opening Add Check-Up Form...")
         try:
             # Pass the staff_id and a refresh callback to the AddCheckUp form
             self.add_checkup_window = StaffAddCheckUp(parent=self, staff_id=self.staff_id)
             self.add_checkup_window.refresh_callback = self.load_pending_checkups
             self.add_checkup_window.show()
-            # print("Add Check-Up Form shown successfully!")
         except Exception as e:
-            # print(f"Error opening Add Check-Up Form: {e}")
             pass
 
     def open_transaction_modal(self):
         """Open the StaffTransaction modal."""
-        # print("Opening Add Transaction Modal...")
         try:
             # Open the modal window with a reference to the parent (dashboard)
             self.add_transaction_window = StaffTransactionModal(parent=self, staff_dashboard=self)
             self.add_transaction_window.show()
-            # print("Add Transaction Modal shown successfully!")
         except Exception as e:
-            # print(f"Error opening Add Transaction Modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open Add Transaction Modal: {e}")
 
     def ViewStaffLabRequest(self):
-        # print("Opening staff lab request feature")
         try:
             # Instantiate and show the AdminStaffsController window
             self.staff_request_controller = StaffLabRequest(self.staff_id)
             self.staff_request_controller.show()
             self.hide()  # Hide the current dashboard window
         except Exception as e:
-            # print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def setup_ui(self):
@@ -266,14 +307,10 @@ class StaffDashboardController(QMainWindow):
         if hasattr(ui, 'Month'):
             ui.Month.setText(f"{now.strftime('%B')} {now.day}, {now.year}")
 
-    # def open_transaction_form(self):
-    #     """Open the Add Transaction Form"""
-    #     print("Opening Add Transaction Form...")
-    #     # Implement transaction form functionality here
+
 
     def open_modify_form(self):
         """Open the Modify Lab Req Form as a modal dialog"""
-        # print("Opening Modify Lab Req Dialog...")
         try:
             # Create dialog
             dialog = QDialog(self)
@@ -303,23 +340,19 @@ class StaffDashboardController(QMainWindow):
             # Show the modal dialog
             dialog.exec_()
 
-            # print("Modify Form closed")
         except Exception as e:
-            # print(f"Error opening Modify Form Dialog: {e}")
             pass
 
     def get_transaction_details(self):
         try:
             self.staff_transactions.load_transaction_details()  # Call method from StaffTransactions instance
         except Exception as e:
-            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
     def get_labrequest_details(self):
         try:
             self.staff_labrequests.load_staff_labrequest_table()  # Call your existing method
         except Exception as e:
-            # print(f"Error loading lab request details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load lab request details: {e}")
 
 

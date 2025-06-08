@@ -16,9 +16,6 @@ class LoginController:
         self.login_window.ui.UserIDInput.setPlaceholderText("User ID")
         self.login_window.ui.PasswordInput.setPlaceholderText("Password")
 
-        # Debugging print to confirm the connection
-        print("SignInButton connected to handle_login method!")
-
         # Test connection at initialization
         if not DBConnection.test_connection():
             QMessageBox.critical(
@@ -67,14 +64,6 @@ class LoginController:
             # Check if the user is a staff member
             staff = self._get_user(conn, "staff", user_id)
             if staff:
-                # DEBUG: Print verification details before checking
-                print("\n--- DEBUG INFO ---")
-                print(f"Input password: {password}")
-                print(f"Stored hash: {staff[3]}")
-                print(f"Generated SHA-256: {hashlib.sha256(password.encode()).hexdigest()}")
-                print(f"Verification result: {self._verify_hashed_password(password, staff[3])}")
-                print("------------------\n")
-
                 if self._verify_hashed_password(password, staff[3]):
                     # Route to StaffDashboardController for non-admin staff
                     if user_id != self.ADMIN_ID:
@@ -132,31 +121,33 @@ class LoginController:
             # Check if the user is a doctor (5-digit ID)
             if len(user_id) == 5 and user_id.isdigit():
                 doctor = self._get_user(conn, "doctor", user_id)
-                if doctor and self._verify_hashed_password(password, doctor[4]):
-                    self._show_dashboard(DoctorDashboardController, doctor)
-                    return
-                else:
-                    QMessageBox.warning(
-                        self.login_window,
-                        "Login Failed",
-                        "Incorrect doctor password"
-                    )
-                    return
+                if doctor:
+                    is_active = doctor[5]
+                    if not is_active:
+                        QMessageBox.warning(self.login_window, "Login Failed", "This account does not exist")
+                        return
+
+                    if self._verify_hashed_password(password, doctor[4]):
+                        self._show_dashboard(DoctorDashboardController, doctor)
+                        return
+                    else:
+                        QMessageBox.warning(self.login_window, "Login Failed", "Incorrect doctor password")
+                        return
 
             # Check if the user is a staff member
             staff = self._get_user(conn, "staff", user_id)
             if staff:
+                is_active = staff[4]
+                if not is_active:
+                    QMessageBox.warning(self.login_window, "Login Failed", "This account does not exist")
+                    return
+
                 if self._verify_hashed_password(password, staff[3]):
-                    # Route to StaffDashboardController for non-admin staff
                     if user_id != self.ADMIN_ID:
                         self._show_dashboard(StaffDashboardController, staff)
                     return
                 else:
-                    QMessageBox.warning(
-                        self.login_window,
-                        "Login Failed",
-                        "Incorrect staff password"
-                    )
+                    QMessageBox.warning(self.login_window, "Login Failed", "Incorrect staff password")
                     return
 
             # If no match found in any table
@@ -196,7 +187,7 @@ class LoginController:
 
         if password == admin[3]:  # Plaintext comparison
             # Show the admin dashboard modally
-            self.admin_dashboard = AdminDashboardController()
+            self.admin_dashboard = AdminDashboardController(login_window=self.login_window)
             self.admin_dashboard.show()
             self.login_window.close()
 
@@ -208,16 +199,16 @@ class LoginController:
             )
 
     def _get_user(self, conn, table, user_id):
-        """Generic user retrieval from database"""
+        """Generic user retrieval from database with is_active check"""
         cursor = conn.cursor()
         if table == "staff":
             cursor.execute(
-                "SELECT staff_id, staff_fname, staff_lname, staff_password FROM staff WHERE staff_id = %s",
+                "SELECT staff_id, staff_fname, staff_lname, staff_password, is_active FROM staff WHERE staff_id = %s",
                 (user_id,)
             )
         elif table == "doctor":
             cursor.execute(
-                "SELECT doc_id, doc_fname, doc_lname, doc_specialty, doc_password FROM doctor WHERE doc_id = %s",
+                "SELECT doc_id, doc_fname, doc_lname, doc_specialty, doc_password, is_active FROM doctor WHERE doc_id = %s",
                 (user_id,)
             )
         return cursor.fetchone()
@@ -232,32 +223,31 @@ class LoginController:
             # Otherwise assume it's SHA-256
             input_hash = hashlib.sha256(input_password.encode()).hexdigest()
 
-            # DEBUG: Print comparison details
-            print(f"Comparing hashes:\nInput: {input_hash}\nStored: {stored_hash}")
-
             # Compare with stored hash (case-insensitive)
             return input_hash.lower() == stored_hash.lower()
         except Exception as e:
-            print(f"Password verification error: {e}")
             return False
 
     def _show_dashboard(self, dashboard_controller, user):
+        # 1. create the dashboard and give it a reference to the login window
         if dashboard_controller == DoctorDashboardController:
-            # Pass doc_id, fname, lname, and specialty to DoctorDashboardController
             self.dashboard = dashboard_controller(
                 doc_id=user[0],
                 fname=user[1],
                 lname=user[2],
-                specialty=user[3]
+                specialty=user[3],
+                login_window=self.login_window  # ← NEW
             )
         elif dashboard_controller == StaffDashboardController:
-            # Pass only the staff_id to the StaffDashboardController
-            self.dashboard = dashboard_controller(staff_id=user[0])
+            self.dashboard = dashboard_controller(
+                staff_id=user[0],
+                login_window=self.login_window
+            )
         else:
-            self.dashboard = dashboard_controller()
+            self.dashboard = dashboard_controller(login_window=self.login_window)
 
-        # Close the login window
-        self.login_window.close()
+        # 2. “hide”, don’t close, so we can bring it back later
+        self.login_window.hide()
 
-        # Show the dashboard
+        # 3. show dashboard
         self.dashboard.show()

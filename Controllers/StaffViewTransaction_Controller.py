@@ -2,6 +2,7 @@ from datetime import date
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
 from Views.Staff_ViewTransaction import Ui_MainWindow
+from Models.Doctor import calculate_age
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor, calculate_age
 from Models.Patient import Patient
@@ -49,20 +50,15 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
         # Store the chck_id
         self.chck_id = chck_id
-        # print(f"Staff transaction initialized with chck_id: {self.chck_id}")
-
         # Apply table styles (if needed)
         self.apply_table_styles()
-
         # Load transaction details
         self.load_transaction_details()
         self.load_LabCharge_Table()
         self.calculate_total_lab_charge()
         self.calculate_subtotal()
-
         #save transaction
         self.ui.CompleteButton.clicked.connect(self.close)
         self.ui.SeniorCheckBox.stateChanged.connect(self.apply_discount_if_senior)
@@ -82,11 +78,9 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
             # Fetch check-up details from the database
             checkup = CheckUp.get_checkup_details(self.chck_id)
+
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
-
-            # Log the fetched checkup data for debugging
-            # print(f"Fetched checkup data: {checkup}")
 
             # Ensure 'chck_id' exists in the checkup dictionary
             if 'chck_id' not in checkup:
@@ -96,7 +90,9 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             pat_id = checkup.get("pat_id")
             if not pat_id:
                 raise ValueError("Missing 'pat_id' in checkup data.")
+
             patient = Patient.get_patient_details(pat_id)
+
             if not patient:
                 raise ValueError(f"No patient found for pat_id={pat_id}")
 
@@ -107,14 +103,16 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             doc_id = checkup.get("doc_id")
             if not doc_id:
                 raise ValueError("Missing 'doc_id' in checkup data.")
-            doctor = Doctor.get_doctor_by_id(doc_id)
+
+            doctor = Doctor.get_doctor(doc_id)
             if not doctor:
                 raise ValueError(f"No doctor found for doc_id={doc_id}")
 
-            docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+            docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
             # Check if a transaction exists for this check-up ID
             transaction = Transaction.get_transaction_by_chckid(self.chck_id)
+
             if transaction and transaction.get('tran_discount'):
                 discount = float(transaction['tran_discount'])
 
@@ -138,14 +136,11 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             self.ui.DocID.setText(str(checkup["doc_id"]))  # Ensure string conversion
             self.ui.DocName.setText(docFullname)
             # self.ui.DocSpecialty.setText(str(doctor["doc_specialty"]))  # Ensure string conversion
-            self.ui.DoctorCharge.setText("₱ " + str(doctor["doc_rate"]))  # Ensure string conversion
+            self.ui.DoctorCharge.setText("₱ " + str(doctor["rate"]))  # Ensure string conversion
 
             self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))  # Ensure string conversion
             self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))  # Ensure string conversion
-
-            # print(f"Transaction details loaded successfully for chck_id={self.chck_id}")
         except Exception as e:
-            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
     def set_read_only_fields(self):
@@ -197,12 +192,10 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # print(f"Loading LabCharge Table for chck_id: {self.chck_id}")
-
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+
             if not lab_tests:
-                # print("No laboratory tests found for this check-up.")
                 return
 
             # Clear the table before populating it
@@ -212,12 +205,11 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Step 2: Fetch lab name and price for each lab code
             for row, lab_test in enumerate(lab_tests):
                 lab_code = lab_test['lab_code']
-                lab_attachment = lab_test['lab_attachment']  # Optional: Handle attachments if needed
+                lab_attachment = lab_test['lab_attachment']
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_details:
-                    # print(f"No details found for lab_code: {lab_code}")
                     continue
 
                 # Extract lab name and price
@@ -232,9 +224,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Resize columns to fit content
             self.ui.LabChargeTable.resizeColumnsToContents()
 
-            # print("LabCharge Table loaded successfully!")
         except Exception as e:
-            # print(f"Error loading LabCharge Table: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load LabCharge Table: {e}")
 
     def calculate_total_lab_charge(self):
@@ -244,12 +234,11 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # print(f"Calculating total lab charge for chck_id: {self.chck_id}")
 
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+
             if not lab_tests:
-                # print("No laboratory tests found for this check-up.")
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
                 return
 
@@ -261,7 +250,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_details:
-                    # print(f"No details found for lab_code: {lab_code}")
                     continue
 
                 # Extract lab price
@@ -272,10 +260,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Step 3: Format the total lab charge and display it in the QLineEdit
             formatted_total = f"₱ {total_lab_charge:,.2f}"  # Format as currency with two decimal places
             self.ui.TotalLabCharge.setText(formatted_total)
-            # print(f"Total lab charge calculated successfully: {formatted_total}")
 
         except Exception as e:
-            # print(f"Error calculating total lab charge: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate total lab charge: {e}")
     def apply_discount_if_senior(self):
         try:
@@ -328,11 +314,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             self.ui.SubtotalAmount.setText(formatted_subtotal)
             self.ui.TotalAmount.setText(formatted_subtotal)
             self.apply_discount_if_senior()
-            # print(f"Subtotal calculated successfully: {formatted_subtotal}")
 
         except ValueError as ve:
-            # print(f"ValueError calculating subtotal: {ve}")
             QtWidgets.QMessageBox.critical(self, "Error", "Invalid value in DoctorCharge or TotalLabCharge.")
         except Exception as e:
-            # print(f"Error calculating subtotal: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to calculate subtotal: {e}")

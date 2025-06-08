@@ -19,7 +19,6 @@ class Laboratory:
                 return None
 
         except Exception as e:
-            print(f"Database error while fetching last lab ID: {e}")
             return None
 
         finally:
@@ -35,7 +34,6 @@ class Laboratory:
             numeric_part = int(last_lab_id.split("-")[1])
             next_numeric = numeric_part + 1
         else:
-            # Start with Lab-001 if no labs exist
             next_numeric = 1
 
         return f"Lab-{next_numeric:03d}"
@@ -55,7 +53,6 @@ class Laboratory:
                 return count > 0
 
         except Exception as e:
-            print(f"Database error while checking lab name existence: {e}")
             return False
 
         finally:
@@ -77,15 +74,14 @@ class Laboratory:
                 """
                 cursor.execute(query, (
                     data["lab_code"],
-                    data["lab_name"],
-                    data["price"],
+                    data["lab_test_name"],
+                    data["lab_price"],
                 ))
 
                 conn.commit()
                 return True
 
         except Exception as e:
-            print(f"Database error while saving lab test: {e}")
             conn.rollback()
             return False
 
@@ -121,7 +117,6 @@ class Laboratory:
                 return tests
 
         except Exception as e:
-            print(f"Database error while fetching all tests: {e}")
             return []
 
         finally:
@@ -145,7 +140,6 @@ class Laboratory:
                     return {'lab_test_name': result[0]}, {'lab_price':result[1]}
                 return None
         except Exception as e:
-            print(f"Error fetching laboratory test details: {e}")
             return None
         finally:
             if conn:
@@ -162,7 +156,6 @@ class Laboratory:
             lab_test_name = lab_test_name.strip().lower()
 
             with conn.cursor() as cursor:
-                print(f"Fetching lab_code for normalized lab_test_name: '{lab_test_name}'")  # Debug statement
 
                 # Use LOWER(TRIM(...)) for case-insensitive and whitespace-insensitive comparison
                 cursor.execute("""
@@ -173,13 +166,10 @@ class Laboratory:
                 result = cursor.fetchone()
 
                 if result:
-                    print(f"Retrieved lab_code: {result[0]}")  # Debug statement
                     return result[0]
                 else:
-                    print("No matching lab_code found.")  # Debug statement
                     return None
         except Exception as e:
-            print(f"Error fetching lab code: {e}")
             return None
         finally:
             if conn:
@@ -200,7 +190,6 @@ class Laboratory:
                 return count
 
         except Exception as e:
-            print(f"Database error while counting lab tests: {e}")
             return 0
 
         finally:
@@ -222,7 +211,6 @@ class Laboratory:
                 return count > 0
 
         except Exception as e:
-            print(f"Database error while checking lab code existence: {e}")
             return False
 
         finally:
@@ -256,7 +244,6 @@ class Laboratory:
                 return None
 
         except Exception as e:
-            print(f"Error fetching lab test: {e}")
             return None
         finally:
             if conn:
@@ -285,7 +272,6 @@ class Laboratory:
                 return True
 
         except Exception as e:
-            print(f"Database error while saving lab test: {e}")
             conn.rollback()
             return False
 

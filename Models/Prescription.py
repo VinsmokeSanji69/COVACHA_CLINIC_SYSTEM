@@ -1,4 +1,5 @@
 from Models.DB_Connection import DBConnection
+from psycopg2 import extras
 
 class Prescription:
     @staticmethod
@@ -14,11 +15,9 @@ class Prescription:
 
             # Validate required fields
             if not all([med_name, dosage, intake]):
-                print("Error: Missing required fields in lab_data.")
                 return False
 
             if not conn:
-                print("Error: Failed to establish a database connection.")
                 return False
 
             # SQL query to insert data into the prescription table
@@ -30,18 +29,15 @@ class Prescription:
             cursor.execute(query, (chck_id, med_name, dosage, intake))
             conn.commit()
 
-            print("Prescription added successfully!")
             return True  # Successful insertion
 
         except Exception as e:
-            print(f"Error adding prescription: {e}")
             return False  # Failed insertion
 
         finally:
             # Ensure the database connection is closed
             if conn:
                 conn.close()
-                print("Database connection closed.")
 
     @staticmethod
     def display_prescription(chck_id):
@@ -69,15 +65,73 @@ class Prescription:
                 }
                 prescriptions.append(prescription)
 
-            #print(f"Prescriptions retrieved successfully for chck_id: {chck_id}")
             return prescriptions  # Return the list of prescriptions
 
         except Exception as e:
-            print(f"Error retrieving prescriptions: {e}")
-            return []  # Return an empty list in case of an error
+            return []
 
         finally:
             # Ensure the database connection is closed
             if conn:
                 conn.close()
-                print("Database connection closed.")
+
+    @staticmethod
+    def get_prescription_by_details(chck_id, med_name, dosage, intake):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return None
+        try:
+            query = """
+                SELECT id AS pres_id, pres_medicine, pres_dosage, pres_intake 
+                FROM prescription
+                WHERE chck_id = %s AND pres_medicine = %s AND pres_dosage = %s AND pres_intake = %s
+                LIMIT 1
+            """
+            cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+            cursor.execute(query, (chck_id, med_name, dosage, intake))
+            result = cursor.fetchone()
+            return dict(result) if result else None
+        except Exception as e:
+            return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def update_prescription_by_id(pres_id, med_name, dosage, intake):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return False
+        try:
+            query = """
+                    UPDATE prescription 
+                    SET pres_medicine = %s, pres_dosage = %s, pres_intake = %s
+                    WHERE id = %s
+                """
+            cursor = conn.cursor()
+            cursor.execute(query, (med_name, dosage, intake, pres_id))
+            conn.commit()
+            return True
+        except Exception as e:
+            return False
+        finally:
+            if conn:
+                conn.close()
+
+
+    @staticmethod
+    def delete_prescription_by_id(pres_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return False
+        try:
+            query = "DELETE FROM prescription WHERE id = %s"
+            cursor = conn.cursor()
+            cursor.execute(query, (pres_id,))
+            conn.commit()
+            return True
+        except Exception as e:
+            return False
+        finally:
+            if conn:
+                conn.close()

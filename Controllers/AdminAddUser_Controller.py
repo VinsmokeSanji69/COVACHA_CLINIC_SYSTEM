@@ -133,7 +133,6 @@ class AdminAddUserController(QMainWindow):
         if next_id is not None:
             self.ui.ID.setText(str(next_id))
         else:
-            print(f"Failed to fetch next ID for {staff_type}")
             QMessageBox.critical(self, "Database Error", f"Failed to fetch next ID for {staff_type}")
 
 
@@ -174,7 +173,6 @@ class AdminAddUserController(QMainWindow):
                 QMessageBox.information(self, "Cancelled", "Account creation cancelled.\n( Press any key to close )")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to add staff: {str(e)}")
-            print(f"Error: {str(e)}")
 
     def validate_form(self):
         """Validate all form fields"""
@@ -258,25 +256,25 @@ class AdminAddUserController(QMainWindow):
         self.ui.Fname.setFocus()
 
     def apply_styles(self):
-        # Style for QDateEdit
-        dateedit_style = """
-            QDateEdit {
-                background-color: #F4F7ED;
-                border: 1px solid #2E6E65;
-                border-radius: 10px;
-                padding: 5px 10px;
-                font: 300 12pt "Lexend Light";
-                color: black; /* Set text color to black */
-            }
-            /* Dropdown arrow styling */
-            QDateEdit::down-arrow {
-                image: url(:/lucide/icons/calendar.svg);
-                width: 20px;
-                height: 20px;
-            }
-        """
-        self.ui.DateJoined.setStyleSheet(dateedit_style)
-        self.ui.Dob.setStyleSheet(dateedit_style)
+        # # Style for QDateEdit
+        # dateedit_style = """
+        #     QDateEdit {
+        #         background-color: #F4F7ED;
+        #         border: 1px solid #2E6E65;
+        #         border-radius: 10px;
+        #         padding: 5px 10px;
+        #         font: 300 12pt "Lexend Light";
+        #         color: black; /* Set text color to black */
+        #     }
+        #     /* Dropdown arrow styling */
+        #     QDateEdit::down-arrow {
+        #         image: url(:/lucide/icons/calendar.svg);
+        #         width: 20px;
+        #         height: 20px;
+        #     }
+        # """
+        # self.ui.DateJoined.setStyleSheet(dateedit_style)
+        # self.ui.Dob.setStyleSheet(dateedit_style)
         # Style for QComboBox
         combobox_style = """
             QComboBox {

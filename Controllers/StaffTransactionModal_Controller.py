@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QTableWidgetItem, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QTableWidgetItem, QMainWindow, QMessageBox, QHeaderView, QSizePolicy
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Doctor import Doctor
@@ -18,8 +18,6 @@ class StaffTransactionModal(QMainWindow):
         # Set window properties
         self.setWindowTitle("Add Transaction")
 
-        # print("AddTransaction initialized successfully!")
-
         self.apply_table_styles()
         self.load_pending_transaction()
         self.ui.AddBUtton.clicked.connect(self.open_transaction_process) # Connect the Add button to open_transaction_process
@@ -36,6 +34,11 @@ class StaffTransactionModal(QMainWindow):
 
         # Set selection behavior
         self.ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
+        header = self.ui.TransactionTable.horizontalHeader()
+        header.setSectionResizeMode(QHeaderView.Stretch)
+
+        self.ui.TransactionTable.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def load_pending_transaction(self):
         """Fetch and display pending check-ups in the TransactionTable."""
@@ -93,11 +96,11 @@ class StaffTransactionModal(QMainWindow):
                     continue
 
                 # Fetch doctor details
-                doctor = Doctor.get_doctor_by_id(doc_id)
+                doctor = Doctor.get_doctor(doc_id)
                 if not doctor:
                     docFullname = "Unknown Doctor"
                 else:
-                    docFullname = f"{doctor['doc_lname'].capitalize()}, {doctor['doc_fname'].capitalize()}"
+                    docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
                 # Extract patient name
                 full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
@@ -118,13 +121,10 @@ class StaffTransactionModal(QMainWindow):
                 self.ui.TransactionTable.resizeColumnsToContents()
 
         except Exception as e:
-            # Optional: Log the exception
-            print(f"Error loading pending check-ups: {e}")
             pass
 
     def open_transaction_process(self):
         try:
-            # print("Add button clicked!")
             # Determine which row is selected
             selected_row = self.ui.TransactionTable.currentRow()
             if selected_row == -1:
@@ -140,20 +140,15 @@ class StaffTransactionModal(QMainWindow):
             chck_id = chck_id_item.text()
 
             # Open the StaffTransactionProcess modal with the selected chck_id
-            # print(f"Attempting to open StaffTransactionProcess modal with chck_id: {chck_id}")
             self.transaction_process_window = StaffTransactionProcess(chck_id=chck_id)
 
             # Close the parent dashboard window
-            self.staff_dashboard.close()
+            # self.staff_dashboard.close()
 
             # Close the current modal (StaffTransactionModal)
-            # print("Closing StaffTransactionModal...")
             self.close()
 
             # Show the StaffTransactionProcess modal
-            # print("Showing StaffTransactionProcess modal...")
-            self.transaction_process_window.show()
-            # print("StaffTransactionProcess modal opened successfully!")
+            self.transaction_process_window.exec_()
         except Exception as e:
-            # print(f"Error opening StaffTransactionProcess modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open StaffTransactionProcess: {e}")

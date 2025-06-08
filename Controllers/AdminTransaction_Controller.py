@@ -1,11 +1,9 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QWidget
-
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Transaction import Transaction
 from Views.Admin_Transactions import Ui_Admin_Transactions as AdminTransactionUI
-
 def safe_date_format(date_value, date_format="%B %d, %Y"):
     if not date_value:
         return "N/A"
@@ -26,13 +24,7 @@ class AdminTransactionsController(QWidget):
         self.ui = AdminTransactionUI()
         self.transactions_ui = transactions_ui
         self.ui.setupUi(self)
-
-        print("Admin Transactions UI initialized!")
-
-        self.transactions_ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        self.transactions_ui.ChargesButton.clicked.connect(self.view_charges_ui)
-        self.transactions_ui.StaffsButton.clicked.connect(self.view_staff_ui)
-        self.transactions_ui.PatientsButton.clicked.connect(self.view_patient_ui)
+        self.transactions_ui.SearchIcon.clicked.connect(self.apply_search_filter)
         self.transactions_ui.ViewTransaction.clicked.connect(self.view_transaction)
         self.refresh_tables()
 
@@ -40,7 +32,6 @@ class AdminTransactionsController(QWidget):
         try:
             selected_row = self.transactions_ui.TransactionTable.currentRow()
             if selected_row == -1:
-                print("no row selected")
                 return
 
             transaction_id = self.transactions_ui.TransactionTable.item(selected_row, 0)
@@ -58,74 +49,106 @@ class AdminTransactionsController(QWidget):
         except Exception as e:
             error_msg = f"Failed to select patient: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def refresh_tables(self):
+        self.load_transaction_table()
+
+
+    def apply_search_filter(self):
+        search_text = self.transactions_ui.Search.text().strip().lower()
+        self.load_transaction_table(search_text)
+
+    def load_transaction_table(self, search_term=None):
         try:
-            self.load_transaction_table()
-            print("Tables refreshed successfully!")
+            transactions = Transaction.get_all_transaction()
+            filtered_transactions = []
+
+            for transaction in transactions:
+                if "chck_id" not in transaction:
+                    continue
+
+                chck_id = transaction["chck_id"]
+                checkup = CheckUp.get_checkup_details(chck_id)
+                if not checkup:
+                    continue
+
+                pat_id = checkup.get("pat_id")
+                if not pat_id:
+                    continue
+
+                patient = Patient.get_patient_details(int(pat_id))
+                if not patient:
+                    continue
+
+                name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
+                diagnosis = checkup["chck_diagnoses"]
+                date_str = safe_date_format(checkup["chck_date"])
+
+                if search_term:
+                    combined_text = f"{name} {diagnosis} {date_str}".lower()
+                    if search_term not in combined_text:
+                        continue
+
+                filtered_transactions.append((chck_id, name, diagnosis, date_str))
+
+            # Update the table
+            table = self.transactions_ui.TransactionTable
+            table.clearContents()
+            table.setRowCount(0)
+            table.verticalHeader().setVisible(False)
+            table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
+            if not filtered_transactions:
+                table.setRowCount(1)
+                table.setColumnCount(4)  # Ensure correct column count
+                table.setItem(0, 0, QTableWidgetItem("No Records Found"))
+                table.setSpan(0, 0, 1, 4)  # Span across all columns
+                for col in range(1, 4):  # Clear remaining cells
+                    table.setItem(0, col, QTableWidgetItem(""))
+                return
+
+            table.setRowCount(len(filtered_transactions))
+            for row, (chck_id, name, diagnosis, date_str) in enumerate(filtered_transactions):
+                table.setItem(row, 0, QTableWidgetItem(str(chck_id)))
+                table.setItem(row, 1, QTableWidgetItem(name))
+                table.setItem(row, 2, QTableWidgetItem(diagnosis))
+                table.setItem(row, 3, QTableWidgetItem(date_str))
+
         except Exception as e:
-            print(f"Error refreshing tables: {e}")
-
-    def load_transaction_table(self):
-        transactions = Transaction.get_all_transaction()  # Assume this returns a list of transactions
-        self.transactions_ui.TransactionTable.setRowCount(len(transactions))
-        self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
-        self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-
-        for row, transaction in enumerate(transactions):
-            checkup = CheckUp.get_checkup_details(transaction["chck_id"])
-            patient = Patient.get_patient_details(int(checkup["pat_id"]))
-            name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
-
-            # Populate table columns
-            self.transactions_ui.TransactionTable.setItem(row, 0, QTableWidgetItem(str(transaction["chck_id"])))
-            self.transactions_ui.TransactionTable.setItem(row, 1, QTableWidgetItem(name))
-            self.transactions_ui.TransactionTable.setItem(row, 2, QTableWidgetItem(checkup["chck_diagnoses"]))
-            self.transactions_ui.TransactionTable.setItem(row, 3, QTableWidgetItem(safe_date_format(checkup["chck_date"])))
+            pass
 
     def view_transaction_details_ui(self, transaction_id):
-        try:
-            from Controllers.AdminTransactionDetails_Controller import AdminTransactionDetailsController
-            self.admin_transaction_controller = AdminTransactionDetailsController(transaction_id)
-            self.admin_transaction_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminTransactionDetails_Controller import AdminTransactionDetailsController
+        self.admin_transaction_controller = AdminTransactionDetailsController(transaction_id)
+        self.admin_transaction_controller.show()
+        self.hide()
+
 
     def view_patient_ui(self):
-        try:
-            from Controllers.AdminPatients_Controller import AdminPatientsController
-            self.admin_patients_controller = AdminPatientsController()
-            self.admin_patients_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminPatients_Controller import AdminPatientsController
+        self.admin_patients_controller = AdminPatientsController()
+        self.admin_patients_controller.show()
+        self.hide()
+
 
     def view_dashboard_ui(self):
-        try:
-            from Controllers.AdminDashboard_Controller import AdminDashboardController
-            self.admin_dashboard_controller = AdminDashboardController()
-            self.admin_dashboard_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminDashboard_Controller import AdminDashboardController
+        self.admin_dashboard_controller = AdminDashboardController()
+        self.admin_dashboard_controller.show()
+        self.hide()
+
 
     def view_staff_ui(self):
-        try:
-            from Controllers.AdminStaffs_Controller import AdminStaffsController
-            self.admin_staff_controller = AdminStaffsController()
-            self.admin_staff_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminStaffs_Controller import AdminStaffsController
+        self.admin_staff_controller = AdminStaffsController()
+        self.admin_staff_controller.show()
+        self.hide()
+
 
     def view_charges_ui(self):
-        try:
-            from Controllers.AdminCharges_Controller import AdminChargesController
-            self.admin_charges_controller = AdminChargesController()
-            self.admin_charges_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminCharges_Controller import AdminChargesController
+        self.admin_charges_controller = AdminChargesController()
+        self.admin_charges_controller.show()
+        self.hide()
+
 

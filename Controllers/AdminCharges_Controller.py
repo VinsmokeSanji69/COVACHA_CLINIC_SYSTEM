@@ -1,10 +1,10 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QDialogButtonBox, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox, QDialog, QDialogButtonBox, QLabel, QVBoxLayout, \
+    QWidget
 from PyQt5.uic.Compiler.qtproxies import QtCore
-
 from Models import LaboratoryTest
 from Models.Doctor import Doctor
-from Views.Admin_Charges import Ui_MainWindow  as AdminChargesUI
+from Views.Admin_Charges import Ui_Admin_Charges as AdminChargesUI
 from Controllers.AdminAddLabTest_Controller import AdminAddLabTest
 from Controllers.AdminAddDoctorCharges_Controller import AdminDoctorCharges
 from Models.LaboratoryTest import Laboratory
@@ -45,97 +45,104 @@ class ConfirmationDialog(QDialog):
         # Set layout
         self.setLayout(layout)
 
-class AdminChargesController(QMainWindow):
-    def __init__(self):
+class AdminChargesController(QWidget):
+    def __init__(self, charges_ui):
         super().__init__()
         self.ui = AdminChargesUI()
+        self.charges_ui = charges_ui
         self.ui.setupUi(self)
-
-        print("Admin Charges UI initialized!")
-
-        # Apply styles to the tables
-        self.apply_table_styles()
         self.refresh_tables()
 
-        #NavBar Buttons
-        self.ui.DashboardButton.clicked.connect(self.view_dashboard_ui)
-        self.ui.StaffsButton.clicked.connect(self.view_staff_ui)
-        self.ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
-        self.ui.PatientsButton.clicked.connect(self.view_patient_ui)
+        # Table Buttons - using the passed charges_ui instead of self.ui
+        self.charges_ui.Modify.clicked.connect(self.modify_charges)
+        self.charges_ui.Delete.clicked.connect(self.delete_lab_test)
+        self.charges_ui.AddLabTestButton.clicked.connect(self.open_add_user_form)
 
-        #Table Buttons
-        self.ui.Modify.clicked.connect(self.modify_charges)
-        self.ui.Delete.clicked.connect(self.delete_lab_test)
-        self.ui.AddLabTestButton.clicked.connect(self.open_add_user_form)
+        self.populate_laboratory_test_table()
 
     def delete_lab_test(self):
         try:
-            print("Modify button clicked!")
-            selected_row = -1
-            row_id = None
 
-            if self.ui.LaboratoryTestTable.currentRow() != -1:
-                selected_row = self.ui.LaboratoryTestTable.currentRow()
-                row_id = self.ui.LaboratoryTestTable.item(selected_row, 0).text()
+            # Try getting selection from DoctorTable
+            doctor_table = self.charges_ui.DoctorTable
+            lab_table = self.charges_ui.LaboratoryTestTable
 
-            if selected_row == -1:
-                raise ValueError("No row selected in either table")
-            if not row_id:
-                raise ValueError("Could not determine row ID")
-            confirmation_dialog = ConfirmationDialog(self)
-            if confirmation_dialog.exec_() == QDialog.Rejected:
+            selected_row_doctor = doctor_table.currentRow()
+            selected_row_lab = lab_table.currentRow()
+
+            if selected_row_doctor != -1:
+                row_id_item = doctor_table.item(selected_row_doctor, 0)
+                if not row_id_item:
+                    raise ValueError("No doctor ID found in selected row")
+                row_id = row_id_item.text().strip()
+                confirmation_dialog = ConfirmationDialog(self)
+                confirmation_dialog.message_label.setText(f"Are you sure you want to delete the doctor with ID: {row_id}?")
+                if confirmation_dialog.exec_() == QDialog.Rejected:
+                    return
+                success = Doctor.delete(int(row_id))
+                message = "Doctor deleted successfully!" if success else "Failed to delete doctor."
+                QMessageBox.information(self, "Result", message)
+                if success:
+                    self.refresh_tables()
                 return
 
-            success = Laboratory.delete(row_id)
-            if success:
-                QMessageBox.information(self, "Success", "Lab Test deleted successfully!")
-                self.view_charges_ui()
+            elif selected_row_lab != -1:
+                row_id_item = lab_table.item(selected_row_lab, 0)
+                if not row_id_item:
+                    raise ValueError("No lab test ID found in selected row")
+                row_id = row_id_item.text().strip()
+                confirmation_dialog = ConfirmationDialog(self)
+                confirmation_dialog.message_label.setText(f"Are you sure you want to delete the lab test with ID: {row_id}?")
+                if confirmation_dialog.exec_() == QDialog.Rejected:
+                    return
+                success = Laboratory.delete(row_id)
+                message = "Lab Test deleted successfully!" if success else "Failed to delete lab test."
+                QMessageBox.information(self, "Result", message)
+                if success:
+                    self.refresh_tables()
+                return
+
             else:
-                QMessageBox.critical(self, "Error", "Failed to delete laboratory test.")
+                QMessageBox.warning(self, "Selection Error", "Please select an item from either table.")
 
         except Exception as e:
-            error_msg = f"Failed to delete charge: {str(e)}"
+            error_msg = f"Failed to delete record: {str(e)}"
+            QMessageBox.critical(self, "Error", error_msg)
 
     def modify_charges(self):
         try:
-            print("Modify button clicked!")
-            # Determine which table has the current selection
-            current_table = None
-            selected_row = -1
-            row_id = None
+            doctor_table = self.charges_ui.DoctorTable
+            lab_table = self.charges_ui.LaboratoryTestTable
 
-            if self.ui.DoctorTable.currentRow() != -1:
-                current_table = "DoctorTable"
-                selected_row = self.ui.DoctorTable.currentRow()
-                doc_name = self.ui.DoctorTable.item(selected_row, 0).text()
-                row_id = self.find_doc_id(doc_name)
+            selected_row_doctor = doctor_table.currentRow()
+            selected_row_lab = lab_table.currentRow()
 
-            elif self.ui.LaboratoryTestTable.currentRow() != -1:
-                current_table = "LaboratoryTestTable"
-                selected_row = self.ui.LaboratoryTestTable.currentRow()
-                row_id = self.ui.LaboratoryTestTable.item(selected_row, 0).text()
+            if selected_row_doctor != -1:
+                doc_name = doctor_table.item(selected_row_doctor, 0).text()
+                doc_id = self.find_doc_id(doc_name)
+                if not doc_id:
+                    raise ValueError("Could not find doctor ID.")
+                self.open_add_charges_form(doc_id)
+                return
 
-            # Check if a valid selection exists
-            if selected_row == -1:
-                raise ValueError("No row selected in either table")
-            if not row_id:
-                raise ValueError("Could not determine row ID")
+            elif selected_row_lab != -1:
+                lab_id_item = lab_table.item(selected_row_lab, 0)
+                if not lab_id_item:
+                    raise ValueError("Could not find lab test ID.")
+                lab_id = lab_id_item.text()
+                self.modify_charges_form(lab_id)
+                return
 
-            # Get the data from the appropriate table
-            if current_table == "DoctorTable":
-                self.open_add_charges_form(row_id)
-            elif current_table == "LaboratoryTestTable":
-                self.modify_charges_form(row_id)
+            else:
+                QMessageBox.warning(self, "Selection Error", "Please select an item to modify.")
 
-        except ValueError as ve:
-            error_msg = f"Selection Error: {str(ve)}"
         except Exception as e:
             error_msg = f"Failed to modify charges: {str(e)}"
+            QMessageBox.critical(self, "Error", error_msg)
 
     @staticmethod
     def find_doc_id(doc_name):
         if not doc_name or not isinstance(doc_name, str):
-            print("Invalid doctor name provided")
             return None
 
         try:
@@ -148,14 +155,11 @@ class AdminChargesController(QMainWindow):
                 if doc_name_clean == current_name:
                     doc_id = doctor.get("id")
                     if doc_id is not None:
-                        return int(doc_id)  # Ensure ID is returned as integer
+                        return int(doc_id)
                     break
-
-            print(f"No doctor found with name: {doc_name}")
             return None
 
         except Exception as e:
-            print(f"Error finding doctor ID: {e}")
             return None
 
     def refresh_tables(self):
@@ -165,57 +169,38 @@ class AdminChargesController(QMainWindow):
     def populate_laboratory_test_table(self):
         try:
             tests = Laboratory.get_all_test()
-            self.ui.LaboratoryTestTable.setRowCount(0)
+            self.charges_ui.LaboratoryTestTable.setRowCount(0)
 
             for row, test in enumerate(tests):
                 lab_code = test["lab_code"]
                 lab_test_name = test["lab_test_name"]
                 lab_price = test["lab_price"]
 
-                self.ui.LaboratoryTestTable.insertRow(row)
-                self.ui.LaboratoryTestTable.setItem(row, 0, QtWidgets.QTableWidgetItem(lab_code))
-                self.ui.LaboratoryTestTable.setItem(row, 1, QtWidgets.QTableWidgetItem(lab_test_name))
-                self.ui.LaboratoryTestTable.setItem(row, 2, QtWidgets.QTableWidgetItem(str(lab_price)))
+                self.charges_ui.LaboratoryTestTable.insertRow(row)
+                self.charges_ui.LaboratoryTestTable.setItem(row, 0, QtWidgets.QTableWidgetItem(lab_code))
+                self.charges_ui.LaboratoryTestTable.setItem(row, 1, QtWidgets.QTableWidgetItem(lab_test_name))
+                self.charges_ui.LaboratoryTestTable.setItem(row, 2, QtWidgets.QTableWidgetItem(str(lab_price)))
 
-            self.ui.LaboratoryTestTable.resizeColumnsToContents()
-            self.ui.LaboratoryTestTable.viewport().update()
+            self.charges_ui.LaboratoryTestTable.viewport().update()
+            self.charges_ui.LaboratoryTestTable.verticalHeader().setVisible(False)
 
         except Exception as e:
-            print(f"Error populating LaboratoryTestTable: {e}")
-
+            pass
     def load_doctor_table(self):
-        doctors = Doctor.get_all_doctors()
-        self.ui.DoctorTable.setRowCount(0)
+        try:
+            doctors = Doctor.get_all_doctors()
+            self.charges_ui.DoctorTable.setRowCount(0)
 
-        # Populate the table
-        for row, doctor in enumerate(doctors):
-            self.ui.DoctorTable.insertRow(row)
-            formatted_rate = f"{float(doctor['rate']):,.2f}" if doctor["rate"] is not None else "0.00"
-            self.ui.DoctorTable.setItem(row, 0, QTableWidgetItem(str(doctor["name"])))
-            self.ui.DoctorTable.setItem(row, 1, QTableWidgetItem(formatted_rate))
+            # Populate the table
+            for row, doctor in enumerate(doctors):
+                self.charges_ui.DoctorTable.insertRow(row)
+                formatted_rate = f"{float(doctor['rate']):,.2f}" if doctor["rate"] is not None else "0.00"
+                self.charges_ui.DoctorTable.setItem(row, 0, QTableWidgetItem(str(doctor["name"])))
+                self.charges_ui.DoctorTable.setItem(row, 1, QTableWidgetItem(formatted_rate))
 
-        self.ui.DoctorTable.resizeColumnsToContents()
-
-    def apply_table_styles(self):
-        # Configure Laboratory Test Table
-        self.ui.LaboratoryTestTable.setHorizontalHeaderLabels(["Test Code", "Laboratory Test", "Charge"])
-        self.ui.LaboratoryTestTable.verticalHeader().setVisible(False)
-        self.ui.LaboratoryTestTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-
-        # Configure Doctor Table (add your specific headers)
-        self.ui.DoctorTable.setHorizontalHeaderLabels(["Doctor Name", "Rate"])  # Update with your actual headers
-        self.ui.DoctorTable.verticalHeader().setVisible(False)
-        self.ui.DoctorTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-
-        # Optional: Set column width policies
-        for table in [self.ui.LaboratoryTestTable, self.ui.DoctorTable]:
-            table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
-            table.horizontalHeader().setStretchLastSection(True)
-
-        # Connect signals to enforce single-table selection
-        self.ui.LaboratoryTestTable.itemSelectionChanged.connect(lambda: self.clear_other_table_selection(self.ui.DoctorTable))
-        self.ui.DoctorTable.itemSelectionChanged.connect(lambda: self.clear_other_table_selection(self.ui.LaboratoryTestTable))
-
+            self.charges_ui.DoctorTable.verticalHeader().setVisible(False)
+        except Exception as e:
+            pass
     def clear_other_table_selection(self, table):
         if self.sender().selectedItems():  # If current table has a selection
             table.clearSelection()  # Clear the other table
@@ -223,67 +208,19 @@ class AdminChargesController(QMainWindow):
     def modify_charges_form(self, lab_id):
         try:
             lab_test_details = Laboratory.get_lab_test(lab_id)
-
-            lab_test_details = Laboratory.get_lab_test(lab_id)
             self.add_user_window = AdminAddLabTest(parent=self, lab_test=lab_test_details, modify=True)
             self.add_user_window.show()
-            print("Add Test Form shown successfully!")
         except Exception as e:
-            print(f"Error opening Add Test Form: {e}")
-
-
+            pass
     def open_add_user_form(self):
         try:
             self.add_lab_test_window = AdminAddLabTest(parent=self)
             self.add_lab_test_window.show()
         except Exception as e:
-            print(f"Error opening Add Test Form: {e}")
-
+            pass
     def open_add_charges_form(self, doc_id):
-        print("Opening Add Charges Form...")
         try:
-            self.add_user_window = AdminDoctorCharges(doc_id, parent=self)
+            self.add_user_window = AdminDoctorCharges(doc_id, parent=self, charges_ui=self.charges_ui)
             self.add_user_window.show()
-            print("Modify Doctor Charges shown successfully!")
         except Exception as e:
-            print(f"Error opening Add Charges Form: {e}")
-
-    def view_staff_ui(self):
-        print("StaffButton clicked!")
-        try:
-            from Controllers.AdminStaffs_Controller import AdminStaffsController
-            self.admin_staff_controller = AdminStaffsController()
-            self.admin_staff_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Dashboard Error(staffs): {e}")
-
-    def view_transaction_ui(self):
-        print("TransactionButton clicked!")
-        try:
-            from Controllers.AdminTransaction_Controller import AdminTransactionsController
-            self.admin_transaction_controller = AdminTransactionsController()
-            self.admin_transaction_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Staff Details Error(charges): {e}")
-
-    def view_dashboard_ui(self):
-        print("DashboardButton clicked!")
-        try:
-            from Controllers.AdminDashboard_Controller import AdminDashboardController
-            self.admin_dashboard_controller = AdminDashboardController()
-            self.admin_dashboard_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Staff Error: {e}")
-
-    def view_patient_ui(self):
-        print("RecordButton clicked!")
-        try:
-            from Controllers.AdminPatients_Controller import AdminPatientsController
-            self.admin_patients_controller = AdminPatientsController()
-            self.admin_patients_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Staff Error: {e}")
+            pass
