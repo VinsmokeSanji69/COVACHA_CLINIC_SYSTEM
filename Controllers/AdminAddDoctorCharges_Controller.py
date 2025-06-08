@@ -43,11 +43,12 @@ class ConfirmationDialog(QDialog):
 
 
 class AdminDoctorCharges(QMainWindow):
-    def __init__(self, doc_id ,parent=None):
+    def __init__(self, doc_id ,parent=None, charges_ui = None):
         super().__init__(parent)
         self.doc_id = doc_id
         self.ui = AdminAddChargesUI()
         self.ui.setupUi(self)
+        self.charges_ui = charges_ui
 
         # Set window properties
         self.setWindowTitle("Add Doctor Charges")
@@ -119,14 +120,14 @@ class AdminDoctorCharges(QMainWindow):
         success = Doctor.update_doctor_rate(doctor)
         if success:
             QMessageBox.information(self, "Success", "Doctor rate modified successfully!")
-            self.view_charges_ui()
+            self.close()
         else:
             QMessageBox.critical(self, "Error", "Failed to add laboratory test.")
 
     def view_charges_ui(self):
         try:
             from Controllers.AdminCharges_Controller import AdminChargesController
-            self.admin_charges_controller = AdminChargesController()
+            self.admin_charges_controller = AdminChargesController(self.charges_ui)
             self.admin_charges_controller.show()
             self.close()
         except Exception as e:
