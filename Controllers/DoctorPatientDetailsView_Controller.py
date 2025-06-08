@@ -140,13 +140,19 @@ class DoctorPatientDetailsViewController(QMainWindow):
 
     def load_checkups(self, checkups):
         try:
-            self.ui.TransactionTable.setRowCount(len(checkups))
+            # Sort by ID in descending order (latest first)
+            sorted_checkups = sorted(
+                checkups,
+                key=lambda c: c.get("id", ""),
+                reverse=True
+            )
 
+            self.ui.TransactionTable.setRowCount(len(sorted_checkups))
             self.ui.TransactionTable.verticalHeader().setVisible(False)
             self.ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
             self.ui.TransactionTable.setHorizontalHeaderLabels(["Checkup ID", "Diagnosis", "Date"])
 
-            for row, checkup in enumerate(checkups):
+            for row, checkup in enumerate(sorted_checkups):
                 chck_id = str(checkup.get("id", "N/A"))
                 diagnosis = checkup.get("diagnosis", "N/A")
                 date = safe_date_format(checkup.get("date"))

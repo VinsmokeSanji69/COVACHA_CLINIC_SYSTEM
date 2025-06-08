@@ -1,4 +1,5 @@
 from Models.DB_Connection import DBConnection
+from psycopg2 import extras
 
 class Prescription:
     @staticmethod
@@ -81,3 +82,67 @@ class Prescription:
             if conn:
                 conn.close()
                 print("Database connection closed.")
+
+    @staticmethod
+    def get_prescription_by_details(chck_id, med_name, dosage, intake):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return None
+        try:
+            query = """
+                SELECT id AS pres_id, pres_medicine, pres_dosage, pres_intake 
+                FROM prescription
+                WHERE chck_id = %s AND pres_medicine = %s AND pres_dosage = %s AND pres_intake = %s
+                LIMIT 1
+            """
+            cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+            cursor.execute(query, (chck_id, med_name, dosage, intake))
+            result = cursor.fetchone()
+            return dict(result) if result else None
+        except Exception as e:
+            print(f"Error fetching prescription by details: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
+    def update_prescription_by_id(pres_id, med_name, dosage, intake):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return False
+        try:
+            query = """
+                    UPDATE prescription 
+                    SET pres_medicine = %s, pres_dosage = %s, pres_intake = %s
+                    WHERE id = %s
+                """
+            cursor = conn.cursor()
+            cursor.execute(query, (med_name, dosage, intake, pres_id))
+            conn.commit()
+            return True
+        except Exception as e:
+            print(f"Error updating prescription: {e}")
+            return False
+        finally:
+            if conn:
+                conn.close()
+
+
+    @staticmethod
+    def delete_prescription_by_id(pres_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return False
+        try:
+            query = "DELETE FROM prescription WHERE id = %s"
+            cursor = conn.cursor()
+            cursor.execute(query, (pres_id,))
+            conn.commit()
+            return True
+        except Exception as e:
+            print(f"Error deleting prescription: {e}")
+            return False
+        finally:
+            if conn:
+                conn.close()

@@ -77,10 +77,13 @@ class DoctorLabResult(QMainWindow):
             self.ui.AddPrescription.clicked.connect(self.open_add_prescription_form)
             self.ui.DiagnoseButton.clicked.connect(self.confirm_and_add_diagnosis)
             self.ui.Cancel.clicked.connect(self.return_to_dashboard)
+            self.ui.EditPrescription.clicked.connect(self.open_edit_form)
+            self.ui.ViewLabResult_4.clicked.connect(self.delete_prescription)
 
     def setup_view(self):
         self.ui.AddPrescription.setVisible(False)
         self.ui.EditPrescription.setVisible(False)
+        self.ui.ViewLabResult_4.setVisible(False)
         self.ui.DiagnoseButton.setVisible(False)
         self.ui.Cancel.setVisible(False)
         self.ui.DiagnoseText.setReadOnly(True)
@@ -466,6 +469,67 @@ class DoctorLabResult(QMainWindow):
                 subprocess.call([opener, file_path])
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open file: {e}")
+
+    def open_edit_form(self):
+        """Open the DoctorAddPrescription form with pre-filled prescription data."""
+        selected_row = self.ui.LabTestTabe_2.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self, "Selection Error", "Please select a prescription to edit.")
+            return
+
+        # Get prescription data from the selected row
+        med_name = self.ui.LabTestTabe_2.item(selected_row, 0).text()
+        dosage = self.ui.LabTestTabe_2.item(selected_row, 1).text()
+        intake = self.ui.LabTestTabe_2.item(selected_row, 2).text()
+
+        # Fetch prescription by details
+        pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake)
+
+        if not pres_data:
+            QMessageBox.critical(self, "Error", "Failed to find prescription in database.")
+            return
+
+        try:
+            # Only now proceed to create the edit window
+            self.edit_prescription_window = DoctorAddPrescription(
+                chck_id=self.checkup_id,
+                parent=self,
+                refresh_callback=self.refresh_all_tables,
+                prescription_data=pres_data
+            )
+            self.edit_prescription_window.show()
+            print("Edit Prescription Form shown successfully!")
+        except Exception as e:
+            print(f"Error opening Edit Prescription Form: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to open edit form: {e}")
+
+    def delete_prescription(self):
+        selected_row = self.ui.LabTestTabe_2.currentRow()
+        if selected_row == -1:
+            QMessageBox.warning(self, "Selection Error", "Please select a prescription to delete.")
+            return
+
+        # Show custom confirmation dialog
+        dlg = ConfirmationDialog(self)
+        if dlg.exec_() == QDialog.Rejected:
+            print("User clicked No or closed dialog")
+            return
+
+        # Proceed with deletion
+        med_name = self.ui.LabTestTabe_2.item(selected_row, 0).text()
+        dosage = self.ui.LabTestTabe_2.item(selected_row, 1).text()
+        intake = self.ui.LabTestTabe_2.item(selected_row, 2).text()
+
+        pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake)
+        if not pres_data:
+            QMessageBox.critical(self, "Error", "Failed to find prescription in database.")
+            return
+
+        if Prescription.delete_prescription_by_id(pres_data['pres_id']):
+            QMessageBox.information(self, "Success", "Prescription deleted successfully.")
+            self.refresh_all_tables()
+        else:
+            QMessageBox.critical(self, "Error", "Failed to delete prescription.")
 
     def open_add_prescription_form(self):
         print("Opening Add Lab Test Form...")

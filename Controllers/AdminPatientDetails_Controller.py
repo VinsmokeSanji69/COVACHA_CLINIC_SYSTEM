@@ -152,32 +152,33 @@ class AdminPatientDetailsController(QMainWindow):
 
     def load_checkups(self, checkups):
         try:
+            # Sort by ID in descending order (latest first)
+            sorted_checkups = sorted(
+                checkups,
+                key=lambda c: c.get("id", ""),
+                reverse=True
+            )
 
-            self.ui.TransactionTable.setRowCount(len(checkups))
-
-            # Configure table properties first
+            self.ui.TransactionTable.setRowCount(len(sorted_checkups))
             self.ui.TransactionTable.verticalHeader().setVisible(False)
-            self.ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)  # Moved up
+            self.ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
             self.ui.TransactionTable.setHorizontalHeaderLabels(["Checkup ID", "Diagnosis", "Date"])
 
-            # Populate the table
-            for row, checkup in enumerate(checkups):
-                id = str(checkup.get("id", ""))
+            for row, checkup in enumerate(sorted_checkups):
+                chck_id = str(checkup.get("id", "N/A"))
                 diagnosis = checkup.get("diagnosis", "N/A")
-                date = checkup.get("date", "No date").strftime('%Y-%m-%d') if checkup.get("date") else "No date"
+                date = safe_date_format(checkup.get("date"))
 
-                # Insert row items
-                self.ui.TransactionTable.insertRow(row)
-                self.ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(id))
+                self.ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(chck_id))
                 self.ui.TransactionTable.setItem(row, 1, QtWidgets.QTableWidgetItem(diagnosis))
                 self.ui.TransactionTable.setItem(row, 2, QtWidgets.QTableWidgetItem(date))
 
-            # Adjust table appearance
             self.ui.TransactionTable.resizeColumnsToContents()
             self.ui.TransactionTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
-            print(f"Error populating Patient Table: {e}")
+            print(f"Error populating Transaction Table: {e}")
+            QMessageBox.critical(self, "Error", f"Failed to load checkups: {e}")
 
     def view_checkup_details_ui(self, id):
         try:

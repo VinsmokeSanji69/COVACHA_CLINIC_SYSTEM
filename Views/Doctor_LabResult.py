@@ -224,7 +224,7 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName("scrollArea_3")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, -259, 1108, 856))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, -317, 1104, 896))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self.verticalLayout_24 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_3)
         self.verticalLayout_24.setContentsMargins(0, 10, 0, 5)
@@ -730,13 +730,16 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 946, 200))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 942, 200))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_14.setSpacing(0)
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.LabTestTabe = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LabTestTabe.setFont(font)
         self.LabTestTabe.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -881,13 +884,16 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 946, 200))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 942, 200))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_22.setSpacing(0)
         self.verticalLayout_22.setObjectName("verticalLayout_22")
         self.LabTestTabe_2 = QtWidgets.QTableWidget(self.scrollAreaWidgetContents_2)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LabTestTabe_2.setFont(font)
         self.LabTestTabe_2.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"

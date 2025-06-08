@@ -312,9 +312,9 @@ QScrollBar::sub-line:vertical{
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-259</y>
-               <width>1108</width>
-               <height>856</height>
+               <y>-317</y>
+               <width>1104</width>
+               <height>896</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_24">
@@ -1371,7 +1371,7 @@ QScrollBar::sub-line:vertical{
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>946</width>
+                            <width>942</width>
                             <height>200</height>
                            </rect>
                           </property>
@@ -1393,6 +1393,11 @@ QScrollBar::sub-line:vertical{
                            </property>
                            <item>
                             <widget class="QTableWidget" name="LabTestTabe">
+                             <property name="font">
+                              <font>
+                               <pointsize>12</pointsize>
+                              </font>
+                             </property>
                              <property name="styleSheet">
                               <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
@@ -1655,7 +1660,7 @@ QScrollBar::sub-line:vertical{
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>946</width>
+                         <width>942</width>
                          <height>200</height>
                         </rect>
                        </property>
@@ -1677,6 +1682,11 @@ QScrollBar::sub-line:vertical{
                         </property>
                         <item>
                          <widget class="QTableWidget" name="LabTestTabe_2">
+                          <property name="font">
+                           <font>
+                            <pointsize>12</pointsize>
+                           </font>
+                          </property>
                           <property name="styleSheet">
                            <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
