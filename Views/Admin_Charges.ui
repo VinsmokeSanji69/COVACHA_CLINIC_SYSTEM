@@ -680,85 +680,6 @@ QComboBox QAbstractItemView {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QWidget" name="SearchBar" native="true">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>290</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>400</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_2">
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>5</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>5</number>
-                  </property>
-                  <item>
-                   <widget class="QLineEdit" name="Search">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="Icon">
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../Images/resources.qrc">
-                      <normaloff>:/icons/icons/search.svg</normaloff>:/icons/icons/search.svg</iconset>
-                    </property>
-                    <property name="iconSize">
-                     <size>
-                      <width>35</width>
-                      <height>35</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>30</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item alignment="Qt::AlignHCenter">
                 <widget class="QPushButton" name="AddLabTestButton">
                  <property name="enabled">
                   <bool>true</bool>
@@ -802,6 +723,19 @@ padding: 0px 20px;
                   <bool>false</bool>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>30</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
@@ -897,8 +831,8 @@ QScrollBar::sub-line:vertical{
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>244</width>
-                       <height>557</height>
+                       <width>328</width>
+                       <height>571</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1021,8 +955,8 @@ QTableWidget QHeaderView::section {
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>380</width>
-                       <height>557</height>
+                       <width>327</width>
+                       <height>571</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">

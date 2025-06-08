@@ -697,19 +697,6 @@ QComboBox QAbstractItemView {
                 <number>0</number>
                </property>
                <item>
-                <spacer name="horizontalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>30</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
                 <widget class="QPushButton" name="AddUserButton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -743,6 +730,19 @@ QComboBox QAbstractItemView {
                   <string>Add User</string>
                  </property>
                 </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>30</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
@@ -849,7 +849,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>308</height>
+                       <height>310</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -1100,7 +1100,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>298</height>
+                       <height>300</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
