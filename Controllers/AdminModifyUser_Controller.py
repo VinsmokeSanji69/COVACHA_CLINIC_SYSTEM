@@ -7,7 +7,6 @@ from Views.Admin_AddStaff import Ui_MainWindow as AdminAddUserUI
 import hashlib
 from Models.Staff import Staff
 from Models.Doctor import Doctor
-
 # Add this to make other controllers work
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
