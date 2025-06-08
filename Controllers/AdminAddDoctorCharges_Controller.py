@@ -61,7 +61,6 @@ class AdminDoctorCharges(QMainWindow):
 
         self.ui.Cancel.clicked.connect(self.close)
 
-        print("AdminAddLabTest initialized successfully!")
 
     def initialize_doctor_details(self):
         try:
@@ -84,10 +83,9 @@ class AdminDoctorCharges(QMainWindow):
             self.ui.DocRate.setText(str(doctor_details.get("rate", 0.0)))  # Default to 0.0 if rate missing
 
         except ValueError as ve:
-            print(f"Warning: {str(ve)}")
+            pass
         except Exception as e:
-            print(f"Error initializing doctor details: {e}")
-
+            pass
     def validate_form(self):
         errors = []
         # Validate Price
@@ -126,7 +124,7 @@ class AdminDoctorCharges(QMainWindow):
                 if isinstance(self.parent(), AdminChargesController):
                     self.parent().refresh_tables()
             except Exception as e:
-                print(f"Warning: Could not refresh parent controller. {e}")
+                pass
             self.close()
         else:
             QMessageBox.critical(self, "Error", "Failed to modify doctor rate.")
@@ -138,5 +136,4 @@ class AdminDoctorCharges(QMainWindow):
             self.admin_charges_controller.show()
             self.close()
         except Exception as e:
-            print(f"Staff Details Error: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")

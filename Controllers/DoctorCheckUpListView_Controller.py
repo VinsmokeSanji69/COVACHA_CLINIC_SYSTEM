@@ -16,7 +16,6 @@ class DoctorCheckUpListView(QMainWindow):
         self.ui = DoctorLabResultUI()
         self.ui.setupUi(self)
         self.checkup_id = checkup_id
-        print(f"Check_Up Id: {self.checkup_id}")
 
         # Load and display data related to the checkup ID
         self.load_data()
@@ -35,13 +34,11 @@ class DoctorCheckUpListView(QMainWindow):
 
     def refresh_all_tables(self):
         try:
-            print("Refreshing all tables...")
             self.load_labattach_table()
             self.load_prescription_table()
-            print("All tables refreshed successfully!")
         except Exception as e:
-            print(f"Error refreshing all tables: {e}")
-            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+            pass
+
 
     def apply_table_styles(self):
         self.ui.LabTestTabe.setStyleSheet("""
@@ -152,8 +149,6 @@ class DoctorCheckUpListView(QMainWindow):
             # Fetch lab codes and attachments for the given check-up ID
             lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
             if not lab_tests:
-                print(f"No lab tests found for chck_id: {self.checkup_id}")
-
                 # Add a single row with "No Lab Test Request"
                 row_position = self.ui.LabTestTabe.rowCount()
                 self.ui.LabTestTabe.insertRow(row_position)
@@ -163,9 +158,6 @@ class DoctorCheckUpListView(QMainWindow):
 
             # Populate the table with lab test details
             for lab_test in lab_tests:
-                # Debug: Log the type and contents of lab_test
-                print(f"Processing lab_test: {lab_test}, Type: {type(lab_test)}")
-
                 # Handle both dictionaries and tuples
                 if isinstance(lab_test, dict):
                     lab_code = lab_test.get('lab_code')
@@ -173,22 +165,18 @@ class DoctorCheckUpListView(QMainWindow):
                 elif isinstance(lab_test, tuple):
                     # Assume the tuple structure is (lab_code, lab_attachment)
                     if len(lab_test) < 2:
-                        print(f"Invalid tuple structure: {lab_test}, Skipping...")
                         continue
                     lab_code, lab_attachment = lab_test[:2]
                 else:
-                    print(f"Unexpected data type for lab_test: {type(lab_test)}, Skipping...")
                     continue
 
                 # Validate lab_code
                 if not lab_code:
-                    print(f"Missing lab_code in lab_test: {lab_test}")
                     continue
 
                 # Fetch the lab test name using the lab code
                 lab_test_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_test_details:
-                    print(f"No lab test details found for lab_code: {lab_code}")
                     continue
 
                 # Handle the case where get_test_by_labcode returns a tuple
@@ -197,12 +185,10 @@ class DoctorCheckUpListView(QMainWindow):
                     if len(lab_test_details) > 0 and isinstance(lab_test_details[0], dict):
                         lab_test_details = lab_test_details[0]
                     else:
-                        print(f"Invalid tuple structure for lab_code '{lab_code}', Skipping...")
                         continue
 
                 # Validate lab_test_details
                 if not isinstance(lab_test_details, dict):
-                    print(f"Unexpected return type from get_test_by_labcode: {type(lab_test_details)}, Skipping...")
                     continue
 
                 lab_test_name = lab_test_details.get('lab_test_name', 'Unknown').capitalize()
@@ -225,10 +211,7 @@ class DoctorCheckUpListView(QMainWindow):
                 self.ui.LabTestTabe.setItem(row_position, 0, QtWidgets.QTableWidgetItem(lab_test_name))
                 self.ui.LabTestTabe.setItem(row_position, 1, QtWidgets.QTableWidgetItem(attachment_status))
 
-            print("Lab Attach Table loaded successfully!")
-
         except Exception as e:
-            print(f"Error loading lab attach table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load lab attach table: {e}")
 
     def load_prescription_table(self):
@@ -240,7 +223,6 @@ class DoctorCheckUpListView(QMainWindow):
             # Fetch prescriptions for the given check-up ID
             prescriptions = Prescription.display_prescription(self.checkup_id)
             if not prescriptions:
-                print(f"No prescriptions found for chck_id: {self.checkup_id}")
                 # Add a single row with "No Prescriptions"
                 row_position = self.ui.LabTestTabe_2.rowCount()
                 self.ui.LabTestTabe_2.insertRow(row_position)
@@ -262,10 +244,7 @@ class DoctorCheckUpListView(QMainWindow):
                 self.ui.LabTestTabe_2.setItem(row_position, 0, QtWidgets.QTableWidgetItem(med_name))
                 self.ui.LabTestTabe_2.setItem(row_position, 1, QtWidgets.QTableWidgetItem(dosage))
                 self.ui.LabTestTabe_2.setItem(row_position, 2, QtWidgets.QTableWidgetItem(intake))
-
-            print("Prescription Table loaded successfully!")
         except Exception as e:
-            print(f"Error loading prescription table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load prescription table: {e}")
 
     def hide_buttons(self):
@@ -347,8 +326,6 @@ class DoctorCheckUpListView(QMainWindow):
 
     def view_file(self):
         """Handle viewing the attached file for the selected lab test."""
-        print("View button clicked!")
-
         # Get the currently selected row in the LabTable
         selected_row = self.ui.LabTestTabe.currentRow()
         if selected_row == -1:  # No row selected
@@ -367,15 +344,11 @@ class DoctorCheckUpListView(QMainWindow):
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
 
-        print(f"Retrieved lab code: {lab_code}")
-
         # Fetch the file path from the CheckUp model
         file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
             return
-
-        print(f"File path to open: {file_path}")
 
         # Check if the file exists
         if not os.path.exists(file_path):

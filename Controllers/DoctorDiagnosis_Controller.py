@@ -25,8 +25,6 @@ class DoctorDiagnosis(QMainWindow):
         self.checkup_id = checkup_id
         self.doc_id = doc_id
 
-        print(f"DoctorDiagnosis initialized successfully with CheckUp ID: {checkup_id} and doc_id: {doc_id}")
-
         # Load and display data related to the checkup ID
         self.load_data()
 
@@ -238,7 +236,6 @@ class DoctorDiagnosis(QMainWindow):
             QMessageBox.critical(self, "Error", f"Failed to display lab tests: {e}")
 
     def ViewRecords(self):
-        print("Opening Doctor Records...")
         try:
             self.close()
 
@@ -249,15 +246,12 @@ class DoctorDiagnosis(QMainWindow):
                     dashboard = widget
                     break
             else:
-                print("Error: DoctorDashboard window not found.")
                 return
 
             # Switch to the Checkup Page
             dashboard.page_stack.setCurrentWidget(dashboard.checkup_page)
-            print("Switched to Doctor Records (Checkup Page).")
 
         except Exception as e:
-            print(f"Error loading Doctor Records: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load Doctor Records: {e}")
 
     def clear_layout(self, layout):
@@ -291,5 +285,4 @@ class DoctorDiagnosis(QMainWindow):
             self.doctor_lab_result.show()
             self.close()
         except Exception as e:
-            print(f"Error opening DoctorLabResult modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")

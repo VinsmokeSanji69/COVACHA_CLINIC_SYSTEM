@@ -42,17 +42,12 @@ class DoctorAddPrescription(QMainWindow):
         self.ui = DoctorAddPrescriptionUI()
         self.ui.setupUi(self)
         self.ui.MedName.setFocus()
-
         # Set window properties
         self.setWindowTitle("Add/Update Medication")
         self.setFixedSize(650, 450)
-
-        print("Doctor AddPrescription initialized successfully!")
-
         # Connect buttons
         self.ui.Cancel.clicked.connect(self.close)
         self.ui.Addprescription.clicked.connect(self.validate_and_save_or_update)
-
         if self.prescription_data:
             self.populate_form()
             self.ui.Addprescription.setText("Update")
@@ -78,7 +73,6 @@ class DoctorAddPrescription(QMainWindow):
     def populate_form(self):
         """Populate form fields with existing prescription data."""
         if not self.prescription_data:
-            print("No prescription data available for populating form.")
             return
 
         self.ui.MedName.setText(self.prescription_data.get("pres_medicine", ""))
@@ -105,7 +99,6 @@ class DoctorAddPrescription(QMainWindow):
         if self.prescription_data:
             # Edit mode: update existing prescription
             pres_id = self.prescription_data.get("pres_id")
-            print(f"[DEBUG] pres_id being updated: {pres_id}")
             success = Prescription.update_prescription_by_id(
                 pres_id,
                 med_data["med_name"],

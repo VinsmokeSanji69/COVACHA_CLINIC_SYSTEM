@@ -302,20 +302,10 @@ QLabel {
               <property name="spacing">
                <number>0</number>
               </property>
-              <item>
+              <item alignment="Qt::AlignVCenter">
                <widget class="QLabel" name="UserName">
                 <property name="text">
                  <string>ADMIN</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading</set>
-                </property>
-               </widget>
-              </item>
-              <item alignment="Qt::AlignRight">
-               <widget class="QLabel" name="UserType">
-                <property name="text">
-                 <string>Admin</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>

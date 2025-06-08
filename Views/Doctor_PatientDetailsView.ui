@@ -299,20 +299,10 @@ QLabel {
               <property name="spacing">
                <number>0</number>
               </property>
-              <item alignment="Qt::AlignRight">
+              <item alignment="Qt::AlignRight|Qt::AlignVCenter">
                <widget class="QLabel" name="UserName">
                 <property name="text">
                  <string>Roy Adrian Rondina</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading</set>
-                </property>
-               </widget>
-              </item>
-              <item alignment="Qt::AlignRight">
-               <widget class="QLabel" name="UserType">
-                <property name="text">
-                 <string>Doctor</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>

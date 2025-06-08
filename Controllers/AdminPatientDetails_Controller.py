@@ -1,8 +1,6 @@
 from datetime import datetime
-
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Views.Admin_PatientDetails import Ui_MainWindow as AdminPatientDetailsUI
@@ -51,7 +49,6 @@ class AdminPatientDetailsController(QMainWindow):
         try:
             selected_row = self.ui.TransactionTable.currentRow()
             if selected_row == -1:
-                print("no row selected")
                 return
 
             check_id = self.ui.TransactionTable.item(selected_row, 0)
@@ -70,7 +67,6 @@ class AdminPatientDetailsController(QMainWindow):
         except Exception as e:
             error_msg = f"Failed to select patient: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def identify_patient(self):
         try:
@@ -98,7 +94,6 @@ class AdminPatientDetailsController(QMainWindow):
             return patient_details, checkups
 
         except Exception as e:
-            print(f"Error Identifying Patient: {e}")
             QMessageBox.critical(self, "Error", f"Failed to fetch patient details: {e}")
             return None, []
 
@@ -147,7 +142,6 @@ class AdminPatientDetailsController(QMainWindow):
             self.load_checkups(checkups)
 
         except Exception as e:
-            print(f"Error initializing patient details: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load patient details: {e}")
 
     def load_checkups(self, checkups):
@@ -177,7 +171,6 @@ class AdminPatientDetailsController(QMainWindow):
             self.ui.TransactionTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
-            print(f"Error populating Transaction Table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load checkups: {e}")
 
     def view_checkup_details_ui(self, id):
@@ -187,7 +180,7 @@ class AdminPatientDetailsController(QMainWindow):
             self.admin_checkup_details_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error: {e}")
+            pass
 
     def view_staff_ui(self):
         try:
@@ -196,7 +189,7 @@ class AdminPatientDetailsController(QMainWindow):
             self.admin_staff_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Dashboard Error(staffs): {e}")
+            pass
 
     def view_dashboard_ui(self):
         try:
@@ -205,7 +198,7 @@ class AdminPatientDetailsController(QMainWindow):
             self.admin_dashboard_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Details Error: {e}")
+            pass
 
     def view_charges_ui(self):
         try:
@@ -214,4 +207,4 @@ class AdminPatientDetailsController(QMainWindow):
             self.admin_charges_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Details Error: {e}")
+            pass

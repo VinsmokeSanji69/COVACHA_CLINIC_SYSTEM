@@ -19,8 +19,6 @@ class DoctorDiagnosisModify(QMainWindow):
         self.checkup_id = checkup_id
         self.doc_id = doc_id
 
-        print(f"DoctorDiagnosis initialized successfully with CheckUp ID: {checkup_id} and doc_id: {doc_id}")
-
         # Load and display data related to the checkup ID
         self.load_data()
 
@@ -103,9 +101,6 @@ class DoctorDiagnosisModify(QMainWindow):
             # Fetch lab codes already associated with the current check-up
             existing_lab_codes = CheckUp.get_lab_codes_by_chckid(self.checkup_id)
 
-            # Debug: Log existing_lab_codes
-            print(f"Existing lab codes for chck_id {self.checkup_id}: {existing_lab_codes}")
-
             # Convert existing_lab_codes to set for faster lookup
             existing_lab_codes_set = set(existing_lab_codes)
 
@@ -135,7 +130,6 @@ class DoctorDiagnosisModify(QMainWindow):
 
     def ViewRecords(self):
         from Controllers.DoctorRecords_Controller import DoctorRecords
-        print("Opening Doctor Records...")
         try:
             # Close the current DoctorDiagnosis window
             self.close()
@@ -143,7 +137,6 @@ class DoctorDiagnosisModify(QMainWindow):
             self.doctor_records = DoctorRecords(doc_id=self.doc_id)
             self.doctor_records.show()
         except Exception as e:
-            print(f"Error loading Doctor Records: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load Doctor Records: {e}")
 
     def clear_layout(self, layout):

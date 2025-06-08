@@ -51,9 +51,6 @@ class AdminChargesController(QWidget):
         self.ui = AdminChargesUI()
         self.charges_ui = charges_ui
         self.ui.setupUi(self)
-
-        print("Admin Charges UI initialized!")
-
         self.refresh_tables()
 
         # Table Buttons - using the passed charges_ui instead of self.ui
@@ -65,7 +62,6 @@ class AdminChargesController(QWidget):
 
     def delete_lab_test(self):
         try:
-            print("Delete button clicked!")
 
             # Try getting selection from DoctorTable
             doctor_table = self.charges_ui.DoctorTable
@@ -112,12 +108,9 @@ class AdminChargesController(QWidget):
         except Exception as e:
             error_msg = f"Failed to delete record: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def modify_charges(self):
         try:
-            print("Modify button clicked!")
-
             doctor_table = self.charges_ui.DoctorTable
             lab_table = self.charges_ui.LaboratoryTestTable
 
@@ -146,12 +139,10 @@ class AdminChargesController(QWidget):
         except Exception as e:
             error_msg = f"Failed to modify charges: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     @staticmethod
     def find_doc_id(doc_name):
         if not doc_name or not isinstance(doc_name, str):
-            print("Invalid doctor name provided")
             return None
 
         try:
@@ -166,12 +157,9 @@ class AdminChargesController(QWidget):
                     if doc_id is not None:
                         return int(doc_id)
                     break
-
-            print(f"No doctor found with name: {doc_name}")
             return None
 
         except Exception as e:
-            print(f"Error finding doctor ID: {e}")
             return None
 
     def refresh_tables(self):
@@ -197,8 +185,7 @@ class AdminChargesController(QWidget):
             self.charges_ui.LaboratoryTestTable.verticalHeader().setVisible(False)
 
         except Exception as e:
-            print(f"Error populating LaboratoryTestTable: {e}")
-
+            pass
     def load_doctor_table(self):
         try:
             doctors = Doctor.get_all_doctors()
@@ -213,8 +200,7 @@ class AdminChargesController(QWidget):
 
             self.charges_ui.DoctorTable.verticalHeader().setVisible(False)
         except Exception as e:
-            print(f"Error loading doctor table: {e}")
-
+            pass
     def clear_other_table_selection(self, table):
         if self.sender().selectedItems():  # If current table has a selection
             table.clearSelection()  # Clear the other table
@@ -224,22 +210,17 @@ class AdminChargesController(QWidget):
             lab_test_details = Laboratory.get_lab_test(lab_id)
             self.add_user_window = AdminAddLabTest(parent=self, lab_test=lab_test_details, modify=True)
             self.add_user_window.show()
-            print("Add Test Form shown successfully!")
         except Exception as e:
-            print(f"Error opening Add Test Form: {e}")
-
+            pass
     def open_add_user_form(self):
         try:
             self.add_lab_test_window = AdminAddLabTest(parent=self)
             self.add_lab_test_window.show()
         except Exception as e:
-            print(f"Error opening Add Test Form: {e}")
-
+            pass
     def open_add_charges_form(self, doc_id):
-        print("Opening Add Charges Form...")
         try:
             self.add_user_window = AdminDoctorCharges(doc_id, parent=self, charges_ui=self.charges_ui)
             self.add_user_window.show()
-            print("Modify Doctor Charges shown successfully!")
         except Exception as e:
-            print(f"Error opening Add Charges Form: {e}")
+            pass

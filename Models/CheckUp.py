@@ -7,8 +7,7 @@ class CheckUp:
     def get_next_sequence_number(checkup_date):
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Database connection is None. Check your connection settings.")
-            return None
+            return
 
         try:
             with conn.cursor() as cursor:
@@ -16,7 +15,6 @@ class CheckUp:
                 conn.autocommit = True
 
                 # Debug: Log the INSERT query
-                print(f"Executing INSERT query for date: {checkup_date}")
                 cursor.execute("""
                     INSERT INTO checkup_sequence (checkup_date, last_sequence)
                     VALUES (%s, 0)
@@ -24,7 +22,6 @@ class CheckUp:
                 """, (checkup_date,))
 
                 # Debug: Log the UPDATE query
-                print(f"Executing UPDATE query for date: {checkup_date}")
                 cursor.execute("""
                     UPDATE checkup_sequence
                     SET last_sequence = last_sequence + 1
@@ -32,20 +29,15 @@ class CheckUp:
                     RETURNING last_sequence;
                 """, (checkup_date,))
                 next_val = cursor.fetchone()[0]
-                print(f"Fetched next sequence: {next_val}")
 
                 # Format the sequence number (e.g., "001", "002", etc.)
                 formatted_sequence = f"{next_val:03d}"
                 chck_id = f"{checkup_date}-{formatted_sequence}"
 
-                # Debug: Log the generated chck_id
-                print(f"Generated chck_id: {chck_id}")
-
                 # Return the formatted chck_id
                 return chck_id
 
         except Exception as e:
-            print(f"Error fetching sequence number: {e}")
             return None
 
         finally:
@@ -60,8 +52,6 @@ class CheckUp:
 
         try:
             with conn.cursor() as cursor:
-                print(f"Inserting check-up data: {data}")
-
                 checkup_date = data["date_joined"].replace("-", "")
                 sequence_number = CheckUp.get_next_sequence_number(checkup_date)
                 if not sequence_number:
@@ -93,7 +83,6 @@ class CheckUp:
                 return True
 
         except Exception as e:
-            print(f"Database error: {e}")
             conn.rollback()
             return False
 
@@ -123,7 +112,6 @@ class CheckUp:
                 return checkups
 
         except Exception as e:
-            print(f"Database error while fetching pending check-ups: {e}")
             return []
 
         finally:
@@ -147,7 +135,6 @@ class CheckUp:
                 return True
 
         except Exception as e:
-            print(f"Database error while updating check-up status: {e}")
             conn.rollback()
             return False
 
@@ -188,7 +175,6 @@ class CheckUp:
                     }
                 return None
         except Exception as e:
-            print(f"Error fetching check-up details: {e}")
             return None
         finally:
             if conn:
@@ -234,22 +220,19 @@ class CheckUp:
                             "doctor": doc_id
                         })
                     except (ValueError, TypeError) as row_error:
-                        print(f"Error processing row {row}: {row_error}")
                         continue
                 return checkups
 
         except psycopg2.Error as db_error:
-            print(f"Database error fetching checkups: {db_error}")
             return []
         except Exception as e:
-            print(f"Unexpected error fetching checkups: {str(e)}")
             return []
         finally:
             if conn:
                 try:
                     conn.close()
                 except Exception as close_error:
-                    print(f"Error closing connection: {close_error}")
+                    pass
 
     @staticmethod
     def get_all_checkups_by_doc_id(doc_id):
@@ -281,7 +264,6 @@ class CheckUp:
                 return checkups
 
         except Exception as e:
-            print(f"Error fetching check-ups by doc_id: {e}")
             return []
 
         finally:
@@ -347,7 +329,6 @@ class CheckUp:
                 return True
 
         except Exception as e:
-            #print(f"Database error while updating doc_id: {e}")
             conn.rollback()
             return False
 
@@ -469,7 +450,6 @@ class CheckUp:
                     return lab_attachment
                 return None
         except Exception as e:
-            print(f"Error fetching lab attachment: {e}")
             return None
         finally:
             if conn:
@@ -500,7 +480,6 @@ class CheckUp:
             return True
 
         except Exception as e:
-            print(f"Error adding diagnosis notes: {e}")
             if conn:
                 conn.rollback()
             return False

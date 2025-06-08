@@ -173,6 +173,7 @@ class Ui_MainWindow(object):
         self.UserName.setObjectName("UserName")
         self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight)
         self.UserType = QtWidgets.QLabel(self.Header)
+        self.UserType.setText("")
         self.UserType.setAlignment(QtCore.Qt.AlignLeading)
         self.UserType.setObjectName("UserType")
         self.UserInfo.addWidget(self.UserType, 0, QtCore.Qt.AlignRight)
@@ -602,8 +603,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.InterfaceTitle.setText(_translate("MainWindow", "Patient Details"))
-        self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
-        self.UserType.setText(_translate("MainWindow", "Admin"))
+        self.UserName.setText(_translate("MainWindow", "ADMIN"))
         self.PatName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
         self.PatID.setText(_translate("MainWindow", "100000003"))
         self.Header_3.setText(_translate("MainWindow", "General Information"))

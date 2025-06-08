@@ -455,20 +455,10 @@ QGraphicsView {
              <property name="spacing">
               <number>0</number>
              </property>
-             <item alignment="Qt::AlignRight">
+             <item alignment="Qt::AlignRight|Qt::AlignVCenter">
               <widget class="QLabel" name="UserName">
                <property name="text">
-                <string>Roy Adrian Rondina</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading</set>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignRight">
-              <widget class="QLabel" name="UserType">
-               <property name="text">
-                <string>Admin</string>
+                <string>ADMIN</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
@@ -849,7 +839,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>310</height>
+                       <height>308</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -1100,7 +1090,7 @@ QScrollBar::sub-line:vertical{
                        <x>0</x>
                        <y>0</y>
                        <width>774</width>
-                       <height>300</height>
+                       <height>298</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">

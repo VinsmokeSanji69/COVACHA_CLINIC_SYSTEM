@@ -50,20 +50,15 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
         # Store the chck_id
         self.chck_id = chck_id
-        # print(f"Staff transaction initialized with chck_id: {self.chck_id}")
-
         # Apply table styles (if needed)
         self.apply_table_styles()
-
         # Load transaction details
         self.load_transaction_details()
         self.load_LabCharge_Table()
         self.calculate_total_lab_charge()
         self.calculate_subtotal()
-
         #save transaction
         self.ui.CompleteButton.clicked.connect(self.close)
         self.ui.SeniorCheckBox.stateChanged.connect(self.apply_discount_if_senior)
@@ -86,9 +81,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
-
-            # Log the fetched checkup data for debugging
-            # print(f"Fetched checkup data: {checkup}")
 
             # Ensure 'chck_id' exists in the checkup dictionary
             if 'chck_id' not in checkup:
@@ -148,10 +140,7 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
             self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))  # Ensure string conversion
             self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))  # Ensure string conversion
-
-            # print(f"Transaction details loaded successfully for chck_id={self.chck_id}")
         except Exception as e:
-            # print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
     def set_read_only_fields(self):
@@ -205,7 +194,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
-            print("lab_tests",lab_tests)
 
             if not lab_tests:
                 return
@@ -221,7 +209,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
-                print("lab_details",lab_details)
                 if not lab_details:
                     continue
 
@@ -251,8 +238,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
 
-            print("lab_tests",lab_tests)
-
             if not lab_tests:
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
                 return
@@ -264,7 +249,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
-                print("lab_details",lab_details)
                 if not lab_details:
                     continue
 

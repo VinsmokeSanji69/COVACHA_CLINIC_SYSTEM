@@ -22,7 +22,6 @@ class Staff:
                 Conn.commit()
                 return next_id
         except  Exception as e:
-            print(f"Error fetching next ID: {e}")
             return None
 
         finally:
@@ -59,7 +58,6 @@ class Staff:
                     return True
 
         except Exception as e:
-            print(f"Database error: {e}")
             return False
 
         finally:
@@ -100,16 +98,12 @@ class Staff:
                 conn.commit()
 
                 if affected_rows == 1:
-                    print(f"Successfully updated staff ID: {staff_data['id']}")
                     return True
-                print(f"No staff found with ID: {staff_data['id']}")
                 return False
 
         except ValueError as ve:
-            print(f"Validation error: {ve}")
             return False
         except Exception as e:
-            print(f"Database error: {e}")
             if conn:
                 conn.rollback()
             return False
@@ -136,16 +130,12 @@ class Staff:
                 Conn.commit()
 
                 if affected_rows == 1:
-                    print(f"Successfully deleted staff ID: {staff_id}")
                     return True
-                print(f"No staff deleted (ID: {staff_id})")
                 return False
 
         except ValueError as ve:
-            print(f"Validation error: {ve}")
             return False
         except Exception as e:
-            print(f"Database error: {e}")
             if Conn:
                 Conn.rollback()
             return False
@@ -158,7 +148,6 @@ class Staff:
         """Fetch all staff records from the database"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Database connection failed!")
             return []
 
         try:
@@ -199,7 +188,6 @@ class Staff:
                 return staffs
 
         except Exception as e:
-            print(f"Error fetching staff: {e}")
             return []
 
         finally:
@@ -256,7 +244,6 @@ class Staff:
                 }
 
         except Exception as e:
-            print(f"Error fetching staff: {str(e)}")
             return None
 
         finally:

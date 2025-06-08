@@ -6,7 +6,6 @@ class Admin:
         """Count the number of doctors in the database"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            # print("Database connection failed!")
             return 0
 
         try:
@@ -14,11 +13,9 @@ class Admin:
                 query = "SELECT COUNT(*) FROM doctor;"
                 cursor.execute(query)
                 count = cursor.fetchone()[0]
-                # print(f"Number of doctors: {count}")
                 return count
 
         except Exception as e:
-            # print(f"Error counting doctors: {e}")
             return 0
 
         finally:
@@ -30,7 +27,6 @@ class Admin:
         """Count the number of staff members in the database"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            # print("Database connection failed!")
             return 0
 
         try:
@@ -38,11 +34,9 @@ class Admin:
                 query = "SELECT COUNT(*) FROM staff;"
                 cursor.execute(query)
                 count = cursor.fetchone()[0]
-                # print(f"Number of staff members: {count}")
                 return count
 
         except Exception as e:
-            # print(f"Error counting staff: {e}")
             return 0
 
         finally:

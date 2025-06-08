@@ -10,15 +10,11 @@ class DoctorPatientList(QMainWindow):
         super().__init__()
         self.ui = PatientListUI()
         self.ui.setupUi(self)
-
         # Store the doc_id
         self.doc_id = str(doc_id)
-        print(f"Doctor Records UI initialized with doc_id: {self.doc_id}")
-
         # Fetch all check-ups for the doctor
         self.checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
         if not self.checkups:
-            print("No check-ups found for this doctor.")
             return
 
         self.completed_checkups = [checkup for checkup in self.checkups if checkup['chck_status'] == "Completed"]
@@ -34,12 +30,8 @@ class DoctorPatientList(QMainWindow):
 
     def refresh_tables(self):
         """Reload data into the tables"""
-        try:
-            self.populate_done_table(self.completed_checkups)  # Pass the completed_checkups
-            print("Tables refreshed successfully!")
-        except Exception as e:
-            print(f"Error refreshing tables: {e}")
-            #QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
+        self.populate_done_table(self.completed_checkups)  # Pass the completed_checkups
+
 
     def apply_table_styles(self):
         self.ui.DoneTable.setStyleSheet("""
@@ -100,7 +92,6 @@ class DoctorPatientList(QMainWindow):
             # Fetch patient details
             patient = Patient.get_patient_details(pat_id)
             if not patient:
-                print(f"No patient found for pat_id={pat_id}")
                 continue
 
             # Extract and format patient name
@@ -124,12 +115,10 @@ class DoctorPatientList(QMainWindow):
 
             # Retrieve the chck_id from the selected row
             chck_id = self.ui.DoneTable.item(selected_row, 0).text()  # Column 0 contains chck_id
-            print(f"Selected Check-Up ID: {chck_id}")
 
             # Open the DoctorCheckUpListView modal
             self.view_checkUp = DoctorCheckUpListView(checkup_id=chck_id, parent=self)
             self.view_checkUp.show()
 
         except Exception as e:
-            print(f"Error viewing check-up details: {e}")
             QMessageBox.critical(self, "Error", f"Failed to view check-up details: {e}")

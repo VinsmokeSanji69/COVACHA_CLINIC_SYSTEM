@@ -25,7 +25,6 @@ class AdminTransactionsController(QWidget):
         self.transactions_ui = transactions_ui
         self.ui.setupUi(self)
         self.transactions_ui.SearchIcon.clicked.connect(self.apply_search_filter)
-        print("Admin Transactions UI initialized!")
         self.transactions_ui.ViewTransaction.clicked.connect(self.view_transaction)
         self.refresh_tables()
 
@@ -33,7 +32,6 @@ class AdminTransactionsController(QWidget):
         try:
             selected_row = self.transactions_ui.TransactionTable.currentRow()
             if selected_row == -1:
-                print("no row selected")
                 return
 
             transaction_id = self.transactions_ui.TransactionTable.item(selected_row, 0)
@@ -51,14 +49,10 @@ class AdminTransactionsController(QWidget):
         except Exception as e:
             error_msg = f"Failed to select patient: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def refresh_tables(self):
-        try:
-            self.load_transaction_table()
-            print("Tables refreshed successfully!")
-        except Exception as e:
-            print(f"Error refreshing tables: {e}")
+        self.load_transaction_table()
+
 
     def apply_search_filter(self):
         search_text = self.transactions_ui.Search.text().strip().lower()
@@ -71,13 +65,11 @@ class AdminTransactionsController(QWidget):
 
             for transaction in transactions:
                 if "chck_id" not in transaction:
-                    print("Missing 'chck_id' in transaction data:", transaction)
                     continue
 
                 chck_id = transaction["chck_id"]
                 checkup = CheckUp.get_checkup_details(chck_id)
                 if not checkup:
-                    print(f"Skipping transaction with invalid checkup: chck_id={chck_id}")
                     continue
 
                 pat_id = checkup.get("pat_id")
@@ -123,50 +115,40 @@ class AdminTransactionsController(QWidget):
                 table.setItem(row, 3, QTableWidgetItem(date_str))
 
         except Exception as e:
-            print(f"Error loading transaction table: {e}")
+            pass
 
     def view_transaction_details_ui(self, transaction_id):
-        try:
-            from Controllers.AdminTransactionDetails_Controller import AdminTransactionDetailsController
-            self.admin_transaction_controller = AdminTransactionDetailsController(transaction_id)
-            self.admin_transaction_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminTransactionDetails_Controller import AdminTransactionDetailsController
+        self.admin_transaction_controller = AdminTransactionDetailsController(transaction_id)
+        self.admin_transaction_controller.show()
+        self.hide()
+
 
     def view_patient_ui(self):
-        try:
-            from Controllers.AdminPatients_Controller import AdminPatientsController
-            self.admin_patients_controller = AdminPatientsController()
-            self.admin_patients_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminPatients_Controller import AdminPatientsController
+        self.admin_patients_controller = AdminPatientsController()
+        self.admin_patients_controller.show()
+        self.hide()
+
 
     def view_dashboard_ui(self):
-        try:
-            from Controllers.AdminDashboard_Controller import AdminDashboardController
-            self.admin_dashboard_controller = AdminDashboardController()
-            self.admin_dashboard_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminDashboard_Controller import AdminDashboardController
+        self.admin_dashboard_controller = AdminDashboardController()
+        self.admin_dashboard_controller.show()
+        self.hide()
+
 
     def view_staff_ui(self):
-        try:
-            from Controllers.AdminStaffs_Controller import AdminStaffsController
-            self.admin_staff_controller = AdminStaffsController()
-            self.admin_staff_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminStaffs_Controller import AdminStaffsController
+        self.admin_staff_controller = AdminStaffsController()
+        self.admin_staff_controller.show()
+        self.hide()
+
 
     def view_charges_ui(self):
-        try:
-            from Controllers.AdminCharges_Controller import AdminChargesController
-            self.admin_charges_controller = AdminChargesController()
-            self.admin_charges_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction List Error: {e}")
+        from Controllers.AdminCharges_Controller import AdminChargesController
+        self.admin_charges_controller = AdminChargesController()
+        self.admin_charges_controller.show()
+        self.hide()
+
 

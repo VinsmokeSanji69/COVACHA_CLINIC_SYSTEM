@@ -35,7 +35,6 @@ class AdminPatientsController(QMainWindow):
         try:
             selected_row = self.records_ui.PatientTable.currentRow()
             if selected_row == -1:
-                print("no row selected")
                 return
 
             patient_id = self.records_ui.PatientTable.item(selected_row, 0)
@@ -53,7 +52,6 @@ class AdminPatientsController(QMainWindow):
         except Exception as e:
             error_msg = f"Failed to select patient: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def refresh_tables(self):
         try:
@@ -86,9 +84,8 @@ class AdminPatientsController(QMainWindow):
                     filtered_patients.append(patient)
 
             self.load_table(filtered_patients)
-
         except Exception as e:
-            print(f"Error refreshing tables: {e}")
+            pass
 
     def filter_tables(self):
         try:
@@ -129,7 +126,6 @@ class AdminPatientsController(QMainWindow):
                 self.load_table(filtered_patients)
 
         except Exception as e:
-            print(f"Error filtering tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to filter tables: {e}")
 
     def display_no_records_message(self):
@@ -181,54 +177,48 @@ class AdminPatientsController(QMainWindow):
             self.records_ui.PatientTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
-            print(f"Error populating Patient Table: {e}")
+            pass
 
     def view_patient_details_ui(self, patient_id):
-        print("View Patient Button clicked!")
         try:
             from Controllers.AdminPatientDetails_Controller import AdminPatientDetailsController
             self.admin_patient_details_controller = AdminPatientDetailsController(patient_id)
             self.admin_patient_details_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error: {e}")
+            pass
 
     def view_dashboard_ui(self):
-        print("DashboardButton clicked!")
         try:
             from Controllers.AdminDashboard_Controller import AdminDashboardController
             self.admin_dashboard_controller = AdminDashboardController()
             self.admin_dashboard_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error: {e}")
-
+            pass
     def view_staff_ui(self):
-        print("StaffButton clicked!")
         try:
             from Controllers.AdminStaffs_Controller import AdminStaffsController
             self.admin_staff_controller = AdminStaffsController()
             self.admin_staff_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Dashboard Error(staffs): {e}")
+            pass
 
     def view_charges_ui(self):
-        print("ChargesButton clicked!")
         try:
             from Controllers.AdminCharges_Controller import AdminChargesController
             self.admin_charges_controller = AdminChargesController()
             self.admin_charges_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Details Error(charges): {e}")
+            pass
 
     def view_transaction_ui(self):
-        print("TransactionButton clicked!")
         try:
             from Controllers.AdminTransaction_Controller import AdminTransactionsController
             self.admin_transaction_controller = AdminTransactionsController()
             self.admin_transaction_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Details Error(charges): {e}")
+            pass

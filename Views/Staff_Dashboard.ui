@@ -375,20 +375,10 @@ QGraphicsView {
              <property name="spacing">
               <number>0</number>
              </property>
-             <item alignment="Qt::AlignRight">
+             <item alignment="Qt::AlignRight|Qt::AlignVCenter">
               <widget class="QLabel" name="UserName">
                <property name="text">
-                <string>Roy Adrian Rondina</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading</set>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignRight">
-              <widget class="QLabel" name="UserType">
-               <property name="text">
-                <string>Nurse</string>
+                <string>STAFF</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
@@ -577,44 +567,6 @@ QGraphicsView {
               </property>
              </widget>
             </item>
-            <item alignment="Qt::AlignBottom">
-             <widget class="QFrame" name="TotalPatient">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_8">
-               <item alignment="Qt::AlignBottom">
-                <widget class="QLabel" name="label_9">
-                 <property name="text">
-                  <string>Total Patient</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="Total">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>0000</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
             <item>
              <widget class="QFrame" name="DayFrame">
               <property name="frameShape">
@@ -732,8 +684,8 @@ QScrollBar::sub-line:vertical{
                    <rect>
                     <x>0</x>
                     <y>0</y>
-                    <width>857</width>
-                    <height>543</height>
+                    <width>816</width>
+                    <height>532</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_7">

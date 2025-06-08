@@ -10,6 +10,7 @@ from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Dashboard import Ui_Doctor_Dashboard
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
+from Models.Doctor import Doctor
 from Views.Doctor_Records import Ui_Doctor_Records
 import datetime
 
@@ -113,7 +114,6 @@ class DoctorDashboardController(QMainWindow):
         self.checkup_ui.AcceptedCheckUp.resizeRowsToContents()
 
         # Responsive table for Dashboard Page
-        # PatientDetails (?)
         header = self.dashboard_ui.PatientDetails.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
 
@@ -140,6 +140,9 @@ class DoctorDashboardController(QMainWindow):
         self.apply_table_styles(self.checkup_ui.AcceptedCheckUp)
         self.apply_table_styles(self.checkup_ui.DoneTable)
         self.apply_table_styles(self.records_ui.DoneTable)
+
+        total_patients = Doctor.count_total_patients_by_doctor(self.doc_id)
+        self.dashboard_ui.Total.setText(str(total_patients))
 
 
     def setup_pages(self):
@@ -216,12 +219,11 @@ class DoctorDashboardController(QMainWindow):
                 login_window.show()
 
         except Exception as e:
-            print("Logout error:", e)
+            pass
 
     @pyqtSlot()
     def go_to_dashboard(self):
         """Switch to the dashboard page"""
-        print("Navigating to Dashboard")
         self.page_stack.setCurrentWidget(self.dashboard_page)
         self.load_pending_checkups()
         self.update_time_labels()
@@ -229,26 +231,22 @@ class DoctorDashboardController(QMainWindow):
     @pyqtSlot()
     def go_to_checkup_list(self):
         """Switch to the transactions page"""
-        print("Navigating to Check Up List")
         self.page_stack.setCurrentWidget(self.checkup_page)
         self.update_time_labels()
 
     @pyqtSlot()
     def go_to_records(self):
         """Switch to the records page"""
-        print("Navigating to Records")
         self.page_stack.setCurrentWidget(self.records_page)
         self.update_time_labels()
 
     def ViewPatient(self):
-        print("PatientButton clicked!")
         try:
             # Instantiate and show the AdminStaffsController window
             self.patient_controller = DoctorPatientList(self.doc_id)
             self.patient_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def update_time_labels(self):
@@ -273,14 +271,12 @@ class DoctorDashboardController(QMainWindow):
             ui.Month.setText(f"{now.strftime('%B')} {now.day}, {now.year}")
 
     def ViewRecord(self):
-        print("RecordButton clicked!")
         try:
             # Instantiate and show the AdminStaffsController window
             self.record_controller = DoctorRecords(self.doc_id)
             self.record_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Error loading tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
 
     def apply_table_styles(self, table_widget):
@@ -309,7 +305,6 @@ class DoctorDashboardController(QMainWindow):
 
             # Check if there are no pending check-ups
             if not pending_checkups:
-                print("No pending check-ups found.")
 
                 # Add a single row with the message "No Patient Yet"
                 self.dashboard_ui.PatientDetails.insertRow(0)
@@ -329,7 +324,6 @@ class DoctorDashboardController(QMainWindow):
                 # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
                 if not patient:
-                    print(f"No patient found for pat_id={pat_id}")
                     continue
 
                 # Extract patient name and capitalize the first letter of each word
@@ -350,7 +344,7 @@ class DoctorDashboardController(QMainWindow):
             self.dashboard_ui.PatientDetails.setColumnWidth(2, 200)
 
         except Exception as e:
-            print(f"Error loading pending check-ups: {e}")
+            pass
 
     def accept_checkup(self):
         """Handle the Accept Check-Up button click."""
@@ -361,36 +355,25 @@ class DoctorDashboardController(QMainWindow):
                 QMessageBox.warning(self, "Selection Error", "Please select a check-up to accept.")
                 return
 
-            print("Selected row:", selected_row)
-
             # Get the check-up ID from the selected row
             chck_id = self.dashboard_ui.PatientDetails.item(selected_row, 0).text()  # Assuming chck_id is in column 0
-            print(f"Selected check-up ID: {chck_id}")
-
             # Show confirmation dialog
             confirmation_dialog = ConfirmationDialog(self)
             if confirmation_dialog.exec_() == QDialog.Rejected:
-                print("Check-up acceptance cancelled by the user.")
                 return
-
-            print("User confirmed acceptance.")
 
             # Update the check-up status to "On going" and assign the doctor's ID
             success = CheckUp.update_doc_id(chck_id, self.doc_id)
             if success:
-                print("Check-up accepted successfully in the database.")
                 # Open the DoctorDiagnosis form with the selected CheckUp ID
                 self.open_diagnosis_form(chck_id)
             else:
-                print("Failed to update check-up in the database.")
                 QMessageBox.critical(self, "Error", "Failed to accept check-up. Please try again.")
 
         except Exception as e:
-            print(f"An error occurred: {e}")
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
 
     def open_diagnosis_form(self, checkup_id):
-        print(f"Opening DoctorDiagnosis form with CheckUp ID: {checkup_id}")
         try:
             diagnosis_window = DoctorDiagnosis(
                 checkup_id=checkup_id,
@@ -398,8 +381,6 @@ class DoctorDashboardController(QMainWindow):
                 parent=self
             )
             diagnosis_window.show()
-            print("DoctorDiagnosis window opened successfully.")
         except Exception as e:
-            print(f"Error opening DoctorDiagnosis window: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
 

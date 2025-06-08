@@ -296,7 +296,7 @@ QLabel {
               <item alignment="Qt::AlignRight">
                <widget class="QLabel" name="UserName">
                 <property name="text">
-                 <string>Roy Adrian Rondina</string>
+                 <string>ADMIN</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>
@@ -306,7 +306,7 @@ QLabel {
               <item alignment="Qt::AlignRight">
                <widget class="QLabel" name="UserType">
                 <property name="text">
-                 <string>Admin</string>
+                 <string/>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading</set>

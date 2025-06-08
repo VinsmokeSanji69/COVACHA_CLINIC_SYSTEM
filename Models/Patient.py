@@ -7,7 +7,6 @@ class Patient:
         """Get patient details by first and last name (case-insensitive)"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return None
 
         try:
@@ -38,7 +37,6 @@ class Patient:
                 return None
 
         except Exception as e:
-            print(f"Error fetching patient by name: {e}")
             return None
         finally:
             if conn:
@@ -49,7 +47,6 @@ class Patient:
         """Get all patients with formatted information"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return None
 
         try:
@@ -85,7 +82,6 @@ class Patient:
                 return patients
 
         except Exception as e:
-            print(f"Error fetching all patients: {e}")
             return None
         finally:
             if conn:
@@ -96,7 +92,6 @@ class Patient:
         """Get patient details by patient ID"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return None
 
         try:
@@ -133,7 +128,6 @@ class Patient:
                 }
 
         except Exception as e:
-            print(f"Error fetching patient by ID: {e}")
             return None
         finally:
             if conn:
@@ -144,7 +138,6 @@ class Patient:
         """Create a new patient record"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return None
 
         try:
@@ -173,7 +166,6 @@ class Patient:
                 return new_pat_id
 
         except Exception as e:
-            print(f"Error creating new patient: {e}")
             conn.rollback()
             return None
         finally:
@@ -185,7 +177,6 @@ class Patient:
         """Update existing patient or create new if ID not provided"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return None
 
         try:
@@ -230,7 +221,6 @@ class Patient:
                 return pat_id
 
         except Exception as e:
-            print(f"Error updating/creating patient: {e}")
             if conn:
                 conn.rollback()
             return None
@@ -263,7 +253,6 @@ class Patient:
                     }
                 return None
         except Exception as e:
-            print(f"Error fetching patient details: {e}")
             return None
         finally:
             if conn:

@@ -9,7 +9,6 @@ class Transaction():
     def add_transaction(chck_id, trans_data):
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to connect to database.")
             return False
 
         try:
@@ -23,10 +22,8 @@ class Transaction():
                     existing_status = existing[0]
                     # If transaction exists and is Partial, allow update to Completed
                     if existing_status == "Partial" and trans_data.get("status") == "Completed":
-                        print(f"Updating existing Partial transaction for chck_id={chck_id} to Completed.")
                         return Transaction.update_transaction_status(chck_id, trans_data)
                     else:
-                        print(f"Transaction already exists for chck_id={chck_id} with status={existing_status}.")
                         return False
 
                 # Insert new transaction
@@ -46,12 +43,9 @@ class Transaction():
                 ))
 
                 conn.commit()
-                print(
-                    f"Transaction for chck_id={chck_id} inserted successfully with status={trans_data.get('status', 'Completed')}.")
                 return True
 
         except Exception as e:
-            print(f"Error inserting transaction: {e}")
             conn.rollback()
             return False
 
@@ -69,7 +63,6 @@ class Transaction():
         """Update an existing transaction's status and data"""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to connect to database.")
             return False
 
         try:
@@ -93,16 +86,12 @@ class Transaction():
 
                 # Check if any row was updated
                 if cursor.rowcount == 0:
-                    print(f"No transaction found for chck_id={chck_id} to update.")
                     return False
 
                 conn.commit()
-                print(
-                    f"Transaction for chck_id={chck_id} updated successfully to status={trans_data.get('status', 'Completed')}.")
                 return True
 
         except Exception as e:
-            print(f"Database error while updating transaction: {e}")
             conn.rollback()
             return False
 
@@ -115,7 +104,6 @@ class Transaction():
         """Fetch complete transaction details for a given chck_id."""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return {}  # Return empty dict instead of None
 
         try:
@@ -136,11 +124,10 @@ class Transaction():
                         'tran_status': result[3] if result[3] is not None else "Pending"
                     }
                 else:
-                    return {}  # Return empty dict if no record found
+                    return {}
 
         except Exception as e:
-            print(f"Error fetching transaction for chck_id={chck_id}: {e}")
-            return {}  # Return empty dict on error
+            return {}
 
         finally:
             if conn and not conn.closed:
@@ -151,7 +138,6 @@ class Transaction():
         """Fetch complete transaction details for a given chck_id."""
         conn = DBConnection.get_db_connection()
         if not conn:
-            print("Failed to establish database connection.")
             return None
 
         try:
@@ -176,7 +162,6 @@ class Transaction():
                     return None
 
         except Exception as e:
-            print(f"Error fetching transaction for chck_id={chck_id}: {e}")
             return None
         finally:
             if conn:
@@ -215,7 +200,6 @@ class Transaction():
                 return transactions
 
         except Exception as e:
-            print(f"Error fetching transactions: {e}")
             return []
 
         finally:

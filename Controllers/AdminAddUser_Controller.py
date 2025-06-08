@@ -133,7 +133,6 @@ class AdminAddUserController(QMainWindow):
         if next_id is not None:
             self.ui.ID.setText(str(next_id))
         else:
-            print(f"Failed to fetch next ID for {staff_type}")
             QMessageBox.critical(self, "Database Error", f"Failed to fetch next ID for {staff_type}")
 
 
@@ -174,7 +173,6 @@ class AdminAddUserController(QMainWindow):
                 QMessageBox.information(self, "Cancelled", "Account creation cancelled.\n( Press any key to close )")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to add staff: {str(e)}")
-            print(f"Error: {str(e)}")
 
     def validate_form(self):
         """Validate all form fields"""

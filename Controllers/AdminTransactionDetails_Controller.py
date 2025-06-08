@@ -45,7 +45,6 @@ class AdminTransactionDetailsController(QMainWindow):
 
     def identify_transaction(self):
         try:
-            print("Transaction ID:", self.transaction_id)
             checkup = CheckUp.get_checkup_details(self.transaction_id)
             if not checkup:
                 raise ValueError("Checkup not found")
@@ -61,7 +60,6 @@ class AdminTransactionDetailsController(QMainWindow):
             return checkup, transaction, patient
 
         except Exception as e:
-            print("Error fetching data:", str(e))
             return None
 
     def initialize_data(self):
@@ -95,29 +93,23 @@ class AdminTransactionDetailsController(QMainWindow):
         self.ui.ViewDiagnosis.clicked.connect(lambda: self.view_diagnosis_details_ui(self.transaction_id))
 
     def view_diagnosis_details_ui(self, id):
-        try:
-            from Controllers.DoctorLabResult_Controller import DoctorLabResult
-            self.admin_checkup_details_controller = DoctorLabResult(checkup_id=id, parent=self, refresh_callback=None, view=True)
-            self.admin_checkup_details_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Staff Error: {e}")
+        from Controllers.DoctorLabResult_Controller import DoctorLabResult
+        self.admin_checkup_details_controller = DoctorLabResult(checkup_id=id, parent=self, refresh_callback=None, view=True)
+        self.admin_checkup_details_controller.show()
+        self.hide()
+
 
     def view_transaction_ui(self):
-        try:
-            from Controllers.AdminTransaction_Controller import AdminTransactionsController
-            self.admin_transaction_controller = AdminTransactionsController()
-            self.admin_transaction_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Staff Details Error(charges): {e}")
+        from Controllers.AdminTransaction_Controller import AdminTransactionsController
+        self.admin_transaction_controller = AdminTransactionsController()
+        self.admin_transaction_controller.show()
+        self.hide()
+
 
     def view_patient_ui(self):
-        try:
-            from Controllers.AdminPatients_Controller import AdminPatientsController
-            self.admin_patients_controller = AdminPatientsController()
-            self.admin_patients_controller.show()
-            self.hide()
-        except Exception as e:
-            print(f"Transaction Details Error: {e}")
+        from Controllers.AdminPatients_Controller import AdminPatientsController
+        self.admin_patients_controller = AdminPatientsController()
+        self.admin_patients_controller.show()
+        self.hide()
+
 

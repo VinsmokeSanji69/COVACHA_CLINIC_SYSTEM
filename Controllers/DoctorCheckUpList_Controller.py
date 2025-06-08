@@ -17,12 +17,10 @@ class DoctorCheckUpList(QWidget):
 
         # Store the doc_id
         self.doc_id = str(doc_id)
-        print(f"Doctor Records UI initialized with doc_id: {self.doc_id}")
 
         # Fetch all check-ups for the doctor
         self.checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)  # Store as an instance variable
         if not self.checkups:
-            print("No check-ups found for this doctor.")
             return
 
         self.completed_checkups = [checkup for checkup in self.checkups if checkup['chck_status'] == "Completed"]
@@ -45,14 +43,12 @@ class DoctorCheckUpList(QWidget):
         self.refresh_timer.start(5000)
 
     def view_patient_details_ui(self, patient_id):
-        print("View Patient Button clicked!")
         try:
             from Controllers.DoctorPatientDetailsView_Controller import DoctorPatientDetailsViewController
             self.doctor_patient_details_controller = DoctorPatientDetailsViewController(patient_id)
             self.doctor_patient_details_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load patient details: {e}")
 
     def filter_table(self):
@@ -116,12 +112,10 @@ class DoctorCheckUpList(QWidget):
 
         try:
             if not self.records_ui or not hasattr(self.records_ui, 'DoneTable') or not self.records_ui.DoneTable:
-                print("DoneTable or UI is no longer valid.")
                 return
 
             checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
             if not checkups:
-                print("No check-ups found.")
                 return
 
             self.completed_checkups = [checkup for checkup in checkups if checkup['chck_status'] == "Completed"]
@@ -129,15 +123,14 @@ class DoctorCheckUpList(QWidget):
             self.populate_done_table(self.completed_checkups)
 
         except RuntimeError as e:
-            print(f"Runtime error: {e} (likely UI was destroyed)")
+            pass
         except Exception as e:
-            print(f"Error refreshing tables: {e}")
+            pass
 
 
     def cleanup(self):
         if hasattr(self, 'refresh_timer') and self.refresh_timer.isActive():
             self.refresh_timer.stop()
-            print("DoctorCheckUpList timer stopped.")
 
     def apply_table_styles(self):
         self.ui.DoneTable.setStyleSheet("""
@@ -223,11 +216,8 @@ class DoctorCheckUpList(QWidget):
 
             patient = Patient.get_patient_details(pat_id)
             if not patient:
-                print(f"No patient found for pat_id={pat_id}")
                 continue
-
             full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-
             self.records_ui.DoneTable.insertRow(row)
 
             # Store full checkup object in UserRole
@@ -273,7 +263,6 @@ class DoctorCheckUpList(QWidget):
         except Exception as e:
             error_msg = f"Failed to select patient: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def view_detials_checkup(self):
         """Handle viewing details of the selected check-up."""
@@ -286,14 +275,12 @@ class DoctorCheckUpList(QWidget):
 
             # Retrieve the chck_id from the selected row
             chck_id = self.records_ui.DoneTable.item(selected_row, 0).text()
-            print(f"Selected Check-Up ID: {chck_id}")
 
             # Open the DoctorCheckUpListView modal
             self.view_checkUp = DoctorCheckUpListView(checkup_id=chck_id, parent=self)
             self.view_checkUp.show()
 
         except Exception as e:
-            print(f"Error viewing check-up details: {e}")
             QMessageBox.critical(self, "Error", f"Failed to view check-up details: {e}")
 
     def load_table(self, patients):
@@ -325,4 +312,4 @@ class DoctorCheckUpList(QWidget):
             self.records_ui.DoneTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
-            print(f"Error populating Patient Table: {e}")
+            pass

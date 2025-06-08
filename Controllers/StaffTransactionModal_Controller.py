@@ -18,8 +18,6 @@ class StaffTransactionModal(QMainWindow):
         # Set window properties
         self.setWindowTitle("Add Transaction")
 
-        # print("AddTransaction initialized successfully!")
-
         self.apply_table_styles()
         self.load_pending_transaction()
         self.ui.AddBUtton.clicked.connect(self.open_transaction_process) # Connect the Add button to open_transaction_process
@@ -123,13 +121,10 @@ class StaffTransactionModal(QMainWindow):
                 self.ui.TransactionTable.resizeColumnsToContents()
 
         except Exception as e:
-            # Optional: Log the exception
-            print(f"Error loading pending check-ups: {e}")
             pass
 
     def open_transaction_process(self):
         try:
-            # print("Add button clicked!")
             # Determine which row is selected
             selected_row = self.ui.TransactionTable.currentRow()
             if selected_row == -1:
@@ -145,20 +140,15 @@ class StaffTransactionModal(QMainWindow):
             chck_id = chck_id_item.text()
 
             # Open the StaffTransactionProcess modal with the selected chck_id
-            # print(f"Attempting to open StaffTransactionProcess modal with chck_id: {chck_id}")
             self.transaction_process_window = StaffTransactionProcess(chck_id=chck_id)
 
             # Close the parent dashboard window
             # self.staff_dashboard.close()
 
             # Close the current modal (StaffTransactionModal)
-            # print("Closing StaffTransactionModal...")
             self.close()
 
             # Show the StaffTransactionProcess modal
-            # print("Showing StaffTransactionProcess modal...")
             self.transaction_process_window.exec_()
-            # print("StaffTransactionProcess modal opened successfully!")
         except Exception as e:
-            # print(f"Error opening StaffTransactionProcess modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open StaffTransactionProcess: {e}")

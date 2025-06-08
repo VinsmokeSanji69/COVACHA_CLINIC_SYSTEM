@@ -1,15 +1,12 @@
 from itertools import count
-
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QStackedWidget, QHeaderView, QSizePolicy
-
 from Controllers.AdminPatients_Controller import AdminPatientsController
 from Controllers.AdminStaffs_Controller import AdminStaffsController
 from Controllers.AdminTransaction_Controller import AdminTransactionsController
 from Controllers.AdminCharges_Controller import AdminChargesController  # Add this import
 from Controllers.AdminPatientDetails_Controller import AdminPatientDetailsController
-
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor
 from Models.Patient import Patient
@@ -28,9 +25,6 @@ class AdminDashboardController(QMainWindow):
         self.ui = AdminDashboardUI()
         self.login_window = login_window
         self.ui.setupUi(self)
-
-        print("Admin Dashboard UI initialized!")
-
 
         # Create central widget
         self.central_widget = QWidget()
@@ -283,13 +277,9 @@ class AdminDashboardController(QMainWindow):
             staffs = Staff.get_all_staff()
             doctors = Doctor.get_all_doctors()
             checkups = CheckUp.get_all_checkups()
-
             patient_count = len(patients)
             staff_count = len(staffs)
             doctor_count = len(doctors)
-
-            print(patient_count, staff_count, doctor_count)
-
             self.dashboard_ui.TotalPatient.setText(str(patient_count))
             self.dashboard_ui.TotalDoctor.setText(str(doctor_count))
             self.dashboard_ui.TotalStaff.setText(str(staff_count))
@@ -421,7 +411,5 @@ class AdminDashboardController(QMainWindow):
             self.dashboard_ui.Specialty3.setText(doctor_ui_data[2]['specialty'])
             self.dashboard_ui.PatientCount3.setText(doctor_ui_data[2]['count'])
             self.dashboard_ui.PatientPercentage3.setText(doctor_ui_data[2]['percent'])
-
-            print("Overviews Initialized")
         except Exception as e:
-            print(f"Dashboard: {e}")
+            pass

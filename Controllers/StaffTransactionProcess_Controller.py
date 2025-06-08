@@ -182,8 +182,6 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
 
-            print(f"Fetched checkup data: {checkup}")
-
             if 'chck_id' not in checkup:
                 raise KeyError(f"'chck_id' missing in checkup data: {checkup}")
 
@@ -258,7 +256,6 @@ class StaffTransactionProcess(QtWidgets.QDialog):
                 self.ui.SeniorCheckBox.setChecked(False)
 
         except Exception as e:
-            print(f"Error loading transaction details: {e}")
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
     def calculate_age(dob):

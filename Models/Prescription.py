@@ -15,11 +15,9 @@ class Prescription:
 
             # Validate required fields
             if not all([med_name, dosage, intake]):
-                print("Error: Missing required fields in lab_data.")
                 return False
 
             if not conn:
-                print("Error: Failed to establish a database connection.")
                 return False
 
             # SQL query to insert data into the prescription table
@@ -31,18 +29,15 @@ class Prescription:
             cursor.execute(query, (chck_id, med_name, dosage, intake))
             conn.commit()
 
-            print("Prescription added successfully!")
             return True  # Successful insertion
 
         except Exception as e:
-            print(f"Error adding prescription: {e}")
             return False  # Failed insertion
 
         finally:
             # Ensure the database connection is closed
             if conn:
                 conn.close()
-                print("Database connection closed.")
 
     @staticmethod
     def display_prescription(chck_id):
@@ -70,18 +65,15 @@ class Prescription:
                 }
                 prescriptions.append(prescription)
 
-            #print(f"Prescriptions retrieved successfully for chck_id: {chck_id}")
             return prescriptions  # Return the list of prescriptions
 
         except Exception as e:
-            print(f"Error retrieving prescriptions: {e}")
-            return []  # Return an empty list in case of an error
+            return []
 
         finally:
             # Ensure the database connection is closed
             if conn:
                 conn.close()
-                print("Database connection closed.")
 
     @staticmethod
     def get_prescription_by_details(chck_id, med_name, dosage, intake):
@@ -100,7 +92,6 @@ class Prescription:
             result = cursor.fetchone()
             return dict(result) if result else None
         except Exception as e:
-            print(f"Error fetching prescription by details: {e}")
             return None
         finally:
             if conn:
@@ -122,7 +113,6 @@ class Prescription:
             conn.commit()
             return True
         except Exception as e:
-            print(f"Error updating prescription: {e}")
             return False
         finally:
             if conn:
@@ -141,7 +131,6 @@ class Prescription:
             conn.commit()
             return True
         except Exception as e:
-            print(f"Error deleting prescription: {e}")
             return False
         finally:
             if conn:

@@ -367,20 +367,13 @@ QPushButton {
              <property name="spacing">
               <number>0</number>
              </property>
-             <item alignment="Qt::AlignRight">
+             <item alignment="Qt::AlignRight|Qt::AlignVCenter">
               <widget class="QLabel" name="UserName">
                <property name="text">
-                <string>Roy Adrian Rondina</string>
+                <string>DOCTOR</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignLeading</set>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignRight">
-              <widget class="QLabel" name="UserType">
-               <property name="text">
-                <string>Doctor</string>
                </property>
               </widget>
              </item>
@@ -646,43 +639,6 @@ QComboBox QAbstractItemView {
                 </widget>
                </item>
               </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="Specialty">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <item>
-               <property name="text">
-                <string>Gynecologist</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Pediatrician</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Opthalmologist</string>
-               </property>
-              </item>
              </widget>
             </item>
             <item>

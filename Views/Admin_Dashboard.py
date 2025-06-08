@@ -14,7 +14,7 @@ import Images.resources
 class Ui_Admin_Dashboard(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1005, 707)
+        Form.resize(1005, 745)
         Form.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
@@ -206,11 +206,7 @@ class Ui_Admin_Dashboard(object):
         self.UserName = QtWidgets.QLabel(self.Header)
         self.UserName.setAlignment(QtCore.Qt.AlignLeading)
         self.UserName.setObjectName("UserName")
-        self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight)
-        self.UserType = QtWidgets.QLabel(self.Header)
-        self.UserType.setAlignment(QtCore.Qt.AlignLeading)
-        self.UserType.setObjectName("UserType")
-        self.UserInfo.addWidget(self.UserType, 0, QtCore.Qt.AlignRight)
+        self.UserInfo.addWidget(self.UserName, 0, QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
         self.UserPanel.addLayout(self.UserInfo)
         self.Profile = QtWidgets.QFrame(self.Header)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -1253,8 +1249,7 @@ class Ui_Admin_Dashboard(object):
         self.LogOutButton.setToolTip(_translate("Form", "Log Out from your Account"))
         self.LogOutButton.setText(_translate("Form", " Log Out"))
         self.InterfaceTitle.setText(_translate("Form", "Dashboard"))
-        self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
-        self.UserType.setText(_translate("Form", "Admin"))
+        self.UserName.setText(_translate("Form", "ADMIN"))
         self.DashboardButton_3.setToolTip(_translate("Form", "View Main Dashboard"))
         self.TPHeader.setText(_translate("Form", "Total Patient"))
         self.TotalPatient.setText(_translate("Form", "12344"))

@@ -18,8 +18,7 @@ class StaffLabRequest(QWidget):
         # Connect buttons (if the button exists)
         if hasattr(self.labreq_ui, 'Modify'):
             self.labreq_ui.Modify.clicked.connect(self.open_form)
-        else:
-            print("Modify is missing!")
+
 
     def filter_lab_request_table(self):
         search_text = self.labreq_ui.Search.text().strip().lower()

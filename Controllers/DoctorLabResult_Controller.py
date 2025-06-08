@@ -57,8 +57,6 @@ class DoctorLabResult(QMainWindow):
         self.ui.setupUi(self)
         self.checkup_id = checkup_id
         self.refresh_callback = refresh_callback
-        print(f"Check_Up Id: {self.checkup_id}")
-        print(f"Opening DoctorLabResult with checkup_id = {checkup_id}")
 
         # Load and display data related to the checkup ID
         self.load_data()
@@ -91,8 +89,6 @@ class DoctorLabResult(QMainWindow):
 
     def initialize_diagnosis(self):
         checkup = CheckUp.get_checkup_details(self.checkup_id)
-        if not checkup:
-            print('No checkup for checkup id: ' + self.checkup_id)
         diagnosis = checkup.get("chck_diagnoses")
         notes = checkup.get("chck_notes")
         self.ui.DiagnoseText.setText(diagnosis)
@@ -112,24 +108,16 @@ class DoctorLabResult(QMainWindow):
 
             # Bring the parent window back into focus
             if parent_window:
-                parent_window.activateWindow()  # Restore focus to the parent window
-                parent_window.raise_()  # Bring the parent window to the front
-                print("Parent window brought back into focus.")
-            else:
-                print("Warning: Parent window not found. Unable to restore focus.")
-
+                parent_window.activateWindow()
+                parent_window.raise_()
         except Exception as e:
-            print(f"Error while closing the modal: {e}")
             QMessageBox.critical(self, "Error", f"An error occurred while closing the modal: {e}")
 
     def refresh_all_tables(self):
         try:
-            print("Refreshing all tables...")
             self.load_labattach_table()
             self.load_prescription_table()
-            print("All tables refreshed successfully!")
         except Exception as e:
-            print(f"Error refreshing all tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def apply_table_styles(self):
@@ -241,8 +229,6 @@ class DoctorLabResult(QMainWindow):
             # Fetch lab codes and attachments for the given check-up ID
             lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
             if not lab_tests:
-                print(f"No lab tests found for chck_id: {self.checkup_id}")
-
                 # Add a single row with "No Lab Test Request"
                 row_position = self.ui.LabTestTabe.rowCount()
                 self.ui.LabTestTabe.insertRow(row_position)
@@ -252,9 +238,6 @@ class DoctorLabResult(QMainWindow):
 
             # Populate the table with lab test details
             for lab_test in lab_tests:
-                # Debug: Log the type and contents of lab_test
-                print(f"Processing lab_test: {lab_test}, Type: {type(lab_test)}")
-
                 # Handle both dictionaries and tuples
                 if isinstance(lab_test, dict):
                     lab_code = lab_test.get('lab_code')
@@ -262,22 +245,18 @@ class DoctorLabResult(QMainWindow):
                 elif isinstance(lab_test, tuple):
                     # Assume the tuple structure is (lab_code, lab_attachment)
                     if len(lab_test) < 2:
-                        print(f"Invalid tuple structure: {lab_test}, Skipping...")
                         continue
                     lab_code, lab_attachment = lab_test[:2]
                 else:
-                    print(f"Unexpected data type for lab_test: {type(lab_test)}, Skipping...")
                     continue
 
                 # Validate lab_code
                 if not lab_code:
-                    print(f"Missing lab_code in lab_test: {lab_test}")
                     continue
 
                 # Fetch the lab test name using the lab code
                 lab_test_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_test_details:
-                    print(f"No lab test details found for lab_code: {lab_code}")
                     continue
 
                 # Handle the case where get_test_by_labcode returns a tuple
@@ -286,12 +265,10 @@ class DoctorLabResult(QMainWindow):
                     if len(lab_test_details) > 0 and isinstance(lab_test_details[0], dict):
                         lab_test_details = lab_test_details[0]
                     else:
-                        print(f"Invalid tuple structure for lab_code '{lab_code}', Skipping...")
                         continue
 
                 # Validate lab_test_details
                 if not isinstance(lab_test_details, dict):
-                    print(f"Unexpected return type from get_test_by_labcode: {type(lab_test_details)}, Skipping...")
                     continue
 
                 lab_test_name = lab_test_details.get('lab_test_name', 'Unknown').capitalize()
@@ -314,10 +291,7 @@ class DoctorLabResult(QMainWindow):
                 self.ui.LabTestTabe.setItem(row_position, 0, QtWidgets.QTableWidgetItem(lab_test_name))
                 self.ui.LabTestTabe.setItem(row_position, 1, QtWidgets.QTableWidgetItem(attachment_status))
 
-            print("Lab Attach Table loaded successfully!")
-
         except Exception as e:
-            print(f"Error loading lab attach table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load lab attach table: {e}")
 
     def load_prescription_table(self):
@@ -329,7 +303,6 @@ class DoctorLabResult(QMainWindow):
             # Fetch prescriptions for the given check-up ID
             prescriptions = Prescription.display_prescription(self.checkup_id)
             if not prescriptions:
-                print(f"No prescriptions found for chck_id: {self.checkup_id}")
                 # Add a single row with "No Prescriptions"
                 row_position = self.ui.LabTestTabe_2.rowCount()
                 self.ui.LabTestTabe_2.insertRow(row_position)
@@ -352,9 +325,7 @@ class DoctorLabResult(QMainWindow):
                 self.ui.LabTestTabe_2.setItem(row_position, 1, QtWidgets.QTableWidgetItem(dosage))
                 self.ui.LabTestTabe_2.setItem(row_position, 2, QtWidgets.QTableWidgetItem(intake))
 
-            print("Prescription Table loaded successfully!")
         except Exception as e:
-            print(f"Error loading prescription table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load prescription table: {e}")
 
     def load_data(self):
@@ -425,8 +396,6 @@ class DoctorLabResult(QMainWindow):
 
     def view_file(self):
         """Handle viewing the attached file for the selected lab test."""
-        print("View button clicked!")
-
         # Get the currently selected row in the LabTable
         selected_row = self.ui.LabTestTabe.currentRow()
         if selected_row == -1:  # No row selected
@@ -444,16 +413,11 @@ class DoctorLabResult(QMainWindow):
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
-
-        print(f"Retrieved lab code: {lab_code}")
-
         # Fetch the file path from the CheckUp model
         file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
             return
-
-        print(f"File path to open: {file_path}")
 
         # Check if the file exists
         if not os.path.exists(file_path):
@@ -498,9 +462,7 @@ class DoctorLabResult(QMainWindow):
                 prescription_data=pres_data
             )
             self.edit_prescription_window.show()
-            print("Edit Prescription Form shown successfully!")
         except Exception as e:
-            print(f"Error opening Edit Prescription Form: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open edit form: {e}")
 
     def delete_prescription(self):
@@ -512,7 +474,6 @@ class DoctorLabResult(QMainWindow):
         # Show custom confirmation dialog
         dlg = ConfirmationDialog(self)
         if dlg.exec_() == QDialog.Rejected:
-            print("User clicked No or closed dialog")
             return
 
         # Proceed with deletion
@@ -532,17 +493,12 @@ class DoctorLabResult(QMainWindow):
             QMessageBox.critical(self, "Error", "Failed to delete prescription.")
 
     def open_add_prescription_form(self):
-        print("Opening Add Lab Test Form...")
-        try:
-            self.add_prescription_window = DoctorAddPrescription(
-                chck_id=self.checkup_id,
-                parent=self,
-                refresh_callback=self.refresh_all_tables
-            )
-            self.add_prescription_window.show()
-            print("Add Lab Test Form shown successfully!")
-        except Exception as e:
-            print(f"Error opening Add Lab Test Form: {e}")
+        self.add_prescription_window = DoctorAddPrescription(
+            chck_id=self.checkup_id,
+            parent=self,
+            refresh_callback=self.refresh_all_tables
+        )
+        self.add_prescription_window.show()
 
     def confirm_and_add_diagnosis(self):
         try:
@@ -559,10 +515,7 @@ class DoctorLabResult(QMainWindow):
             # Show confirmation dialog
             confirmation_dialog = ConfirmationDialog(self)
             if confirmation_dialog.exec_() == QDialog.Rejected:
-                print("Diagnosis confirmation cancelled by the user.")
                 return
-
-            print("User confirmed diagnosis.")
 
             # Update the check-up status to "Completed"
             success = CheckUp.change_status_completed(self.checkup_id)
@@ -583,7 +536,6 @@ class DoctorLabResult(QMainWindow):
             pat_id = checkup_details['pat_id']
             self.make_into_pdf(pat_id)
             self.make_prescription_pdf(pat_id)
-            print("Diagnosis saved successfully!")
 
             # Refresh the tables in the parent window
             if self.refresh_callback:
@@ -592,19 +544,12 @@ class DoctorLabResult(QMainWindow):
             # Close the current window (DoctorLabResult)
             self.close()
 
-            # Open or focus the DoctorRecords window
-            self.open_or_focus_doctor_records()
-
             # Close the parent window (DoctorDashboardController)
-            parent_window = self.parent()  # Get the parent window
+            parent_window = self.parent()
             if parent_window:
-                parent_window.close()  # Close the parent window
-                print("Parent window (DoctorDashboardController) closed successfully.")
-            else:
-                print("Warning: Parent window not found. Unable to close it.")
+                parent_window.close()
 
         except Exception as e:
-            print(f"Error during diagnosis confirmation: {e}")
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
 
     def make_into_pdf(self, pat_id):
@@ -664,13 +609,10 @@ class DoctorLabResult(QMainWindow):
             doc.save(word_output)
             convert(word_output, pdf_output)
             os.remove(word_output)
-
-            print(f"PDF successfully generated at: {pdf_output}")
             return pdf_output
 
         except Exception as e:
             error_msg = f"Error generating PDF: {str(e)}"
-            print(error_msg)
             QMessageBox.critical(self, "PDF Generation Error", error_msg)
             return None
 
@@ -740,13 +682,10 @@ class DoctorLabResult(QMainWindow):
             doc.save(word_output)
             convert(word_output, pdf_output)
             os.remove(word_output)
-
-            print(f"Prescription PDF generated at: {pdf_output}")
             return pdf_output
 
         except Exception as e:
             error_msg = f"Error generating prescription PDF: {str(e)}"
-            print(error_msg)
             QMessageBox.critical(self, "PDF Generation Error", error_msg)
             return None
 
@@ -760,19 +699,15 @@ class DoctorLabResult(QMainWindow):
                 doctor_records_window = widget
                 doctor_records_window.activateWindow()
                 doctor_records_window.show()
-                print("DoctorRecords window is already active. Bringing it to focus.")
                 return
 
         # If no existing window is found, create a new one
         checkup_details = CheckUp.get_checkup_details(self.checkup_id)
         if not checkup_details or 'doc_id' not in checkup_details:
-            print("Error: Invalid or missing check-up details.")
             return
 
         doc_id = checkup_details['doc_id']
-        print(f"Creating new DoctorRecords window for doc_id={doc_id}")
 
         # Create a new DoctorRecords window and store it as an instance variable
         self.doctor_records_window = DoctorRecords(doc_id=doc_id)
         self.doctor_records_window.show()
-        print("New DoctorRecords window opened successfully.")

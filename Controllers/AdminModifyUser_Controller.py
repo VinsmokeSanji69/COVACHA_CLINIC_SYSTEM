@@ -223,7 +223,6 @@ class AdminModifyUserController(QMainWindow):
                 QMessageBox.information(self, "Cancelled", "Account creation cancelled.\n( Press any key to close )")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to add staff: {str(e)}")
-            print(f"Error: {str(e)}")
 
     def validate_form(self):
         """Validate all form fields"""

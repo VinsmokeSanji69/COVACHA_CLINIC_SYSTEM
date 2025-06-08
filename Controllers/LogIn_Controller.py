@@ -16,9 +16,6 @@ class LoginController:
         self.login_window.ui.UserIDInput.setPlaceholderText("User ID")
         self.login_window.ui.PasswordInput.setPlaceholderText("Password")
 
-        # Debugging print to confirm the connection
-        print("SignInButton connected to handle_login method!")
-
         # Test connection at initialization
         if not DBConnection.test_connection():
             QMessageBox.critical(
@@ -226,13 +223,9 @@ class LoginController:
             # Otherwise assume it's SHA-256
             input_hash = hashlib.sha256(input_password.encode()).hexdigest()
 
-            # DEBUG: Print comparison details
-            print(f"Comparing hashes:\nInput: {input_hash}\nStored: {stored_hash}")
-
             # Compare with stored hash (case-insensitive)
             return input_hash.lower() == stored_hash.lower()
         except Exception as e:
-            print(f"Password verification error: {e}")
             return False
 
     def _show_dashboard(self, dashboard_controller, user):

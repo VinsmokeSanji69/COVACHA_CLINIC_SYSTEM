@@ -67,7 +67,6 @@ class DoctorPatientDetailsViewController(QMainWindow):
         except Exception as e:
             error_msg = f"Failed to open checkup details: {e}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def identify_patient(self):
         try:
@@ -90,7 +89,6 @@ class DoctorPatientDetailsViewController(QMainWindow):
             return patient_details, checkups
 
         except Exception as e:
-            print(f"Error identifying patient: {e}")
             QMessageBox.critical(self, "Error", f"Failed to fetch patient details: {e}")
             return None, []
 
@@ -135,7 +133,6 @@ class DoctorPatientDetailsViewController(QMainWindow):
             self.load_checkups(checkups)
 
         except Exception as e:
-            print(f"Error initializing patient details: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load patient details: {e}")
 
     def load_checkups(self, checkups):
@@ -165,17 +162,13 @@ class DoctorPatientDetailsViewController(QMainWindow):
             self.ui.TransactionTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
-            print(f"Error populating Transaction Table: {e}")
             QMessageBox.critical(self, "Error", f"Failed to load checkups: {e}")
 
     def view_checkup_details_ui(self, checkup_id):
         try:
-            print("Trying to open DoctorLabResult")
             from Controllers.DoctorLabResult_Controller import DoctorLabResult
             self.checkup_detail_window = DoctorLabResult(checkup_id=checkup_id, refresh_callback=None, view=True)
-            print("Successfully created DoctorLabResult")
             self.checkup_detail_window.show()
             self.hide()
         except Exception as e:
-            print(f"Error opening checkup detail: {e}")
             QMessageBox.critical(self, "Error", f"Could not open checkup details: {e}")

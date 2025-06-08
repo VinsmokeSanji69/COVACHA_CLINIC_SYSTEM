@@ -19,7 +19,6 @@ class DoctorRecords(QWidget):
 
         # Store the doc_id
         self.doc_id = str(doc_id)
-        print(f"Doctor Records UI initialized with doc_id: {self.doc_id}")
 
         # Initialize a QTimer for automatic refresh
         self.refresh_timer = QTimer(self)
@@ -30,7 +29,6 @@ class DoctorRecords(QWidget):
         # Fetch all check-ups for the doctor
         checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
         if not checkups:
-            print("No check-ups found for this doctor.")
             return
 
         # Separate check-ups based on status
@@ -54,7 +52,6 @@ class DoctorRecords(QWidget):
             # Fetch all check-ups for the doctor
             checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
             if not checkups:
-                print("No check-ups found for this doctor.")
                 return
 
             # Separate check-ups based on status
@@ -66,7 +63,7 @@ class DoctorRecords(QWidget):
             self.populate_done_table(completed_checkups)
 
         except Exception as e:
-            print(f"Error refreshing tables: {e}")
+            pass
 
     def populate_accepted_checkups(self, checkups):
         # Clear existing rows
@@ -96,7 +93,6 @@ class DoctorRecords(QWidget):
             # Fetch patient details
             patient = Patient.get_patient_details(pat_id)
             if not patient:
-                print(f"No patient found for pat_id={pat_id}")
                 continue
 
             # Extract and format patient name
@@ -127,7 +123,6 @@ class DoctorRecords(QWidget):
             # Fetch patient details
             patient = Patient.get_patient_details(pat_id)
             if not patient:
-                print(f"No patient found for pat_id={pat_id}")
                 continue
 
             # Extract and format patient name
@@ -158,29 +153,23 @@ class DoctorRecords(QWidget):
             chck_id = chck_id_item.text()
 
             # Open the modal with the selected chck_id
-            print(f"Attempting to open DoctorLabResult modal with chck_id: {chck_id}")
             self.doctor_lab_result = DoctorLabResult(
                 checkup_id=chck_id,
                 parent=self,
                 refresh_callback=self.refresh_tables
             )
             self.doctor_lab_result.show()
-            print("DoctorLabResult modal opened successfully!")
 
         except Exception as e:
-            print(f"Error opening DoctorLabResult modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open DoctorLabResult modal: {e}")
 
     def see_all_checkup_list(self, doc_id):
-        print(f"Opening DoctorCheckUp list form with CheckUp ID: {doc_id}")
         try:
             if self.checkuplist_window is None or not self.checkuplist_window.isVisible():
                 self.checkuplist_window = DoctorCheckUpList(doc_id=doc_id)  # Create the window
             self.checkuplist_window.show()  # Show the window
             self.close()
-            print("DoctorCheckUp window opened successfully.")
         except Exception as e:
-            print(f"Error opening DoctorCheckUp list window: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open diagnosis form: {e}")
 
     def ModifyCheckUp(self):
@@ -208,5 +197,4 @@ class DoctorRecords(QWidget):
             self.doctor_diagnosis_modify = DoctorDiagnosisModify(checkup_id=chck_id, doc_id=self.doc_id, parent=self)
             self.doctor_diagnosis_modify.show()
         except Exception as e:
-            print(f"Error opening DoctorDiagnosisModify modal: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open the modify check-up modal: {e}")

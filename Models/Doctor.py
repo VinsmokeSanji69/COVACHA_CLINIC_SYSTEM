@@ -1,7 +1,5 @@
 from datetime import date
-
 from Models.DB_Connection import DBConnection
-
 
 class Doctor:
     @staticmethod
@@ -22,7 +20,6 @@ class Doctor:
                 Conn.commit()
                 return next_id
         except  Exception as e:
-            print(f"Error fetching next ID: {e}")
             return None
 
         finally:
@@ -43,7 +40,6 @@ class Doctor:
                 return cursor.rowcount == 1
 
         except Exception as e:
-            print(f"Error deleting doctor: {e}")
             if Conn:
                 Conn.rollback()
             return False
@@ -51,6 +47,26 @@ class Doctor:
             if Conn:
                 Conn.close()
 
+    @staticmethod
+    def count_total_patients_by_doctor(doc_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            return 0
+
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("""
+                    SELECT COUNT(DISTINCT pat_id)
+                    FROM checkup
+                    WHERE doc_id = %s;
+                """, (doc_id,))
+                result = cursor.fetchone()
+                return result[0] if result else 0
+        except Exception as e:
+            return 0
+        finally:
+            if conn:
+                conn.close()
 
     @staticmethod
     def save_doctor (doctor_data):
@@ -84,7 +100,6 @@ class Doctor:
             Conn.commit()
             return True
         except  Exception as e:
-            print(f"Error fetching next ID: {e}")
             return None
 
         finally:
@@ -112,7 +127,6 @@ class Doctor:
             return True
 
         except Exception as e:
-            print(f"Error updating doctor rate: {e}")
             return False
 
         finally:
@@ -156,16 +170,12 @@ class Doctor:
                 Conn.commit()
 
                 if affected_rows == 1:
-                    print(f"Successfully updated doctor ID: {doctor_data['id']}")
                     return True
-                print(f"No doctor found with ID: {doctor_data['id']}")
                 return False
 
         except ValueError as ve:
-            print(f"Validation error: {ve}")
             return False
         except Exception as e:
-            print(f"Database error: {e}")
             if Conn:
                 Conn.rollback()
             return False
@@ -225,7 +235,6 @@ class Doctor:
                 }
 
         except Exception as e:
-            print(f"Error fetching doctor: {str(e)}")
             return None
 
         finally:
@@ -280,7 +289,6 @@ class Doctor:
                 return doctors
 
         except Exception as e:
-            print(f"Error fetching doctors: {str(e)}")
             return []
 
         finally:

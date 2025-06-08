@@ -53,10 +53,7 @@ class AdminStaffsController(QWidget):
         self.ui = AdminStaffsUI()
         self.staff_ui = staff_ui
         self.ui.setupUi(self)
-
-        print("Admin Staffs UI initialized!")
         self.refresh_tables()
-
         self.staff_ui.AddUserButton.clicked.connect(self.open_add_user_form)
         self.staff_ui.ChargesButton.clicked.connect(self.view_charges_ui)
         self.staff_ui.TransactionsButton.clicked.connect(self.view_transaction_ui)
@@ -98,7 +95,6 @@ class AdminStaffsController(QWidget):
         except Exception as e:
             error_msg = f"Failed to select {table_type if table_type else 'staff'}: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def delete_record(self, record_type="doctor"):
         try:
@@ -138,16 +134,13 @@ class AdminStaffsController(QWidget):
         except Exception as e:
             error_msg = f"Error deleting {record_type}: {str(e)}"
             QMessageBox.critical(self, "Error", error_msg)
-            print(error_msg)
 
     def refresh_tables(self):
         """Reload data into the tables"""
         try:
             self.load_doctor_table()
             self.load_staff_table()
-            print("Tables refreshed successfully!")
         except Exception as e:
-            print(f"Error refreshing tables: {e}")
             QMessageBox.critical(self, "Error", f"Failed to refresh tables: {e}")
 
     def load_doctor_table(self):
@@ -193,57 +186,39 @@ class AdminStaffsController(QWidget):
             # Open the form
             self.add_user_window = AdminModifyUserController(parent=self, staff_details=staff, staff_type=record_type)
             self.add_user_window.show()
-            print("Add User Form shown successfully!")
 
         except Exception as e:
-            print(f"Error opening Add User Form: {e}")
             QMessageBox.critical(self, "Error", f"Failed to open modification form: {str(e)}")
 
     def open_add_user_form(self):
-        print("Opening Add User Form")
         try:
             self.add_user_window = AdminAddUserController(parent=self)
             self.add_user_window.show()
-            print("Add User Form shown successfully!")
         except Exception as e:
-            print(f"Error opening Add User Form: {e}")
+            pass
 
     def view_patient_ui(self):
-        print("RecordButton clicked!")
         try:
             from Controllers.AdminPatients_Controller import AdminPatientsController
             self.admin_patients_controller = AdminPatientsController()
             self.admin_patients_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error: {e}")
+            pass
 
     def view_transaction_ui(self):
-        print("TransactionButton clicked!")
         try:
             from Controllers.AdminTransaction_Controller import AdminTransactionsController
             self.admin_transaction_controller = AdminTransactionsController()
             self.admin_transaction_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error(charges): {e}")
-
+            pass
     def view_charges_ui(self):
-        print("ChargesButton clicked!")
         try:
             from Controllers.AdminCharges_Controller import AdminChargesController
             self.admin_charges_controller = AdminChargesController()
             self.admin_charges_controller.show()
             self.hide()
         except Exception as e:
-            print(f"Staff Error: {e}")
-
-    # def view_dashboard_ui(self):
-    #     print("DashboardButton clicked!")
-    #     try:
-    #         from Controllers.AdminDashboard_Controller import AdminDashboardController
-    #         self.admin_dashboard_controller = AdminDashboardController()
-    #         self.admin_dashboard_controller.show()
-    #         self.hide()
-    #     except Exception as e:
-    #         print(f"Staff Error: {e}")
+            pass

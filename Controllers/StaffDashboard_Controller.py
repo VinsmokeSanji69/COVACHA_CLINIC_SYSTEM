@@ -172,7 +172,7 @@ class StaffDashboardController(QMainWindow):
                 login_window.show()
 
         except Exception as e:
-            print("Logout error:", e)
+            pass
 
     @pyqtSlot()
     def go_to_dashboard(self):
@@ -256,7 +256,7 @@ class StaffDashboardController(QMainWindow):
             self.dashboard_ui.PendingTable.setColumnWidth(2, 200)
 
         except Exception as e:
-            print(f"Error loading pending check-ups: {e}")
+            pass
 
     def open_checkup_user_form(self):
         try:
