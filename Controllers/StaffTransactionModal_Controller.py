@@ -85,36 +85,48 @@ class StaffTransactionModal(QMainWindow):
 
             # Populate the table with filtered pending check-ups
             for row, checkup in enumerate(filtered_checkups):
-                pat_id = checkup["pat_id"]
-                chck_id = checkup["chck_id"]
-                chck_type = checkup['chckup_type']
-                doc_id = checkup['doc_id']
+                try:
+                    doc_id = checkup.get('doc_id')
+                    if not doc_id:
+                        # Skip rows with null or empty doctor ID
+                        continue
 
-                # Fetch patient details
-                patient = Patient.get_patient_by_id(pat_id)
-                if not patient:
-                    continue
+                    pat_id = checkup["pat_id"]
+                    chck_id = checkup["chck_id"]
+                    chck_type = checkup['chckup_type']
 
-                # Fetch doctor details
-                doctor = Doctor.get_doctor(doc_id)
-                if not doctor:
-                    docFullname = "Unknown Doctor"
-                else:
-                    docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
+                    # Patient details
+                    patient = Patient.get_patient_by_id(pat_id)
+                    if not patient:
+                        continue
 
-                # Extract patient name
-                full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
+                    full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
-                # Get transaction status (default to "Pending" if not found)
-                tran_status = transaction_status_map.get(chck_id, "Pending")
+                    # Doctor details
+                    doctor = Doctor.get_doctor(doc_id)
+                    if not doctor:
+                        docFullname = "Unknown Doctor"
+                    else:
+                        docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
-                # Insert data into the table
-                self.ui.TransactionTable.insertRow(row)
-                self.ui.TransactionTable.setItem(row, 0, QTableWidgetItem(chck_id))  # Check-Up ID
-                self.ui.TransactionTable.setItem(row, 1, QTableWidgetItem(full_name))  # Patient Name
-                self.ui.TransactionTable.setItem(row, 2, QTableWidgetItem(chck_type))  # Check-Up Type
-                self.ui.TransactionTable.setItem(row, 3, QTableWidgetItem(docFullname))  # Doctor Name
-                self.ui.TransactionTable.setItem(row, 4, QTableWidgetItem(tran_status))  # Transaction Status
+                    # Status
+                    tran_status = transaction_status_map.get(chck_id, "Pending")
+
+                    # Insert row
+                    self.ui.TransactionTable.insertRow(self.ui.TransactionTable.rowCount())
+                    self.ui.TransactionTable.setItem(self.ui.TransactionTable.rowCount() - 1, 0,
+                                                     QTableWidgetItem(chck_id))
+                    self.ui.TransactionTable.setItem(self.ui.TransactionTable.rowCount() - 1, 1,
+                                                     QTableWidgetItem(full_name))
+                    self.ui.TransactionTable.setItem(self.ui.TransactionTable.rowCount() - 1, 2,
+                                                     QTableWidgetItem(chck_type))
+                    self.ui.TransactionTable.setItem(self.ui.TransactionTable.rowCount() - 1, 3,
+                                                     QTableWidgetItem(docFullname))
+                    self.ui.TransactionTable.setItem(self.ui.TransactionTable.rowCount() - 1, 4,
+                                                     QTableWidgetItem(tran_status))
+
+                except Exception as inner_e:
+                    print(f"[ERROR] Failed to load row for checkup ID {checkup.get('chck_id')}: {inner_e}")
 
             # Resize columns to fit the content
             if self.ui.TransactionTable.rowCount() > 0:
