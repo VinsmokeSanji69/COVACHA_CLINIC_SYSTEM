@@ -45,6 +45,8 @@ class AdminPatientDetailsController(QMainWindow):
         self.ui.ViewCheckupButton.clicked.connect(self.view_checkup_details)
         self.initialize_patient_details()
 
+        self.ui.BackButton.clicked.connect(self.close)
+
     def view_checkup_details(self):
         try:
             selected_row = self.ui.TransactionTable.currentRow()
