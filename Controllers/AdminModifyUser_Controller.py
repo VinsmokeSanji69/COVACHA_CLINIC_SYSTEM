@@ -213,9 +213,7 @@ class AdminModifyUserController(QMainWindow):
                     success = Doctor.update(staff_data)
 
                 if success:
-                    QMessageBox.information(self, "Success", "Account created successfully!")
-                    self.clear_form()
-
+                    QMessageBox.information(self, "Success", "Updated successfully!")
                     # Notify parent to refresh tables
                     if self.parent and hasattr(self.parent, 'refresh_tables'):
                         self.parent.refresh_tables()
