@@ -155,6 +155,8 @@ class AdminDashboardController(QMainWindow):
         self.dashboard_ui.PatientsButton.clicked.connect(self.go_to_records)
         self.dashboard_ui.TransactionsButton.clicked.connect(self.go_to_transactions)
         self.dashboard_ui.ChargesButton.clicked.connect(self.go_to_charges)
+        self.dashboard_ui.LogOutButton.clicked.connect(self.logout)
+
 
         # Connect staff page buttons
         self.staff_ui.DashboardButton.clicked.connect(self.go_to_dashboard)

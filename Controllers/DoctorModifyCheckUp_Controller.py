@@ -192,11 +192,6 @@ class DoctorDiagnosisModify(QMainWindow):
                                 lab_name = result[0]['lab_test_name']
                                 selected_lab_names.append(lab_name)
 
-        # Handle "Other" text manually entered
-        other_text_value = self.ui.OtherText.text().strip()
-        if other_text_value:
-            selected_lab_names.append(other_text_value)
-
         # If no lab test selected, open modal
         if not selected_lab_names:
             self.open_doctor_lab_result_modal()
@@ -211,7 +206,7 @@ class DoctorDiagnosisModify(QMainWindow):
                          and widget.property("lab_code")]
 
         success = CheckUp.update_lab_codes(self.checkup_id,
-                                           raw_lab_codes + ([other_text_value] if other_text_value else []))
+                                           raw_lab_codes )
         if not success:
             QMessageBox.critical(self, "Error", "Failed to update lab codes.")
             return
