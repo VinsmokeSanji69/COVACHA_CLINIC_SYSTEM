@@ -359,11 +359,11 @@ class Ui_Admin_Charges(object):
 "    font-weight: bold;\n"
 "    font-size: 20px;\n"
 "    color: #F4F7ED;\n"
-"padding: 0px 20px;\n"
+"    padding: 0px 20px;\n"
 "}")
         self.AddLabTestButton.setFlat(False)
         self.AddLabTestButton.setObjectName("AddLabTestButton")
-        self.horizontalLayout.addWidget(self.AddLabTestButton)
+        self.horizontalLayout.addWidget(self.AddLabTestButton, 0, QtCore.Qt.AlignHCenter)
         spacerItem2 = QtWidgets.QSpacerItem(30, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem2)
         self.verticalLayout_5.addWidget(self.Buttons, 0, QtCore.Qt.AlignTop)
@@ -383,11 +383,101 @@ class Ui_Admin_Charges(object):
 "    text-align: center;\n"
 "}")
         self.Charges.setObjectName("Charges")
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.Charges)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_5.setSpacing(10)
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.widget = QtWidgets.QWidget(self.Charges)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.Charges)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setSpacing(10)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.widget_4 = QtWidgets.QWidget(self.Charges)
+        self.widget_4.setObjectName("widget_4")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.widget_4)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.widget_2 = QtWidgets.QWidget(self.widget_4)
+        self.widget_2.setObjectName("widget_2")
+        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.widget_2)
+        self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_10.setSpacing(5)
+        self.verticalLayout_10.setObjectName("verticalLayout_10")
+        self.label_2 = QtWidgets.QLabel(self.widget_2)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_10.addWidget(self.label_2)
+        self.scrollArea_2 = QtWidgets.QScrollArea(self.widget_2)
+        self.scrollArea_2.setStyleSheet("QScrollBar:vertical {\n"
+"     background: transparent;\n"
+"     width: 10px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"QScrollBar::handle:vertical {\n"
+"        background: #C0C0C0;\n"
+"        border-radius: 5px;\n"
+"}\n"
+"QScrollBar::handle:vertical:hover {\n"
+"        background: #A0A0A0;\n"
+"}\n"
+"QScrollBar::add-line:vertical,\n"
+"QScrollBar::sub-line:vertical{\n"
+"        background: none;\n"
+"        border: none;\n"
+"}\n"
+"\n"
+"")
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_2.setObjectName("scrollArea_2")
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 665, 268))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.LaboratoryTestTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.LaboratoryTestTable.sizePolicy().hasHeightForWidth())
+        self.LaboratoryTestTable.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LaboratoryTestTable.setFont(font)
+        self.LaboratoryTestTable.setStyleSheet("QTableWidget {\n"
+"    background-color: #F4F7ED;\n"
+"    gridline-color: transparent;\n"
+"    border-radius: 10px;\n"
+"    border: 2px solid #2E6E65;\n"
+"}\n"
+"QTableWidget::item {\n"
+"    border: none;\n"
+"    font: 16pt \"Lexend\";\n"
+"}\n"
+"QTableWidget::item:selected {\n"
+"    background-color: rgba(46, 110, 101, 0.3);\n"
+"}\n"
+"QTableWidget QHeaderView::section {\n"
+"    background-color: #2E6E65;\n"
+"    color: white;\n"
+"    padding: 5px;\n"
+"    font: 18px \"Lexend Medium\";\n"
+"    border: 2px solid #2E6E65;\n"
+"}")
+        self.LaboratoryTestTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.LaboratoryTestTable.setCornerButtonEnabled(True)
+        self.LaboratoryTestTable.setColumnCount(3)
+        self.LaboratoryTestTable.setObjectName("LaboratoryTestTable")
+        self.LaboratoryTestTable.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.LaboratoryTestTable.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.LaboratoryTestTable.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.LaboratoryTestTable.setHorizontalHeaderItem(2, item)
+        self.LaboratoryTestTable.horizontalHeader().setHighlightSections(True)
+        self.LaboratoryTestTable.horizontalHeader().setStretchLastSection(True)
+        self.verticalLayout_7.addWidget(self.LaboratoryTestTable)
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_10.addWidget(self.scrollArea_2)
+        self.verticalLayout_12.addWidget(self.widget_2)
+        self.widget = QtWidgets.QWidget(self.widget_4)
         self.widget.setObjectName("widget")
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
@@ -419,14 +509,14 @@ class Ui_Admin_Charges(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 328, 571))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 665, 268))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.DoctorTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.DoctorTable.sizePolicy().hasHeightForWidth())
@@ -468,72 +558,18 @@ class Ui_Admin_Charges(object):
         self.verticalLayout_6.addWidget(self.DoctorTable)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout_9.addWidget(self.scrollArea)
-        self.horizontalLayout_5.addWidget(self.widget)
-        self.widget_2 = QtWidgets.QWidget(self.Charges)
-        self.widget_2.setObjectName("widget_2")
-        self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.widget_2)
-        self.verticalLayout_10.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_10.setSpacing(5)
-        self.verticalLayout_10.setObjectName("verticalLayout_10")
-        self.label_2 = QtWidgets.QLabel(self.widget_2)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout_10.addWidget(self.label_2)
-        self.scrollArea_2 = QtWidgets.QScrollArea(self.widget_2)
-        self.scrollArea_2.setWidgetResizable(True)
-        self.scrollArea_2.setObjectName("scrollArea_2")
-        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 327, 571))
-        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
-        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_7.setSpacing(0)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.LaboratoryTestTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents_2)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.LaboratoryTestTable.setFont(font)
-        self.LaboratoryTestTable.setStyleSheet("QTableWidget {\n"
-"    background-color: #F4F7ED;\n"
-"    gridline-color: transparent;\n"
-"    border-radius: 10px;\n"
-"    border: 2px solid #2E6E65;\n"
-"}\n"
-"QTableWidget::item {\n"
-"    border: none;\n"
-"    font: 16pt \"Lexend\";\n"
-"}\n"
-"QTableWidget::item:selected {\n"
-"    background-color: rgba(46, 110, 101, 0.3);\n"
-"}\n"
-"QTableWidget QHeaderView::section {\n"
-"    background-color: #2E6E65;\n"
-"    color: white;\n"
-"    padding: 5px;\n"
-"    font: 18px \"Lexend Medium\";\n"
-"    border: 2px solid #2E6E65;\n"
-"}")
-        self.LaboratoryTestTable.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.LaboratoryTestTable.setCornerButtonEnabled(True)
-        self.LaboratoryTestTable.setColumnCount(3)
-        self.LaboratoryTestTable.setObjectName("LaboratoryTestTable")
-        self.LaboratoryTestTable.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        self.LaboratoryTestTable.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.LaboratoryTestTable.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.LaboratoryTestTable.setHorizontalHeaderItem(2, item)
-        self.LaboratoryTestTable.horizontalHeader().setHighlightSections(True)
-        self.LaboratoryTestTable.horizontalHeader().setStretchLastSection(True)
-        self.verticalLayout_7.addWidget(self.LaboratoryTestTable)
-        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
-        self.verticalLayout_10.addWidget(self.scrollArea_2)
-        self.horizontalLayout_5.addWidget(self.widget_2)
+        self.verticalLayout_12.addWidget(self.widget)
+        self.horizontalLayout_2.addWidget(self.widget_4)
         self.widget_3 = QtWidgets.QWidget(self.Charges)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget_3.sizePolicy().hasHeightForWidth())
+        self.widget_3.setSizePolicy(sizePolicy)
         self.widget_3.setMinimumSize(QtCore.QSize(110, 0))
         self.widget_3.setObjectName("widget_3")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.widget_3)
-        self.verticalLayout_8.setContentsMargins(0, 30, 0, 0)
+        self.verticalLayout_8.setContentsMargins(0, 35, 0, 0)
         self.verticalLayout_8.setSpacing(5)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.Modify = QtWidgets.QPushButton(self.widget_3)
@@ -542,7 +578,7 @@ class Ui_Admin_Charges(object):
         self.Delete = QtWidgets.QPushButton(self.widget_3)
         self.Delete.setObjectName("Delete")
         self.verticalLayout_8.addWidget(self.Delete)
-        self.horizontalLayout_5.addWidget(self.widget_3, 0, QtCore.Qt.AlignTop)
+        self.horizontalLayout_2.addWidget(self.widget_3, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_5.addWidget(self.Charges)
         self.verticalLayout_4.addWidget(self.BodyLayout)
         self.verticalLayout_2.addWidget(self.Body)
@@ -571,11 +607,6 @@ class Ui_Admin_Charges(object):
         self.UserName.setText(_translate("Form", "Roy Adrian Rondina"))
         self.UserType.setText(_translate("Form", "Admin"))
         self.AddLabTestButton.setText(_translate("Form", "Add Lab Test"))
-        self.label.setText(_translate("Form", "Doctor Rates"))
-        item = self.DoctorTable.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Doctor Name"))
-        item = self.DoctorTable.horizontalHeaderItem(1)
-        item.setText(_translate("Form", "Rate"))
         self.label_2.setText(_translate("Form", "Laboratory Tests"))
         item = self.LaboratoryTestTable.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Test Code"))
@@ -583,5 +614,10 @@ class Ui_Admin_Charges(object):
         item.setText(_translate("Form", "Laboratory Test"))
         item = self.LaboratoryTestTable.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Charge"))
+        self.label.setText(_translate("Form", "Doctor Rates"))
+        item = self.DoctorTable.horizontalHeaderItem(0)
+        item.setText(_translate("Form", "Doctor Name"))
+        item = self.DoctorTable.horizontalHeaderItem(1)
+        item.setText(_translate("Form", "Rate"))
         self.Modify.setText(_translate("Form", "Modify"))
         self.Delete.setText(_translate("Form", "Delete"))

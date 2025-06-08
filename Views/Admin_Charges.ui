@@ -679,7 +679,7 @@ QComboBox QAbstractItemView {
                <property name="rightMargin">
                 <number>0</number>
                </property>
-               <item>
+               <item alignment="Qt::AlignHCenter">
                 <widget class="QPushButton" name="AddLabTestButton">
                  <property name="enabled">
                   <bool>true</bool>
@@ -713,7 +713,7 @@ QComboBox QAbstractItemView {
 	font-weight: bold;
 	font-size: 20px;
 	color: #F4F7ED;
-padding: 0px 20px;
+	padding: 0px 20px;
 }</string>
                  </property>
                  <property name="text">
@@ -759,7 +759,7 @@ padding: 0px 20px;
 	text-align: center;
 }</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
                <property name="spacing">
                 <number>10</number>
                </property>
@@ -776,10 +776,10 @@ padding: 0px 20px;
                 <number>0</number>
                </property>
                <item>
-                <widget class="QWidget" name="widget" native="true">
-                 <layout class="QVBoxLayout" name="verticalLayout_9">
+                <widget class="QWidget" name="widget_4" native="true">
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
                   <property name="spacing">
-                   <number>5</number>
+                   <number>0</number>
                   </property>
                   <property name="leftMargin">
                    <number>0</number>
@@ -794,16 +794,34 @@ padding: 0px 20px;
                    <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label">
-                    <property name="text">
-                     <string>Doctor Rates</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QScrollArea" name="scrollArea">
-                    <property name="styleSheet">
-                     <string notr="true">QScrollBar:vertical {
+                   <widget class="QWidget" name="widget_2" native="true">
+                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                     <property name="spacing">
+                      <number>5</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label_2">
+                       <property name="text">
+                        <string>Laboratory Tests</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QScrollArea" name="scrollArea_2">
+                       <property name="styleSheet">
+                        <string notr="true">QScrollBar:vertical {
      background: transparent;
      width: 10px;
 	border-radius: 5px;
@@ -822,50 +840,50 @@ QScrollBar::sub-line:vertical{
 }
 
 </string>
-                    </property>
-                    <property name="widgetResizable">
-                     <bool>true</bool>
-                    </property>
-                    <widget class="QWidget" name="scrollAreaWidgetContents">
-                     <property name="geometry">
-                      <rect>
-                       <x>0</x>
-                       <y>0</y>
-                       <width>328</width>
-                       <height>571</height>
-                      </rect>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_6">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="QTableWidget" name="DoctorTable">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
+                       </property>
+                       <property name="widgetResizable">
+                        <bool>true</bool>
+                       </property>
+                       <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                        <property name="geometry">
+                         <rect>
+                          <x>0</x>
+                          <y>0</y>
+                          <width>665</width>
+                          <height>268</height>
+                         </rect>
                         </property>
-                        <property name="font">
-                         <font>
-                          <pointsize>12</pointsize>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QTableWidget {
+                        <layout class="QVBoxLayout" name="verticalLayout_7">
+                         <property name="spacing">
+                          <number>0</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QTableWidget" name="LaboratoryTestTable">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
 	border-radius: 10px;
@@ -885,105 +903,137 @@ QTableWidget QHeaderView::section {
 	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
 }</string>
-                        </property>
-                        <property name="sizeAdjustPolicy">
-                         <enum>QAbstractScrollArea::AdjustToContents</enum>
-                        </property>
-                        <property name="cornerButtonEnabled">
-                         <bool>true</bool>
-                        </property>
-                        <property name="columnCount">
-                         <number>2</number>
-                        </property>
-                        <attribute name="horizontalHeaderHighlightSections">
-                         <bool>true</bool>
-                        </attribute>
-                        <attribute name="horizontalHeaderStretchLastSection">
-                         <bool>true</bool>
-                        </attribute>
-                        <column>
-                         <property name="text">
-                          <string>Doctor Name</string>
-                         </property>
-                        </column>
-                        <column>
-                         <property name="text">
-                          <string>Rate</string>
-                         </property>
-                        </column>
+                           </property>
+                           <property name="sizeAdjustPolicy">
+                            <enum>QAbstractScrollArea::AdjustToContents</enum>
+                           </property>
+                           <property name="cornerButtonEnabled">
+                            <bool>true</bool>
+                           </property>
+                           <property name="columnCount">
+                            <number>3</number>
+                           </property>
+                           <attribute name="horizontalHeaderHighlightSections">
+                            <bool>true</bool>
+                           </attribute>
+                           <attribute name="horizontalHeaderStretchLastSection">
+                            <bool>true</bool>
+                           </attribute>
+                           <column>
+                            <property name="text">
+                             <string>Test Code</string>
+                            </property>
+                           </column>
+                           <column>
+                            <property name="text">
+                             <string>Laboratory Test</string>
+                            </property>
+                           </column>
+                           <column>
+                            <property name="text">
+                             <string>Charge</string>
+                            </property>
+                           </column>
+                          </widget>
+                         </item>
+                        </layout>
                        </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <widget class="QWidget" name="widget_2" native="true">
-                 <layout class="QVBoxLayout" name="verticalLayout_10">
-                  <property name="spacing">
-                   <number>5</number>
-                  </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                  <item>
-                   <widget class="QLabel" name="label_2">
-                    <property name="text">
-                     <string>Laboratory Tests</string>
-                    </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QScrollArea" name="scrollArea_2">
-                    <property name="widgetResizable">
-                     <bool>true</bool>
-                    </property>
-                    <widget class="QWidget" name="scrollAreaWidgetContents_2">
-                     <property name="geometry">
-                      <rect>
-                       <x>0</x>
-                       <y>0</y>
-                       <width>327</width>
-                       <height>571</height>
-                      </rect>
+                   <widget class="QWidget" name="widget" native="true">
+                    <layout class="QVBoxLayout" name="verticalLayout_9">
+                     <property name="spacing">
+                      <number>5</number>
                      </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_7">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="QTableWidget" name="LaboratoryTestTable">
-                        <property name="font">
-                         <font>
-                          <pointsize>12</pointsize>
-                         </font>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="label">
+                       <property name="text">
+                        <string>Doctor Rates</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QScrollArea" name="scrollArea">
+                       <property name="styleSheet">
+                        <string notr="true">QScrollBar:vertical {
+     background: transparent;
+     width: 10px;
+	border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    	background: #C0C0C0;
+    	border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    	background: #A0A0A0;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical{
+    	background: none;
+    	border: none;
+}
+
+</string>
+                       </property>
+                       <property name="widgetResizable">
+                        <bool>true</bool>
+                       </property>
+                       <widget class="QWidget" name="scrollAreaWidgetContents">
+                        <property name="geometry">
+                         <rect>
+                          <x>0</x>
+                          <y>0</y>
+                          <width>665</width>
+                          <height>268</height>
+                         </rect>
                         </property>
-                        <property name="styleSheet">
-                         <string notr="true">QTableWidget {
+                        <layout class="QVBoxLayout" name="verticalLayout_6">
+                         <property name="spacing">
+                          <number>0</number>
+                         </property>
+                         <property name="leftMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>0</number>
+                         </property>
+                         <item>
+                          <widget class="QTableWidget" name="DoctorTable">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
 	border-radius: 10px;
@@ -1003,41 +1053,39 @@ QTableWidget QHeaderView::section {
 	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
 }</string>
-                        </property>
-                        <property name="sizeAdjustPolicy">
-                         <enum>QAbstractScrollArea::AdjustToContents</enum>
-                        </property>
-                        <property name="cornerButtonEnabled">
-                         <bool>true</bool>
-                        </property>
-                        <property name="columnCount">
-                         <number>3</number>
-                        </property>
-                        <attribute name="horizontalHeaderHighlightSections">
-                         <bool>true</bool>
-                        </attribute>
-                        <attribute name="horizontalHeaderStretchLastSection">
-                         <bool>true</bool>
-                        </attribute>
-                        <column>
-                         <property name="text">
-                          <string>Test Code</string>
-                         </property>
-                        </column>
-                        <column>
-                         <property name="text">
-                          <string>Laboratory Test</string>
-                         </property>
-                        </column>
-                        <column>
-                         <property name="text">
-                          <string>Charge</string>
-                         </property>
-                        </column>
+                           </property>
+                           <property name="sizeAdjustPolicy">
+                            <enum>QAbstractScrollArea::AdjustToContents</enum>
+                           </property>
+                           <property name="cornerButtonEnabled">
+                            <bool>true</bool>
+                           </property>
+                           <property name="columnCount">
+                            <number>2</number>
+                           </property>
+                           <attribute name="horizontalHeaderHighlightSections">
+                            <bool>true</bool>
+                           </attribute>
+                           <attribute name="horizontalHeaderStretchLastSection">
+                            <bool>true</bool>
+                           </attribute>
+                           <column>
+                            <property name="text">
+                             <string>Doctor Name</string>
+                            </property>
+                           </column>
+                           <column>
+                            <property name="text">
+                             <string>Rate</string>
+                            </property>
+                           </column>
+                          </widget>
+                         </item>
+                        </layout>
                        </widget>
-                      </item>
-                     </layout>
-                    </widget>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
@@ -1045,6 +1093,12 @@ QTableWidget QHeaderView::section {
                </item>
                <item alignment="Qt::AlignTop">
                 <widget class="QWidget" name="widget_3" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>110</width>
@@ -1059,7 +1113,7 @@ QTableWidget QHeaderView::section {
                    <number>0</number>
                   </property>
                   <property name="topMargin">
-                   <number>30</number>
+                   <number>35</number>
                   </property>
                   <property name="rightMargin">
                    <number>0</number>
