@@ -5,9 +5,9 @@ from Models.Patient import Patient
 from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
-from docx import Document
+# from docx import Document
 import os
-from docx2pdf import convert
+# from docx2pdf import convert
 
 class DoctorDiagnosisModify(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):

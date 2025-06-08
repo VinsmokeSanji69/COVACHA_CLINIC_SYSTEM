@@ -13,6 +13,8 @@ from docx import Document
 import os
 from docx2pdf import convert
 from Views.Doctor_Records import Ui_Doctor_Records
+
+
 class DoctorDiagnosis(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
         super().__init__(parent)
@@ -38,6 +40,7 @@ class DoctorDiagnosis(QMainWindow):
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
+
             # Extract check-up data
             pat_id = checkup_details['pat_id']
             chck_bp = checkup_details['chck_bp']
@@ -45,20 +48,25 @@ class DoctorDiagnosis(QMainWindow):
             chck_height = checkup_details['chck_height']
             chck_weight = checkup_details['chck_weight']
             chckup_type = checkup_details['chckup_type']
+
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
+
             # Extract patient data
             pat_lname = patient_details['pat_lname']
             pat_fname = patient_details['pat_fname']
             pat_mname = patient_details['pat_mname']
             pat_dob = patient_details['pat_dob']
             pat_gender = patient_details['pat_gender']
+
             # Calculate age based on date of birth
             age = self.calculate_age(pat_dob)
+
             # Convert pat_dob to a string for display
             Birthday = pat_dob.strftime("%Y-%m-%d")
+
             # Step 3: Populate the UI
             self.populate_patient_info(pat_id, pat_lname, pat_fname, pat_mname, Birthday, age, pat_gender)
             self.populate_checkup_info(self.checkup_id, chck_bp, chck_temp, chck_height, chck_weight, chckup_type)
