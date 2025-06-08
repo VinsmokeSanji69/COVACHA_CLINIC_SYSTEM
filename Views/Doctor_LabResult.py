@@ -224,7 +224,7 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName("scrollArea_3")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 1115, 856))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, -259, 1108, 856))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self.verticalLayout_24 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_3)
         self.verticalLayout_24.setContentsMargins(0, 10, 0, 5)
@@ -730,7 +730,7 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 953, 200))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 946, 200))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
@@ -881,7 +881,7 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 953, 200))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 946, 200))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_22.setContentsMargins(0, 0, 0, 0)
@@ -891,13 +891,12 @@ class Ui_Doctor_LabResult(object):
         self.LabTestTabe_2.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
-"    border-radius: 8px;\n"
+"    border-radius: 10px;\n"
 "    border: 2px solid #2E6E65;\n"
 "}\n"
 "QTableWidget::item {\n"
 "    border: none;\n"
-"    font:500 16pt \"Satoshi\";\n"
-"    color: #2B3752;\n"
+"    font: 16pt \"Lexend\";\n"
 "}\n"
 "QTableWidget::item:selected {\n"
 "    background-color: rgba(46, 110, 101, 0.3);\n"
@@ -906,10 +905,9 @@ class Ui_Doctor_LabResult(object):
 "    background-color: #2E6E65;\n"
 "    color: white;\n"
 "    padding: 5px;\n"
-"    font: 700 15pt \"Satoshi\";\n"
+"    font: 18px \"Lexend Medium\";\n"
 "    border: 2px solid #2E6E65;\n"
-"}\n"
-"")
+"}")
         self.LabTestTabe_2.setObjectName("LabTestTabe_2")
         self.LabTestTabe_2.setColumnCount(3)
         self.LabTestTabe_2.setRowCount(0)

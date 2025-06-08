@@ -1,6 +1,5 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
-
 from Models.Doctor import Doctor
 from Views.Admin_AddDoctorCharges import Ui_MainWindow as AdminAddChargesUI
 from Models.LaboratoryTest import Laboratory
@@ -101,6 +100,8 @@ class AdminDoctorCharges(QMainWindow):
         return errors
 
     def validate_and_save_charges(self):
+        from Controllers.AdminCharges_Controller import AdminChargesController
+
         errors = self.validate_form()
         if errors:
             QMessageBox.warning(self, "Validation Error", "\n".join(errors))
@@ -112,7 +113,7 @@ class AdminDoctorCharges(QMainWindow):
             return
 
         doctor = {
-            "doctor_id": self.doc_id ,
+            "doctor_id": self.doc_id,
             "new_rate": self.ui.DocRate.text().strip()
         }
 
@@ -120,9 +121,15 @@ class AdminDoctorCharges(QMainWindow):
         success = Doctor.update_doctor_rate(doctor)
         if success:
             QMessageBox.information(self, "Success", "Doctor rate modified successfully!")
+            try:
+                from Controllers.AdminCharges_Controller import AdminChargesController
+                if isinstance(self.parent(), AdminChargesController):
+                    self.parent().refresh_tables()
+            except Exception as e:
+                print(f"Warning: Could not refresh parent controller. {e}")
             self.close()
         else:
-            QMessageBox.critical(self, "Error", "Failed to add laboratory test.")
+            QMessageBox.critical(self, "Error", "Failed to modify doctor rate.")
 
     def view_charges_ui(self):
         try:

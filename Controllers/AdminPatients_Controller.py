@@ -178,7 +178,6 @@ class AdminPatientsController(QMainWindow):
                 self.records_ui.PatientTable.setItem(row, 2, QtWidgets.QTableWidgetItem(diagnosis))
                 self.records_ui.PatientTable.setItem(row, 3, QtWidgets.QTableWidgetItem(date))
 
-            self.records_ui.PatientTable.resizeColumnsToContents()
             self.records_ui.PatientTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
