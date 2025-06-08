@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1267</width>
-    <height>845</height>
+    <height>835</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1158,6 +1158,11 @@ QScrollBar::sub-line:vertical{
                           </property>
                           <item>
                            <widget class="QTableWidget" name="LabChargeTable">
+                            <property name="font">
+                             <font>
+                              <pointsize>12</pointsize>
+                             </font>
+                            </property>
                             <property name="styleSheet">
                              <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
@@ -1232,12 +1237,20 @@ QTableWidget QHeaderView::section {
                              <height>30</height>
                             </size>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>Satoshi Black</family>
+                             <pointsize>14</pointsize>
+                             <weight>99</weight>
+                             <italic>false</italic>
+                             <bold>true</bold>
+                            </font>
+                           </property>
                            <property name="styleSheet">
                             <string notr="true">QLineEdit {
 	background-color: transparent;
 	border-bottom: 2px solid #2E6E65;
 	font: 900 14pt &quot;Satoshi Black&quot;;
-font-size: 19px;
 }</string>
                            </property>
                            <property name="text">

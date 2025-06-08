@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1267, 845)
+        MainWindow.resize(1267, 835)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -592,6 +592,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.setSpacing(0)
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.LabChargeTable = QtWidgets.QTableWidget(self.scrollAreaWidgetContents)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.LabChargeTable.setFont(font)
         self.LabChargeTable.setStyleSheet("QTableWidget {\n"
 "    background-color: #F4F7ED;\n"
 "    gridline-color: transparent;\n"
@@ -634,11 +637,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.addWidget(self.label_26, 0, QtCore.Qt.AlignVCenter)
         self.TotalLabCharge = QtWidgets.QLineEdit(self.widget_15)
         self.TotalLabCharge.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("Satoshi Black")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(99)
+        self.TotalLabCharge.setFont(font)
         self.TotalLabCharge.setStyleSheet("QLineEdit {\n"
 "    background-color: transparent;\n"
 "    border-bottom: 2px solid #2E6E65;\n"
 "    font: 900 14pt \"Satoshi Black\";\n"
-"font-size: 19px;\n"
 "}")
         self.TotalLabCharge.setObjectName("TotalLabCharge")
         self.horizontalLayout_7.addWidget(self.TotalLabCharge)

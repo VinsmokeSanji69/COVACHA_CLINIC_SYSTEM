@@ -1297,49 +1297,6 @@ QLabel {
                    <property name="bottomMargin">
                     <number>0</number>
                    </property>
-                   <item>
-                    <widget class="QFrame" name="frame_9">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Raised</enum>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_3">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="QLabel" name="OtherLabel">
-                        <property name="text">
-                         <string>Other:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item alignment="Qt::AlignTop">
-                       <widget class="QLineEdit" name="OtherText"/>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
                   </layout>
                  </widget>
                 </item>
@@ -1393,10 +1350,6 @@ padding: 20px 20px;
             </property>
             <property name="text">
              <string>Proceed Check Up</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>:/icons/icons/ticket-plus.svg</normaloff>:/icons/icons/ticket-plus.svg</iconset>
             </property>
             <property name="iconSize">
              <size>

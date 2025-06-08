@@ -312,8 +312,8 @@ QScrollBar::sub-line:vertical{
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>1115</width>
+               <y>-259</y>
+               <width>1108</width>
                <height>856</height>
               </rect>
              </property>
@@ -1371,7 +1371,7 @@ QScrollBar::sub-line:vertical{
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>953</width>
+                            <width>946</width>
                             <height>200</height>
                            </rect>
                           </property>
@@ -1655,7 +1655,7 @@ QScrollBar::sub-line:vertical{
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>953</width>
+                         <width>946</width>
                          <height>200</height>
                         </rect>
                        </property>
@@ -1681,13 +1681,12 @@ QScrollBar::sub-line:vertical{
                            <string notr="true">QTableWidget {
 	background-color: #F4F7ED;
 	gridline-color: transparent;
-	border-radius: 8px;
+	border-radius: 10px;
 	border: 2px solid #2E6E65;
 }
 QTableWidget::item {
 	border: none;
-	font:500 16pt &quot;Satoshi&quot;;
-	color: #2B3752;
+	font: 16pt &quot;Lexend&quot;;
 }
 QTableWidget::item:selected {
 	background-color: rgba(46, 110, 101, 0.3);
@@ -1696,10 +1695,9 @@ QTableWidget QHeaderView::section {
 	background-color: #2E6E65;
 	color: white;
 	padding: 5px;
-	font: 700 15pt &quot;Satoshi&quot;;
+	font: 18px &quot;Lexend Medium&quot;;
 	border: 2px solid #2E6E65;
-}
-</string>
+}</string>
                           </property>
                           <attribute name="horizontalHeaderStretchLastSection">
                            <bool>true</bool>
