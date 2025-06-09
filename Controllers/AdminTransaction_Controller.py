@@ -81,7 +81,8 @@ class AdminTransactionsController(QWidget):
                     continue
 
                 name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
-                diagnosis = checkup["chck_diagnoses"]
+                diagnosis = "On going Check up" if checkup.get("chck_status") == "On going" else checkup.get(
+                    "chck_diagnoses", "")
                 date_str = safe_date_format(checkup["chck_date"])
 
                 if search_term:

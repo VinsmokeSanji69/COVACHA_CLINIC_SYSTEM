@@ -597,7 +597,7 @@ class Ui_Doctor_PatientDetails_View(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.InterfaceTitle.setText(_translate("MainWindow", "Patient Details"))
-        self.UserName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
+        self.UserName.setText(_translate("MainWindow", "DOCTOR"))
         self.PatName.setText(_translate("MainWindow", "Roy Adrian Rondina"))
         self.PatID.setText(_translate("MainWindow", "100000003"))
         self.Header_3.setText(_translate("MainWindow", "General Information"))

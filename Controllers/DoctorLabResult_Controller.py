@@ -13,6 +13,7 @@ from Models.Prescription import Prescription
 from datetime import datetime, date
 from docx import Document
 from docx2pdf import convert
+import time
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -503,11 +504,12 @@ class DoctorLabResult(QMainWindow):
     def confirm_and_add_diagnosis(self):
         try:
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # Get the diagnosis text and notes from the UI
+
+            # Get diagnosis text and notes from the UI
             chck_diagnoses = self.ui.DiagnoseText.text().strip()
             chck_notes = self.ui.DiagnoseNotes.text().strip() or None
 
-            # Validate the diagnosis text
+            # Validate diagnosis text
             if not chck_diagnoses:
                 QMessageBox.warning(self, "Validation Error", "Diagnosis text is required.")
                 return
@@ -517,12 +519,12 @@ class DoctorLabResult(QMainWindow):
             if confirmation_dialog.exec_() == QDialog.Rejected:
                 return
 
-            # Update the check-up status to "Completed"
+            # Update check-up status to "Completed"
             success = CheckUp.change_status_completed(self.checkup_id)
             if not success:
                 raise ValueError("Failed to change check-up status to Completed.")
 
-            # Save the diagnosis notes
+            # Save diagnosis notes
             success = CheckUp.add_diagnosis_notes(
                 chck_id=self.checkup_id,
                 chck_diagnoses=chck_diagnoses,
@@ -531,20 +533,48 @@ class DoctorLabResult(QMainWindow):
             if not success:
                 raise ValueError("Failed to save diagnosis notes.")
 
-            # Notify the user of success
+            # Notify user of success
             QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
+
             pat_id = checkup_details['pat_id']
+
+            # Show "Generating PDF..." message
+            pdf_progress = QMessageBox(self)
+            pdf_progress.setIcon(QMessageBox.Information)
+            pdf_progress.setWindowTitle("Please Wait")
+            pdf_progress.setText("Generating PDF files...")
+            pdf_progress.setStandardButtons(QMessageBox.NoButton)  # Hide all buttons
+            pdf_progress.show()
+
+            # Ensure the dialog shows up immediately
+            QApplication.processEvents()
+
+            # Generate PDFs (this may block the UI slightly, but it's expected)
             self.make_into_pdf(pat_id)
             self.make_prescription_pdf(pat_id)
+
+            # Hide the "Generating PDF" dialog
+            pdf_progress.hide()  # Use hide() instead of close()
+
+            # Small delay to ensure the dialog is fully hidden (optional)
+            time.sleep(0.1)  # Adjust as needed
+
+            # Show success message
+            pdf_success = QMessageBox(self)
+            pdf_success.setIcon(QMessageBox.Information)
+            pdf_success.setWindowTitle("PDF Generated")
+            pdf_success.setText("PDF files have been generated successfully.")
+            pdf_success.setStandardButtons(QMessageBox.Ok)  # Set OK button
+            pdf_success.exec_()  # Block until the user clicks OK
 
             # Refresh the tables in the parent window
             if self.refresh_callback:
                 self.refresh_callback()
 
-            # Close the current window (DoctorLabResult)
+            # Close current window
             self.close()
 
-            # Close the parent window (DoctorDashboardController)
+            # Close parent window if exists
             parent_window = self.parent()
             if parent_window:
                 parent_window.close()
