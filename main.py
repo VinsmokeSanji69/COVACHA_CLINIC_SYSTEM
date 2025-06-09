@@ -13,8 +13,6 @@ class LogIn(QMainWindow):
         self.ui = LOGIN()
         self.ui.setupUi(self)
 
-        print("Login window initialized!")
-
         self.ui.PasswordInput.setEchoMode(QLineEdit.Password)
         self.controller = LoginController(self)
 
@@ -23,13 +21,11 @@ if __name__ == "__main__":
         # Start the socket server in the background
         socket_server = SocketServer()
         socket_server.start()
-        print("Socket server started in background.")
 
         # Start the PyQt5 application
         app = QApplication(sys.argv)
         login_window = LogIn()
         login_window.show()
-        print("Login window shown successfully!")
 
         # Run the event loop
         sys.exit(app.exec_())

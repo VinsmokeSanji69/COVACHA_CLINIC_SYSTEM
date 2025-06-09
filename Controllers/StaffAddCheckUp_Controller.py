@@ -165,6 +165,9 @@ class StaffAddCheckUp(QMainWindow):
         if not self.ui.Mname.text().strip():
             errors.append("Middle name is required")
 
+        if not self.ui.Gender.text().strip():
+                errors.append("Gender is required")
+
         # Contact validation
         contact = self.ui.Contact.text().strip()
         if not contact:

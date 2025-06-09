@@ -9670,3 +9670,187 @@ INFO:root:Discovery request from 192.168.101.9 (Client MAC: CA:95:25:14:F2:6C)
 DEBUG:root:Sent discovery response to ('192.168.101.9', 51641)
 INFO:root:Connection from ('192.168.101.9', 61115) (Admin: False)
 DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 58939)
+INFO:root:Connection from ('192.168.164.123', 51679) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 61257)
+INFO:root:Connection from ('192.168.164.123', 51720) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-001', 'pat_id': 10000029, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 61258)
+INFO:root:Connection from ('192.168.164.123', 51722) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000029, 'last_name': 'Anton', 'first_name': 'Dan', 'middle_name': 'Bejec', 'gender': 'Male', 'dob': '1990-01-26', 'age': 35, 'address': 'Urello', 'contact': '9843434354'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 64757)
+INFO:root:Connection from ('192.168.164.123', 51761) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-001', 'pat_id': 10000029, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-002', 'pat_id': 10000030, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 64758)
+INFO:root:Connection from ('192.168.164.123', 51763) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000029, 'last_name': 'Anton', 'first_name': 'Dan', 'middle_name': 'Bejec', 'gender': 'Male', 'dob': '1990-01-26', 'age': 35, 'address': 'Urello', 'contact': '9843434354'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 64759)
+INFO:root:Connection from ('192.168.164.123', 51765) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000030, 'last_name': 'Talingting', 'first_name': 'Edmark', 'middle_name': 'Tungtung', 'gender': 'Male', 'dob': '1981-01-09', 'age': 44, 'address': 'Apas Lahug', 'contact': '9745345343'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49853)
+INFO:root:Connection from ('192.168.164.123', 51809) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-001', 'pat_id': 10000029, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-002', 'pat_id': 10000030, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-003', 'pat_id': 10000031, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49854)
+INFO:root:Connection from ('192.168.164.123', 51811) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000029, 'last_name': 'Anton', 'first_name': 'Dan', 'middle_name': 'Bejec', 'gender': 'Male', 'dob': '1990-01-26', 'age': 35, 'address': 'Urello', 'contact': '9843434354'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49855)
+INFO:root:Connection from ('192.168.164.123', 51813) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000030, 'last_name': 'Talingting', 'first_name': 'Edmark', 'middle_name': 'Tungtung', 'gender': 'Male', 'dob': '1981-01-09', 'age': 44, 'address': 'Apas Lahug', 'contact': '9745345343'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49856)
+INFO:root:Connection from ('192.168.164.123', 51815) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000031, 'last_name': 'Mahilom', 'first_name': 'Jp', 'middle_name': 'Pok', 'gender': 'Female', 'dob': '1990-01-27', 'age': 35, 'address': 'Mingla City`', 'contact': '9353534232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 65268)
+INFO:root:Connection from ('192.168.164.123', 51861) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-001', 'pat_id': 10000029, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-002', 'pat_id': 10000030, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-003', 'pat_id': 10000031, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 65269)
+INFO:root:Connection from ('192.168.164.123', 51863) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000029, 'last_name': 'Anton', 'first_name': 'Dan', 'middle_name': 'Bejec', 'gender': 'Male', 'dob': '1990-01-26', 'age': 35, 'address': 'Urello', 'contact': '9843434354'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 65270)
+INFO:root:Connection from ('192.168.164.123', 51865) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000030, 'last_name': 'Talingting', 'first_name': 'Edmark', 'middle_name': 'Tungtung', 'gender': 'Male', 'dob': '1981-01-09', 'age': 44, 'address': 'Apas Lahug', 'contact': '9745345343'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 65271)
+INFO:root:Connection from ('192.168.164.123', 51867) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000031, 'last_name': 'Mahilom', 'first_name': 'Jp', 'middle_name': 'Pok', 'gender': 'Female', 'dob': '1990-01-27', 'age': 35, 'address': 'Mingla City`', 'contact': '9353534232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 65272)
+INFO:root:Connection from ('192.168.164.123', 51869) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000032, 'last_name': 'Badajos', 'first_name': 'Raymond', 'middle_name': 'Foreplay', 'gender': 'Male', 'dob': '1990-02-02', 'age': 35, 'address': 'Camotes', 'contact': '9434343232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59450)
+INFO:root:Connection from ('192.168.164.123', 52722) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-002', 'pat_id': 10000030, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-003', 'pat_id': 10000031, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59451)
+INFO:root:Connection from ('192.168.164.123', 52724) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000030, 'last_name': 'Talingting', 'first_name': 'Edmark', 'middle_name': 'Tungtung', 'gender': 'Male', 'dob': '1981-01-09', 'age': 44, 'address': 'Apas Lahug', 'contact': '9745345343'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59452)
+INFO:root:Connection from ('192.168.164.123', 52726) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000031, 'last_name': 'Mahilom', 'first_name': 'Jp', 'middle_name': 'Pok', 'gender': 'Female', 'dob': '1990-01-27', 'age': 35, 'address': 'Mingla City`', 'contact': '9353534232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59453)
+INFO:root:Connection from ('192.168.164.123', 52728) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000032, 'last_name': 'Badajos', 'first_name': 'Raymond', 'middle_name': 'Foreplay', 'gender': 'Male', 'dob': '1990-02-02', 'age': 35, 'address': 'Camotes', 'contact': '9434343232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 57774)
+INFO:root:Connection from ('192.168.164.123', 52876) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-002', 'pat_id': 10000030, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-003', 'pat_id': 10000031, 'chckup_type': 'New Check Up'}, {'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 57775)
+INFO:root:Connection from ('192.168.164.123', 52878) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000030, 'last_name': 'Talingting', 'first_name': 'Edmark', 'middle_name': 'Tungtung', 'gender': 'Male', 'dob': '1981-01-09', 'age': 44, 'address': 'Apas Lahug', 'contact': '9745345343'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 57776)
+INFO:root:Connection from ('192.168.164.123', 52880) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000031, 'last_name': 'Mahilom', 'first_name': 'Jp', 'middle_name': 'Pok', 'gender': 'Female', 'dob': '1990-01-27', 'age': 35, 'address': 'Mingla City`', 'contact': '9353534232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 57777)
+INFO:root:Connection from ('192.168.164.123', 52882) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000032, 'last_name': 'Badajos', 'first_name': 'Raymond', 'middle_name': 'Foreplay', 'gender': 'Male', 'dob': '1990-02-02', 'age': 35, 'address': 'Camotes', 'contact': '9434343232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 57177)
+INFO:root:Connection from ('192.168.164.123', 53238) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 57178)
+INFO:root:Connection from ('192.168.164.123', 53240) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000032, 'last_name': 'Badajos', 'first_name': 'Raymond', 'middle_name': 'Foreplay', 'gender': 'Male', 'dob': '1990-02-02', 'age': 35, 'address': 'Camotes', 'contact': '9434343232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 62919)
+INFO:root:Connection from ('192.168.164.123', 53438) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 62920)
+INFO:root:Connection from ('192.168.164.123', 53440) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000032, 'last_name': 'Badajos', 'first_name': 'Raymond', 'middle_name': 'Foreplay', 'gender': 'Male', 'dob': '1990-02-02', 'age': 35, 'address': 'Camotes', 'contact': '9434343232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 60793)
+INFO:root:Connection from ('192.168.164.123', 53747) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 60794)
+INFO:root:Connection from ('192.168.164.123', 53749) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000032, 'last_name': 'Badajos', 'first_name': 'Raymond', 'middle_name': 'Foreplay', 'gender': 'Male', 'dob': '1990-02-02', 'age': 35, 'address': 'Camotes', 'contact': '9434343232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 51886)
+INFO:root:Connection from ('192.168.164.123', 54111) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 52966)
+INFO:root:Connection from ('192.168.164.123', 54193) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-001', 'pat_id': 10000033, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: C2:B5:2E:52:8F:60)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 52967)
+INFO:root:Connection from ('192.168.164.123', 54195) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000033, 'last_name': 'Noquiana', 'first_name': 'Jampol', 'middle_name': 'Pok2', 'gender': 'Male', 'dob': '1990-01-18', 'age': 35, 'address': 'Maharuhay', 'contact': '9323232323'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 61718)
+INFO:root:Connection from ('192.168.164.123', 53517) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-001', 'pat_id': 10000033, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 61719)
+INFO:root:Connection from ('192.168.164.123', 53519) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000033, 'last_name': 'Noquiana', 'first_name': 'Jampol', 'middle_name': 'Pok2', 'gender': 'Male', 'dob': '1990-01-18', 'age': 35, 'address': 'Maharuhay', 'contact': '9323232323'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49749)
+INFO:root:Connection from ('192.168.164.123', 53559) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-001', 'pat_id': 10000033, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-002', 'pat_id': 10000034, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49750)
+INFO:root:Connection from ('192.168.164.123', 53561) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000033, 'last_name': 'Noquiana', 'first_name': 'Jampol', 'middle_name': 'Pok2', 'gender': 'Male', 'dob': '1990-01-18', 'age': 35, 'address': 'Maharuhay', 'contact': '9323232323'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 49751)
+INFO:root:Connection from ('192.168.164.123', 53563) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000034, 'last_name': 'Rondina', 'first_name': 'Alyssa', 'middle_name': 'Cuadra', 'gender': 'N/A', 'dob': '1990-01-17', 'age': 35, 'address': 'Pardo Cogon', 'contact': '9232323232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59940)
+INFO:root:Connection from ('192.168.164.123', 53628) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-001', 'pat_id': 10000033, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-002', 'pat_id': 10000034, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59941)
+INFO:root:Connection from ('192.168.164.123', 53630) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000033, 'last_name': 'Noquiana', 'first_name': 'Jampol', 'middle_name': 'Pok2', 'gender': 'Male', 'dob': '1990-01-18', 'age': 35, 'address': 'Maharuhay', 'contact': '9323232323'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 59942)
+INFO:root:Connection from ('192.168.164.123', 53632) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000034, 'last_name': 'Rondina', 'first_name': 'Alyssa', 'middle_name': 'Cuadra', 'gender': 'N/A', 'dob': '1990-01-17', 'age': 35, 'address': 'Pardo Cogon', 'contact': '9232323232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 56883)
+INFO:root:Connection from ('192.168.164.123', 54024) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-001', 'pat_id': 10000033, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-002', 'pat_id': 10000034, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 56884)
+INFO:root:Connection from ('192.168.164.123', 54026) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000033, 'last_name': 'Noquiana', 'first_name': 'Jampol', 'middle_name': 'Pok2', 'gender': 'Male', 'dob': '1990-01-18', 'age': 35, 'address': 'Maharuhay', 'contact': '9323232323'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 56885)
+INFO:root:Connection from ('192.168.164.123', 54028) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000034, 'last_name': 'Rondina', 'first_name': 'Alyssa', 'middle_name': 'Cuadra', 'gender': 'N/A', 'dob': '1990-01-17', 'age': 35, 'address': 'Pardo Cogon', 'contact': '9232323232'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 62379)
+INFO:root:Connection from ('192.168.164.123', 54216) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250608-004', 'pat_id': 10000032, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-001', 'pat_id': 10000033, 'chckup_type': 'New Check Up'}, {'chck_id': '20250609-002', 'pat_id': 10000034, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 62380)
+INFO:root:Connection from ('192.168.164.123', 54218) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000033, 'last_name': 'Noquiana', 'first_name': 'Jampol', 'middle_name': 'Pok2', 'gender': 'Male', 'dob': '1990-01-18', 'age': 35, 'address': 'Maharuhay', 'contact': '9323232323'}
+INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
+DEBUG:root:Sent discovery response to ('192.168.164.123', 62381)
+INFO:root:Connection from ('192.168.164.123', 54220) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000034, 'last_name': 'Rondina', 'first_name': 'Alyssa', 'middle_name': 'Cuadra', 'gender': 'N/A', 'dob': '1990-01-17', 'age': 35, 'address': 'Pardo Cogon', 'contact': '9232323232'}
