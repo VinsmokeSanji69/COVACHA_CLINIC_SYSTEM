@@ -11,7 +11,8 @@ from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
-# import psutil
+import psutil
+
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -31,6 +32,8 @@ from Models.Patient import Patient
 from Models.Prescription import Prescription
 from Models.Staff import Staff
 from Models.Transaction import Transaction
+from Models.Admin import Admin
+
 
 DB_CONFIG = {
     "host": "localhost",
@@ -71,7 +74,6 @@ class SocketServer:
                             mac = addr.address.replace('-', ':').lower()
                             if mac.count(':') == 5:
                                 return mac
-            print(self.server_mac)
             return self.server_mac  # Fallback to hardcoded MAC
         except Exception:
             return self.server_mac
@@ -112,6 +114,9 @@ class SocketServer:
         logging.info(f"Connection from {address} (Admin: {is_admin})")
 
         db_methods = {
+            #LOGIN
+            "GET_USER": Admin.get_user,
+
             # PATIENT
             "GET_PATIENT_BY_NAME": Patient.get_patient_by_name,
             "GET_ALL_PATIENTS": Patient.get_all_patients,
@@ -204,8 +209,10 @@ class SocketServer:
                         if args_str:
                             try:
                                 args_data = json.loads(args_str)
-                                if isinstance(args_data, dict):
-                                    result = method(**args_data)
+                                if command in {"CREATE_PATIENT", "UPDATE_OR_CREATE_PATIENT", "CREATE_CHECKUP"}:
+                                    result = method(args_data)
+                                elif isinstance(args_data, dict):
+                                    result = method(**args_data)  # Unpack for other methods
                                 elif isinstance(args_data, list):
                                     result = method(*args_data)
                                 else:
@@ -221,7 +228,6 @@ class SocketServer:
                             # Special handling for lab attachments
                             processed_result = []
                             for item in result:
-                                print("Raw item:", item)  # Debug logging
 
                                 if isinstance(item, tuple) and len(item) > 0:
                                     # Handle tuple format [(None,), (<memory>,)] - keep as tuple
@@ -273,18 +279,21 @@ class SocketServer:
 
                             response = processed_result
                         else:
-                            # Normal processing for other commands
-                            if isinstance(result, dict):
-                                # Convert date strings to date objects
-                                for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
-                                    if field in result and isinstance(result[field], str):
-                                        try:
-                                            result[field] = datetime.strptime(result[field], '%Y-%m-%d').date()
-                                        except ValueError:
-                                            pass
-                            response = result if result is not None else {}
-
-                        #print("Final response:", response)
+                            # Handle all response types
+                            if result is None:
+                                response = {}
+                            elif isinstance(result, (dict, list)):
+                                if isinstance(result, dict):
+                                    # Convert date strings to date objects
+                                    for field in ['chck_date', 'doc_dob', 'pat_dob', 'staff_dob']:
+                                        if field in result and isinstance(result[field], str):
+                                            try:
+                                                result[field] = datetime.strptime(result[field], '%Y-%m-%d').date()
+                                            except ValueError:
+                                                pass
+                                response = result
+                            else:
+                                response = result
 
                 except PermissionError as e:
                     msg = f"Permission denied: {str(e)}"

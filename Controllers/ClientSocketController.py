@@ -5,14 +5,15 @@ import uuid
 from functools import lru_cache
 from datetime import datetime, date
 
+import psutil
+
 PORT_DISCOVERY = 50000
 PORT_COMMAND = 6543
 
 # Only allow these server's MAC addresses (uppercase, colon-separated)
 TRUSTED_SERVER_MACS = {
-    "74:04:F1:4E:E6:02"
+    "74:04:F1:4E:E6:02" #Replace with Admin MAC Address
 }
-
 
 class DateAwareJSONDecoder(json.JSONDecoder):
     """Custom JSON decoder that converts specific date fields to datetime.date objects"""
@@ -132,6 +133,7 @@ def discover_server():
         print("❌ No trusted server found")
         return None
 
+
 def send_command(command, *args, **kwargs):
     server_ip = discover_server()
     # Prepare payload based on argument types
@@ -160,10 +162,9 @@ def send_command(command, *args, **kwargs):
 
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(5)  # Increased timeout
+            s.settimeout(5)
             s.connect((server_ip, PORT_COMMAND))
 
-            # Include client MAC in the connection
             client_info = {
                 "client_mac": get_mac_address(),
                 "command": payload
@@ -176,17 +177,34 @@ def send_command(command, *args, **kwargs):
                 if not chunk:
                     break
                 buffer += chunk
-                if chunk.endswith(b'}') or chunk.endswith(b']'):
+                if chunk.endswith(b'}') or chunk.endswith(b']') or chunk.endswith(b'"') or chunk.isdigit():
                     break
 
             if not buffer:
                 return {"status": "error", "message": "Empty response from server"}
 
             try:
-                response = json.loads(buffer.decode(), cls=DateAwareJSONDecoder)
+                # First try to parse as JSON
+                try:
+                    response = json.loads(buffer.decode(), cls=DateAwareJSONDecoder)
+                except json.JSONDecodeError:
+                    # If it fails, check if it's a simple value (like patient ID)
+                    decoded = buffer.decode().strip()
+                    if decoded.isdigit():
+                        response = int(decoded)
+                    else:
+                        response = decoded
+
+                # Standardize response format
+                if isinstance(response, (int, float, str)):
+                    response = response
+                elif response is None:
+                    response = None
+
                 return response
-            except json.JSONDecodeError:
-                return {"status": "error", "message": "Failed to decode JSON response"}
+
+            except Exception as e:
+                return {"status": "error", "message": f"Failed to process response: {str(e)}"}
 
     except (socket.timeout, ConnectionRefusedError) as e:
         return {"status": "error", "message": f"Communication failed: {str(e)}"}
