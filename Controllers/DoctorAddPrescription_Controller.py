@@ -6,8 +6,6 @@ class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Confirm Medication")
-        self.setFixedSize(400, 150)
-
         layout = QVBoxLayout()
         self.message_label = QLabel("Are you sure you want to proceed?")
         layout.addWidget(self.message_label)
@@ -68,16 +66,20 @@ class DoctorAddPrescription(QMainWindow):
         if not intake:
             errors.append("Intake is required.")
 
+        tablets = self.ui.Tablets.text().strip()
+        if not tablets:
+            errors.append("No. of tablets is required.")
+
         return errors
 
     def populate_form(self):
         """Populate form fields with existing prescription data."""
         if not self.prescription_data:
             return
-
         self.ui.MedName.setText(self.prescription_data.get("pres_medicine", ""))
         self.ui.Dosage.setText(self.prescription_data.get("pres_dosage", ""))
         self.ui.Intake.setText(self.prescription_data.get("pres_intake", ""))
+        self.ui.Tablets.setText(self.prescription_data.get("pres_tablets",""))
 
     def validate_and_save_or_update(self):
         """Validate and either save or update the prescription."""
@@ -93,7 +95,8 @@ class DoctorAddPrescription(QMainWindow):
         med_data = {
             "med_name": self.ui.MedName.text().strip(),
             "dosage": self.ui.Dosage.text().strip(),
-            "intake": self.ui.Intake.text().strip()
+            "intake": self.ui.Intake.text().strip(),
+            'tablets': self.ui.Tablets.text().strip()
         }
 
         if self.prescription_data:
@@ -103,7 +106,8 @@ class DoctorAddPrescription(QMainWindow):
                 pres_id,
                 med_data["med_name"],
                 med_data["dosage"],
-                med_data["intake"]
+                med_data["intake"],
+                med_data["tablets"]
             )
             action = "updated"
         else:
