@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox, QApplication, QDialog, QLabel
+from PyQt5.QtCore import Qt
 from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
@@ -83,6 +84,7 @@ class DoctorDiagnosisModify(QMainWindow):
 
     def populate_checkup_info(self, chck_id, chck_bp, chck_temp, chck_height, chck_weight, chckup_type):
         """Populate the check-up information fields."""
+        self.ui.CheckID.setText(chck_id)
         self.ui.BP.setText(chck_bp + ' bpm')
         self.ui.Temperature.setText(chck_temp + ' °C')
         # Ensure the widget name matches the one in the .ui file
@@ -148,30 +150,51 @@ class DoctorDiagnosisModify(QMainWindow):
                     child.widget().deleteLater()
 
     def add_checkboxes_to_frame(self, tests, frame, existing_lab_codes_set):
-        """Add checkboxes for the given tests to the specified frame and pre-check existing ones."""
         layout = frame.layout()
         if layout is None:
             layout = QVBoxLayout(frame)
             frame.setLayout(layout)
 
+        checkbox_style = """
+            QCheckBox {
+                font-size: 14pt;
+                padding: 6px;
+            }
+            QCheckBox::indicator {
+                width: 30px;
+                height: 30px;
+                margin-right: 8px;
+            }
+            QCheckBox::indicator:checked {
+                background-color: #007acc;
+                border: none;
+            }
+            QCheckBox::indicator:unchecked {
+                background-color: transparent;
+                border: 2px solid #007acc;
+            }
+        """
+
         for test in tests:
             lab_code = test["lab_code"]
             lab_name = test["lab_test_name"]
 
-            # Create a QCheckBox for each test
-            checkbox = QCheckBox(f"{lab_name}")
+            checkbox = QCheckBox(lab_name)
             checkbox.setProperty("lab_code", lab_code)
+            checkbox.setStyleSheet(checkbox_style)
+            checkbox.setMinimumSize(35, 35)
+            checkbox.update()
 
-            # Pre-check the checkbox if the lab_code exists in the existing_lab_codes_set
             if lab_code in existing_lab_codes_set:
                 checkbox.setChecked(True)
 
             layout.addWidget(checkbox)
 
     def process_selected_tests(self):
-        """Process selected checkboxes and generate Lab Request PDF if applicable."""
+        """Process selected checkboxes and generate Lab Request PDF for update."""
         selected_lab_names = []
 
+        # Collect selected lab names
         for frame in [self.ui.FirstFrame, self.ui.SecondFrame]:
             layout = frame.layout()
             if layout:
@@ -185,27 +208,31 @@ class DoctorDiagnosisModify(QMainWindow):
                                 lab_name = result[0]['lab_test_name']
                                 selected_lab_names.append(lab_name)
 
-        # If no lab test selected, open modal
         if not selected_lab_names:
-            self.open_doctor_lab_result_modal()
+            self.open_doctor_lab_result_modal()  # or self.ViewRecords() based on behavior
             return
 
-        # Save raw lab codes only (excluding custom entries) to DB
-        raw_lab_codes = [widget.property("lab_code")
-                         for frame in [self.ui.FirstFrame, self.ui.SecondFrame]
-                         for i in range(frame.layout().count())
-                         if isinstance((widget := frame.layout().itemAt(i).widget()), QCheckBox)
-                         and widget.isChecked()
-                         and widget.property("lab_code")]
+        # Raw lab codes for DB update
+        raw_lab_codes = [
+            widget.property("lab_code")
+            for frame in [self.ui.FirstFrame, self.ui.SecondFrame]
+            for i in range(frame.layout().count())
+            if isinstance((widget := frame.layout().itemAt(i).widget()), QCheckBox)
+               and widget.isChecked()
+               and widget.property("lab_code")
+        ]
 
-        success = CheckUp.update_lab_codes(self.checkup_id,
-                                           raw_lab_codes )
+        success = CheckUp.update_lab_codes(self.checkup_id, raw_lab_codes)
         if not success:
             QMessageBox.critical(self, "Error", "Failed to update lab codes.")
             return
 
         try:
-            # Get full patient and doctor info
+            # Get all necessary data
+            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            check_date_obj = checkup_details['chck_date']  # datetime.date
+            folder_name = check_date_obj.strftime("%B %d, %Y")
+
             patient_info = Patient.get_patient_by_id(self.patient_id)
             doctor_info = Doctor.get_doctor(self.doc_id)
             if not patient_info or not doctor_info:
@@ -213,37 +240,52 @@ class DoctorDiagnosisModify(QMainWindow):
                 return
 
             name = self.ui.PatName.text()
-            age = str(patient_info["age"])
-            gender = patient_info["gender"]
-            address = patient_info["address"]
-            today = datetime.today().strftime("%Y-%m-%d")
-            doctor_name = f"{doctor_info['first_name']} {doctor_info['middle_name']} {doctor_info['last_name']}" if doctor_info else "N/A"
+            age = str(patient_info.get("age", ""))
+            gender = patient_info.get("gender", "")
+            address = patient_info.get("address", "")
+            doctor_name = f"{doctor_info['first_name'].capitalize()} {doctor_info['middle_name'].capitalize()} {doctor_info['last_name'].capitalize()}"
 
-            # Output paths
-            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
-            os.makedirs(output_dir, exist_ok=True)
-            word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{name}.docx")
-            pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{name}_LabRequest.pdf")
+            # Create folder
+            base_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            dated_folder_path = os.path.join(base_dir, folder_name)
+            os.makedirs(dated_folder_path, exist_ok=True)
 
-            # Load the template
-            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\LabRequest.docx"
+            word_output = os.path.join(dated_folder_path, f"temp_{self.checkup_id}_{name}.docx")
+            pdf_output = os.path.join(dated_folder_path, f"{self.checkup_id}_{name}_LabRequest.pdf")
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\COVACHA_SYSTEM\Images\LabRequest.docx"
+
+            if not os.path.exists(template_path):
+                QMessageBox.critical(self, "Template Error", "Lab Request template not found.")
+                return
+
+            # Show modal loading dialog
+            loading_dialog = QDialog(self)
+            loading_dialog.setWindowTitle("Please Wait")
+            loading_dialog.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+            loading_dialog.setModal(True)
+            layout = QVBoxLayout()
+            layout.addWidget(QLabel("Generating Lab Request PDF, please wait..."))
+            loading_dialog.setLayout(layout)
+            loading_dialog.setFixedSize(300, 100)
+            loading_dialog.show()
+            QApplication.processEvents()
+
+            # Load and fill Word template
             doc = Document(template_path)
-
-            # Replace patient and doctor placeholders
             placeholders = {
                 "{{name}}": name,
                 "{{age}}": age,
                 "{{gender}}": gender,
                 "{{address}}": address,
-                "{{date}}": today,
+                "{{date}}": check_date_obj.strftime("%B %d, %Y"),
                 "{{doctor_name}}": doctor_name
             }
+
             for p in doc.paragraphs:
                 for key, val in placeholders.items():
                     if key in p.text:
                         p.text = p.text.replace(key, val)
 
-            # Fill in lab requests using test names
             for i in range(1, 11):
                 tag = f"{{{{lab_request{i}}}}}"
                 lab_name = f"• {selected_lab_names[i - 1]}" if i <= len(selected_lab_names) else ""
@@ -251,13 +293,23 @@ class DoctorDiagnosisModify(QMainWindow):
                     if tag in p.text:
                         p.text = p.text.replace(tag, lab_name)
 
-            # Save and convert
             doc.save(word_output)
-            convert(word_output, pdf_output)
 
-            QMessageBox.information(self, "Success", f"PDF Lab Request created:\n{pdf_output}")
-            self.close()
+            try:
+                convert(word_output, pdf_output)
+                os.remove(word_output)
+                loading_dialog.accept()
+                QMessageBox.information(self, "Success", f"PDF Lab Request created:\n{pdf_output}")
+            except Exception as conv_err:
+                loading_dialog.accept()
+                QMessageBox.warning(self, "Conversion Failed",
+                                    f"Word document was saved but PDF conversion failed.\n\n"
+                                    f"Reason: {conv_err}\n\n"
+                                    f"Please ensure Microsoft Word is installed and the file is not open.")
+                return
 
-        except Exception as e:
-            QMessageBox.critical(self, "PDF Error", f"Failed to generate Lab Request PDF: {e}")
+        except Exception as err:
+            QMessageBox.critical(self, "PDF Error", f"Unexpected error while generating Lab Request:\n{err}")
+            return
 
+        self.close()
