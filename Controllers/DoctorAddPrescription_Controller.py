@@ -6,6 +6,7 @@ class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Confirm Medication")
+        self.setFixedSize(400, 150)
         layout = QVBoxLayout()
         self.message_label = QLabel("Are you sure you want to proceed?")
         layout.addWidget(self.message_label)
@@ -42,7 +43,6 @@ class DoctorAddPrescription(QMainWindow):
         self.ui.MedName.setFocus()
         # Set window properties
         self.setWindowTitle("Add/Update Medication")
-        self.setFixedSize(650, 450)
         # Connect buttons
         self.ui.Cancel.clicked.connect(self.close)
         self.ui.Addprescription.clicked.connect(self.validate_and_save_or_update)
