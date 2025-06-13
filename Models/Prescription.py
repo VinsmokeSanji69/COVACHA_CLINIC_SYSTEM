@@ -12,6 +12,7 @@ class Prescription:
             med_name = lab_data.get("med_name")
             dosage = lab_data.get("dosage")
             intake = lab_data.get("intake")
+            tablets = lab_data.get("tablets")
 
             # Validate required fields
             if not all([med_name, dosage, intake]):
@@ -22,11 +23,11 @@ class Prescription:
 
             # SQL query to insert data into the prescription table
             query = """
-                INSERT INTO prescription (chck_id, pres_medicine, pres_dosage, pres_intake)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO prescription (chck_id, pres_medicine, pres_dosage, pres_intake, pres_tablets)
+                VALUES (%s, %s, %s, %s, %s)
             """
             cursor = conn.cursor()
-            cursor.execute(query, (chck_id, med_name, dosage, intake))
+            cursor.execute(query, (chck_id, med_name, dosage, intake, tablets))
             conn.commit()
 
             return True  # Successful insertion
@@ -47,7 +48,7 @@ class Prescription:
         try:
             # SQL query to fetch prescriptions for the given check-up ID
             query = """
-                SELECT pres_medicine, pres_dosage, pres_intake
+                SELECT pres_medicine, pres_dosage, pres_intake, pres_tablets
                 FROM prescription
                 WHERE chck_id = %s
             """
@@ -61,7 +62,8 @@ class Prescription:
                 prescription = {
                     "pres_medicine": row[0],
                     "pres_dosage": row[1],
-                    "pres_intake": row[2]
+                    "pres_intake": row[2],
+                    "pres_tablets": row[3]
                 }
                 prescriptions.append(prescription)
 
@@ -76,19 +78,19 @@ class Prescription:
                 conn.close()
 
     @staticmethod
-    def get_prescription_by_details(chck_id, med_name, dosage, intake):
+    def get_prescription_by_details(chck_id, med_name, dosage, intake, tablets):
         conn = DBConnection.get_db_connection()
         if not conn:
             return None
         try:
             query = """
-                SELECT id AS pres_id, pres_medicine, pres_dosage, pres_intake 
+                SELECT id AS pres_id, pres_medicine, pres_dosage, pres_intake, pres_tablets
                 FROM prescription
-                WHERE chck_id = %s AND pres_medicine = %s AND pres_dosage = %s AND pres_intake = %s
+                WHERE chck_id = %s AND pres_medicine = %s AND pres_dosage = %s AND pres_intake = %s AND pres_tablets = %s
                 LIMIT 1
             """
             cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
-            cursor.execute(query, (chck_id, med_name, dosage, intake))
+            cursor.execute(query, (chck_id, med_name, dosage, intake, tablets))
             result = cursor.fetchone()
             return dict(result) if result else None
         except Exception as e:
@@ -98,18 +100,18 @@ class Prescription:
                 conn.close()
 
     @staticmethod
-    def update_prescription_by_id(pres_id, med_name, dosage, intake):
+    def update_prescription_by_id(pres_id, med_name, dosage, intake, tablets):
         conn = DBConnection.get_db_connection()
         if not conn:
             return False
         try:
             query = """
                     UPDATE prescription 
-                    SET pres_medicine = %s, pres_dosage = %s, pres_intake = %s
+                    SET pres_medicine = %s, pres_dosage = %s, pres_intake = %s, pres_tablets = %s
                     WHERE id = %s
                 """
             cursor = conn.cursor()
-            cursor.execute(query, (med_name, dosage, intake, pres_id))
+            cursor.execute(query, (med_name, dosage, intake, tablets, pres_id))
             conn.commit()
             return True
         except Exception as e:

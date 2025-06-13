@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox, QApplication
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox, QApplication, QDialog, QLabel
+from PyQt5.QtCore import Qt
 from Controllers.DoctorLabResult_Controller import DoctorLabResult
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
@@ -107,6 +108,10 @@ class DoctorDiagnosis(QMainWindow):
             return
 
         try:
+            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            check_date_obj = checkup_details['chck_date']  # datetime.date
+            folder_name = check_date_obj.strftime("%B %d, %Y")
+
             patient_info = Patient.get_patient_by_id(self.patient_id)
             doctor_info = Doctor.get_doctor(self.doc_id)
             if not patient_info or not doctor_info:
@@ -117,28 +122,41 @@ class DoctorDiagnosis(QMainWindow):
             age = str(patient_info.get("age", ""))
             gender = patient_info.get("gender", "")
             address = patient_info.get("address", "")
-            today = datetime.today().strftime("%Y-%m-%d")
             doctor_name = f"{doctor_info['first_name'].capitalize()} {doctor_info['middle_name'].capitalize()} {doctor_info['last_name'].capitalize()}"
 
-            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
-            os.makedirs(output_dir, exist_ok=True)
+            # Create folder
+            base_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            dated_folder_path = os.path.join(base_dir, folder_name)
+            os.makedirs(dated_folder_path, exist_ok=True)
 
-            word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{name}.docx")
-            pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{name}_LabRequest.pdf")
+            pdf_output = os.path.join(dated_folder_path, f"{self.checkup_id}_{name}_LabRequest.pdf")
+            word_output = os.path.join(dated_folder_path, f"temp_{self.checkup_id}_{name}.docx")
 
-            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\LabRequest.docx"
-
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\COVACHA_SYSTEM\Images\LabRequest.docx"
             if not os.path.exists(template_path):
                 QMessageBox.critical(self, "Template Error", "Lab Request template not found.")
                 return
 
+            # Show modal loading dialog that cannot be closed
+            loading_dialog = QDialog(self)
+            loading_dialog.setWindowTitle("Please Wait")
+            loading_dialog.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
+            loading_dialog.setModal(True)
+            layout = QVBoxLayout()
+            layout.addWidget(QLabel("Generating Lab Request PDF, please wait..."))
+            loading_dialog.setLayout(layout)
+            loading_dialog.setFixedSize(300, 100)
+            loading_dialog.show()
+            QApplication.processEvents()
+
+            # Generate Word document
             doc = Document(template_path)
             placeholders = {
                 "{{name}}": name,
                 "{{age}}": age,
                 "{{gender}}": gender,
                 "{{address}}": address,
-                "{{date}}": today,
+                "{{date}}": check_date_obj.strftime("%B %d, %Y"),
                 "{{doctor_name}}": doctor_name
             }
 
@@ -156,19 +174,21 @@ class DoctorDiagnosis(QMainWindow):
 
             doc.save(word_output)
 
-            # Try converting to PDF
             try:
                 convert(word_output, pdf_output)
+                os.remove(word_output)
+                loading_dialog.accept()
                 QMessageBox.information(self, "Success", f"PDF Lab Request created:\n{pdf_output}")
             except Exception as conv_err:
+                loading_dialog.accept()
                 QMessageBox.warning(self, "Conversion Failed",
                                     f"Word document was saved but PDF conversion failed.\n\n"
                                     f"Reason: {conv_err}\n\n"
                                     f"Please ensure Microsoft Word is installed and the file is not open.")
                 return
 
-        except Exception as e:
-            QMessageBox.critical(self, "PDF Error", f"Unexpected error while generating Lab Request:\n{e}")
+        except Exception as err:
+            QMessageBox.critical(self, "PDF Error", f"Unexpected error while generating Lab Request:\n{err}")
             return
 
         self.ViewRecords()
@@ -192,6 +212,7 @@ class DoctorDiagnosis(QMainWindow):
 
     def populate_checkup_info(self, chck_id, chck_bp, chck_temp, chck_height, chck_weight, chckup_type):
         """Populate the check-up information fields."""
+        self.ui.CheckID.setText(chck_id)
         self.ui.BP.setText(chck_bp + ' bpm')
         self.ui.Temperature.setText(chck_temp + ' °C')
         # Ensure the widget name matches the one in the .ui file
@@ -269,6 +290,25 @@ class DoctorDiagnosis(QMainWindow):
             layout = QVBoxLayout(frame)
             frame.setLayout(layout)
 
+        checkbox_style = """
+                        QCheckBox {
+                            font-size: 14pt;
+                            padding: 6px;
+                        }
+                        QCheckBox::indicator {
+                            width: 30px;
+                            height: 30px;
+                            margin-right: 8px;
+                        }
+                        QCheckBox::indicator:checked {
+                            background-color: #007acc;
+                            border: none;
+                        }
+                        QCheckBox::indicator:unchecked {
+                            background-color: transparent;
+                            border: 2px solid #007acc;
+                        }
+                    """
         for test in tests:
             lab_code = test["lab_code"]
             lab_name = test["lab_test_name"]
@@ -276,6 +316,8 @@ class DoctorDiagnosis(QMainWindow):
             # Create a QCheckBox for each test
             checkbox = QCheckBox(f"{lab_name}")
             checkbox.setProperty("lab_code", lab_code)
+            checkbox.setStyleSheet(checkbox_style)
+            checkbox.setMinimumSize(35, 35)
             layout.addWidget(checkbox)
 
     def open_doctor_lab_result_modal(self):

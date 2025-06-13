@@ -81,39 +81,37 @@ class AdminTransactionsController(QWidget):
                     continue
 
                 name = f"{patient['pat_lname']}, {patient['pat_fname']} {patient['pat_mname']}"
-                diagnosis = "On going Check up" if checkup.get("chck_status") == "On going" else checkup.get(
-                    "chck_diagnoses", "")
                 date_str = safe_date_format(checkup["chck_date"])
 
                 if search_term:
-                    combined_text = f"{name} {diagnosis} {date_str}".lower()
+                    combined_text = f"{name} {date_str}".lower()
                     if search_term not in combined_text:
                         continue
 
-                filtered_transactions.append((chck_id, name, diagnosis, date_str))
+                filtered_transactions.append((chck_id, name, date_str))  # Removed diagnosis
 
             # Update the table
             table = self.transactions_ui.TransactionTable
             table.clearContents()
             table.setRowCount(0)
+            table.setColumnCount(3)  # Now only 3 columns: chck_id, name, date
             table.verticalHeader().setVisible(False)
             table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
             if not filtered_transactions:
                 table.setRowCount(1)
-                table.setColumnCount(4)  # Ensure correct column count
+                table.setColumnCount(3)
                 table.setItem(0, 0, QTableWidgetItem("No Records Found"))
-                table.setSpan(0, 0, 1, 4)  # Span across all columns
-                for col in range(1, 4):  # Clear remaining cells
+                table.setSpan(0, 0, 1, 3)  # Span across all columns
+                for col in range(1, 3):
                     table.setItem(0, col, QTableWidgetItem(""))
                 return
 
             table.setRowCount(len(filtered_transactions))
-            for row, (chck_id, name, diagnosis, date_str) in enumerate(filtered_transactions):
+            for row, (chck_id, name, date_str) in enumerate(filtered_transactions):
                 table.setItem(row, 0, QTableWidgetItem(str(chck_id)))
                 table.setItem(row, 1, QTableWidgetItem(name))
-                table.setItem(row, 2, QTableWidgetItem(diagnosis))
-                table.setItem(row, 3, QTableWidgetItem(date_str))
+                table.setItem(row, 2, QTableWidgetItem(date_str))
 
         except Exception as e:
             pass

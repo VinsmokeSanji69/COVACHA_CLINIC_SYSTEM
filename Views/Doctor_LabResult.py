@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Doctor_LabResult(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1165, 815)
+        MainWindow.resize(1165, 1434)
         MainWindow.setStyleSheet("*{\n"
 "    padding: 0px;\n"
 "    margin: 0px;\n"
@@ -224,7 +224,7 @@ class Ui_Doctor_LabResult(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName("scrollArea_3")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, -317, 1104, 896))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 1104, 1222))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self.verticalLayout_24 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_3)
         self.verticalLayout_24.setContentsMargins(0, 10, 0, 5)
@@ -578,6 +578,9 @@ class Ui_Doctor_LabResult(object):
         self.LabReq.setStyleSheet("#LabLabel, #DiagnoseLabel {\n"
 "    color: #2b3752;\n"
 "}\n"
+"#DiagnoseLabel {\n"
+"    padding-top: 6px;\n"
+"}\n"
 "\n"
 "#BPLabel {\n"
 "    color: #2b3752;\n"
@@ -649,11 +652,11 @@ class Ui_Doctor_LabResult(object):
 "    padding: 2px;\n"
 "}\n"
 "\n"
-"#DiagnoseText, #DiagnoseNotes {\n"
-"    border: none;\n"
-"    border-bottom: 1px solid black;\n"
-"    background-color: transparent;\n"
+"#DiagnoseText {\n"
+"    border: 2px solid #2E6E65;\n"
+"    background-color: #F4F7ED;\n"
 "    padding: 2px;\n"
+"    border-radius: 8px;\n"
 "}\n"
 "\n"
 "\n"
@@ -667,6 +670,8 @@ class Ui_Doctor_LabResult(object):
 "    padding: 2px;\n"
 "    text-align: left;\n"
 "}\n"
+"\n"
+"\n"
 "\n"
 "\n"
 "")
@@ -798,7 +803,7 @@ class Ui_Doctor_LabResult(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.frame)
-        self.horizontalLayout_10.setContentsMargins(0, 10, 10, 10)
+        self.horizontalLayout_10.setContentsMargins(0, 10, 0, 10)
         self.horizontalLayout_10.setSpacing(0)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
         self.DiagnoseLabel = QtWidgets.QLabel(self.frame)
@@ -808,37 +813,15 @@ class Ui_Doctor_LabResult(object):
         sizePolicy.setHeightForWidth(self.DiagnoseLabel.sizePolicy().hasHeightForWidth())
         self.DiagnoseLabel.setSizePolicy(sizePolicy)
         self.DiagnoseLabel.setObjectName("DiagnoseLabel")
-        self.horizontalLayout_10.addWidget(self.DiagnoseLabel)
-        self.DiagnoseText = QtWidgets.QLineEdit(self.frame)
+        self.horizontalLayout_10.addWidget(self.DiagnoseLabel, 0, QtCore.Qt.AlignTop)
+        self.DiagnoseText = QtWidgets.QTextEdit(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.DiagnoseText.setFont(font)
         self.DiagnoseText.setObjectName("DiagnoseText")
         self.horizontalLayout_10.addWidget(self.DiagnoseText)
         self.verticalLayout_13.addWidget(self.frame)
         self.verticalLayout_23.addWidget(self.Header_2)
-        self.frame_10 = QtWidgets.QFrame(self.LabReq)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame_10.sizePolicy().hasHeightForWidth())
-        self.frame_10.setSizePolicy(sizePolicy)
-        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_10.setObjectName("frame_10")
-        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.frame_10)
-        self.horizontalLayout_11.setContentsMargins(0, 10, 10, 20)
-        self.horizontalLayout_11.setSpacing(0)
-        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.DiagnoseLabel_2 = QtWidgets.QLabel(self.frame_10)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.DiagnoseLabel_2.sizePolicy().hasHeightForWidth())
-        self.DiagnoseLabel_2.setSizePolicy(sizePolicy)
-        self.DiagnoseLabel_2.setObjectName("DiagnoseLabel_2")
-        self.horizontalLayout_11.addWidget(self.DiagnoseLabel_2)
-        self.DiagnoseNotes = QtWidgets.QLineEdit(self.frame_10)
-        self.DiagnoseNotes.setObjectName("DiagnoseNotes")
-        self.horizontalLayout_11.addWidget(self.DiagnoseNotes)
-        self.verticalLayout_23.addWidget(self.frame_10)
         self.label_2 = QtWidgets.QLabel(self.LabReq)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_23.addWidget(self.label_2)
@@ -915,7 +898,7 @@ class Ui_Doctor_LabResult(object):
 "    border: 2px solid #2E6E65;\n"
 "}")
         self.LabTestTabe_2.setObjectName("LabTestTabe_2")
-        self.LabTestTabe_2.setColumnCount(3)
+        self.LabTestTabe_2.setColumnCount(4)
         self.LabTestTabe_2.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.LabTestTabe_2.setHorizontalHeaderItem(0, item)
@@ -923,6 +906,9 @@ class Ui_Doctor_LabResult(object):
         self.LabTestTabe_2.setHorizontalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
         self.LabTestTabe_2.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.LabTestTabe_2.setHorizontalHeaderItem(3, item)
+        self.LabTestTabe_2.horizontalHeader().setCascadingSectionResizes(False)
         self.LabTestTabe_2.horizontalHeader().setStretchLastSection(True)
         self.verticalLayout_22.addWidget(self.LabTestTabe_2)
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
@@ -950,6 +936,33 @@ class Ui_Doctor_LabResult(object):
         self.verticalLayout_12.addWidget(self.ViewLabResult_4)
         self.horizontalLayout_9.addWidget(self.widget_5, 0, QtCore.Qt.AlignTop)
         self.verticalLayout_23.addWidget(self.widget_4)
+        self.frame_2 = QtWidgets.QFrame(self.LabReq)
+        self.frame_2.setStyleSheet("#PrescriptionText {\n"
+"    padding-top: 6px;\n"
+"    color: #2b3752;\n"
+"}\n"
+"\n"
+"#PrescriptionLabel {\n"
+"    border: 2px solid #2E6E65;\n"
+"    background-color: #F4F7ED;\n"
+"    padding: 2px;\n"
+"    border-radius: 8px;\n"
+"}")
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.frame_2)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.PrescriptionText = QtWidgets.QLabel(self.frame_2)
+        self.PrescriptionText.setObjectName("PrescriptionText")
+        self.horizontalLayout_11.addWidget(self.PrescriptionText)
+        self.PrescriptionLabel = QtWidgets.QTextEdit(self.frame_2)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PrescriptionLabel.setFont(font)
+        self.PrescriptionLabel.setObjectName("PrescriptionLabel")
+        self.horizontalLayout_11.addWidget(self.PrescriptionLabel)
+        self.verticalLayout_23.addWidget(self.frame_2)
         self.verticalLayout_24.addWidget(self.LabReq)
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
         self.verticalLayout_5.addWidget(self.scrollArea_3)
@@ -1033,7 +1046,6 @@ class Ui_Doctor_LabResult(object):
         item.setText(_translate("MainWindow", "Attachment"))
         self.ViewLabResult.setText(_translate("MainWindow", "View"))
         self.DiagnoseLabel.setText(_translate("MainWindow", "Diagnosis:  "))
-        self.DiagnoseLabel_2.setText(_translate("MainWindow", "Notes:  "))
         self.label_2.setText(_translate("MainWindow", "Prescription"))
         item = self.LabTestTabe_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Medicine"))
@@ -1041,8 +1053,11 @@ class Ui_Doctor_LabResult(object):
         item.setText(_translate("MainWindow", "Dosage"))
         item = self.LabTestTabe_2.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Interval"))
+        item = self.LabTestTabe_2.horizontalHeaderItem(3)
+        item.setText(_translate("MainWindow", "No. of Tablets"))
         self.AddPrescription.setText(_translate("MainWindow", "Add"))
         self.EditPrescription.setText(_translate("MainWindow", "Edit"))
         self.ViewLabResult_4.setText(_translate("MainWindow", "Delete"))
+        self.PrescriptionText.setText(_translate("MainWindow", "Prescription Notes:  "))
         self.Cancel.setText(_translate("MainWindow", "Cancel"))
         self.DiagnoseButton.setText(_translate("MainWindow", "Diagnose"))

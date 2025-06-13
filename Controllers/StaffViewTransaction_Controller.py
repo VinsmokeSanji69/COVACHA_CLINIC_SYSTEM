@@ -139,7 +139,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             self.ui.DoctorCharge.setText("₱ " + str(doctor["rate"]))  # Ensure string conversion
 
             self.ui.Diagnosis.setText(str(checkup.get("chck_diagnoses", "N/A")))  # Ensure string conversion
-            self.ui.DiagnosisNotes.setText(str(checkup["chck_notes"]))  # Ensure string conversion
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 
@@ -157,7 +156,6 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             # self.ui.DocSpecialty,
             self.ui.DoctorCharge,
             self.ui.Diagnosis,
-            self.ui.DiagnosisNotes,
             self.ui.SubtotalAmount,
             self.ui.DiscountedAmount,
             self.ui.TotalAmount,
@@ -188,44 +186,48 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
     def load_LabCharge_Table(self):
         """Display the lab name and charge based on the chck_id."""
         try:
-            # Ensure that self.chck_id is set
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
 
-            if not lab_tests:
-                return
-
-            # Clear the table before populating it
+            # Clear previous contents
             self.ui.LabChargeTable.clearContents()
             self.ui.LabChargeTable.setRowCount(0)
 
-            # Step 2: Fetch lab name and price for each lab code
+            if not lab_tests:
+                self.ui.LabChargeTable.setRowCount(1)
+                self.ui.LabChargeTable.setColumnCount(2)
+                self.ui.LabChargeTable.setSpan(0, 0, 1, 2)  # Span across 2 columns
+
+                no_data_item = QtWidgets.QTableWidgetItem("This Transaction Has No Laboratory Test")
+                no_data_item.setTextAlignment(QtCore.Qt.AlignCenter)
+                no_data_item.setFlags(no_data_item.flags() ^ QtCore.Qt.ItemIsEditable)  # Make read-only
+                self.ui.LabChargeTable.setItem(0, 0, no_data_item)
+
+                self.ui.LabChargeTable.resizeColumnsToContents()
+                return
+
             for row, lab_test in enumerate(lab_tests):
                 lab_code = lab_test['lab_code']
                 lab_attachment = lab_test['lab_attachment']
 
-                # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
                 if not lab_details:
                     continue
 
-                # Extract lab name and price
                 lab_name = lab_details[0]['lab_test_name']
                 lab_price = lab_details[1]['lab_price']
 
-                # Insert data into the table
                 self.ui.LabChargeTable.insertRow(row)
-                self.ui.LabChargeTable.setItem(row, 0, QtWidgets.QTableWidgetItem(lab_name))  # Lab Name
-                self.ui.LabChargeTable.setItem(row, 1, QtWidgets.QTableWidgetItem(str(lab_price)))  # Lab Price
+                self.ui.LabChargeTable.setItem(row, 0, QtWidgets.QTableWidgetItem(lab_name))
+                self.ui.LabChargeTable.setItem(row, 1, QtWidgets.QTableWidgetItem(str(lab_price)))
 
-            # Resize columns to fit content
             self.ui.LabChargeTable.resizeColumnsToContents()
 
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load LabCharge Table: {e}")
+
 
     def calculate_total_lab_charge(self):
         """Calculate the total lab charge for the current check-up and display it in TotalLabCharge."""
