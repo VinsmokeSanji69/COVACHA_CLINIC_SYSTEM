@@ -91,14 +91,15 @@ class StaffAddCheckUp(QMainWindow):
         """
         fname = self.ui.Fname.text().strip()
         lname = self.ui.Lname.text().strip()
+        bdate = self.ui.Dob.date().toString("yyyy-MM-dd")
 
         # Do nothing if either Fname or Lname is empty
-        if not fname or not lname:
+        if not fname or not lname or not bdate:
             return
 
         try:
             # Check if the patient already exists in the database
-            patient = Patient.get_patient_by_name(fname, lname)
+            patient = Patient.get_patient_by_name(fname, lname, bdate)
 
             if patient:
                 # Ensure the response is a dictionary
@@ -127,7 +128,6 @@ class StaffAddCheckUp(QMainWindow):
                 # Clear fields for a new patient
                 self.ui.Mname.clear()
                 self.ui.Gender.setCurrentIndex(-1)
-                self.ui.Dob.setDate(QDate(1990, 1, 1))
                 self.ui.Address.clear()
                 self.ui.Contact.clear()
                 self.ui.Age.clear()
@@ -138,7 +138,7 @@ class StaffAddCheckUp(QMainWindow):
                     "last_name": lname,
                     "middle_name": "",
                     "gender": "",
-                    "dob": QDate(1990, 1, 1).toString("yyyy-MM-dd"),
+                    "dob": bdate,
                     "address": "",
                     "contact": ""
                 })
@@ -175,19 +175,9 @@ class StaffAddCheckUp(QMainWindow):
         elif len(contact) != 10 or not contact.isdigit():
             errors.append("Contact number must be exactly 10 digits (zero not included)")
 
-        # Medical details validation
-        if not self.ui.BP.text().strip():
-            errors.append("Blood Pressure is required")
-        if not self.ui.Height.text().strip():
-            errors.append("Height is required")
-        if not self.ui.Weight.text().strip():
-            errors.append("Weight is required")
-        if not self.ui.Temp.text().strip():
-            errors.append("Temperature is required")
-
         # ID validation
         if not self.ui.ID.text().strip():
-            errors.append("Patient ID is required. Please ensure first and last names are entered.")
+            errors.append("Patient ID is required. Please ensure first and last names, and birthdate are entered.")
 
         # Display errors
         if errors:
