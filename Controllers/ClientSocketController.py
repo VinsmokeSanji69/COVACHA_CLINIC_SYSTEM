@@ -5,7 +5,7 @@ import uuid
 from functools import lru_cache
 from datetime import datetime, date
 
-import psutil
+import psutils
 
 PORT_DISCOVERY = 50000
 PORT_COMMAND = 6543
