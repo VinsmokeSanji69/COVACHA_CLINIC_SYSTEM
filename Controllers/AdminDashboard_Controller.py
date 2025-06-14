@@ -303,46 +303,6 @@ class AdminDashboardController(QMainWindow):
             self.dashboard_ui.AdultPercent.setText(f"{adult * 100 // total}%")
             self.dashboard_ui.ElderlyPercent.setText(f"{elderly * 100 // total}%")
 
-            # TOP 3 DIAGNOSES LOGIC
-            diagnosis_counts = {}
-
-            # Count occurrences of each diagnosis
-            for checkup in checkups:
-                diagnosis = checkup.get('chck_diagnoses')
-                if diagnosis:  # Only count if diagnosis exists
-                    diagnosis_counts[diagnosis] = diagnosis_counts.get(diagnosis, 0) + 1
-
-            # Sort diagnoses by count (descending) and get top 3
-            # Get top 3 diagnoses (sorted by frequency)
-            top_diagnoses = sorted(
-                [(d, c) for d, c in diagnosis_counts.items() if d],  # Filter out empty diagnoses
-                key=lambda x: x[1],
-                reverse=True
-            )[:3]
-
-            # Initialize all values as empty strings
-            diagnosis_data = [
-                {"name": " ", "percent": " "},  # Diagnosis 1
-                {"name": " ", "percent": " "},  # Diagnosis 2
-                {"name": " ", "percent": " "}  # Diagnosis 3
-            ]
-
-            # Fill available diagnoses
-            for i, (diagnosis, count) in enumerate(top_diagnoses):
-                if i < 3:  # Only fill up to 3 slots
-                    diagnosis_data[i] = {
-                        "name": diagnosis if diagnosis else " ",
-                        "percent": f"{round((count / len(checkups)) * 100)}%" if len(checkups) > 0 else " "
-                    }
-
-            # Update UI
-            self.dashboard_ui.Diagnosis1.setText(diagnosis_data[0]["name"])
-            self.dashboard_ui.Diagnosis1Percent.setText(diagnosis_data[0]["percent"])
-            self.dashboard_ui.Diagnosis2.setText(diagnosis_data[1]["name"])
-            self.dashboard_ui.Diagnosis2Percent.setText(diagnosis_data[1]["percent"])
-            self.dashboard_ui.Diagnosis3.setText(diagnosis_data[2]["name"])
-            self.dashboard_ui.Diagnosis3Percent.setText(diagnosis_data[2]["percent"])
-
             # Count patients per doctor
             doctor_patient_counts = {}
             for checkup in checkups:
