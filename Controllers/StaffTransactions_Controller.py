@@ -51,7 +51,7 @@ class StaffTransactions(QWidget):
 
                 doc_id = checkup['doc_id']
                 doctor = Doctor.get_doctor(doc_id)
-                # doctor = DataRequest.send_command("GET_DOCTOR", doc_id)
+                # doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                 if not doctor:
                     continue
@@ -104,7 +104,7 @@ class StaffTransactions(QWidget):
 
                 doc_id = checkup['doc_id']
                 doctor = Doctor.get_doctor(doc_id)
-                # doctor = DataRequest.send_command("GET_DOCTOR", doc_id)
+                # doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                 if not doctor:
                     continue

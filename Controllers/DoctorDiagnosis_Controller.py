@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox, QApplication, QDialog, QLabel
 from PyQt5.QtCore import Qt
+
+from Controllers.ClientSocketController import DataRequest
 from Controllers.DoctorLabResult_Controller import DoctorLabResult
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
@@ -37,6 +39,8 @@ class DoctorDiagnosis(QMainWindow):
         try:
             # Step 1: Fetch check-up details
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
 
@@ -50,6 +54,8 @@ class DoctorDiagnosis(QMainWindow):
 
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
+            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
 
@@ -86,6 +92,8 @@ class DoctorDiagnosis(QMainWindow):
                         lab_code = widget.property("lab_code")
                         if lab_code:
                             result = Laboratory.get_test_by_labcode(lab_code)
+                            # result = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+
                             if result:
                                 lab_name = result[0]['lab_test_name']
                                 selected_lab_names.append(lab_name)
@@ -109,11 +117,17 @@ class DoctorDiagnosis(QMainWindow):
 
         try:
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+
             check_date_obj = checkup_details['chck_date']  # datetime.date
             folder_name = check_date_obj.strftime("%B %d, %Y")
 
             patient_info = Patient.get_patient_by_id(self.patient_id)
+            # patient_info = DataRequest.send_command("GET_PATIENT_BY_ID", self.patient_id)
+
             doctor_info = Doctor.get_doctor(self.doc_id)
+            # doctor_info = DataRequest.send_command("GET_DOCTOR_BY_ID", self.doc_id)
+
             if not patient_info or not doctor_info:
                 QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
                 return
@@ -228,6 +242,7 @@ class DoctorDiagnosis(QMainWindow):
         try:
             # Fetch all lab tests
             tests = Laboratory.get_all_test()
+            # tests = DataRequest.send_command("GET_ALL_TEST")
 
             # Count the total number of lab tests
             total_tests = Laboratory.count_all_test()

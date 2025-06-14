@@ -111,7 +111,7 @@ class StaffTransactionModal(QMainWindow):
 
                     # Doctor details
                     doctor = Doctor.get_doctor(doc_id)
-                    # doctor = DataRequest.send_command("GET_DOCTOR", doc_id)
+                    # doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                     if not doctor:
                         docFullname = "Unknown Doctor"

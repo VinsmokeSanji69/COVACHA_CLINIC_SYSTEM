@@ -109,7 +109,7 @@ class StaffAddCheckUp(QMainWindow):
         try:
             # Check if the patient already exists in the database
             patient = Patient.get_patient_by_name(fname, lname, dob)
-            patient = DataRequest.send_command("GET_PATIENT_BY_NAME", [fname, lname, dob])
+            # patient = DataRequest.send_command("GET_PATIENT_BY_NAME", [fname, lname, dob])
 
             if patient:
                 # Ensure the response is a dictionary

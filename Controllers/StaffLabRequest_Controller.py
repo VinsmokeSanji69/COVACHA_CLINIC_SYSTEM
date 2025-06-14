@@ -86,7 +86,7 @@ class StaffLabRequest(QWidget):
                 # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
                 doctor_details = Doctor.get_doctor(doc_id)
-                doctor_details = DataRequest.send_command("GET_DOCTOR", doc_id)
+                # doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                 if not patient_details or not doctor_details:
                     continue
