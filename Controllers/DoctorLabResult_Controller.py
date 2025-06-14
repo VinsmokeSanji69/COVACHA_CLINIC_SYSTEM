@@ -659,7 +659,7 @@ class DoctorLabResult(QMainWindow):
             folder_name = check_date_obj.strftime("%B %d, %Y")
 
             # Create a folder for that date
-            base_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            base_dir = r"\\DXN-XNT\Shared"
             dated_folder_path = os.path.join(base_dir, folder_name)
             os.makedirs(dated_folder_path, exist_ok=True)
 
@@ -728,7 +728,7 @@ class DoctorLabResult(QMainWindow):
                 check_date_obj = datetime.strptime(check_date_raw, "%Y-%m-%d")
             folder_name = check_date_obj.strftime("%B %d, %Y")
 
-            base_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            base_dir = r"\\DXN-XNT\Shared"
             dated_folder_path = os.path.join(base_dir, folder_name)
             os.makedirs(dated_folder_path, exist_ok=True)
 

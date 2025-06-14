@@ -118,7 +118,8 @@ class StaffAddCheckUp(QMainWindow):
         if (self.ui.Fname.text().strip() and
                 self.ui.Lname.text().strip() and
                 not current_dob.isNull() and
-                current_dob != default_dob):
+                current_dob != default_dob and
+                not self.ui.ID.text().strip()):
             self.check_patient_existence()
 
     def check_patient_existence(self):
@@ -218,8 +219,6 @@ class StaffAddCheckUp(QMainWindow):
             self.ui.Fname.setFocus()
         if not self.ui.Lname.text().strip():
             errors.append("Last name is required")
-        if not self.ui.Mname.text().strip():
-            errors.append("Middle name is required")
 
         # Contact validation
         contact = self.ui.Contact.text().strip()
