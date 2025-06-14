@@ -11,7 +11,7 @@ from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
-import psutil
+import psutils
 
 
 

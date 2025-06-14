@@ -117,7 +117,6 @@ class DoctorRecords(QWidget):
         for row, checkup in enumerate(sorted_checkups):
             chck_id = checkup['chck_id']
             pat_id = checkup['pat_id']
-            chck_diagnoses = checkup['chck_diagnoses']
             chck_date = checkup['chck_date']
 
             # Fetch patient details
@@ -132,9 +131,17 @@ class DoctorRecords(QWidget):
             self.checkup_ui.DoneTable.insertRow(row)
             self.checkup_ui.DoneTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(chck_id)))
             self.checkup_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(full_name))
-            self.checkup_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(chck_diagnoses))
-            self.checkup_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(str(chck_date)))
 
+            # Format and add date with center alignment
+            if isinstance(chck_date, str):
+                chck_date = datetime.datetime.strptime(chck_date, "%Y-%m-%d")
+
+            # Create QTableWidgetItem for the date
+            # Correct
+            date_item = QtWidgets.QTableWidgetItem(self.safe_date_format(chck_date, "%B %d, %Y"))
+            # date_item.setTextAlignment(QtCore.Qt.AlignCenter)  # Center-align the date
+
+            self.checkup_ui.DoneTable.setItem(row, 2, date_item)
     def open_doctor_lab_result_modal(self):
         """Open the DoctorLabResult modal."""
         try:
@@ -198,3 +205,17 @@ class DoctorRecords(QWidget):
             self.doctor_diagnosis_modify.show()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open the modify check-up modal: {e}")
+
+    def safe_date_format(self, date_value, date_format="%B %d, %Y"):
+        if not date_value:
+            return "N/A"
+        if isinstance(date_value, str):
+            try:
+                # Try parsing if it's a date string
+                from datetime import datetime
+                return datetime.strptime(date_value, "%Y-%m-%d").strftime(date_format)
+            except ValueError:
+                return date_value  # Return as-is if parsing fails
+        elif hasattr(date_value, 'strftime'):  # If it's a date/datetime object
+            return date_value.strftime(date_format)
+        return "N/A"

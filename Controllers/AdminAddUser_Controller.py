@@ -186,9 +186,11 @@ class AdminAddUserController(QMainWindow):
             if not errors:  # Only set focus if first name is valid
                 self.ui.Lname.setFocus()
         if not self.ui.Mname.text().strip():
-            errors.append("Mast name is required")
+            errors.append("Middle name is required")
             if not errors:  # Only set focus if first name is valid
                 self.ui.Mname.setFocus()
+
+
         # Email validation
         email = self.ui.Email.text().strip()
         if not email:
