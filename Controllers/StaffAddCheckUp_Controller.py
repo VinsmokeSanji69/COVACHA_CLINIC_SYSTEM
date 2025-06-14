@@ -62,6 +62,7 @@ class StaffAddCheckUp(QMainWindow):
         self.ui.Contact.setValidator(contact_validator)
         self.ui.Contact.setPlaceholderText("10 digits (zero not included)")
         self.ui.Contact.setMaxLength(10)
+        self.ui.Dob.setDate(QDate(1900, 1, 1))
         self.ui.Dob.dateChanged.connect(self.calculate_age)
 
     def calculate_age(self):
@@ -80,20 +81,32 @@ class StaffAddCheckUp(QMainWindow):
         self.ui.Cancel.clicked.connect(self.close)
 
         # Use editingFinished instead of textChanged to avoid premature checks
-        self.ui.Fname.editingFinished.connect(self.check_patient_existence)
-        self.ui.Lname.editingFinished.connect(self.check_patient_existence)
+        self.ui.Fname.editingFinished.connect(self.check_fields_and_validate)
+        self.ui.Lname.editingFinished.connect(self.check_fields_and_validate)
+        self.ui.Dob.dateChanged.connect(self.check_fields_and_validate)
 
-        # Listen for changes in the Dob field to calculate age
         self.ui.Dob.dateChanged.connect(self.calculate_age)
+
+    def check_fields_and_validate(self):
+        # Default DOB check
+        default_dob = QDate(1900, 1, 1)
+        current_dob = self.ui.Dob.date()
+
+        # Check if all fields are filled and DOB is not default
+        if (self.ui.Fname.text().strip() and
+                self.ui.Lname.text().strip() and
+                not current_dob.isNull() and
+                current_dob != default_dob):
+            self.check_patient_existence()
 
     def check_patient_existence(self):
         """
-        Check if a patient exists based on Fname, Lname, and DOB, and prefill the form if they do.
+        Check if a patient exists based on Fname and Lname and prefill the form if they do.
         If the patient does not exist, generate a new patient ID.
         """
         fname = self.ui.Fname.text().strip()
         lname = self.ui.Lname.text().strip()
-        dob = self.ui.Dob.date()  # Get QDate object
+        dob = self.ui.Dob.date().toString()
 
         # Validate required fields
         if not fname:
@@ -102,7 +115,7 @@ class StaffAddCheckUp(QMainWindow):
         if not lname:
             QMessageBox.warning(self, "Missing Information", "Please enter the Last Name.")
             return
-        if dob.isNull():  # Check if DOB is not set
+        if not dob:  # Check if DOB is not set
             QMessageBox.warning(self, "Missing Information", "Please select a Date of Birth.")
             return
 
@@ -138,21 +151,29 @@ class StaffAddCheckUp(QMainWindow):
                 # Clear fields for a new patient
                 self.ui.Mname.clear()
                 self.ui.Gender.setCurrentIndex(-1)
-                self.ui.Dob.setDate(QDate(1990, 1, 1))
                 self.ui.Address.clear()
                 self.ui.Contact.clear()
                 self.ui.Age.clear()
 
                 # Generate a new patient ID
-                new_pat_id = Patient.create_new_patient({
+                new_pat_id = Patient.create_new_patient( {
                     "first_name": fname,
                     "last_name": lname,
                     "middle_name": "",
                     "gender": "",
-                    "dob": QDate(1990, 1, 1).toString("yyyy-MM-dd"),
+                    "dob": dob,
                     "address": "",
                     "contact": ""
                 })
+                # new_pat_id = DataRequest.send_command("CREATE_PATIENT", {
+                #     "first_name": fname,
+                #     "last_name": lname,
+                #     "middle_name": "",
+                #     "gender": "",
+                #     "dob": dob,
+                #     "address": "",
+                #     "contact": ""
+                # })
 
                 if new_pat_id:
                     self.ui.ID.setText(str(new_pat_id))
@@ -183,19 +204,9 @@ class StaffAddCheckUp(QMainWindow):
         elif len(contact) != 10 or not contact.isdigit():
             errors.append("Contact number must be exactly 10 digits (zero not included)")
 
-        # Medical details validation
-        if not self.ui.BP.text().strip():
-            errors.append("Blood Pressure is required")
-        if not self.ui.Height.text().strip():
-            errors.append("Height is required")
-        if not self.ui.Weight.text().strip():
-            errors.append("Weight is required")
-        if not self.ui.Temp.text().strip():
-            errors.append("Temperature is required")
-
         # ID validation
         if not self.ui.ID.text().strip():
-            errors.append("Patient ID is required. Please ensure first and last names are entered.")
+            errors.append("Patient ID is required. Please ensure first and last names, and birthdate are entered.")
 
         # Display errors
         if errors:
@@ -260,7 +271,7 @@ class StaffAddCheckUp(QMainWindow):
         self.ui.ID.clear()
         self.ui.Gender.setCurrentIndex(0)
         self.ui.CheckType.setCurrentIndex(0)
-        self.ui.Dob.setDate(QDate(1990, 1, 1))
+        self.ui.Dob.setDate(QDate(1900, 1, 1))
         self.ui.Address.clear()
         self.ui.Contact.clear()
         self.ui.BP.clear()

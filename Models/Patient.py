@@ -3,8 +3,7 @@ from Models.DB_Connection import DBConnection
 
 class Patient:
     @staticmethod
-    def get_patient_by_name(fname, lname):
-        """Get patient details by first and last name (case-insensitive)"""
+    def get_patient_by_name(fname, lname, birthdate_str):
         conn = DBConnection.get_db_connection()
         if not conn:
             return None
@@ -18,9 +17,11 @@ class Patient:
                     SELECT pat_id, pat_lname, pat_fname, pat_mname, pat_gender, 
                            pat_dob, pat_address, pat_contact 
                     FROM patient 
-                    WHERE LOWER(pat_fname) = %s AND LOWER(pat_lname) = %s;
+                    WHERE LOWER(pat_fname) = %s 
+                    AND LOWER(pat_lname) = %s 
+                    AND pat_dob = %s;
                 """
-                cursor.execute(query, (fname_lower, lname_lower))
+                cursor.execute(query, (fname_lower, lname_lower, birthdate_str))
                 result = cursor.fetchone()
 
                 if result:
@@ -30,13 +31,14 @@ class Patient:
                         "first_name": result[2],
                         "middle_name": result[3],
                         "gender": result[4],
-                        "dob": result[5],
+                        "dob": result[5].strftime('%Y-%m-%d') if result[5] else None,
                         "address": result[6],
                         "contact": result[7]
                     }
                 return None
 
         except Exception as e:
+            print(f"Error fetching patient: {e}")
             return None
         finally:
             if conn:
