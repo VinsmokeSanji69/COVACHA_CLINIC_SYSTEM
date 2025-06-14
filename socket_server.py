@@ -142,10 +142,12 @@ class SocketServer:
             "CREATE_PATIENT": Patient.create_new_patient,
             "UPDATE_OR_CREATE_PATIENT": Patient.update_or_create_patient,
             "GET_PATIENT_ID": Patient.get_patient_by_name,
+            "DELETE_PATIENT": Patient.delete_patient_by_id,
 
             # DOCTOR
             "GET_DOCTOR": Doctor.get_doctor,
             "GET_DOCTOR_BY_ID": Doctor.get_doctor,
+            "COUNT_TOTAL_PATIENT_BY_DOCTOR": Doctor.count_total_patients_by_doctor,
 
             # STAFF
             "GET_STAFF": Staff.get_staff,
@@ -174,6 +176,7 @@ class SocketServer:
 
             # TRANSACTIONS
             "CREATE_TRANSACTION": Transaction.add_transaction,
+            "UPDATE_TRANSACTION_STATUS": Transaction.update_transaction_status,
             "UPDATE_TRANSACTION": Transaction.update_transaction,
             "GET_TRANSACTION_BY_CHECKUP_ID": Transaction.get_transaction_by_chckid,
             "GET_ALL_TRANSACTION": Transaction.get_all_transaction,
@@ -181,6 +184,9 @@ class SocketServer:
             # PRESCRIPTIONS
             "CREATE_PRESCRIPTION": Prescription.add_presscription,
             "GET_PRESCRIPTION_BY_CHECKUP": Prescription.display_prescription,
+            "UPDATE_PRESCRIPTION": Prescription.update_prescription_by_id,
+            "GET_PRESCRIPTION_BY_DETAILS": Prescription.get_prescription_by_details,
+            "DELETE_PRESCRIPTION": Prescription.delete_prescription_by_id,
 
             # LABORATORY TESTS
             "GET_LAST_LAB_ID": Laboratory.get_last_lab_id,

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QDialogButtonBox, QVBoxLayout, QLabel, QDialog, QMessageBox
-from Models.Prescription import Prescription
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_AddPrescription import Ui_MainWindow as DoctorAddPrescriptionUI
 
 class ConfirmationDialog(QDialog):
@@ -88,17 +89,18 @@ class DoctorAddPrescription(QMainWindow):
         if self.prescription_data:
             # Edit mode: update existing prescription
             pres_id = self.prescription_data.get("pres_id")
-            success = Prescription.update_prescription_by_id(
+            success = DataRequest.send_command("UPDATE_PRESCRIPTION", [
                 pres_id,
                 med_data["med_name"],
                 med_data["dosage"],
                 med_data["intake"],
-                med_data["tablets"]
+                med_data["tablets"]]
             )
             action = "updated"
         else:
             # Add mode: insert new prescription
-            success = Prescription.add_presscription(self.chck_id, med_data)
+            #success = Prescription.add_presscription(self.chck_id, med_data)
+            success = DataRequest.send_command("CREATE_PRESCRIPTION",[self.chck_id, med_data])
             action = "added"
 
         if success:

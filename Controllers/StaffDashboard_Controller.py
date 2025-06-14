@@ -15,7 +15,6 @@ from datetime import datetime
 from Views.Staff_LabRequest import Ui_Staff_LabRequest
 from Views.Staff_Transactions import Ui_Staff_Transactions
 
-
 class StaffDashboardController(QMainWindow):
     def __init__(self, staff_id=None, login_window=None):
         super().__init__()

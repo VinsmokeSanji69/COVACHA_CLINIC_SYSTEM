@@ -1,3 +1,5 @@
+import datetime
+
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMessageBox, QWidget
@@ -7,9 +9,6 @@ from Views.Doctor_Records import Ui_Doctor_Records as DoctorRecordsUI
 from Controllers.DoctorLabResult_Controller import DoctorLabResult
 from Controllers.DoctorModifyCheckUp_Controller import DoctorDiagnosisModify
 from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-
 
 class DoctorRecords(QWidget):
     def __init__(self, doc_id, checkup_ui):
@@ -29,8 +28,8 @@ class DoctorRecords(QWidget):
 
 
         # Fetch all check-ups for the doctor
-        checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
-        # checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+        #checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+        checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
 
         if not checkups:
             return
@@ -54,8 +53,8 @@ class DoctorRecords(QWidget):
         """Refresh both AcceptedCheckUp and DoneTable with the latest data without applying any filters or sorting."""
         try:
             # Fetch all check-ups for the doctor
-            checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
-            # checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+            #checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+            checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
 
             if not checkups:
                 return
@@ -97,8 +96,8 @@ class DoctorRecords(QWidget):
             chckup_type = checkup['chckup_type']
 
             # Fetch patient details
-            patient = Patient.get_patient_details(pat_id)
-            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+            #patient = Patient.get_patient_details(pat_id)
+            patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient:
                 continue
@@ -128,8 +127,8 @@ class DoctorRecords(QWidget):
             chck_date = checkup['chck_date']
 
             # Fetch patient details
-            patient = Patient.get_patient_details(pat_id)
-            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+            #patient = Patient.get_patient_details(pat_id)
+            patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient:
                 continue

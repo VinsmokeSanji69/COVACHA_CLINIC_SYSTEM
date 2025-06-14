@@ -1,3 +1,4 @@
+import base64
 import socket
 import json
 import uuid
@@ -197,11 +198,20 @@ def send_command(command, *args, **kwargs):
                     else:
                         response = decoded
 
-                # Standardize response format
-                if isinstance(response, (int, float, str)):
-                    response = response
-                elif response is None:
-                    response = None
+                # Process lab_attachment if present
+                def process_lab_attachment(item):
+                    if isinstance(item, dict) and 'lab_attachment' in item and isinstance(item['lab_attachment'], str):
+                        try:
+                            item['lab_attachment'] = memoryview(base64.b64decode(item['lab_attachment']))
+                        except Exception as e:
+                            item['lab_attachment_error'] = f"Failed to decode: {str(e)}"
+                            item['lab_attachment'] = None
+                    return item
+
+                if isinstance(response, list):
+                    response = [process_lab_attachment(item) if isinstance(item, dict) else item for item in response]
+                elif isinstance(response, dict):
+                    response = process_lab_attachment(response)
 
                 return response
 
@@ -212,6 +222,7 @@ def send_command(command, *args, **kwargs):
         return {"status": "error", "message": f"Communication failed: {str(e)}"}
     except Exception as e:
         return {"status": "error", "message": f"Unexpected error: {str(e)}"}
+
 
 
 def verify_server_connection(ip):

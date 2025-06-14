@@ -3,9 +3,6 @@ from PyQt5 import QtWidgets, QtCore
 from Controllers.ClientSocketController import DataRequest
 from Views.Staff_LabRequest import Ui_Staff_LabRequest as StaffLabRequestUI
 from PyQt5.QtWidgets import QMessageBox, QWidget
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
 from Controllers.StaffAddLabAttachment_Controller import StaffAddAttachment
 
 class StaffLabRequest(QWidget):
@@ -67,26 +64,26 @@ class StaffLabRequest(QWidget):
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
         try:
-            rows = CheckUp.get_checkups_with_lab_requests()
-            # rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
+            #rows = CheckUp.get_checkups_with_lab_requests()
+            rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
             checkup_ids = [row[0] for row in rows]
 
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
             for checkup_id in checkup_ids:
-                checkup_details = CheckUp.get_checkup_details(checkup_id)
-                # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", checkup_id)
+                #checkup_details = CheckUp.get_checkup_details(checkup_id)
+                checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", checkup_id)
                 if not checkup_details:
                     continue
 
                 pat_id = checkup_details['pat_id']
                 doc_id = checkup_details['doc_id']
 
-                patient_details = Patient.get_patient_details(pat_id)
-                # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+                #patient_details = Patient.get_patient_details(pat_id)
+                patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
-                doctor_details = Doctor.get_doctor(doc_id)
-                # doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
+                #doctor_details = Doctor.get_doctor(doc_id)
+                doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                 if not patient_details or not doctor_details:
                     continue
@@ -95,8 +92,8 @@ class StaffLabRequest(QWidget):
                 doctor_name = f"{doctor_details['last_name'].capitalize()}, {doctor_details['first_name'].capitalize()}"
 
                 # Use static method to fetch lab attachments
-                lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
-                # lab_attachments = DataRequest.send_command("GET_LAB_ATTACHMENTS_BY_CHECKUP", checkup_id)
+                #lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
+                lab_attachments = DataRequest.send_command("GET_LAB_ATTACHMENTS_BY_CHECKUP", checkup_id)
 
                 # Determine status
                 if not lab_attachments:

@@ -4,9 +4,8 @@ from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
 from Controllers.ClientSocketController import DataRequest
-from Models.Patient import Patient
-from Models.CheckUp import CheckUp
 from Views.Staff_AddCheckUp import Ui_Staff_AddCheckUp as StaffCheckUpUi
+
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -96,7 +95,8 @@ class StaffAddCheckUp(QMainWindow):
             patient_id = self.ui.ID.text().strip()
             if patient_id:
                 try:
-                    success = Patient.delete_patient_by_id(int(patient_id))
+                    #success = Patient.delete_patient_by_id(int(patient_id))
+                    success = DataRequest.send_command("DELETE_PATIENT",int(patient_id))
                     if success:
                         QMessageBox.information(self, "Cancelled", "New patient entry was discarded.")
                     else:
@@ -143,8 +143,8 @@ class StaffAddCheckUp(QMainWindow):
 
         try:
             # Check if the patient already exists in the database
-            patient = Patient.get_patient_by_name(fname, lname, dob)
-            # patient = DataRequest.send_command("GET_PATIENT_BY_NAME", [fname, lname, dob])
+            #patient = Patient.get_patient_by_name(fname, lname, dob)
+            patient = DataRequest.send_command("GET_PATIENT_BY_NAME", [fname, lname, dob])
 
             if patient:
                 # Ensure the response is a dictionary
@@ -179,16 +179,7 @@ class StaffAddCheckUp(QMainWindow):
                 self.ui.Age.clear()
 
                 # Generate a new patient ID
-                new_pat_id = Patient.create_new_patient( {
-                    "first_name": fname,
-                    "last_name": lname,
-                    "middle_name": "",
-                    "gender": "",
-                    "dob": dob,
-                    "address": "",
-                    "contact": ""
-                })
-                # new_pat_id = DataRequest.send_command("CREATE_PATIENT", {
+                # new_pat_id = Patient.create_new_patient( {
                 #     "first_name": fname,
                 #     "last_name": lname,
                 #     "middle_name": "",
@@ -197,6 +188,15 @@ class StaffAddCheckUp(QMainWindow):
                 #     "address": "",
                 #     "contact": ""
                 # })
+                new_pat_id = DataRequest.send_command("CREATE_PATIENT", {
+                    "first_name": fname,
+                    "last_name": lname,
+                    "middle_name": "",
+                    "gender": "",
+                    "dob": dob,
+                    "address": "",
+                    "contact": ""
+                })
 
                 if new_pat_id:
                     self.ui.ID.setText(str(new_pat_id))
@@ -271,9 +271,9 @@ class StaffAddCheckUp(QMainWindow):
         data = self.collect_data()
 
         # Save or update patient information
-        if Patient.update_or_create_patient(data):
+        if DataRequest.send_command("UPDATE_OR_CREATE_PATIENT",data):
             # Save check-up data
-            if CheckUp.save_checkup(data):
+            if DataRequest.send_command("CREATE_CHECKUP",data):
                 QMessageBox.information(self, "Success", "Check-up added successfully!")
                 self.clear_form()
 
