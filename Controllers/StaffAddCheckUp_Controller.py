@@ -48,6 +48,7 @@ class StaffAddCheckUp(QMainWindow):
         self.connect_signals()
         self.setWindowTitle("Check Up")
         self.setFixedSize(800, 700)
+        self.is_new_patient = False
 
     def initialize_ui(self):
         self.ui.CheckType.addItems(["New Check Up", "Follow Up Check Up"])
@@ -78,7 +79,7 @@ class StaffAddCheckUp(QMainWindow):
         Connect signals to their respective slots.
         """
         self.ui.AddCheckUp.clicked.connect(self.validate_and_submit)
-        self.ui.Cancel.clicked.connect(self.close)
+        self.ui.Cancel.clicked.connect(self.cancel_checkup)
 
         # Use editingFinished instead of textChanged to avoid premature checks
         self.ui.Fname.editingFinished.connect(self.check_fields_and_validate)
@@ -86,6 +87,27 @@ class StaffAddCheckUp(QMainWindow):
         self.ui.Dob.dateChanged.connect(self.check_fields_and_validate)
 
         self.ui.Dob.dateChanged.connect(self.calculate_age)
+
+    def cancel_checkup(self):
+        """
+        Handles cancel operation. Deletes the newly added patient if not yet saved.
+        """
+        if self.is_new_patient:
+            patient_id = self.ui.ID.text().strip()
+            if patient_id:
+                try:
+                    success = Patient.delete_patient_by_id(int(patient_id))
+                    if success:
+                        QMessageBox.information(self, "Cancelled", "New patient entry was discarded.")
+                    else:
+                        QMessageBox.warning(self, "Warning",
+                                            "Attempted to delete new patient. Deletion status is unclear.")
+                except Exception as e:
+                    QMessageBox.critical(self, "Error", f"Failed to delete new patient: {str(e)}")
+        else:
+            QMessageBox.information(self, "Cancelled", "Changes were not saved.")
+
+        self.close()
 
     def check_fields_and_validate(self):
         # Default DOB check
@@ -126,6 +148,7 @@ class StaffAddCheckUp(QMainWindow):
 
             if patient:
                 # Ensure the response is a dictionary
+                self.is_new_patient = False
                 if not isinstance(patient, dict):
                     raise ValueError("Unexpected response format from GET_PATIENT_BY_NAME")
 
@@ -177,6 +200,7 @@ class StaffAddCheckUp(QMainWindow):
 
                 if new_pat_id:
                     self.ui.ID.setText(str(new_pat_id))
+                    self.is_new_patient = True
                     QMessageBox.information(self, "New Patient", "A new patient ID has been generated.")
                 else:
                     QMessageBox.critical(self, "Error", "Failed to generate a new patient ID.")

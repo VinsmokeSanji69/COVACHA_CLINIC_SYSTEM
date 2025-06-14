@@ -53,23 +53,9 @@ class DoctorAddPrescription(QMainWindow):
     def validate_form(self):
         """Validate the form fields."""
         errors = []
-
         med_name = self.ui.MedName.text().strip()
         if not med_name:
             errors.append("Medication Name is required.")
-
-        dosage = self.ui.Dosage.text().strip()
-        if not dosage:
-            errors.append("Dosage is required.")
-
-        intake = self.ui.Intake.text().strip()
-        if not intake:
-            errors.append("Intake is required.")
-
-        tablets = self.ui.Tablets.text().strip()
-        if not tablets:
-            errors.append("No. of tablets is required.")
-
         return errors
 
     def populate_form(self):
@@ -94,9 +80,9 @@ class DoctorAddPrescription(QMainWindow):
 
         med_data = {
             "med_name": self.ui.MedName.text().strip(),
-            "dosage": self.ui.Dosage.text().strip(),
-            "intake": self.ui.Intake.text().strip(),
-            'tablets': self.ui.Tablets.text().strip()
+            "dosage": self.ui.Dosage.text().strip() or None,
+            "intake": self.ui.Intake.text().strip() or None,
+            "tablets": self.ui.Tablets.text().strip() or None
         }
 
         if self.prescription_data:
