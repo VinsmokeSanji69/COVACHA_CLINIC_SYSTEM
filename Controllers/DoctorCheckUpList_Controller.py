@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
+
+from Controllers.ClientSocketController import DataRequest, DateAwareJSONDecoder
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList as DoctorCheckUpListUI
 from Controllers.DoctorCheckUpListView_Controller import DoctorCheckUpListView
 from Models.CheckUp import CheckUp
@@ -20,6 +22,8 @@ class DoctorCheckUpList(QWidget):
 
         # Fetch all check-ups for the doctor
         self.checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)  # Store as an instance variable
+        # self.checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+
         if not self.checkups:
             return
 
@@ -53,7 +57,7 @@ class DoctorCheckUpList(QWidget):
 
     def filter_table(self):
         keyword = self.records_ui.Search.text().strip().lower()
-        self.is_filtering = True
+        self.is_filtering = True  # ⛔ Pause auto-refresh
 
         if not keyword:
             self.is_filtering = False
@@ -74,6 +78,8 @@ class DoctorCheckUpList(QWidget):
                     pass
 
             patient = Patient.get_patient_details(pat_id)
+            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
             if not patient:
                 continue
 
@@ -115,6 +121,8 @@ class DoctorCheckUpList(QWidget):
                 return
 
             checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+            # checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+
             if not checkups:
                 return
 
@@ -179,6 +187,7 @@ class DoctorCheckUpList(QWidget):
     def populate_done_table(self, checkups):
         self.records_ui.DoneTable.clearContents()
         self.records_ui.DoneTable.setRowCount(0)
+
         latest_checkups = {}
 
         for checkup in checkups:
@@ -197,25 +206,28 @@ class DoctorCheckUpList(QWidget):
                 existing_date = existing['chck_date']
                 existing_id = existing['chck_id']
 
+                # Convert existing date string if needed
                 if isinstance(existing_date, str):
                     existing_date = datetime.datetime.strptime(existing_date, "%Y-%m-%d")
 
+                # Compare dates first
                 if chck_date > existing_date:
                     latest_checkups[pat_id] = checkup
                 elif chck_date == existing_date:
+                    # Same date, compare chck_id lexicographically
                     if chck_id > existing_id:
                         latest_checkups[pat_id] = checkup
-
         for row, checkup in enumerate(latest_checkups.values()):
             pat_id = checkup['pat_id']
+            chck_diagnoses = checkup['chck_diagnoses']
             chck_date = checkup['chck_date']
+
             patient = Patient.get_patient_details(pat_id)
+            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient:
                 continue
-
             full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-
             self.records_ui.DoneTable.insertRow(row)
 
             # Store full checkup object in UserRole
@@ -224,17 +236,10 @@ class DoctorCheckUpList(QWidget):
             self.records_ui.DoneTable.setItem(row, 0, id_item)
 
             self.records_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(full_name))
+            self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(chck_diagnoses))
+            self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(chck_date.strftime("%Y-%m-%d")))
 
-            # Format and add date with center alignment
-            if isinstance(chck_date, str):
-                chck_date = datetime.datetime.strptime(chck_date, "%Y-%m-%d")
 
-            # Create QTableWidgetItem for the date
-            # Correct
-            date_item = QtWidgets.QTableWidgetItem(self.safe_date_format(chck_date, "%B %d, %Y"))
-            # date_item.setTextAlignment(QtCore.Qt.AlignCenter)  # Center-align the date
-
-            self.records_ui.DoneTable.setItem(row, 2, date_item)
 
     def view_patient(self):
         try:
@@ -296,35 +301,25 @@ class DoctorCheckUpList(QWidget):
             # Configure table properties first
             self.records_ui.DoneTable.verticalHeader().setVisible(False)
             self.records_ui.DoneTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-            self.records_ui.DoneTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Date"])
+            self.records_ui.DoneTable.setHorizontalHeaderLabels(["Patient ID", "Name", "Recent Diagnosis", "Date"])
 
             # Populate the table
             for row, patient in enumerate(patients):
                 id = str(patient.get("id", ""))
                 name = patient.get("name", "N/A")
+                diagnosis = patient.get("recent_diagnosis", "No diagnosis")
                 date = patient.get("diagnosed_date", "No date") if patient.get("diagnosed_date") else "No date"
 
+                # Insert row items
                 self.records_ui.DoneTable.insertRow(row)
                 self.records_ui.DoneTable.setItem(row, 0, QtWidgets.QTableWidgetItem(id))
                 self.records_ui.DoneTable.setItem(row, 1, QtWidgets.QTableWidgetItem(name))
-                self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(date))
+                self.records_ui.DoneTable.setItem(row, 2, QtWidgets.QTableWidgetItem(diagnosis))
+                self.records_ui.DoneTable.setItem(row, 3, QtWidgets.QTableWidgetItem(date))
 
             # Adjust table appearance
             self.records_ui.DoneTable.resizeColumnsToContents()
             self.records_ui.DoneTable.horizontalHeader().setStretchLastSection(True)
+
         except Exception as e:
             pass
-
-    def safe_date_format(self, date_value, date_format="%B %d, %Y"):
-        if not date_value:
-            return "N/A"
-        if isinstance(date_value, str):
-            try:
-                # Try parsing if it's a date string
-                from datetime import datetime
-                return datetime.strptime(date_value, "%Y-%m-%d").strftime(date_format)
-            except ValueError:
-                return date_value  # Return as-is if parsing fails
-        elif hasattr(date_value, 'strftime'):  # If it's a date/datetime object
-            return date_value.strftime(date_format)
-        return "N/A"

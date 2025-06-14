@@ -158,7 +158,7 @@ class SocketServer:
             # TRANSACTIONS
             "CREATE_TRANSACTION": Transaction.add_transaction,
             "UPDATE_TRANSACTION": Transaction.update_transaction,
-            "GET_TRANSACTION_BY_CHECKUP_ID": Transaction.get_transaction_by_chckid1,
+            "GET_TRANSACTION_BY_CHECKUP_ID": Transaction.get_transaction_by_chckid,
             "GET_ALL_TRANSACTION": Transaction.get_all_transaction,
 
             # PRESCRIPTIONS

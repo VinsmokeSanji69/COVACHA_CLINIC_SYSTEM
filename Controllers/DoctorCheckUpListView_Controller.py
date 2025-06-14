@@ -3,6 +3,8 @@ import subprocess
 import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
@@ -148,6 +150,8 @@ class DoctorCheckUpListView(QMainWindow):
 
             # Fetch lab codes and attachments for the given check-up ID
             lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
+            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.checkup_id)
+
             if not lab_tests:
                 # Add a single row with "No Lab Test Request"
                 row_position = self.ui.LabTestTabe.rowCount()
@@ -176,6 +180,8 @@ class DoctorCheckUpListView(QMainWindow):
 
                 # Fetch the lab test name using the lab code
                 lab_test_details = Laboratory.get_test_by_labcode(lab_code)
+                # lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+
                 if not lab_test_details:
                     continue
 
@@ -260,6 +266,8 @@ class DoctorCheckUpListView(QMainWindow):
         try:
             # Step 1: Fetch check-up details
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
 
@@ -274,6 +282,8 @@ class DoctorCheckUpListView(QMainWindow):
 
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
+            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
 
@@ -340,12 +350,16 @@ class DoctorCheckUpListView(QMainWindow):
 
         # Retrieve the lab_code using the normalized lab_test_name
         lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
+        # lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
+
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
 
         # Fetch the file path from the CheckUp model
         file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
+        # file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.checkup_id, lab_code])
+
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
             return

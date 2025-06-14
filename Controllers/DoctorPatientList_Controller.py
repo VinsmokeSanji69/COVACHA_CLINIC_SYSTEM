@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_PatientList import Ui_Form as PatientListUI
 from Controllers.DoctorCheckUpListView_Controller import DoctorCheckUpListView
 from Models.CheckUp import CheckUp
@@ -14,6 +16,8 @@ class DoctorPatientList(QMainWindow):
         self.doc_id = str(doc_id)
         # Fetch all check-ups for the doctor
         self.checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+        # self.checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+
         if not self.checkups:
             return
 
@@ -91,6 +95,8 @@ class DoctorPatientList(QMainWindow):
 
             # Fetch patient details
             patient = Patient.get_patient_details(pat_id)
+            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
             if not patient:
                 continue
 
