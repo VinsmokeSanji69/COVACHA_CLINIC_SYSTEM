@@ -9858,3 +9858,31 @@ INFO:root:Discovery request from 127.0.0.1 (Client MAC: 74:04:F1:4E:E6:02)
 DEBUG:root:Sent discovery response to ('127.0.0.1', 63813)
 INFO:root:Connection from ('127.0.0.1', 52316) (Admin: False)
 DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 61876)
+INFO:root:Connection from ('192.168.139.123', 51516) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 59062)
+INFO:root:Connection from ('192.168.139.123', 52316) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 53801)
+INFO:root:Connection from ('192.168.139.123', 52520) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 53738)
+INFO:root:Connection from ('192.168.139.123', 52740) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250614-001', 'pat_id': 10000040, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 53739)
+INFO:root:Connection from ('192.168.139.123', 52742) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000040, 'last_name': 'Mark', 'first_name': 'Ed', 'middle_name': 'Vewe', 'gender': 'Male', 'dob': '1900-01-19', 'age': 125, 'address': 'LAhug', 'contact': '4343434343'}
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 64186)
+INFO:root:Connection from ('192.168.139.123', 52869) (Admin: False)
+DEBUG:root:Sending response: [{'chck_id': '20250614-001', 'pat_id': 10000040, 'chckup_type': 'New Check Up'}]
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 64187)
+INFO:root:Connection from ('192.168.139.123', 52871) (Admin: False)
+DEBUG:root:Sending response: {'id': 10000040, 'last_name': 'Mark', 'first_name': 'Ed', 'middle_name': 'Vewe', 'gender': 'Male', 'dob': '1900-01-19', 'age': 125, 'address': 'LAhug', 'contact': '4343434343'}
