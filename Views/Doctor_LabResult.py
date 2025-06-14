@@ -1052,7 +1052,7 @@ class Ui_Doctor_LabResult(object):
         item = self.LabTestTabe_2.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Dosage"))
         item = self.LabTestTabe_2.horizontalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Interval"))
+        item.setText(_translate("MainWindow", "Intake"))
         item = self.LabTestTabe_2.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "No. of Tablets"))
         self.AddPrescription.setText(_translate("MainWindow", "Add"))

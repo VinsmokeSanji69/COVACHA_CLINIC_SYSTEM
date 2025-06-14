@@ -227,6 +227,7 @@ class AdminAddUserController(QMainWindow):
     def collect_form_data(self):
         """Collect all form data into a dictionary"""
         return {
+            'id': int(self.ui.ID.text().strip()),
             'first_name': self.ui.Fname.text().strip(),
             'last_name': self.ui.Lname.text().strip(),
             "middle_name": self.ui.Mname.text().strip(),

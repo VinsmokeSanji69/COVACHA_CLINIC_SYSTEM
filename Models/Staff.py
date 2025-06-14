@@ -11,53 +11,53 @@ class Staff:
             if not Conn:
                 return None
             with Conn.cursor() as cursor:
-                cursor.execute("SELECT last_value FROM staff_staff_id_seq;")
-                last_value = cursor.fetchone()[0]
+                cursor.execute("SELECT MAX(staff_id) FROM staff;")
+                max_id = cursor.fetchone()[0]
 
-                if last_value == 0:
-                    cursor.execute("ALTER SEQUENCE staff_staff_id_seq RESTART WITH 100001;")
+                if max_id is None or max_id < 100000:
+                    next_id = 100001
                 else:
-                    next_id = last_value + 1
+                    next_id = max_id + 1
 
-                Conn.commit()
                 return next_id
-        except  Exception as e:
+        except Exception as e:
             return None
-
         finally:
             if Conn:
                 Conn.close()
 
     @staticmethod
-    def save_staff (staff_data):
+    def save_staff(staff_data):
         conn = DBConnection.get_db_connection()
         if not conn:
             return False
         try:
             with conn.cursor() as cursor:
-                    query = """
-                           INSERT INTO staff (
-                               staff_password, staff_lname, staff_fname, staff_joined_date,
-                               staff_gender, staff_dob, staff_address, staff_contact, staff_mname, staff_email
-                           ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                       """
-                    cursor.execute(query, (
-                        staff_data["password"],
-                        staff_data["last_name"],
-                        staff_data["first_name"],
-                        staff_data["date_joined"],
-                        staff_data["gender"],
-                        staff_data["dob"],
-                        staff_data["address"],
-                        staff_data["contact"],
-                        staff_data["middle_name"],
-                        staff_data["email"]
-                    ))
+                query = """
+                    INSERT INTO staff (
+                        staff_id, staff_password, staff_lname, staff_fname, staff_joined_date,
+                        staff_gender, staff_dob, staff_address, staff_contact, staff_mname, staff_email
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+                cursor.execute(query, (
+                    staff_data["id"],
+                    staff_data["password"],
+                    staff_data["last_name"],
+                    staff_data["first_name"],
+                    staff_data["date_joined"],
+                    staff_data["gender"],
+                    staff_data["dob"],
+                    staff_data["address"],
+                    staff_data["contact"],
+                    staff_data["middle_name"],
+                    staff_data["email"]
+                ))
 
-                    conn.commit()
-                    return True
+                conn.commit()
+                return True
 
         except Exception as e:
+            conn.rollback()
             return False
 
         finally:
