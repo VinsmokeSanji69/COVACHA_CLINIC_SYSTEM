@@ -741,7 +741,7 @@ class DoctorLabResult(QMainWindow):
             word_output = os.path.join(dated_folder_path, f"temp_{filename_base}.docx")
             pdf_output = os.path.join(dated_folder_path, f"{filename_base}.pdf")
 
-            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\COVACHA_SYSTEM\Images\Prescription.docx"
+            template_path = r"Images\Prescription.docx"
             doc = Document(template_path)
 
             # Replace placeholders in paragraphs
