@@ -9886,3 +9886,7 @@ INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8D:CC:91:81:07:BA)
 DEBUG:root:Sent discovery response to ('192.168.139.123', 64187)
 INFO:root:Connection from ('192.168.139.123', 52871) (Admin: False)
 DEBUG:root:Sending response: {'id': 10000040, 'last_name': 'Mark', 'first_name': 'Ed', 'middle_name': 'Vewe', 'gender': 'Male', 'dob': '1900-01-19', 'age': 125, 'address': 'LAhug', 'contact': '4343434343'}
+INFO:root:Discovery request from 192.168.139.123 (Client MAC: 8F:CC:F8:84:D1:B8)
+DEBUG:root:Sent discovery response to ('192.168.139.123', 50317)
+INFO:root:Connection from ('192.168.139.123', 50670) (Admin: False)
+DEBUG:root:Sending response: []
