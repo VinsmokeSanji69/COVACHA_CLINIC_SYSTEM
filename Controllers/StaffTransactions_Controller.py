@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QWidget
+
+from Controllers.ClientSocketController import DataRequest
 from Controllers.StaffViewTransaction_Controller import StaffViewTransaction
 from Views.Staff_Transactions import Ui_Staff_Transactions as StaffTransactionUI
 from Models.Doctor import Doctor
@@ -26,8 +28,12 @@ class StaffTransactions(QWidget):
     def load_transaction_details(self):
         try:
             checkups = CheckUp.get_all_checkups()
+            # checkups = DataRequest.send_command("GET_ALL_CHECKUP")
+
             checkups.sort(key=lambda c: c['chck_id'], reverse=True)
             transactions = Transaction.get_all_transaction()
+            # transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
+
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
 
             self.all_checkups = []  # Store for search use
@@ -38,11 +44,15 @@ class StaffTransactions(QWidget):
                 chck_id = checkup['chck_id'].strip().lower()
                 pat_id = checkup['pat_id']
                 patient = Patient.get_patient_details(pat_id)
+                # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
                 if not patient:
                     continue
 
                 doc_id = checkup['doc_id']
                 doctor = Doctor.get_doctor(doc_id)
+                # doctor = DataRequest.send_command("GET_DOCTOR", doc_id)
+
                 if not doctor:
                     continue
 
@@ -71,8 +81,12 @@ class StaffTransactions(QWidget):
     def load_transaction_details(self):
         try:
             checkups = CheckUp.get_all_checkups()
+            # checkups = DataRequest.send_command("GET_ALL_CHECKUP")
+
             checkups.sort(key=lambda c: c['chck_id'], reverse=True)
             transactions = Transaction.get_all_transaction()
+            # transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
+
             transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
 
             self.all_checkups = []  # Store for search use
@@ -83,11 +97,15 @@ class StaffTransactions(QWidget):
                 chck_id = checkup['chck_id'].strip().lower()
                 pat_id = checkup['pat_id']
                 patient = Patient.get_patient_details(pat_id)
+                # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
                 if not patient:
                     continue
 
                 doc_id = checkup['doc_id']
                 doctor = Doctor.get_doctor(doc_id)
+                # doctor = DataRequest.send_command("GET_DOCTOR", doc_id)
+
                 if not doctor:
                     continue
 

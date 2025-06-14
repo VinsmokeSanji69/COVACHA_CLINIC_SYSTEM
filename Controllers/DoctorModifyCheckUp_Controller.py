@@ -1,13 +1,15 @@
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QCheckBox, QMessageBox
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
-from docx import Document
+# from docx import Document
 import os
-from docx2pdf import convert
+# from docx2pdf import convert
 
 class DoctorDiagnosisModify(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
@@ -31,6 +33,8 @@ class DoctorDiagnosisModify(QMainWindow):
         try:
             # Step 1: Fetch check-up details
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
             # Extract check-up data
@@ -42,6 +46,8 @@ class DoctorDiagnosisModify(QMainWindow):
             chckup_type = checkup_details['chckup_type']
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
+            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
             # Extract patient data
@@ -98,8 +104,11 @@ class DoctorDiagnosisModify(QMainWindow):
         try:
             # Fetch all lab tests
             tests = Laboratory.get_all_test()
+            # tests = DataRequest.send_command("GET_ALL_TEST")
+
             # Fetch lab codes already associated with the current check-up
             existing_lab_codes = CheckUp.get_lab_codes_by_chckid(self.checkup_id)
+            # existing_lab_codes = DataRequest.send_command("GET_LAB_CODES_BY_CHECK_ID", self.checkup_id)
 
             # Convert existing_lab_codes to set for faster lookup
             existing_lab_codes_set = set(existing_lab_codes)
@@ -149,6 +158,7 @@ class DoctorDiagnosisModify(QMainWindow):
 
     def add_checkboxes_to_frame(self, tests, frame, existing_lab_codes_set):
         """Add checkboxes for the given tests to the specified frame and pre-check existing ones."""
+
         layout = frame.layout()
         if layout is None:
             layout = QVBoxLayout(frame)
@@ -161,6 +171,17 @@ class DoctorDiagnosisModify(QMainWindow):
             # Create a QCheckBox for each test
             checkbox = QCheckBox(f"{lab_name}")
             checkbox.setProperty("lab_code", lab_code)
+
+            checkbox.setStyleSheet("""
+                        QCheckBox {
+                            font-size: 14pt;
+                            padding: 5px;
+                        }
+                        QCheckBox::indicator {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    """)
 
             # Pre-check the checkbox if the lab_code exists in the existing_lab_codes_set
             if lab_code in existing_lab_codes_set:
@@ -181,6 +202,8 @@ class DoctorDiagnosisModify(QMainWindow):
                         lab_code = widget.property("lab_code")
                         if lab_code:
                             result = Laboratory.get_test_by_labcode(lab_code)
+                            # result = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+
                             if result:
                                 lab_name = result[0]['lab_test_name']
                                 selected_lab_names.append(lab_name)
@@ -207,7 +230,11 @@ class DoctorDiagnosisModify(QMainWindow):
         try:
             # Get full patient and doctor info
             patient_info = Patient.get_patient_by_id(self.patient_id)
+            # patient_info = DataRequest.send_command("GET_PATIENT_BY_ID", self.patient_id)
+
             doctor_info = Doctor.get_doctor(self.doc_id)
+            # doctor_info = DataRequest.send_command("GET_DOCTOR_BY_ID", self.doc_id)
+
             if not patient_info or not doctor_info:
                 QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
                 return

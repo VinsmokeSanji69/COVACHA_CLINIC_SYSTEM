@@ -1,6 +1,8 @@
 from datetime import datetime
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
+
+from Controllers.ClientSocketController import DataRequest
 from Models.CheckUp import CheckUp
 from Models.Patient import Patient
 from Views.Doctor_PatientDetailsView import Ui_Doctor_PatientDetails_View
@@ -74,6 +76,8 @@ class DoctorPatientDetailsViewController(QMainWindow):
                 raise ValueError("No patient ID provided.")
 
             patient_details = Patient.get_patient_by_id(int(self.patient_id))
+            # patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", self.patient_id)
+
             if not patient_details:
                 raise ValueError(f"No patient found for ID: {self.patient_id}")
 
@@ -85,6 +89,7 @@ class DoctorPatientDetailsViewController(QMainWindow):
                     raise ValueError(f"Invalid date format for DOB: {dob_str}")
 
             checkups = CheckUp.get_checkup_by_pat_id(int(self.patient_id)) or []
+            # checkups = DataRequest.send_command("GET_CHECKUP_BY_PAT_ID", self.patient_id)
 
             return patient_details, checkups
 

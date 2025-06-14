@@ -2,6 +2,8 @@ from PyQt5 import QtWidgets, QtCore, Qt
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, \
     QWidget, QSizePolicy, QHeaderView, QStackedWidget, QMainWindow
+
+from Controllers.ClientSocketController import DataRequest
 from Controllers.DoctorCheckUpList_Controller import DoctorCheckUpList
 from Controllers.DoctorDiagnosis_Controller import DoctorDiagnosis
 from Controllers.DoctorPatientList_Controller import DoctorPatientList
@@ -297,6 +299,7 @@ class DoctorDashboardController(QMainWindow):
         try:
             # Fetch pending check-ups from the database
             pending_checkups = CheckUp.get_pending_checkups()
+            # pending_checkups = DataRequest.send_command("GET_PENDING_CHECKUP")
 
             # self.checkups = CheckUp.get_all_checkups()
 
@@ -323,6 +326,8 @@ class DoctorDashboardController(QMainWindow):
 
                 # Fetch patient details
                 patient = Patient.get_patient_by_id(pat_id)
+                # patient = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
+
                 if not patient:
                     continue
 

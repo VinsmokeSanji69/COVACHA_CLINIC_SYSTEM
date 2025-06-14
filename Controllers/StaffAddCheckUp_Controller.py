@@ -2,6 +2,8 @@ import datetime
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox
 from PyQt5.QtCore import QDate, QRegExp
 from PyQt5.QtGui import QRegExpValidator
+
+from Controllers.ClientSocketController import DataRequest
 from Models.Patient import Patient
 from Models.CheckUp import CheckUp
 from Views.Staff_AddCheckUp import Ui_Staff_AddCheckUp as StaffCheckUpUi
@@ -86,19 +88,28 @@ class StaffAddCheckUp(QMainWindow):
 
     def check_patient_existence(self):
         """
-        Check if a patient exists based on Fname and Lname and prefill the form if they do.
+        Check if a patient exists based on Fname, Lname, and DOB, and prefill the form if they do.
         If the patient does not exist, generate a new patient ID.
         """
         fname = self.ui.Fname.text().strip()
         lname = self.ui.Lname.text().strip()
+        dob = self.ui.Dob.date()  # Get QDate object
 
-        # Do nothing if either Fname or Lname is empty
-        if not fname or not lname:
+        # Validate required fields
+        if not fname:
+            QMessageBox.warning(self, "Missing Information", "Please enter the First Name.")
+            return
+        if not lname:
+            QMessageBox.warning(self, "Missing Information", "Please enter the Last Name.")
+            return
+        if dob.isNull():  # Check if DOB is not set
+            QMessageBox.warning(self, "Missing Information", "Please select a Date of Birth.")
             return
 
         try:
             # Check if the patient already exists in the database
-            patient = Patient.get_patient_by_name(fname, lname)
+            patient = Patient.get_patient_by_name(fname, lname, dob)
+            patient = DataRequest.send_command("GET_PATIENT_BY_NAME", [fname, lname, dob])
 
             if patient:
                 # Ensure the response is a dictionary
@@ -133,7 +144,7 @@ class StaffAddCheckUp(QMainWindow):
                 self.ui.Age.clear()
 
                 # Generate a new patient ID
-                new_pat_id = Patient.create_new_patient( {
+                new_pat_id = Patient.create_new_patient({
                     "first_name": fname,
                     "last_name": lname,
                     "middle_name": "",
@@ -150,7 +161,7 @@ class StaffAddCheckUp(QMainWindow):
                     QMessageBox.critical(self, "Error", "Failed to generate a new patient ID.")
 
         except Exception as e:
-            QMessageBox.critical(self, "Error", "An error occurred while checking patient existence.")
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
 
 
     def validate_form(self):

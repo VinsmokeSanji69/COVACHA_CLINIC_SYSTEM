@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList as DoctorCheckUpListUI
 from Controllers.DoctorCheckUpListView_Controller import DoctorCheckUpListView
 from Models.CheckUp import CheckUp
@@ -19,7 +21,9 @@ class DoctorCheckUpList(QWidget):
         self.doc_id = str(doc_id)
 
         # Fetch all check-ups for the doctor
-        self.checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)  # Store as an instance variable
+        self.checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+        # self.checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+
         if not self.checkups:
             return
 
@@ -74,6 +78,7 @@ class DoctorCheckUpList(QWidget):
                     pass
 
             patient = Patient.get_patient_details(pat_id)
+            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
             if not patient:
                 continue
 
@@ -115,6 +120,8 @@ class DoctorCheckUpList(QWidget):
                 return
 
             checkups = CheckUp.get_all_checkups_by_doc_id(self.doc_id)
+            # checkups = DataRequest.send_command("GET_CHECKUP_BY_DOC_ID", self.doc_id)
+
             if not checkups:
                 return
 
@@ -215,6 +222,8 @@ class DoctorCheckUpList(QWidget):
             chck_date = checkup['chck_date']
 
             patient = Patient.get_patient_details(pat_id)
+            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+
             if not patient:
                 continue
             full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"

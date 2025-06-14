@@ -1,6 +1,8 @@
 from datetime import date
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
+
+from Controllers.ClientSocketController import DataRequest
 from Views.Staff_TransactionProcess import Ui_Staff_Transaction_Process
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor, calculate_age
@@ -179,6 +181,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
 
             # Fetch check-up details from the database
             checkup = CheckUp.get_checkup_details(self.chck_id)
+            # checkup = DataRequest.send_command("GET_CHECKUP_DETAILS", self.chck_id)
+
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
 
@@ -190,6 +194,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             if not pat_id:
                 raise ValueError("Missing 'pat_id' in checkup data.")
             patient = Patient.get_patient_details(pat_id)
+            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
             if not patient:
                 raise ValueError(f"No patient found for pat_id={pat_id}")
 
@@ -200,6 +205,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
             if not doc_id:
                 raise ValueError("Missing 'doc_id' in checkup data.")
             doctor = Doctor.get_doctor(doc_id)
+            # doctor = DataRequest.send_command("GET_DOCTOR", doc_id)
+
             if not doctor:
                 raise ValueError(f"No doctor found for doc_id={doc_id}")
 
@@ -219,6 +226,7 @@ class StaffTransactionProcess(QtWidgets.QDialog):
 
             # ✅ Check transaction
             transaction = Transaction.get_transaction_by_chckid(self.chck_id)
+            # transaction = DataRequest.send_command("GET_TRANSACTION_BY_CHECKUP_ID", self.chck_id)
 
             if transaction:
                 # Store existing transaction data
@@ -276,6 +284,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
 
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
+
             if not lab_tests:
                 return
 
@@ -290,6 +300,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
+                # lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+
                 if not lab_details:
                     continue
 
@@ -317,6 +329,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
 
             # Step 1: Fetch all lab codes associated with the chck_id
             lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
+
             if not lab_tests:
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
                 return
@@ -328,6 +342,8 @@ class StaffTransactionProcess(QtWidgets.QDialog):
 
                 # Fetch lab details (name and price) from the Laboratory model
                 lab_details = Laboratory.get_test_by_labcode(lab_code)
+                # lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+
                 if not lab_details:
                     continue
 
