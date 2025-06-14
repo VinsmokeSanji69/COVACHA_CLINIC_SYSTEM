@@ -1,5 +1,6 @@
-from PyQt5 import QtWidgets, QtCore
-
+from PyQt5 import QtWidgets, QtCore, Qt
+from PyQt5.QtWidgets import QTableWidgetItem,QWidget
+from PyQt5.QtCore import Qt
 from Controllers.ClientSocketController import DataRequest
 from Views.Staff_LabRequest import Ui_Staff_LabRequest as StaffLabRequestUI
 from PyQt5.QtWidgets import QMessageBox, QWidget
@@ -64,14 +65,26 @@ class StaffLabRequest(QWidget):
     def load_staff_labrequest_table(self):
         """Load the details of the table containing check-up IDs with lab codes."""
         try:
-            #rows = CheckUp.get_checkups_with_lab_requests()
-            rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
-            checkup_ids = [row[0] for row in rows]
-
             self.labreq_ui.LabRequestTable.setRowCount(0)
 
+            # Fetch checkup rows
+            rows = DataRequest.send_command("GET_CHECKUPS_WITH_LAB_REQUESTS")
+
+            if not rows:
+                # Show "No Lab Request Exist" centered
+                self.labreq_ui.LabRequestTable.setRowCount(1)
+                self.labreq_ui.LabRequestTable.setColumnCount(4)  # Ensure column count matches actual
+                item = QtWidgets.QTableWidgetItem("No Lab Request Exist")
+                item.setTextAlignment(Qt.AlignCenter)
+                item.setFlags(Qt.ItemIsEnabled)  # Read-only
+                self.labreq_ui.LabRequestTable.setItem(0, 0, item)
+                self.labreq_ui.LabRequestTable.setSpan(0, 0, 1, 4)  # Span across all columns
+                return
+
+            # Otherwise, populate the table
+            checkup_ids = [row[0] for row in rows]
+
             for checkup_id in checkup_ids:
-                #checkup_details = CheckUp.get_checkup_details(checkup_id)
                 checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", checkup_id)
                 if not checkup_details:
                     continue
@@ -79,10 +92,7 @@ class StaffLabRequest(QWidget):
                 pat_id = checkup_details['pat_id']
                 doc_id = checkup_details['doc_id']
 
-                #patient_details = Patient.get_patient_details(pat_id)
                 patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
-
-                #doctor_details = Doctor.get_doctor(doc_id)
                 doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                 if not patient_details or not doctor_details:
@@ -91,11 +101,8 @@ class StaffLabRequest(QWidget):
                 patient_name = f"{patient_details['pat_lname'].capitalize()}, {patient_details['pat_fname'].capitalize()}"
                 doctor_name = f"{doctor_details['last_name'].capitalize()}, {doctor_details['first_name'].capitalize()}"
 
-                # Use static method to fetch lab attachments
-                #lab_attachments = CheckUp.get_lab_attachments_by_checkup_id(checkup_id)
                 lab_attachments = DataRequest.send_command("GET_LAB_ATTACHMENTS_BY_CHECKUP", checkup_id)
 
-                # Determine status
                 if not lab_attachments:
                     status = "No Results Yet"
                 else:
@@ -108,7 +115,6 @@ class StaffLabRequest(QWidget):
                     else:
                         status = "Completed"
 
-                # Add to table
                 row_position = self.labreq_ui.LabRequestTable.rowCount()
                 self.labreq_ui.LabRequestTable.insertRow(row_position)
                 self.labreq_ui.LabRequestTable.setItem(row_position, 0, QtWidgets.QTableWidgetItem(str(checkup_id)))

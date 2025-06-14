@@ -178,17 +178,6 @@ class StaffAddCheckUp(QMainWindow):
                 self.ui.Address.clear()
                 self.ui.Contact.clear()
                 self.ui.Age.clear()
-
-                # Generate a new patient ID
-                # new_pat_id = Patient.create_new_patient( {
-                #     "first_name": fname,
-                #     "last_name": lname,
-                #     "middle_name": "",
-                #     "gender": "",
-                #     "dob": dob,
-                #     "address": "",
-                #     "contact": ""
-                # })
                 new_pat_id = DataRequest.send_command("CREATE_PATIENT", {
                     "first_name": fname,
                     "last_name": lname,

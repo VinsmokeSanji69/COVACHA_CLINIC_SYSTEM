@@ -4,24 +4,23 @@ from Models.DB_Connection import DBConnection
 class Doctor:
     @staticmethod
     def get_next_doctor_id():
-        Conn = DBConnection.get_db_connection()
+        Conn = None
         try:
+            Conn = DBConnection.get_db_connection()
             if not Conn:
                 return None
             with Conn.cursor() as cursor:
-                cursor.execute("SELECT last_value FROM doctor_id_seq;")
-                last_value = cursor.fetchone()[0]
+                cursor.execute("SELECT MAX(doc_id) FROM doctor;")
+                max_id = cursor.fetchone()[0]
 
-                if last_value == 0:
-                    cursor.execute("ALTER SEQUENCE doctor_id_seq RESTART WITH 10000;")
+                if max_id is None or max_id < 10000:
+                    next_id = 10000
                 else:
-                    next_id = last_value + 1
+                    next_id = max_id + 1
 
-                Conn.commit()
                 return next_id
-        except  Exception as e:
+        except Exception as e:
             return None
-
         finally:
             if Conn:
                 Conn.close()
@@ -77,13 +76,14 @@ class Doctor:
             with Conn.cursor() as cursor:
                 query = """
                     INSERT INTO doctor (
-                    doc_password, doc_license, doc_specialty, doc_gender, doc_dob,
+                    doc_id, doc_password, doc_license, doc_specialty, doc_gender, doc_dob,
                                doc_address, doc_contact, doc_joined_date, doc_lname, doc_fname,
                                doc_mname, doc_email
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
 
                 cursor.execute(query,(
+                    doctor_data["id"],
                     doctor_data["password"],
                     doctor_data["license"],
                     doctor_data["specialty"],
