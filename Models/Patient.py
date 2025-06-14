@@ -231,6 +231,22 @@ class Patient:
                 conn.close()
 
     @staticmethod
+    def delete_patient_by_id(pat_id):
+        conn = DBConnection.get_db_connection()
+        if not conn:
+            raise Exception("DB connection error")
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM patient WHERE pat_id = %s", (pat_id,))
+            conn.commit()
+            return True
+        except Exception as e:
+            conn.rollback()
+            raise e
+        finally:
+            conn.close()
+
+    @staticmethod
     def get_patient_details(pat_id):
         conn = DBConnection.get_db_connection()
         if not conn:
