@@ -5,6 +5,7 @@ import uuid
 from functools import lru_cache
 from datetime import datetime, date
 
+import psutil
 import psutils
 
 PORT_DISCOVERY = 50000
@@ -12,7 +13,8 @@ PORT_COMMAND = 6543
 
 # Only allow these server's MAC addresses (uppercase, colon-separated)
 TRUSTED_SERVER_MACS = {
-    "74:04:F1:4E:E6:02" #Replace with Admin MAC Address
+    "74:04:F1:4E:E6:02",
+    "40:1A:58:BF:52:B8",
 }
 
 class DateAwareJSONDecoder(json.JSONDecoder):

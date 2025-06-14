@@ -9858,3 +9858,35 @@ INFO:root:Discovery request from 127.0.0.1 (Client MAC: 74:04:F1:4E:E6:02)
 DEBUG:root:Sent discovery response to ('127.0.0.1', 63813)
 INFO:root:Connection from ('127.0.0.1', 52316) (Admin: False)
 DEBUG:root:Sending response: []
+INFO:root:Discovery request from 127.0.0.1 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('127.0.0.1', 54790)
+INFO:root:Connection from ('127.0.0.1', 54079) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 49918)
+INFO:root:Connection from ('192.168.1.7', 54281) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 62987)
+INFO:root:Connection from ('192.168.1.7', 54414) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 52507)
+INFO:root:Connection from ('192.168.1.7', 54607) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 54553)
+INFO:root:Connection from ('192.168.1.7', 54798) (Admin: False)
+DEBUG:root:Sending response: (100001, 'Dan', 'Limosnero', '10176e7b7b24d317acfcf8d2064cfd2f24e154f7b5a96603077d5ef813d6a6b6')
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 54554)
+INFO:root:Connection from ('192.168.1.7', 54837) (Admin: False)
+DEBUG:root:Sending response: []
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 54931)
+INFO:root:Connection from ('192.168.1.7', 54894) (Admin: False)
+DEBUG:root:Sending response: (100001, 'Dan', 'Limosnero', '10176e7b7b24d317acfcf8d2064cfd2f24e154f7b5a96603077d5ef813d6a6b6')
+INFO:root:Discovery request from 192.168.1.7 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('192.168.1.7', 53805)
+INFO:root:Connection from ('192.168.1.7', 54933) (Admin: False)
+DEBUG:root:Sending response: []

@@ -11,16 +11,14 @@ from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
 
+import psutil
 import psutils
-
-
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (date, datetime)):
             return obj.isoformat()
         return super().default(obj)
-
 
 logging.basicConfig(filename='server.log', level=logging.DEBUG)
 
@@ -48,8 +46,10 @@ DISCOVERY_PORT = 50000
 COMMAND_PORT = 6543
 
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
-ADMIN_MAC_ADDRESS = "74-04-F1-4E-E6-02"
-
+ADMIN_MAC_ADDRESS = {
+    "74:04:F1:4E:E6:02",
+    "40:1A:58:BF:52:B8"
+}
 
 class SocketServer:
     def __init__(self, host=HOST, port=COMMAND_PORT):
@@ -58,11 +58,23 @@ class SocketServer:
         self.running = False
         self.server_thread = None
         self.discovery_thread = None
-        self.admin_mac = ADMIN_MAC_ADDRESS.lower().replace('-', ':')
-        self.server_mac = self.admin_mac
+
+        # Normalize all admin MACs (lowercase, hyphens replaced with colons)
+        self.admin_macs = {
+            mac.lower().replace('-', ':')
+            for mac in ADMIN_MAC_ADDRESS
+        }
+
+        # Get the active MAC (checks against admin_macs)
+        self.server_mac = self._get_active_mac_address()
+
+        # Fallback if no valid MAC found
+        if not self.server_mac:
+            raise RuntimeError("No valid admin MAC address found!")
+
 
     def _get_active_mac_address(self):
-        """Get MAC address of the active network interface"""
+        """Strict version: Only allow admin-approved MACs."""
         try:
             interfaces = psutil.net_if_addrs()
             preferred_interfaces = ['Wi-Fi', 'Ethernet', 'eth0', 'wlan0']
@@ -72,11 +84,11 @@ class SocketServer:
                     for addr in interfaces[interface]:
                         if addr.family == psutil.AF_LINK:
                             mac = addr.address.replace('-', ':').lower()
-                            if mac.count(':') == 5:
+                            if mac.count(':') == 5 and mac in self.admin_macs:
                                 return mac
-            return self.server_mac  # Fallback to hardcoded MAC
-        except Exception:
-            return self.server_mac
+            raise RuntimeError("No admin-approved MAC address found on active interfaces!")
+        except Exception as e:
+            raise RuntimeError(f"Failed to detect MAC: {e}")
 
     @staticmethod
     @lru_cache(maxsize=32)
@@ -98,7 +110,7 @@ class SocketServer:
             return None
 
     def is_admin_connection(self, ip_address):
-        """Check if connection is from admin device by MAC address"""
+        """Check if connection is from an admin device by verifying its MAC against admin MAC list"""
         if not ip_address:
             return False
 
@@ -106,9 +118,14 @@ class SocketServer:
         if not client_mac:
             return False
 
-        return client_mac == self.admin_mac
+        # Normalize MAC format (lowercase, consistent separators)
+        normalized_mac = client_mac.lower().replace('-', ':')
+
+        # Check against all authorized admin MACs
+        return normalized_mac in self.admin_macs
 
     def handle_doctor_staff(self, connection, address):
+        current_mac = self._get_active_mac_address()
         ip, port = address
         is_admin = self.is_admin_connection(ip)
         logging.info(f"Connection from {address} (Admin: {is_admin})")
@@ -326,6 +343,11 @@ class SocketServer:
 
 
     def _run_server(self):
+        current_mac = self._get_active_mac_address()
+        if current_mac not in self.admin_macs:
+            print(f"❌ Unauthorized MAC: {current_mac}. Server not started.")
+            return
+
         """Main command server loop"""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QMessageBox, QMainWindow
+
+from Controllers.ClientSocketController import DataRequest
 from Models.DB_Connection import DBConnection
 from Controllers.AdminDashboard_Controller import AdminDashboardController
 from Controllers.StaffDashboard_Controller import StaffDashboardController
@@ -6,6 +8,23 @@ from Controllers.DoctorDashboard_Controller import DoctorDashboardController
 import hashlib
 import bcrypt
 import traceback
+
+
+def _verify_hashed_password(input_password, stored_hash):
+    """Verify password against stored hash"""
+    try:
+        # First check if it's a bcrypt hash
+        if stored_hash.startswith("$2a$") or stored_hash.startswith("$2b$"):
+            return bcrypt.checkpw(input_password.encode(), stored_hash.encode())
+
+        # Otherwise assume it's SHA-256
+        input_hash = hashlib.sha256(input_password.encode()).hexdigest()
+
+        # Compare with stored hash (case-insensitive)
+        return input_hash.lower() == stored_hash.lower()
+    except Exception as e:
+        return False
+
 
 class LoginController:
     ADMIN_ID = "100000"
@@ -49,8 +68,8 @@ class LoginController:
 
             # Check if the user is a doctor (5-digit ID)
             if len(user_id) == 5 and user_id.isdigit():
-                doctor = self._get_user(conn, "doctor", user_id)
-                if doctor and self._verify_hashed_password(password, doctor[4]):
+                doctor = DataRequest.send_command("GET_USER", ["doctor", user_id])
+                if doctor and _verify_hashed_password(password, doctor[4]):
                     self._show_dashboard(DoctorDashboardController, doctor)
                     return
                 else:
@@ -62,9 +81,9 @@ class LoginController:
                     return
 
             # Check if the user is a staff member
-            staff = self._get_user(conn, "staff", user_id)
+            staff = DataRequest.send_command("GET_USER", ["staff", user_id])
             if staff:
-                if self._verify_hashed_password(password, staff[3]):
+                if _verify_hashed_password(password, staff[3]):
                     # Route to StaffDashboardController for non-admin staff
                     if user_id != self.ADMIN_ID:
                         self._show_dashboard(StaffDashboardController, staff)
@@ -75,79 +94,6 @@ class LoginController:
                         "Login Failed",
                         "Incorrect staff password"
                     )
-                    return
-
-            # If no match found in any table
-            QMessageBox.warning(
-                self.login_window,
-                "Login Failed",
-                "Invalid credentials"
-            )
-
-        except Exception as e:
-            QMessageBox.critical(
-                self.login_window,
-                "Error",
-                f"Login error: {str(e)}"
-            )
-            traceback.print_exc()
-        finally:
-            if conn:
-                conn.close()
-
-    def handle_login(self):
-        user_id = self.login_window.ui.UserIDInput.text().strip()
-        password = self.login_window.ui.PasswordInput.text().strip()
-
-        if not user_id or not password:
-            QMessageBox.warning(
-                self.login_window,
-                "Input Error",
-                "Please enter both ID and password"
-            )
-            return
-
-        conn = None
-        try:
-            conn = DBConnection.get_db_connection()
-            if not conn:
-                return  # Error message already shown by DBConnection
-
-            # Check if the user is an admin
-            if user_id == self.ADMIN_ID:
-                self._handle_admin_login(conn, password)
-                return
-
-            # Check if the user is a doctor (5-digit ID)
-            if len(user_id) == 5 and user_id.isdigit():
-                doctor = self._get_user(conn, "doctor", user_id)
-                if doctor:
-                    is_active = doctor[5]
-                    if not is_active:
-                        QMessageBox.warning(self.login_window, "Login Failed", "This account does not exist")
-                        return
-
-                    if self._verify_hashed_password(password, doctor[4]):
-                        self._show_dashboard(DoctorDashboardController, doctor)
-                        return
-                    else:
-                        QMessageBox.warning(self.login_window, "Login Failed", "Incorrect doctor password")
-                        return
-
-            # Check if the user is a staff member
-            staff = self._get_user(conn, "staff", user_id)
-            if staff:
-                is_active = staff[4]
-                if not is_active:
-                    QMessageBox.warning(self.login_window, "Login Failed", "This account does not exist")
-                    return
-
-                if self._verify_hashed_password(password, staff[3]):
-                    if user_id != self.ADMIN_ID:
-                        self._show_dashboard(StaffDashboardController, staff)
-                    return
-                else:
-                    QMessageBox.warning(self.login_window, "Login Failed", "Incorrect staff password")
                     return
 
             # If no match found in any table
@@ -197,36 +143,6 @@ class LoginController:
                 "Login Failed",
                 "Incorrect admin password"
             )
-
-    def _get_user(self, conn, table, user_id):
-        """Generic user retrieval from database with is_active check"""
-        cursor = conn.cursor()
-        if table == "staff":
-            cursor.execute(
-                "SELECT staff_id, staff_fname, staff_lname, staff_password, is_active FROM staff WHERE staff_id = %s",
-                (user_id,)
-            )
-        elif table == "doctor":
-            cursor.execute(
-                "SELECT doc_id, doc_fname, doc_lname, doc_specialty, doc_password, is_active FROM doctor WHERE doc_id = %s",
-                (user_id,)
-            )
-        return cursor.fetchone()
-
-    def _verify_hashed_password(self, input_password, stored_hash):
-        """Verify password against stored hash"""
-        try:
-            # First check if it's a bcrypt hash
-            if stored_hash.startswith("$2a$") or stored_hash.startswith("$2b$"):
-                return bcrypt.checkpw(input_password.encode(), stored_hash.encode())
-
-            # Otherwise assume it's SHA-256
-            input_hash = hashlib.sha256(input_password.encode()).hexdigest()
-
-            # Compare with stored hash (case-insensitive)
-            return input_hash.lower() == stored_hash.lower()
-        except Exception as e:
-            return False
 
     def _show_dashboard(self, dashboard_controller, user):
         # 1. create the dashboard and give it a reference to the login window
