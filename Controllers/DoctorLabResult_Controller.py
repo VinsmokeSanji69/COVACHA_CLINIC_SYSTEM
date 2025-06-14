@@ -3,8 +3,6 @@ import subprocess
 import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDialog, QDialogButtonBox, QApplication
-
-from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Controllers.DoctorAddPrescription_Controller import DoctorAddPrescription
 from Models.CheckUp import CheckUp
@@ -13,9 +11,25 @@ from Models.Doctor import Doctor
 from Models.LaboratoryTest import Laboratory
 from Models.Prescription import Prescription
 from datetime import datetime, date
-# from docx import Document
-# from docx2pdf import convert
+from docx import Document
+from docx2pdf import convert
 import time
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
+
+
+def remove_cell_borders(cell):
+    tc = cell._tc
+    tcPr = tc.get_or_add_tcPr()
+    tcBorders = OxmlElement('w:tcBorders')
+
+    for border_name in ('top', 'left', 'bottom', 'right', 'insideH', 'insideV'):
+        border = OxmlElement(f'w:{border_name}')
+        border.set(qn('w:val'), 'nil')  # Remove border
+        tcBorders.append(border)
+
+    tcPr.append(tcBorders)
+
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -88,16 +102,15 @@ class DoctorLabResult(QMainWindow):
         self.ui.DiagnoseButton.setVisible(False)
         self.ui.Cancel.setVisible(False)
         self.ui.DiagnoseText.setReadOnly(True)
-        self.ui.DiagnoseNotes.setReadOnly(True)
+        self.ui.PrescriptionLabel.setReadOnly(True)
+
 
     def initialize_diagnosis(self):
         checkup = CheckUp.get_checkup_details(self.checkup_id)
-        # checkup = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
-
         diagnosis = checkup.get("chck_diagnoses")
-        notes = checkup.get("chck_notes")
+        prescnotes = checkup.get("chck_notes")
         self.ui.DiagnoseText.setText(diagnosis)
-        self.ui.DiagnoseNotes.setText(notes)
+        self.ui.PrescriptionLabel.setText(prescnotes)
 
     def return_to_dashboard(self):
         try:
@@ -233,8 +246,6 @@ class DoctorLabResult(QMainWindow):
 
             # Fetch lab codes and attachments for the given check-up ID
             lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
-            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.checkup_id)
-
             if not lab_tests:
                 # Add a single row with "No Lab Test Request"
                 row_position = self.ui.LabTestTabe.rowCount()
@@ -263,8 +274,6 @@ class DoctorLabResult(QMainWindow):
 
                 # Fetch the lab test name using the lab code
                 lab_test_details = Laboratory.get_test_by_labcode(lab_code)
-                # lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
-
                 if not lab_test_details:
                     continue
 
@@ -324,6 +333,7 @@ class DoctorLabResult(QMainWindow):
                 med_name = prescription.get("pres_medicine", "")
                 dosage = prescription.get("pres_dosage", "")
                 intake = prescription.get("pres_intake", "")
+                tablets = prescription.get("pres_tablets", "")
 
                 # Add a new row to the table
                 row_position = self.ui.LabTestTabe_2.rowCount()
@@ -333,6 +343,7 @@ class DoctorLabResult(QMainWindow):
                 self.ui.LabTestTabe_2.setItem(row_position, 0, QtWidgets.QTableWidgetItem(med_name))
                 self.ui.LabTestTabe_2.setItem(row_position, 1, QtWidgets.QTableWidgetItem(dosage))
                 self.ui.LabTestTabe_2.setItem(row_position, 2, QtWidgets.QTableWidgetItem(intake))
+                self.ui.LabTestTabe_2.setItem(row_position, 3, QtWidgets.QTableWidgetItem(tablets))
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load prescription table: {e}")
@@ -342,8 +353,6 @@ class DoctorLabResult(QMainWindow):
         try:
             # Step 1: Fetch check-up details
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
-
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
 
@@ -356,8 +365,6 @@ class DoctorLabResult(QMainWindow):
 
             # Step 2: Fetch patient details
             patient_details = Patient.get_patient_details(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
-
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
 
@@ -423,15 +430,11 @@ class DoctorLabResult(QMainWindow):
 
         # Retrieve the lab_code using the normalized lab_test_name
         lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
-        # lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
-
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
         # Fetch the file path from the CheckUp model
         file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
-        # file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.checkup_id, lab_code])
-
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
             return
@@ -462,10 +465,10 @@ class DoctorLabResult(QMainWindow):
         med_name = self.ui.LabTestTabe_2.item(selected_row, 0).text()
         dosage = self.ui.LabTestTabe_2.item(selected_row, 1).text()
         intake = self.ui.LabTestTabe_2.item(selected_row, 2).text()
+        tablets = self.ui.LabTestTabe_2.item(selected_row, 3).text()
 
         # Fetch prescription by details
-        pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake)
-        # pres_data = DataRequest.send_command("")
+        pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake, tablets)
 
         if not pres_data:
             QMessageBox.critical(self, "Error", "Failed to find prescription in database.")
@@ -500,8 +503,6 @@ class DoctorLabResult(QMainWindow):
         intake = self.ui.LabTestTabe_2.item(selected_row, 2).text()
 
         pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake)
-        # pres_data = DataRequest.send_command("")
-
         if not pres_data:
             QMessageBox.critical(self, "Error", "Failed to find prescription in database.")
             return
@@ -523,12 +524,10 @@ class DoctorLabResult(QMainWindow):
     def confirm_and_add_diagnosis(self):
         try:
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
             # Get diagnosis text and notes from the UI
-            chck_diagnoses = self.ui.DiagnoseText.text().strip()
-            chck_notes = self.ui.DiagnoseNotes.text().strip() or None
-
+            chck_diagnoses = self.ui.DiagnoseText.toPlainText().strip()
+            chck_notes = self.ui.PrescriptionLabel.toPlainText().strip()
             # Validate diagnosis text
             if not chck_diagnoses:
                 QMessageBox.warning(self, "Validation Error", "Diagnosis text is required.")
@@ -563,7 +562,7 @@ class DoctorLabResult(QMainWindow):
             pdf_progress.setIcon(QMessageBox.Information)
             pdf_progress.setWindowTitle("Please Wait")
             pdf_progress.setText("Generating PDF files...")
-            pdf_progress.setStandardButtons(QMessageBox.NoButton)  # Hide all buttons
+            pdf_progress.setStandardButtons(QMessageBox.NoButton)
             pdf_progress.show()
 
             # Ensure the dialog shows up immediately
@@ -584,8 +583,8 @@ class DoctorLabResult(QMainWindow):
             pdf_success.setIcon(QMessageBox.Information)
             pdf_success.setWindowTitle("PDF Generated")
             pdf_success.setText("PDF files have been generated successfully.")
-            pdf_success.setStandardButtons(QMessageBox.Ok)  # Set OK button
-            pdf_success.exec_()  # Block until the user clicks OK
+            pdf_success.setStandardButtons(QMessageBox.Ok)
+            pdf_success.exec_()
 
             # Refresh the tables in the parent window
             if self.refresh_callback:
@@ -605,14 +604,9 @@ class DoctorLabResult(QMainWindow):
     def make_into_pdf(self, pat_id):
         try:
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
-
             patient_details = Patient.get_patient_by_id(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
-
             doc_id = checkup_details['doc_id']
             doctor_details = Doctor.get_doctor(doc_id)
-            # doctor_details = DataRequest.send_command("GET_DOCTOR", doc_id)
 
             doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
 
@@ -630,28 +624,36 @@ class DoctorLabResult(QMainWindow):
                 'temperature': self.ui.Temperature.text() or '___',
                 'weight': self.ui.Weight.text() or '___',
                 'height': self.ui.Heights.text() or '___',
-                'diagnosis': self.ui.DiagnoseText.text() or '___',
+                'diagnosis': self.ui.DiagnoseText.toPlainText() or '___',
             }
 
-            # Path setup
-            template_path = "Images/PatientRecord.docx"
-            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
-            os.makedirs(output_dir, exist_ok=True)
+            # Ensure check_date_raw is a string
+            check_date_raw = checkup_details['chck_date']
+            if isinstance(check_date_raw, date):  # Use 'date' instead of 'datetime.date'
+                check_date_raw = check_date_raw.strftime("%Y-%m-%d")  # Convert to string
 
-            word_output = os.path.join(output_dir, f"temp_{self.checkup_id}_{data['name']}.docx")
-            pdf_output = os.path.join(output_dir, f"{self.checkup_id}_{data['name']}.pdf")
+            # Format the checkup date to "June 09, 2025"
+            check_date_obj = datetime.strptime(check_date_raw, "%Y-%m-%d")
+            folder_name = check_date_obj.strftime("%B %d, %Y")
+
+            # Create a folder for that date
+            base_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            dated_folder_path = os.path.join(base_dir, folder_name)
+            os.makedirs(dated_folder_path, exist_ok=True)
+
+            # Set file paths inside the dated folder
+            word_output = os.path.join(dated_folder_path, f"temp_{self.checkup_id}_{data['name']}.docx")
+            pdf_output = os.path.join(dated_folder_path, f"{self.checkup_id}_{data['name']}_Diagnosis.pdf")
 
             # Load and fill template
-            doc = Document(template_path)
+            doc = Document("Images/PatientRecord.docx")
 
-            # Replace placeholders in paragraphs
             for paragraph in doc.paragraphs:
                 for key, value in data.items():
                     placeholder = f"{{{{{key}}}}}"
                     if placeholder in paragraph.text:
                         paragraph.text = paragraph.text.replace(placeholder, str(value))
 
-            # Replace placeholders in tables
             for table in doc.tables:
                 for row in table.rows:
                     for cell in row.cells:
@@ -660,10 +662,10 @@ class DoctorLabResult(QMainWindow):
                             if placeholder in cell.text:
                                 cell.text = cell.text.replace(placeholder, str(value))
 
-            # Save and convert
             doc.save(word_output)
             convert(word_output, pdf_output)
             os.remove(word_output)
+
             return pdf_output
 
         except Exception as e:
@@ -673,55 +675,39 @@ class DoctorLabResult(QMainWindow):
 
     def make_prescription_pdf(self, pat_id):
         try:
-            # Fetch checkup, patient, doctor, and prescription details
             checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
-
             patient_details = Patient.get_patient_by_id(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
-
             doctor_details = Doctor.get_doctor(checkup_details['doc_id'])
-            # doctor_details = DataRequest.send_command("GET_DOCTOR", check_details['doc_id'])
-
-
             prescriptions = Prescription.display_prescription(self.checkup_id)
 
             doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
 
-            # Core info
             data = {
                 'name': self.ui.PatName.text() or '___',
                 'age': self.ui.PatAge.text() or '___',
                 'gender': self.ui.PatGender.text() or '___',
                 'address': patient_details.get('address', '___'),
                 'date': checkup_details['chck_date'] or '___',
+                'prescription_notes': self.ui.PrescriptionLabel.toPlainText().strip() or 'None',
                 'doctor_name': doctor_name
             }
 
-            # Fill up to 10 prescription entries
-            for i in range(1, 11):
-                if i <= len(prescriptions):
-                    med = prescriptions[i - 1]
-                    data[f'meds{i}'] = med.get("pres_medicine", "")
-                    data[f'dosage{i}'] = med.get("pres_dosage", "")
-                    data[f'intake{i}'] = med.get("pres_intake", "")
-                else:
-                    # Fill unused rows with blanks
-                    data[f'meds{i}'] = ""
-                    data[f'dosage{i}'] = ""
-                    data[f'intake{i}'] = ""
+            check_date_raw = checkup_details['chck_date']
+            if isinstance(check_date_raw, date):
+                check_date_obj = check_date_raw
+            else:
+                check_date_obj = datetime.strptime(check_date_raw, "%Y-%m-%d")
+            folder_name = check_date_obj.strftime("%B %d, %Y")
 
-            # File paths
-            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\IM-System\Images\Prescription.docx"
-            output_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
-            os.makedirs(output_dir, exist_ok=True)
+            base_dir = r"C:\Users\Roy Adrian Rondina\OneDrive - ctu.edu.ph\Desktop\Share"
+            dated_folder_path = os.path.join(base_dir, folder_name)
+            os.makedirs(dated_folder_path, exist_ok=True)
 
-            # Filenames with “Prescription” suffix
-            filename_base = f"{self.checkup_id}_{data['name']} Prescription"
-            word_output = os.path.join(output_dir, f"temp_{filename_base}.docx")
-            pdf_output = os.path.join(output_dir, f"{filename_base}.pdf")
+            filename_base = f"{self.checkup_id}_{data['name']}_Prescription"
+            word_output = os.path.join(dated_folder_path, f"temp_{filename_base}.docx")
+            pdf_output = os.path.join(dated_folder_path, f"{filename_base}.pdf")
 
-            # Load Word template
+            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\COVACHA_SYSTEM\Images\Prescription.docx"
             doc = Document(template_path)
 
             # Replace placeholders in paragraphs
@@ -731,16 +717,24 @@ class DoctorLabResult(QMainWindow):
                     if placeholder in paragraph.text:
                         paragraph.text = paragraph.text.replace(placeholder, str(value))
 
-            # Replace placeholders in tables
+            # Fill prescription table dynamically
             for table in doc.tables:
-                for row in table.rows:
-                    for cell in row.cells:
-                        for key, value in data.items():
-                            placeholder = f"{{{{{key}}}}}"
-                            if placeholder in cell.text:
-                                cell.text = cell.text.replace(placeholder, str(value))
+                if table.cell(0, 0).text.strip().lower().startswith("medicine"):
+                    while len(table.rows) > 1:
+                        table._tbl.remove(table.rows[1]._tr)
 
-            # Save and convert to PDF
+                    for pres in prescriptions:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = pres.get("pres_medicine", "")
+                        row_cells[1].text = pres.get("pres_dosage", "")
+                        row_cells[2].text = pres.get("pres_tablets", "")
+                        row_cells[3].text = pres.get("pres_intake", "")
+
+                        # Remove borders from each cell in the new row
+                        for cell in row_cells:
+                            remove_cell_borders(cell)
+                    break
+
             doc.save(word_output)
             convert(word_output, pdf_output)
             os.remove(word_output)
@@ -765,8 +759,6 @@ class DoctorLabResult(QMainWindow):
 
         # If no existing window is found, create a new one
         checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-        # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
-
         if not checkup_details or 'doc_id' not in checkup_details:
             return
 

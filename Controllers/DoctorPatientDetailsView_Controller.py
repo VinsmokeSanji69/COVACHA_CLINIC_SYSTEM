@@ -1,5 +1,5 @@
 from datetime import datetime
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from Controllers.ClientSocketController import DataRequest
@@ -150,24 +150,27 @@ class DoctorPatientDetailsViewController(QMainWindow):
             )
 
             self.ui.TransactionTable.setRowCount(len(sorted_checkups))
+            self.ui.TransactionTable.setColumnCount(2)  # Only 2 columns: ID and Date
             self.ui.TransactionTable.verticalHeader().setVisible(False)
             self.ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-            self.ui.TransactionTable.setHorizontalHeaderLabels(["Checkup ID", "Diagnosis", "Date"])
+            self.ui.TransactionTable.setHorizontalHeaderLabels(["Checkup ID", "Date"])
 
             for row, checkup in enumerate(sorted_checkups):
                 chck_id = str(checkup.get("id", "N/A"))
-                diagnosis = checkup.get("diagnosis", "N/A")
                 date = safe_date_format(checkup.get("date"))
 
                 self.ui.TransactionTable.setItem(row, 0, QtWidgets.QTableWidgetItem(chck_id))
-                self.ui.TransactionTable.setItem(row, 1, QtWidgets.QTableWidgetItem(diagnosis))
-                self.ui.TransactionTable.setItem(row, 2, QtWidgets.QTableWidgetItem(date))
+
+                date_item = QtWidgets.QTableWidgetItem(date)
+                date_item.setTextAlignment(QtCore.Qt.AlignCenter)  # Center align the date
+                self.ui.TransactionTable.setItem(row, 1, date_item)
 
             self.ui.TransactionTable.resizeColumnsToContents()
             self.ui.TransactionTable.horizontalHeader().setStretchLastSection(True)
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load checkups: {e}")
+
 
     def view_checkup_details_ui(self, checkup_id):
         try:
