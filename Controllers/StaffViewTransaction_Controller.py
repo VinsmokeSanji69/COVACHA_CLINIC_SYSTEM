@@ -3,13 +3,8 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QDialogButtonBox, QDialog
 
 from Controllers.ClientSocketController import DataRequest
-from Views.Staff_ViewTransaction import Ui_MainWindow
 from Models.Doctor import calculate_age
-from Models.CheckUp import CheckUp
-from Models.Doctor import Doctor, calculate_age
-from Models.Patient import Patient
-from Models.LaboratoryTest import Laboratory
-from Models.Transaction import Transaction
+from Views.Staff_ViewTransaction import Ui_MainWindow
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -79,8 +74,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
                 raise ValueError("No check-up ID provided.")
 
             # Fetch check-up details from the database
-            checkup = CheckUp.get_checkup_details(self.chck_id)
-            # checkup = DataRequest.send_command("GET_CHECKUP_DETAILS", self.chck_id)
+            #checkup = CheckUp.get_checkup_details(self.chck_id)
+            checkup = DataRequest.send_command("GET_CHECKUP_DETAILS", self.chck_id)
 
             if not checkup:
                 raise ValueError(f"No check-up found for chck_id={self.chck_id}")
@@ -94,8 +89,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not pat_id:
                 raise ValueError("Missing 'pat_id' in checkup data.")
 
-            patient = Patient.get_patient_details(pat_id)
-            # patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+            #patient = Patient.get_patient_details(pat_id)
+            patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient:
                 raise ValueError(f"No patient found for pat_id={pat_id}")
@@ -108,16 +103,16 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not doc_id:
                 raise ValueError("Missing 'doc_id' in checkup data.")
 
-            doctor = Doctor.get_doctor(doc_id)
-            # doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
+            #doctor = Doctor.get_doctor(doc_id)
+            doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
             if not doctor:
                 raise ValueError(f"No doctor found for doc_id={doc_id}")
 
             docFullname = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
 
             # Check if a transaction exists for this check-up ID
-            transaction = Transaction.get_transaction_by_chckid(self.chck_id)
-            # transaction = DataRequest.send_command("GET_TRANSACTION_BY_CHECKUP_ID", self.chck_id)
+            #transaction = Transaction.get_transaction_by_chckid(self.chck_id)
+            transaction = DataRequest.send_command("GET_TRANSACTION_BY_CHECKUP_ID", self.chck_id)
 
             if transaction and transaction.get('tran_discount'):
                 discount = float(transaction['tran_discount'])
@@ -195,8 +190,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
             if not self.chck_id:
                 raise ValueError("No check-up ID provided.")
 
-            lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
-            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
+            #lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
 
             # Clear previous contents
             self.ui.LabChargeTable.clearContents()
@@ -219,8 +214,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
                 lab_code = lab_test['lab_code']
                 lab_attachment = lab_test['lab_attachment']
 
-                lab_details = Laboratory.get_test_by_labcode(lab_code)
-                # lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+                #lab_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
 
                 if not lab_details:
                     continue
@@ -247,8 +242,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
 
 
             # Step 1: Fetch all lab codes associated with the chck_id
-            lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
-            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
+            #lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
 
             if not lab_tests:
                 self.ui.TotalLabCharge.setText("₱ 0.00")  # Set default value if no lab tests exist
@@ -260,8 +255,8 @@ class StaffViewTransaction(QtWidgets.QMainWindow):
                 lab_code = lab_test['lab_code']
 
                 # Fetch lab details (name and price) from the Laboratory model
-                lab_details = Laboratory.get_test_by_labcode(lab_code)
-                # lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+                #lab_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
 
                 if not lab_details:
                     continue

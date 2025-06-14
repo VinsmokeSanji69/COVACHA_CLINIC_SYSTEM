@@ -9,18 +9,12 @@ from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QMessageBox, QLabel, QDial
 from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
 from Controllers.DoctorAddPrescription_Controller import DoctorAddPrescription
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
-from Models.LaboratoryTest import Laboratory
-from Models.Prescription import Prescription
 from datetime import datetime, date
 from docx import Document
 from docx2pdf import convert
 import time
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-
 
 def remove_cell_borders(cell):
     tc = cell._tc
@@ -110,8 +104,8 @@ class DoctorLabResult(QMainWindow):
 
 
     def initialize_diagnosis(self):
-        checkup = CheckUp.get_checkup_details(self.checkup_id)
-        # checkup = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+        #checkup = CheckUp.get_checkup_details(self.checkup_id)
+        checkup = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
         diagnosis = checkup.get("chck_diagnoses")
         prescnotes = checkup.get("chck_notes")
@@ -251,8 +245,8 @@ class DoctorLabResult(QMainWindow):
             self.ui.LabTestTabe.setRowCount(0)
 
             # Fetch lab codes and attachments for the given check-up ID
-            lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
-            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.checkup_id)
+            #lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.checkup_id)
 
             if not lab_tests:
                 # Add a single row with "No Lab Test Request"
@@ -268,11 +262,6 @@ class DoctorLabResult(QMainWindow):
                 if isinstance(lab_test, dict):
                     lab_code = lab_test.get('lab_code')
                     lab_attachment = lab_test.get('lab_attachment')
-                elif isinstance(lab_test, tuple):
-                    # Assume the tuple structure is (lab_code, lab_attachment)
-                    if len(lab_test) < 2:
-                        continue
-                    lab_code, lab_attachment = lab_test[:2]
                 else:
                     continue
 
@@ -281,14 +270,14 @@ class DoctorLabResult(QMainWindow):
                     continue
 
                 # Fetch the lab test name using the lab code
-                lab_test_details = Laboratory.get_test_by_labcode(lab_code)
-                # lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+                #lab_test_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
 
                 if not lab_test_details:
                     continue
 
                 # Handle the case where get_test_by_labcode returns a tuple
-                if isinstance(lab_test_details, tuple):
+                if isinstance(lab_test_details, list):
                     # Assume the first element of the tuple contains 'lab_test_name'
                     if len(lab_test_details) > 0 and isinstance(lab_test_details[0], dict):
                         lab_test_details = lab_test_details[0]
@@ -329,7 +318,8 @@ class DoctorLabResult(QMainWindow):
             self.ui.LabTestTabe_2.setRowCount(0)
 
             # Fetch prescriptions for the given check-up ID
-            prescriptions = Prescription.display_prescription(self.checkup_id)
+            #prescriptions = Prescription.display_prescription(self.checkup_id)
+            prescriptions = DataRequest.send_command("GET_PRESCRIPTION_BY_CHECKUP",self.checkup_id)
             if not prescriptions:
                 # Add a single row with "No Prescriptions"
                 row_position = self.ui.LabTestTabe_2.rowCount()
@@ -362,8 +352,8 @@ class DoctorLabResult(QMainWindow):
         """Load both check-up and patient details and populate the UI."""
         try:
             # Step 1: Fetch check-up details
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
@@ -376,8 +366,8 @@ class DoctorLabResult(QMainWindow):
             chck_weight = checkup_details['chck_weight']
 
             # Step 2: Fetch patient details
-            patient_details = Patient.get_patient_details(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+            #patient_details = Patient.get_patient_details(pat_id)
+            patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
@@ -443,15 +433,15 @@ class DoctorLabResult(QMainWindow):
         lab_test_name = lab_test_name.strip().lower()
 
         # Retrieve the lab_code using the normalized lab_test_name
-        lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
-        # lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
+        #lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
+        lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
 
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
         # Fetch the file path from the CheckUp model
-        file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
-        # file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.checkup_id, lab_code])
+        #file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
+        file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.checkup_id, lab_code])
 
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
@@ -486,8 +476,8 @@ class DoctorLabResult(QMainWindow):
         tablets = self.ui.LabTestTabe_2.item(selected_row, 3).text()
 
         # Fetch prescription by details
-        pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake, tablets)
-        # pres_data = DataRequest.send_command("")
+        #pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake, tablets)
+        pres_data = DataRequest.send_command("GET_PRESCRIPTION_BY_DETAILS", [self.checkup_id, med_name, dosage, intake, tablets])
 
         if not pres_data:
             QMessageBox.critical(self, "Error", "Failed to find prescription in database.")
@@ -521,14 +511,14 @@ class DoctorLabResult(QMainWindow):
         dosage = self.ui.LabTestTabe_2.item(selected_row, 1).text()
         intake = self.ui.LabTestTabe_2.item(selected_row, 2).text()
 
-        pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake)
-        # pres_data = DataRequest.send_command("")
+        #pres_data = Prescription.get_prescription_by_details(self.checkup_id, med_name, dosage, intake)
+        pres_data = DataRequest.send_command("GET_PRESCRIPTION_BY_DETAILS", [self.checkup_id, med_name, dosage, intake])
 
         if not pres_data:
             QMessageBox.critical(self, "Error", "Failed to find prescription in database.")
             return
 
-        if Prescription.delete_prescription_by_id(pres_data['pres_id']):
+        if DataRequest.send_command("DELETE_PRESCRIPTION",pres_data['pres_id']):
             QMessageBox.information(self, "Success", "Prescription deleted successfully.")
             self.refresh_all_tables()
         else:
@@ -544,8 +534,8 @@ class DoctorLabResult(QMainWindow):
 
     def confirm_and_add_diagnosis(self):
         try:
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
             # Get diagnosis text and notes from the UI
             chck_diagnoses = self.ui.DiagnoseText.toPlainText().strip()
@@ -561,16 +551,20 @@ class DoctorLabResult(QMainWindow):
                 return
 
             # Update check-up status to "Completed"
-            success = CheckUp.change_status_completed(self.checkup_id)
+            #success = CheckUp.change_status_completed(self.checkup_id)
+            success = DataRequest.send_command("CHANGE_STATUS_COMPLETED",self.checkup_id)
             if not success:
                 raise ValueError("Failed to change check-up status to Completed.")
-
+            chck_id = self.checkup_id,
+            chck_diagnoses=chck_diagnoses,
+            chck_notes=chck_notes
             # Save diagnosis notes
-            success = CheckUp.add_diagnosis_notes(
-                chck_id=self.checkup_id,
-                chck_diagnoses=chck_diagnoses,
-                chck_notes=chck_notes
-            )
+            # success = CheckUp.add_diagnosis_notes(
+            #     chck_id=self.checkup_id,
+            #     chck_diagnoses=chck_diagnoses,
+            #     chck_notes=chck_notes
+            # )
+            success = DataRequest.send_command("ADD_DIAGNOSIS_NOTES",[chck_id, chck_diagnoses,chck_notes])
             if not success:
                 raise ValueError("Failed to save diagnosis notes.")
 
@@ -625,15 +619,15 @@ class DoctorLabResult(QMainWindow):
 
     def make_into_pdf(self, pat_id):
         try:
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
-            patient_details = Patient.get_patient_by_id(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
+            #patient_details = Patient.get_patient_by_id(pat_id)
+            patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
 
             doc_id = checkup_details['doc_id']
-            doctor_details = Doctor.get_doctor(doc_id)
-            # doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
+            #doctor_details = Doctor.get_doctor(doc_id)
+            doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
 
             doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
@@ -703,16 +697,17 @@ class DoctorLabResult(QMainWindow):
 
     def make_prescription_pdf(self, pat_id):
         try:
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
-            patient_details = Patient.get_patient_by_id(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
+            #patient_details = Patient.get_patient_by_id(pat_id)
+            patient_details = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
 
-            doctor_details = Doctor.get_doctor(checkup_details['doc_id'])
-            # doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", checkup_details['doc_id'])
+            #doctor_details = Doctor.get_doctor(checkup_details['doc_id'])
+            doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", checkup_details['doc_id'])
 
-            prescriptions = Prescription.display_prescription(self.checkup_id)
+            #prescriptions = Prescription.display_prescription(self.checkup_id)
+            prescriptions = DataRequest.send_command("GET_PRESCRIPTION_BY_CHECKUP",self.checkup_id)
 
             doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
 
@@ -792,8 +787,8 @@ class DoctorLabResult(QMainWindow):
                 return
 
         # If no existing window is found, create a new one
-        checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-        # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+        #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+        checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
         if not checkup_details or 'doc_id' not in checkup_details:
             return

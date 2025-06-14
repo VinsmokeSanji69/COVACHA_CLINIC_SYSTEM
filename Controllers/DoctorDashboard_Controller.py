@@ -10,13 +10,8 @@ from Controllers.DoctorPatientList_Controller import DoctorPatientList
 from Controllers.DoctorRecords_Controller import DoctorRecords
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Dashboard import Ui_Doctor_Dashboard
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
 from Views.Doctor_Records import Ui_Doctor_Records
 import datetime
-
-
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -143,7 +138,8 @@ class DoctorDashboardController(QMainWindow):
         self.apply_table_styles(self.checkup_ui.DoneTable)
         self.apply_table_styles(self.records_ui.DoneTable)
 
-        total_patients = Doctor.count_total_patients_by_doctor(self.doc_id)
+        #total_patients = Doctor.count_total_patients_by_doctor(self.doc_id)
+        total_patients = DataRequest.send_command("COUNT_TOTAL_PATIENT_BY_DOCTOR",self.doc_id)
         self.dashboard_ui.Total.setText(str(total_patients))
 
 
@@ -298,8 +294,8 @@ class DoctorDashboardController(QMainWindow):
         """Fetch and display pending check-ups in the PatientDetails table."""
         try:
             # Fetch pending check-ups from the database
-            pending_checkups = CheckUp.get_pending_checkups()
-            # pending_checkups = DataRequest.send_command("GET_PENDING_CHECKUP")
+            #pending_checkups = CheckUp.get_pending_checkups()
+            pending_checkups = DataRequest.send_command("GET_PENDING_CHECKUP")
 
             # self.checkups = CheckUp.get_all_checkups()
 
@@ -325,8 +321,8 @@ class DoctorDashboardController(QMainWindow):
                 chck_id = checkup["chck_id"]
 
                 # Fetch patient details
-                patient = Patient.get_patient_by_id(pat_id)
-                # patient = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
+                #patient = Patient.get_patient_by_id(pat_id)
+                patient = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
 
                 if not patient:
                     continue
@@ -368,7 +364,8 @@ class DoctorDashboardController(QMainWindow):
                 return
 
             # Update the check-up status to "On going" and assign the doctor's ID
-            success = CheckUp.update_doc_id(chck_id, self.doc_id)
+            #success = CheckUp.update_doc_id(chck_id, self.doc_id)
+            success = DataRequest.send_command("UPDATE_DOC_ID",[chck_id, self.doc_id])
             if success:
                 # Open the DoctorDiagnosis form with the selected CheckUp ID
                 self.open_diagnosis_form(chck_id)

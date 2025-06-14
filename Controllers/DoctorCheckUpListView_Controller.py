@@ -6,10 +6,6 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from Controllers.ClientSocketController import DataRequest
 from Views.Doctor_LabResult import Ui_Doctor_LabResult as DoctorLabResultUI
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.LaboratoryTest import Laboratory
-from Models.Prescription import Prescription
 from datetime import datetime, date
 
 class DoctorCheckUpListView(QMainWindow):
@@ -149,8 +145,8 @@ class DoctorCheckUpListView(QMainWindow):
             self.ui.LabTestTabe.setRowCount(0)
 
             # Fetch lab codes and attachments for the given check-up ID
-            lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
-            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.checkup_id)
+            #lab_tests = CheckUp.get_test_names_by_chckid(self.checkup_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.checkup_id)
 
             if not lab_tests:
                 # Add a single row with "No Lab Test Request"
@@ -179,8 +175,8 @@ class DoctorCheckUpListView(QMainWindow):
                     continue
 
                 # Fetch the lab test name using the lab code
-                lab_test_details = Laboratory.get_test_by_labcode(lab_code)
-                # lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+                #lab_test_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
 
                 if not lab_test_details:
                     continue
@@ -227,7 +223,8 @@ class DoctorCheckUpListView(QMainWindow):
             self.ui.LabTestTabe_2.setRowCount(0)
 
             # Fetch prescriptions for the given check-up ID
-            prescriptions = Prescription.display_prescription(self.checkup_id)
+            #prescriptions = Prescription.display_prescription(self.checkup_id)
+            prescriptions = DataRequest.send_command("GET_PRESCRIPTION_BY_CHECKUP",self.checkup_id)
             if not prescriptions:
                 # Add a single row with "No Prescriptions"
                 row_position = self.ui.LabTestTabe_2.rowCount()
@@ -265,8 +262,8 @@ class DoctorCheckUpListView(QMainWindow):
         """Load both check-up and patient details and populate the UI."""
         try:
             # Step 1: Fetch check-up details
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
@@ -281,8 +278,8 @@ class DoctorCheckUpListView(QMainWindow):
             chck_notes = checkup_details ['chck_notes']
 
             # Step 2: Fetch patient details
-            patient_details = Patient.get_patient_details(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+            #patient_details = Patient.get_patient_details(pat_id)
+            patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
@@ -349,16 +346,16 @@ class DoctorCheckUpListView(QMainWindow):
         lab_test_name = lab_test_name.strip().lower()
 
         # Retrieve the lab_code using the normalized lab_test_name
-        lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
-        # lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
+        #lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
+        lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
 
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
 
         # Fetch the file path from the CheckUp model
-        file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
-        # file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.checkup_id, lab_code])
+        #file_path = CheckUp.get_lab_attachment(self.checkup_id, lab_code)
+        file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.checkup_id, lab_code])
 
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")

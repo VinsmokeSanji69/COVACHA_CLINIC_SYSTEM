@@ -7,16 +7,11 @@ from Controllers.DoctorLabResult_Controller import DoctorLabResult
 from Views.Doctor_CheckUpList import Ui_Doctor_CheckUpList
 from Views.Doctor_Diagnosis import Ui_Doctor_Diagnosis as DoctorDiagnosisUI
 from Controllers.DoctorRecords_Controller import DoctorRecords
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
-from Models.LaboratoryTest import Laboratory
 from datetime import datetime, date
 from docx import Document
 import os
 from docx2pdf import convert
 from Views.Doctor_Records import Ui_Doctor_Records
-
 
 class DoctorDiagnosis(QMainWindow):
     def __init__(self, checkup_id, doc_id, parent=None):
@@ -38,8 +33,8 @@ class DoctorDiagnosis(QMainWindow):
         """Load both check-up and patient details and populate the UI."""
         try:
             # Step 1: Fetch check-up details
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
             if not checkup_details:
                 raise ValueError("No check-up details found for the given ID.")
@@ -53,8 +48,8 @@ class DoctorDiagnosis(QMainWindow):
             chckup_type = checkup_details['chckup_type']
 
             # Step 2: Fetch patient details
-            patient_details = Patient.get_patient_details(pat_id)
-            # patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
+            #patient_details = Patient.get_patient_details(pat_id)
+            patient_details = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
 
             if not patient_details:
                 raise ValueError("No patient details found for the given ID.")
@@ -91,8 +86,8 @@ class DoctorDiagnosis(QMainWindow):
                     if isinstance(widget, QCheckBox) and widget.isChecked():
                         lab_code = widget.property("lab_code")
                         if lab_code:
-                            result = Laboratory.get_test_by_labcode(lab_code)
-                            # result = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
+                            #result = Laboratory.get_test_by_labcode(lab_code)
+                            result = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
 
                             if result:
                                 lab_name = result[0]['lab_test_name']
@@ -109,24 +104,25 @@ class DoctorDiagnosis(QMainWindow):
                          and widget.isChecked()
                          and widget.property("lab_code")]
 
-        success = CheckUp.update_lab_codes(self.checkup_id, raw_lab_codes)
+        #success = CheckUp.update_lab_codes(self.checkup_id, raw_lab_codes)
+        success = DataRequest.send_command("UPDATE_LAB_CODES",[self.checkup_id, raw_lab_codes])
 
         if not success:
             QMessageBox.critical(self, "Error", "Failed to update lab codes.")
             return
 
         try:
-            checkup_details = CheckUp.get_checkup_details(self.checkup_id)
-            # checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
+            #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
+            checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
 
             check_date_obj = checkup_details['chck_date']  # datetime.date
             folder_name = check_date_obj.strftime("%B %d, %Y")
 
-            patient_info = Patient.get_patient_by_id(self.patient_id)
-            # patient_info = DataRequest.send_command("GET_PATIENT_BY_ID", self.patient_id)
+            #patient_info = Patient.get_patient_by_id(self.patient_id)
+            patient_info = DataRequest.send_command("GET_PATIENT_BY_ID", self.patient_id)
 
-            doctor_info = Doctor.get_doctor(self.doc_id)
-            # doctor_info = DataRequest.send_command("GET_DOCTOR_BY_ID", self.doc_id)
+            #doctor_info = Doctor.get_doctor(self.doc_id)
+            doctor_info = DataRequest.send_command("GET_DOCTOR_BY_ID", self.doc_id)
 
             if not patient_info or not doctor_info:
                 QMessageBox.critical(self, "Error", "Failed to fetch patient or doctor information.")
@@ -241,11 +237,12 @@ class DoctorDiagnosis(QMainWindow):
         """Display lab tests in two frames."""
         try:
             # Fetch all lab tests
-            tests = Laboratory.get_all_test()
-            # tests = DataRequest.send_command("GET_ALL_TEST")
+            #tests = Laboratory.get_all_test()
+            tests = DataRequest.send_command("GET_ALL_TEST")
 
             # Count the total number of lab tests
-            total_tests = Laboratory.count_all_test()
+            #total_tests = Laboratory.count_all_test()
+            total_tests = DataRequest.send_command("COUNT_ALL_TEST")
 
             # Divide the tests into two groups
             half = (total_tests + 1) // 2

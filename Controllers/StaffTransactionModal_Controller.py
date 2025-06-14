@@ -2,10 +2,6 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QTableWidgetItem, QMainWindow, QMessageBox, QHeaderView, QSizePolicy
 
 from Controllers.ClientSocketController import DataRequest
-from Models.CheckUp import CheckUp
-from Models.Patient import Patient
-from Models.Doctor import Doctor
-from Models.Transaction import Transaction
 from Views.Staff_TransactionsList import Ui_Staff_TransactionList
 from Controllers.StaffTransactionProcess_Controller import StaffTransactionProcess
 
@@ -46,15 +42,15 @@ class StaffTransactionModal(QMainWindow):
         """Fetch and display pending check-ups in the TransactionTable."""
         try:
             # Fetch all transactions to determine which check-ups are already completed
-            transactions = Transaction.get_all_transaction()
-            # transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
+            #transactions = Transaction.get_all_transaction()
+            transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
 
             # Create a mapping of chck_id to tran_status
             transaction_status_map = {tran['chck_id']: tran['tran_status'] for tran in transactions}
 
             # Fetch all check-ups from the database
-            pending_checkups = CheckUp.get_all_checkups()
-            # pending_checkups = DataRequest.send_command("GET_ALL_CHECKUP")
+            #pending_checkups = CheckUp.get_all_checkups()
+            pending_checkups = DataRequest.send_command("GET_ALL_CHECKUP")
 
             # Clear the table before populating it
             self.ui.TransactionTable.setRowCount(0)
@@ -101,8 +97,8 @@ class StaffTransactionModal(QMainWindow):
                     chck_type = checkup['chckup_type']
 
                     # Patient details
-                    patient = Patient.get_patient_by_id(pat_id)
-                    # patient = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
+                    #patient = Patient.get_patient_by_id(pat_id)
+                    patient = DataRequest.send_command("GET_PATIENT_BY_ID", pat_id)
 
                     if not patient:
                         continue
@@ -110,8 +106,8 @@ class StaffTransactionModal(QMainWindow):
                     full_name = f"{patient['last_name'].capitalize()}, {patient['first_name'].capitalize()}"
 
                     # Doctor details
-                    doctor = Doctor.get_doctor(doc_id)
-                    # doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
+                    #doctor = Doctor.get_doctor(doc_id)
+                    doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
 
                     if not doctor:
                         docFullname = "Unknown Doctor"

@@ -8,8 +8,6 @@ from Controllers.ClientSocketController import DataRequest
 from Views.Staff_AddLabAttachment import Ui_Staff_AddLabAttachment as StaffAddAttachmentUI
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QDialog, QVBoxLayout, QLabel, QDialogButtonBox, QFileDialog, \
     QHeaderView, QSizePolicy
-from Models.CheckUp import CheckUp
-from Models.LaboratoryTest import Laboratory
 
 class ConfirmationDialog(QDialog):
     def __init__(self, parent=None):
@@ -130,8 +128,8 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
             self.ui.LabTable.setRowCount(0)
 
             # Fetch lab codes and attachments for the given check-up ID
-            lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
-            # lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
+            #lab_tests = CheckUp.get_test_names_by_chckid(self.chck_id)
+            lab_tests = DataRequest.send_command("GET_TEST_BY_CHECK_ID", self.chck_id)
 
             if not lab_tests:
                 return
@@ -151,12 +149,10 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
                     continue
 
                 # Fetch the lab test name using the lab code
-                lab_test_details = Laboratory.get_test_by_labcode(lab_code)
-                # lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
-
+                #lab_test_details = Laboratory.get_test_by_labcode(lab_code)
+                lab_test_details = DataRequest.send_command("GET_TEST_BY_LAB_CODE", lab_code)
                 # Handle the case where get_test_by_labcode returns a tuple
-                if isinstance(lab_test_details, tuple):
-                    # Assume the first element of the tuple contains 'lab_test_name'
+                if isinstance(lab_test_details, list):
                     if len(lab_test_details) > 0 and isinstance(lab_test_details[0], dict):
                         lab_test_details = lab_test_details[0]
                     else:
@@ -206,8 +202,8 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
         lab_test_name = lab_test_name.strip().lower()
 
         # Retrieve the lab_code using the normalized lab_test_name
-        lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
-        # lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
+        #lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
+        lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
@@ -221,7 +217,8 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
         file_name = os.path.basename(file_path)  # Extracts the file name from the path
 
         # Update the database with the file path
-        success = CheckUp.update_lab_attachment(self.chck_id, lab_code, file_path)
+        #success = CheckUp.update_lab_attachment(self.chck_id, lab_code, file_path)
+        success = DataRequest.send_command("UPDATE_LAB_ATTACHMENT",[self.chck_id, lab_code, file_path])
         if success:
 
             # Update the table directly without refreshing (optional optimization)
@@ -249,16 +246,15 @@ class StaffAddAttachment(QtWidgets.QMainWindow):  # Inherit from QMainWindow or 
         lab_test_name = lab_test_name.strip().lower()
 
         # Retrieve the lab_code using the normalized lab_test_name
-        lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
-        # lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
-
+        #lab_code = Laboratory.get_lab_code_by_name(lab_test_name)
+        lab_code = DataRequest.send_command("GET_LAB_CODE_BY_NAME", lab_test_name)
         if not lab_code:
             QMessageBox.critical(self, "Error", "Failed to retrieve lab code.")
             return
 
         # Fetch the file path from the CheckUp model
-        file_path = CheckUp.get_lab_attachment(self.chck_id, lab_code)
-        # file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.chck_id, lab_code])
+        #file_path = CheckUp.get_lab_attachment(self.chck_id, lab_code)
+        file_path = DataRequest.send_command("GET_LAB_ATTACHMENT", [self.chck_id, lab_code])
 
         if not file_path:
             QMessageBox.warning(self, "No Attachment", "No file is attached to this lab test.")
