@@ -146,7 +146,7 @@ class DoctorDiagnosis(QMainWindow):
             pdf_output = os.path.join(dated_folder_path, f"{self.checkup_id}_{name}_LabRequest.pdf")
             word_output = os.path.join(dated_folder_path, f"temp_{self.checkup_id}_{name}.docx")
 
-            template_path = r"C:\Users\Roy Adrian Rondina\PycharmProjects\COVACHA_SYSTEM\Images\LabRequest.docx"
+            template_path = r"Images\LabRequest.docx"
             if not os.path.exists(template_path):
                 QMessageBox.critical(self, "Template Error", "Lab Request template not found.")
                 return
