@@ -94,7 +94,7 @@ class StaffAddCheckUp(QMainWindow):
         bdate = self.ui.Dob.date().toString("yyyy-MM-dd")
 
         # Do nothing if either Fname or Lname is empty
-        if not fname or not lname or not bdate:
+        if not fname and not lname and not bdate:
             return
 
         try:

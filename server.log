@@ -9854,3 +9854,7 @@ INFO:root:Discovery request from 192.168.164.123 (Client MAC: D0:5E:05:41:A5:28)
 DEBUG:root:Sent discovery response to ('192.168.164.123', 62381)
 INFO:root:Connection from ('192.168.164.123', 54220) (Admin: False)
 DEBUG:root:Sending response: {'id': 10000034, 'last_name': 'Rondina', 'first_name': 'Alyssa', 'middle_name': 'Cuadra', 'gender': 'N/A', 'dob': '1990-01-17', 'age': 35, 'address': 'Pardo Cogon', 'contact': '9232323232'}
+INFO:root:Discovery request from 127.0.0.1 (Client MAC: 74:04:F1:4E:E6:02)
+DEBUG:root:Sent discovery response to ('127.0.0.1', 63813)
+INFO:root:Connection from ('127.0.0.1', 52316) (Admin: False)
+DEBUG:root:Sending response: []
