@@ -262,11 +262,6 @@ class DoctorLabResult(QMainWindow):
                 if isinstance(lab_test, dict):
                     lab_code = lab_test.get('lab_code')
                     lab_attachment = lab_test.get('lab_attachment')
-                elif isinstance(lab_test, tuple):
-                    # Assume the tuple structure is (lab_code, lab_attachment)
-                    if len(lab_test) < 2:
-                        continue
-                    lab_code, lab_attachment = lab_test[:2]
                 else:
                     continue
 
@@ -282,7 +277,7 @@ class DoctorLabResult(QMainWindow):
                     continue
 
                 # Handle the case where get_test_by_labcode returns a tuple
-                if isinstance(lab_test_details, tuple):
+                if isinstance(lab_test_details, list):
                     # Assume the first element of the tuple contains 'lab_test_name'
                     if len(lab_test_details) > 0 and isinstance(lab_test_details[0], dict):
                         lab_test_details = lab_test_details[0]

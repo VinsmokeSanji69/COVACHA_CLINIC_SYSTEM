@@ -156,7 +156,7 @@ class Ui_Doctor_Diagnosis(object):
 "    font: 500 13pt \"Satoshi\";\n"
 "    color: #2B3752;\n"
 "}\n"
-"#PatName, #PatID, #Dob, #PatGender, #Age, #PatStatus, #CheckID {\n"
+"#PatName, #PatID, #Dob, #PatGender, #Age, #PatStatus, #CheckID, #Type {\n"
 "    font: 900 16pt \"Satoshi\";\n"
 "}\n"
 "\n"
@@ -375,6 +375,9 @@ class Ui_Doctor_Diagnosis(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Type.sizePolicy().hasHeightForWidth())
         self.Type.setSizePolicy(sizePolicy)
+        self.Type.setStyleSheet("#Type {\n"
+"    font: 900 16pt \"Satoshi\";\n"
+"}")
         self.Type.setAlignment(QtCore.Qt.AlignLeading)
         self.Type.setObjectName("Type")
         self.verticalLayout_22.addWidget(self.Type)
