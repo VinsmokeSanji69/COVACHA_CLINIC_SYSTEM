@@ -144,9 +144,19 @@ class Patient:
 
         try:
             with conn.cursor() as cursor:
+                # Check if the table is empty
+                cursor.execute("SELECT COUNT(*) FROM patient;")
+                count = cursor.fetchone()[0]
+
+                if count == 0:
+                    # Reset the sequence to start from 10000001
+                    cursor.execute("ALTER SEQUENCE patient_id_seq RESTART WITH 10000001;")
+
+                # Generate the next patient ID
                 cursor.execute("SELECT nextval('patient_id_seq');")
                 new_pat_id = cursor.fetchone()[0]
 
+                # Insert the new patient record
                 query = """
                     INSERT INTO patient (
                         pat_id, pat_lname, pat_fname, pat_mname,
@@ -169,10 +179,10 @@ class Patient:
 
         except Exception as e:
             conn.rollback()
+            print("Error in create_new_patient:", e)
             return None
         finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     @staticmethod
     def update_or_create_patient(data):

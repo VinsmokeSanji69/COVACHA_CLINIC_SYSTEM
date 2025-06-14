@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QWidget
-
+from PyQt5.QtWidgets import QTableWidgetItem,QWidget
+from PyQt5.QtCore import Qt
 from Controllers.ClientSocketController import DataRequest
 from Controllers.StaffViewTransaction_Controller import StaffViewTransaction
 from Views.Staff_Transactions import Ui_Staff_Transactions as StaffTransactionUI
@@ -74,74 +74,19 @@ class StaffTransactions(QWidget):
             QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
 
-    def load_transaction_details(self):
-        try:
-            #checkups = CheckUp.get_all_checkups()
-            checkups = DataRequest.send_command("GET_ALL_CHECKUP")
-
-            checkups.sort(key=lambda c: c['chck_id'], reverse=True)
-            #transactions = Transaction.get_all_transaction()
-            transactions = DataRequest.send_command("GET_ALL_TRANSACTION")
-
-            transaction_dict = {tran['chck_id'].strip().lower(): tran['tran_status'] for tran in transactions}
-
-            self.all_checkups = []  # Store for search use
-            self.transactions_ui.TransactionTable.clearContents()
-            self.transactions_ui.TransactionTable.setRowCount(0)
-
-            for checkup in checkups:
-                chck_id = checkup['chck_id'].strip().lower()
-                pat_id = checkup['pat_id']
-                #patient = Patient.get_patient_details(pat_id)
-                patient = DataRequest.send_command("GET_PATIENT_DETAILS", pat_id)
-
-                if not patient:
-                    continue
-
-                doc_id = checkup['doc_id']
-                #doctor = Doctor.get_doctor(doc_id)
-                doctor = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
-
-                if not doctor:
-                    continue
-
-                pat_full_name = f"{patient['pat_lname'].capitalize()}, {patient['pat_fname'].capitalize()}"
-                doc_full_name = f"{doctor['last_name'].capitalize()}, {doctor['first_name'].capitalize()}"
-                tran_status = transaction_dict.get(chck_id, "Pending")
-
-                self.all_checkups.append({
-                    'chck_id': checkup['chck_id'],
-                    'patient_name': pat_full_name,
-                    'doctor_name': doc_full_name,
-                    'tran_status': tran_status
-                })
-
-            self.populate_transaction_table(self.all_checkups)
-
-        except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
-
-        self.transactions_ui.TransactionTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.transactions_ui.TransactionTable.horizontalHeader().setVisible(True)
-        self.transactions_ui.TransactionTable.horizontalHeader().setDefaultAlignment(
-            QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.transactions_ui.TransactionTable.verticalHeader().setVisible(False)
-
     def populate_transaction_table(self, checkup_data):
         self.transactions_ui.TransactionTable.setRowCount(0)
 
         if not checkup_data:
             self.transactions_ui.TransactionTable.setRowCount(1)
-            self.transactions_ui.TransactionTable.setColumnCount(
-                4)  # Assuming 4 columns (chck_id, patient, doctor, status)
+            self.transactions_ui.TransactionTable.setColumnCount(4)  # Ensure column count is 4
 
             item = QtWidgets.QTableWidgetItem("No Records Found")
             item.setTextAlignment(QtCore.Qt.AlignCenter)
-            item.setFlags(QtCore.Qt.ItemIsEnabled)  # Make it non-editable
+            item.setFlags(QtCore.Qt.ItemIsEnabled)  # Read-only
 
             self.transactions_ui.TransactionTable.setItem(0, 0, item)
-            for col in range(1, 4):  # Empty other columns
-                self.transactions_ui.TransactionTable.setItem(0, col, QtWidgets.QTableWidgetItem(""))
+            self.transactions_ui.TransactionTable.setSpan(0, 0, 1, 4)  # Span across all 4 columns
 
             return
 
