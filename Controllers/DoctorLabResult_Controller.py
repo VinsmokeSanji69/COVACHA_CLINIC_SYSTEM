@@ -536,7 +536,7 @@ class DoctorLabResult(QMainWindow):
         try:
             #checkup_details = CheckUp.get_checkup_details(self.checkup_id)
             checkup_details = DataRequest.send_command("GET_CHECKUP_DETAILS", self.checkup_id)
-
+            print("checkup_details", checkup_details)
             # Get diagnosis text and notes from the UI
             chck_diagnoses = self.ui.DiagnoseText.toPlainText().strip()
             chck_notes = self.ui.PrescriptionLabel.toPlainText().strip()
@@ -555,21 +555,26 @@ class DoctorLabResult(QMainWindow):
             success = DataRequest.send_command("CHANGE_STATUS_COMPLETED",self.checkup_id)
             if not success:
                 raise ValueError("Failed to change check-up status to Completed.")
-            chck_id = self.checkup_id,
-            chck_diagnoses=chck_diagnoses,
-            chck_notes=chck_notes
+
+            diagnosis_data = {
+                "chck_id": self.checkup_id,
+                "chck_diagnoses": chck_diagnoses,
+                "chck_notes": chck_notes
+            }
             # Save diagnosis notes
             # success = CheckUp.add_diagnosis_notes(
             #     chck_id=self.checkup_id,
             #     chck_diagnoses=chck_diagnoses,
             #     chck_notes=chck_notes
             # )
-            success = DataRequest.send_command("ADD_DIAGNOSIS_NOTES",[chck_id, chck_diagnoses,chck_notes])
+            success = DataRequest.send_command("ADD_DIAGNOSIS_NOTES", diagnosis_data)
+            print("ADD_DIAGNOSIS_NOTES",success)
+
             if not success:
                 raise ValueError("Failed to save diagnosis notes.")
-
-            # Notify user of success
-            QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
+            else:
+                # Notify user of success
+                QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
 
             pat_id = checkup_details['pat_id']
 
