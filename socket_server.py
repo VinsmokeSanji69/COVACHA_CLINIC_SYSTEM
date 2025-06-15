@@ -18,9 +18,6 @@ class CustomJSONEncoder(JSONEncoder):
         if isinstance(obj, (date, datetime)):
             return obj.isoformat()
         return super().default(obj)
-
-logging.basicConfig(filename='server.log', level=logging.DEBUG)
-
 # Import your models
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor
@@ -61,7 +58,6 @@ def _get_server_mac_address():
                         return addr.address.replace('-', ':').lower()
         return "unknown"
     except Exception as e:
-        logging.warning(f"Could not determine server MAC: {e}")
         return "error"
 
 
@@ -102,7 +98,6 @@ class SocketServer:
                 return mac_match.group(0).lower().replace('-', ':')
             return None
         except Exception as e:
-            logging.warning(f"Could not get MAC for {ip_address}: {str(e)}")
             return None
 
     def is_admin_connection(self, ip_address):
@@ -118,7 +113,6 @@ class SocketServer:
 
         ip, port = address
         is_admin = self.is_admin_connection(ip)
-        logging.info(f"Connection from {address} (Admin: {is_admin})")
 
         db_methods = {
             #LOGIN
@@ -254,7 +248,6 @@ class SocketServer:
                                                 base64.b64encode(binary_data).decode('utf-8'),
                                             ))
                                         except Exception as e:
-                                            logging.error(f"Failed to process tuple binary data: {str(e)}")
                                             processed_result.append(None)
                                 else:
                                     processed_result.append(item)
@@ -285,7 +278,6 @@ class SocketServer:
                                     except Exception as e:
                                         processed_item['lab_attachment'] = None
                                         processed_item['error'] = str(e)
-                                        logging.error(f"Failed to process lab_attachment: {str(e)}")
 
                                     processed_result.append(processed_item)
                                 else:
@@ -311,7 +303,6 @@ class SocketServer:
 
                 except PermissionError as e:
                     msg = f"Permission denied: {str(e)}"
-                    logging.warning(f"Admin attempt failed from {ip}: {msg}")
                     response = {
                         "status": "error",
                         "message": msg,
@@ -319,7 +310,6 @@ class SocketServer:
                     }
                 except Exception as e:
                     msg = f"Error processing command: {str(e)}"
-                    logging.error(msg, exc_info=True)
                     response = {
                         "status": "error",
                         "message": msg
@@ -328,13 +318,12 @@ class SocketServer:
                 # Send response
                 try:
                     encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
-                    logging.debug(f"Sending response: {response}")
                     connection.sendall(encoded_response)
                 except Exception as e:
-                    logging.error(f"Failed to send response: {e}")
+                    pass
 
         except Exception as e:
-            logging.error(f"Critical error with {ip}: {str(e)}", exc_info=True)
+                pass
         finally:
             connection.close()
 
@@ -374,7 +363,6 @@ class SocketServer:
                         request = json.loads(data.decode())
                         if request.get("type") == "DISCOVERY_REQUEST":
                             client_mac = request.get("client_mac", "unknown")
-                            logging.info(f"Discovery request from {ip} (Client MAC: {client_mac})")
 
                             response = {
                                 "type": "DISCOVERY_RESPONSE",
@@ -385,14 +373,14 @@ class SocketServer:
                             }
 
                             s.sendto(json.dumps(response).encode(), addr)
-                            logging.debug(f"Sent discovery response to {addr}")
 
                     except json.JSONDecodeError:
-                        logging.warning(f"Invalid discovery request from {addr}")
+                        pass
 
                 except Exception as e:
+                    pass
                     if self.running:  # Only log if we didn't stop intentionally
-                        logging.error(f"Discovery error: {e}")
+                        pass
 
     def start(self):
         """Start both servers"""
