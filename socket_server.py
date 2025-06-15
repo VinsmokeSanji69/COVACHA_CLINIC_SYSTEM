@@ -19,8 +19,6 @@ class CustomJSONEncoder(JSONEncoder):
             return obj.isoformat()
         return super().default(obj)
 
-logging.basicConfig(filename='server.log', level=logging.DEBUG)
-
 # Import your models
 from Models.CheckUp import CheckUp
 from Models.Doctor import Doctor
