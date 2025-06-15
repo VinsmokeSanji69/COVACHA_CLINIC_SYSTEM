@@ -31,7 +31,7 @@ class DateAwareJSONDecoder(json.JSONDecoder):
                     try:
                         obj[key] = datetime.strptime(obj[key], '%Y-%m-%d').date()
                     except (ValueError, AttributeError):
-                        pass  # Keep original value if parsing fails
+                        pass
         return obj
 
 

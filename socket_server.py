@@ -12,7 +12,6 @@ from json import JSONEncoder
 from datetime import date, datetime
 
 import psutil
-import psutils
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -37,7 +36,7 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "ClinicSystem",
     "user": "postgres",
-    "password": "admin123"
+    "password": "sphinxclub012"
 }
 
 # Server configuration

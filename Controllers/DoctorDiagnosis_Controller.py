@@ -135,7 +135,7 @@ class DoctorDiagnosis(QMainWindow):
             doctor_name = f"{doctor_info['first_name'].capitalize()} {doctor_info['middle_name'].capitalize()} {doctor_info['last_name'].capitalize()}"
 
             # Create folder
-            base_dir = r"\\DXN-XNT\Shared"
+            base_dir = r"\\LAPTOP-SACI6TVR\Share"
             dated_folder_path = os.path.join(base_dir, folder_name)
             os.makedirs(dated_folder_path, exist_ok=True)
 
