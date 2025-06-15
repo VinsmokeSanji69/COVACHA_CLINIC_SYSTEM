@@ -86,6 +86,7 @@ class AdminAddUserController(QMainWindow):
             "Neurology (Brain/Nerves)",
             "Rheumatology (Joints)"
         ]
+
         self.ui.Specialty.addItems(clinic_specialties)
         self.ui.Specialty.setStyleSheet("QComboBox QAbstractItemView { color: black; }")
         self.ui.Specialty.setCurrentIndex(-1)  # No default selection
@@ -123,6 +124,7 @@ class AdminAddUserController(QMainWindow):
 
     def prefill_id_based_on_staff_type(self):
         """Prefill the ID field based on the selected staff type"""
+        global next_id
         staff_type = self.ui.StaffType.currentText()
 
         if staff_type == "Doctor":
@@ -138,6 +140,7 @@ class AdminAddUserController(QMainWindow):
 
     def validate_and_submit(self):
         """Validate form, generate password, and submit data"""
+        global success
         if not self.validate_form():
             return
         try:
@@ -185,10 +188,6 @@ class AdminAddUserController(QMainWindow):
             errors.append("Last name is required")
             if not errors:  # Only set focus if first name is valid
                 self.ui.Lname.setFocus()
-        if not self.ui.Mname.text().strip():
-            errors.append("Middle name is required")
-            if not errors:  # Only set focus if first name is valid
-                self.ui.Mname.setFocus()
 
 
         # Email validation
@@ -259,26 +258,6 @@ class AdminAddUserController(QMainWindow):
         self.ui.Fname.setFocus()
 
     def apply_styles(self):
-        # # Style for QDateEdit
-        # dateedit_style = """
-        #     QDateEdit {
-        #         background-color: #F4F7ED;
-        #         border: 1px solid #2E6E65;
-        #         border-radius: 10px;
-        #         padding: 5px 10px;
-        #         font: 300 12pt "Lexend Light";
-        #         color: black; /* Set text color to black */
-        #     }
-        #     /* Dropdown arrow styling */
-        #     QDateEdit::down-arrow {
-        #         image: url(:/lucide/icons/calendar.svg);
-        #         width: 20px;
-        #         height: 20px;
-        #     }
-        # """
-        # self.ui.DateJoined.setStyleSheet(dateedit_style)
-        # self.ui.Dob.setStyleSheet(dateedit_style)
-        # Style for QComboBox
         combobox_style = """
             QComboBox {
                 background-color: white;
