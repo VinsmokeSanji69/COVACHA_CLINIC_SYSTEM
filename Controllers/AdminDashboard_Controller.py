@@ -228,16 +228,19 @@ class AdminDashboardController(QMainWindow):
     def go_to_staffs(self):
         self.page_stack.setCurrentWidget(self.staff_page)
         self.update_time_labels()
+        self.admin_staff.refresh_tables()
 
     @pyqtSlot()
     def go_to_records(self):
         self.page_stack.setCurrentWidget(self.records_page)
         self.update_time_labels()
+        self.admin_records.refresh_tables()
 
     @pyqtSlot()
     def go_to_transactions(self):
         self.page_stack.setCurrentWidget(self.transactions_page)
         self.update_time_labels()
+        self.admin_transactions.refresh_tables()
 
     @pyqtSlot()
     def go_to_charges(self):
