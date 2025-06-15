@@ -184,10 +184,12 @@ class StaffDashboardController(QMainWindow):
         self.staff_transactions.load_transaction_details()
         self.update_time_labels()
 
+
     @pyqtSlot()
     def go_to_labreq(self):
         self.page_stack.setCurrentWidget(self.labreq_page)
         self.update_time_labels()
+        self.staff_labrequests.refresh_table()
 
 
     def apply_table_styles(self, table_widget):
@@ -271,6 +273,7 @@ class StaffDashboardController(QMainWindow):
         try:
             # Open the modal window with a reference to the parent (dashboard)
             self.add_transaction_window = StaffTransactionModal(parent=self, staff_dashboard=self)
+            self.add_transaction_window.load_pending_transaction()
             self.add_transaction_window.show()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to open Add Transaction Modal: {e}")
@@ -279,6 +282,7 @@ class StaffDashboardController(QMainWindow):
         try:
             # Instantiate and show the AdminStaffsController window
             self.staff_request_controller = StaffLabRequest(self.staff_id)
+            self.staff_request_controller.refresh_table()
             self.staff_request_controller.show()
             self.hide()  # Hide the current dashboard window
         except Exception as e:
@@ -344,7 +348,7 @@ class StaffDashboardController(QMainWindow):
 
     def get_transaction_details(self):
         try:
-            self.staff_transactions.load_transaction_details()  # Call method from StaffTransactions instance
+            self.staff_transactions.load_transaction_details()
         except Exception as e:
             QtWidgets.QMessageBox.critical(self, "Error", f"Failed to load transaction details: {e}")
 

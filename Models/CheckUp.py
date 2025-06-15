@@ -456,7 +456,17 @@ class CheckUp:
                 conn.close()
 
     @staticmethod
-    def add_diagnosis_notes(chck_id, chck_diagnoses, chck_notes=None):
+    def add_diagnosis_notes(check_data):
+
+        if isinstance(check_data, dict):
+            chck_id = check_data.get('chck_id')
+            chck_diagnoses = check_data.get('chck_diagnoses')
+            chck_notes = check_data.get('chck_notes')
+        else:
+            chck_id = check_data[0]
+            chck_diagnoses = check_data[1]
+            chck_notes = check_data[2] if len(check_data) > 2 else None
+
         conn = None
         try:
             conn = DBConnection.get_db_connection()
@@ -466,10 +476,10 @@ class CheckUp:
             chck_diagnoses = chck_diagnoses.strip().title()
 
             query = """
-                UPDATE checkup
-                SET chck_diagnoses = %s, chck_notes = %s
-                WHERE chck_id = %s
-            """
+                    UPDATE checkup
+                    SET chck_diagnoses = %s, chck_notes = %s
+                    WHERE chck_id = %s
+                """
             cursor = conn.cursor()
             cursor.execute(query, (chck_diagnoses, chck_notes, chck_id))
 

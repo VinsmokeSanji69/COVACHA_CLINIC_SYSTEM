@@ -68,7 +68,7 @@ class Doctor:
                 conn.close()
 
     @staticmethod
-    def save_doctor (doctor_data):
+    def save_doctor(doctor_data):
         Conn = DBConnection.get_db_connection()
         if not Conn:
             return False
@@ -76,13 +76,12 @@ class Doctor:
             with Conn.cursor() as cursor:
                 query = """
                     INSERT INTO doctor (
-                    doc_id, doc_password, doc_license, doc_specialty, doc_gender, doc_dob,
-                               doc_address, doc_contact, doc_joined_date, doc_lname, doc_fname,
-                               doc_mname, doc_email
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        doc_id, doc_password, doc_license, doc_specialty, doc_gender, doc_dob,
+                        doc_address, doc_contact, doc_joined_date, doc_lname, doc_fname,
+                        doc_mname, doc_email
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
-
-                cursor.execute(query,(
+                cursor.execute(query, (
                     doctor_data["id"],
                     doctor_data["password"],
                     doctor_data["license"],
@@ -99,9 +98,9 @@ class Doctor:
                 ))
             Conn.commit()
             return True
-        except  Exception as e:
-            return None
-
+        except Exception as e:
+            print("Error while saving doctor:", e)  # <-- Print the actual error
+            raise  # or return False if you want to handle it silently
         finally:
             if Conn:
                 Conn.close()

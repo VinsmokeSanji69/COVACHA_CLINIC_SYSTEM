@@ -226,23 +226,27 @@ class DoctorDashboardController(QMainWindow):
         self.load_pending_checkups()
         self.update_time_labels()
 
+
     @pyqtSlot()
     def go_to_checkup_list(self):
         """Switch to the transactions page"""
         self.page_stack.setCurrentWidget(self.checkup_page)
         self.update_time_labels()
+        self.doctor_checkup.refresh_tables()
 
     @pyqtSlot()
     def go_to_records(self):
         """Switch to the records page"""
         self.page_stack.setCurrentWidget(self.records_page)
         self.update_time_labels()
+        self.doctor_records.refresh_tables()
 
     def ViewPatient(self):
         try:
             # Instantiate and show the AdminStaffsController window
             self.patient_controller = DoctorPatientList(self.doc_id)
             self.patient_controller.show()
+            self.patient_controller.refresh_tables()
             self.hide()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load tables: {e}")
@@ -272,6 +276,7 @@ class DoctorDashboardController(QMainWindow):
         try:
             # Instantiate and show the AdminStaffsController window
             self.record_controller = DoctorRecords(self.doc_id)
+            self.record_controller.refresh_tables()
             self.record_controller.show()
             self.hide()
         except Exception as e:
@@ -301,6 +306,7 @@ class DoctorDashboardController(QMainWindow):
 
             # Clear the table before populating it
             self.dashboard_ui.PatientDetails.setRowCount(0)
+
 
             # Check if there are no pending check-ups
             if not pending_checkups:

@@ -558,18 +558,14 @@ class DoctorLabResult(QMainWindow):
             chck_id = self.checkup_id,
             chck_diagnoses=chck_diagnoses,
             chck_notes=chck_notes
-            # Save diagnosis notes
-            # success = CheckUp.add_diagnosis_notes(
-            #     chck_id=self.checkup_id,
-            #     chck_diagnoses=chck_diagnoses,
-            #     chck_notes=chck_notes
-            # )
             success = DataRequest.send_command("ADD_DIAGNOSIS_NOTES",[chck_id, chck_diagnoses,chck_notes])
             if not success:
                 raise ValueError("Failed to save diagnosis notes.")
+            else:
+                # Notify user of success
+                QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
 
-            # Notify user of success
-            QMessageBox.information(self, "Success", "Diagnosis saved successfully!")
+
 
             pat_id = checkup_details['pat_id']
 
