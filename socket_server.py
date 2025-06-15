@@ -12,7 +12,6 @@ from json import JSONEncoder
 from datetime import date, datetime
 
 import psutil
-import psutils
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):

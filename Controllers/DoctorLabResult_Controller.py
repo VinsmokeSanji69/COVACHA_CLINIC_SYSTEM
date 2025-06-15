@@ -633,26 +633,7 @@ class DoctorLabResult(QMainWindow):
             doc_id = checkup_details['doc_id']
             #doctor_details = Doctor.get_doctor(doc_id)
             doctor_details = DataRequest.send_command("GET_DOCTOR_BY_ID", doc_id)
-
-
             doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
-
-            # Prepare data dictionary matching your template placeholders
-            data = {
-                'name': self.ui.PatName.text() or '___',
-                'age': self.ui.PatAge.text() or '___',
-                'gender': self.ui.PatGender.text() or '___',
-                'address': patient_details.get('address', '___'),
-                'contact': patient_details.get('contact', '___'),
-                'dob': patient_details.get('dob', '___'),
-                'date': checkup_details['chck_date'] or '___',
-                'doctor_name': doctor_name,
-                'bloodpressure': self.ui.BloodPressure.text() or '___',
-                'temperature': self.ui.Temperature.text() or '___',
-                'weight': self.ui.Weight.text() or '___',
-                'height': self.ui.Heights.text() or '___',
-                'diagnosis': self.ui.DiagnoseText.toPlainText() or '___',
-            }
 
             # Ensure check_date_raw is a string
             check_date_raw = checkup_details['chck_date']
@@ -662,9 +643,25 @@ class DoctorLabResult(QMainWindow):
             # Format the checkup date to "June 09, 2025"
             check_date_obj = datetime.strptime(check_date_raw, "%Y-%m-%d")
             folder_name = check_date_obj.strftime("%B %d, %Y")
+            # Prepare data dictionary matching your template placeholders
+            data = {
+                'name': self.ui.PatName.text() or '___',
+                'age': self.ui.PatAge.text() or '___',
+                'gender': self.ui.PatGender.text() or '___',
+                'address': patient_details.get('address', '___'),
+                'contact': patient_details.get('contact', '___'),
+                'dob': patient_details.get('dob', '___'),
+                'date': check_date_obj.strftime("%B %d, %Y") or '___',
+                'doctor_name': doctor_name,
+                'bloodpressure': self.ui.BloodPressure.text() or '___',
+                'temperature': self.ui.Temperature.text() or '___',
+                'weight': self.ui.Weight.text() or '___',
+                'height': self.ui.Heights.text() or '___',
+                'diagnosis': self.ui.DiagnoseText.toPlainText() or '___',
+            }
 
             # Create a folder for that date
-            base_dir = r"\\DXN-XNT\Shared"
+            base_dir = r"\\LAPTOP-SACI6TVR\Share"
             dated_folder_path = os.path.join(base_dir, folder_name)
             os.makedirs(dated_folder_path, exist_ok=True)
 
@@ -716,16 +713,6 @@ class DoctorLabResult(QMainWindow):
 
             doctor_name = f"{doctor_details['first_name']} {doctor_details['middle_name']} {doctor_details['last_name']}" if doctor_details else "N/A"
 
-            data = {
-                'name': self.ui.PatName.text() or '___',
-                'age': self.ui.PatAge.text() or '___',
-                'gender': self.ui.PatGender.text() or '___',
-                'address': patient_details.get('address', '___'),
-                'date': checkup_details['chck_date'] or '___',
-                'prescription_notes': self.ui.PrescriptionLabel.toPlainText().strip() or 'None',
-                'doctor_name': doctor_name
-            }
-
             check_date_raw = checkup_details['chck_date']
             if isinstance(check_date_raw, date):
                 check_date_obj = check_date_raw
@@ -733,7 +720,18 @@ class DoctorLabResult(QMainWindow):
                 check_date_obj = datetime.strptime(check_date_raw, "%Y-%m-%d")
             folder_name = check_date_obj.strftime("%B %d, %Y")
 
-            base_dir = r"\\DXN-XNT\Shared"
+            data = {
+                'name': self.ui.PatName.text() or '___',
+                'age': self.ui.PatAge.text() or '___',
+                'gender': self.ui.PatGender.text() or '___',
+                'address': patient_details.get('address', '___'),
+                'date':  check_date_obj.strftime("%B %d, %Y") or '___',
+                'prescription_notes': self.ui.PrescriptionLabel.toPlainText().strip() or 'None',
+                'doctor_name': doctor_name
+            }
+
+
+            base_dir = r"\\LAPTOP-SACI6TVR\Share"
             dated_folder_path = os.path.join(base_dir, folder_name)
             os.makedirs(dated_folder_path, exist_ok=True)
 
