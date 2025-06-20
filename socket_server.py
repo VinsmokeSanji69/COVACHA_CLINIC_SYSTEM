@@ -4,11 +4,9 @@ import signal
 import sys
 import threading
 import socket
-import logging
 import subprocess
 import re
 import platform
-import uuid
 from functools import lru_cache
 from json import JSONEncoder
 from datetime import date, datetime
@@ -64,7 +62,7 @@ class SocketServer:
                 return mac_match.group(0).lower().replace('-', ':')
             return None
         except Exception as e:
-            logging.warning(f"Could not get MAC for {ip_address}: {str(e)}")
+            print(f"Could not get MAC for {ip_address}: {str(e)}")
             return None
 
     def handle_doctor_staff(self, connection, address):
@@ -212,7 +210,7 @@ class SocketServer:
                                                 base64.b64encode(binary_data).decode('utf-8'),
                                             ))
                                         except Exception as e:
-                                            logging.error(f"Failed to process tuple binary data: {str(e)}")
+                                            print(f"Failed to process tuple binary data: {str(e)}")
                                             processed_result.append(None)
                                 else:
                                     processed_result.append(item)
@@ -243,7 +241,7 @@ class SocketServer:
                                     except Exception as e:
                                         processed_item['lab_attachment'] = None
                                         processed_item['error'] = str(e)
-                                        logging.error(f"Failed to process lab_attachment: {str(e)}")
+                                        print(f"Failed to process lab_attachment: {str(e)}")
 
                                     processed_result.append(processed_item)
                                 else:
@@ -269,7 +267,7 @@ class SocketServer:
 
                 except PermissionError as e:
                     msg = f"Permission denied: {str(e)}"
-                    logging.warning(f"Admin attempt failed from {ip}: {msg}")
+                    print(f"Admin attempt failed from {ip}: {msg}")
                     response = {
                         "status": "error",
                         "message": msg,
@@ -277,7 +275,7 @@ class SocketServer:
                     }
                 except Exception as e:
                     msg = f"Error processing command: {str(e)}"
-                    logging.error(msg, exc_info=True)
+                    print(msg, exc_info=True)
                     response = {
                         "status": "error",
                         "message": msg
@@ -288,10 +286,10 @@ class SocketServer:
                     encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
                     connection.sendall(encoded_response)
                 except Exception as e:
-                    logging.error(f"Failed to send response: {e}")
+                    print(f"Failed to send response: {e}")
 
         except Exception as e:
-            logging.error(f"Critical error with {ip}: {str(e)}", exc_info=True)
+            print(f"Critical error with {ip}: {str(e)}", exc_info=True)
         finally:
             connection.close()
 
@@ -336,11 +334,11 @@ class SocketServer:
                             s.sendto(json.dumps(response).encode(), addr)
 
                     except json.JSONDecodeError:
-                        logging.warning(f"Invalid discovery request from {addr}")
+                        print(f"Invalid discovery request from {addr}")
 
                 except Exception as e:
                     if self.running:
-                        logging.error(f"Discovery error: {e}")
+                        print(f"Discovery error: {e}")
 
     def start(self):
         """Start both servers with signal handling"""
