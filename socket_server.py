@@ -19,23 +19,6 @@ class CustomJSONEncoder(JSONEncoder):
             return obj.isoformat()
         return super().default(obj)
 
-# Import your models
-from Models.CheckUp import CheckUp
-from Models.Doctor import Doctor
-from Models.LaboratoryTest import Laboratory
-from Models.Patient import Patient
-from Models.Prescription import Prescription
-from Models.Staff import Staff
-from Models.Transaction import Transaction
-from Models.Admin import Admin
-
-
-DB_CONFIG = {
-    "host": "localhost",
-    "database": "ClinicSystem",
-    "user": "postgres",
-    "password": "sphinxclub012"
-}
 
 # Server configuration
 HOST = '0.0.0.0'
@@ -43,13 +26,9 @@ DISCOVERY_PORT = 50000
 COMMAND_PORT = 6543
 
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
-ADMIN_MAC_ADDRESS = {
-    "40:1A:58:BF:52:B8"
-}
-
+ADMIN_MAC_ADDRESS = "74:04:F1:4E:E6:02"
 
 def _get_server_mac_address():
-    """Get this machine's MAC address without admin validation."""
     try:
         interfaces = psutil.net_if_addrs()
         for interface in ['Wi-Fi', 'Ethernet', 'eth0', 'wlan0']:
@@ -72,17 +51,8 @@ class SocketServer:
         self.discovery_thread = None
 
         # Normalize all admin MACs (lowercase, hyphens replaced with colons)
-        self.admin_macs = {
-            mac.lower().replace('-', ':')
-            for mac in ADMIN_MAC_ADDRESS  # Set defined at top of file
-        }
-
-        # Get the active MAC (checks against admin_macs)
-        self.server_mac = _get_server_mac_address()
-
-        # Fallback if no valid MAC found
-        if not self.server_mac:
-            raise RuntimeError("No valid admin MAC address found!")
+        self.admin_mac = ADMIN_MAC_ADDRESS.lower().replace('-', ':')
+              # Set defined at top of file
 
     @staticmethod
     @lru_cache(maxsize=32)
@@ -110,13 +80,21 @@ class SocketServer:
             return False
 
         normalized_mac = client_mac.lower().replace('-', ':')
-        return normalized_mac in self.admin_macs  # Check against admin whitelist
+        return normalized_mac == self.admin_mac.lower()
 
     def handle_doctor_staff(self, connection, address):
+        # Import your models
+        from Models.CheckUp import CheckUp
+        from Models.Doctor import Doctor
+        from Models.LaboratoryTest import Laboratory
+        from Models.Patient import Patient
+        from Models.Prescription import Prescription
+        from Models.Staff import Staff
+        from Models.Transaction import Transaction
+        from Models.Admin import Admin
 
         ip, port = address
         is_admin = self.is_admin_connection(ip)
-        logging.info(f"Connection from {address} (Admin: {is_admin})")
 
         db_methods = {
             #LOGIN
@@ -359,9 +337,6 @@ class SocketServer:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             s.bind(('0.0.0.0', DISCOVERY_PORT))
 
-            # HARDCODE THE CORRECT MAC ADDRESS HERE
-            SERVER_MAC = "74:04:F1:4E:E6:02"  # From your Wi-Fi adapter
-
             while self.running:
                 try:
                     data, addr = s.recvfrom(1024)
@@ -375,7 +350,7 @@ class SocketServer:
 
                             response = {
                                 "type": "DISCOVERY_RESPONSE",
-                                "mac": _get_server_mac_address(),
+                                "mac": self.admin_mac,
                                 "ip": socket.gethostbyname(socket.gethostname()),
                                 "port": COMMAND_PORT,
                                 "name": "ClinicServer"

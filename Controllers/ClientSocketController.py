@@ -13,7 +13,8 @@ PORT_COMMAND = 6543
 
 # Only allow these server's MAC addresses (uppercase, colon-separated)
 TRUSTED_SERVER_MACS = {
-    "40:1A:58:BF:52:B8"
+    "40:1A:58:BF:52:B8",
+    "74:04:F1:4E:E6:02"
 }
 
 class DateAwareJSONDecoder(json.JSONDecoder):
@@ -33,7 +34,6 @@ class DateAwareJSONDecoder(json.JSONDecoder):
                         pass
         return obj
 
-
 def get_mac_address():
     """Get the MAC address of the active network interface (for identification only)"""
     try:
@@ -47,41 +47,68 @@ def get_mac_address():
     except Exception:
         return "unknown"
 
-
 @lru_cache(maxsize=16)
 def normalize_mac(mac):
-    """Normalize MAC to uppercase colon-separated format"""
+    """Normalize MAC to uppercase colon-separated format"""  
     mac = mac.replace('-', ':').replace('.', ':').upper()
     return mac
 
-
 def discover_server():
-    """Find servers and validate THEIR MAC (not client's)"""
+    """
+    Discover the server on the network by broadcasting a discovery request
+    and waiting for responses from trusted MAC addresses
+    """
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.settimeout(5)
+        s.settimeout(5)  # Wait up to 5 seconds for a response
 
-        # Send request WITHOUT client MAC
-        s.sendto(json.dumps({"type": "DISCOVERY_REQUEST"}).encode(),
-                 ("<broadcast>", PORT_DISCOVERY))
+        # Include our MAC address in the discovery request
+        client_mac = get_mac_address()
+        discovery_msg = json.dumps({
+            "type": "DISCOVERY_REQUEST",
+            "client_mac": client_mac,
+            "timestamp": datetime.now().isoformat()
+        })
+        print("discovery_msg", discovery_msg)
 
-        while True:
-            try:
-                data, addr = s.recvfrom(65535)
-                response = json.loads(data.decode())
+        try:
+            s.sendto(discovery_msg.encode(), ("<broadcast>", PORT_DISCOVERY))
+        except Exception as e:
+            print(f"❌ Failed to send discovery request: {e}")
+            return None
 
-                # Get SERVER'S MAC (should be 40:1A:58:BF:52:B8)
-                server_mac = response.get("mac", "").upper().replace("-", ":")
+        try:
+            while True:
+                try:
+                    data, addr = s.recvfrom(65535)
 
-                if server_mac in TRUSTED_SERVER_MACS:
-                    return addr[0]  # Connect to this server
+                    try:
+                        response = json.loads(data.decode())
+                        server_ip = addr[0]
+                        server_mac = normalize_mac(response.get("mac", ""))
+                        if not server_mac:
+                            continue
 
-                # No else clause → silently ignore untrusted MACs
+                        if server_mac in TRUSTED_SERVER_MACS:
+                            return server_ip
+                        else:
+                            print(f"⚠️ Untrusted server MAC: {server_mac} (trusted MACs: {TRUSTED_SERVER_MACS})")
+                    except (json.JSONDecodeError, KeyError) as e:
+                        print(f"Invalid discovery response: {e}")
+                        continue
 
-            except (socket.timeout, json.JSONDecodeError):
-                break  # Exit on timeout or invalid response
+                except socket.timeout:
+                    print("⌛ No response received within timeout period")
+                    break
+                except Exception as e:
+                    print(f"❌ Error receiving response: {e}")
+                    continue
 
-    return None  # No trusted server found
+        except Exception as e:
+            print(f"❌ Discovery process failed: {e}")
+
+        print("❌ No trusted server found")
+        return None
 
 def send_command(command, *args, **kwargs):
     server_ip = discover_server()

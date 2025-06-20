@@ -208,6 +208,8 @@ class StaffAddCheckUp(QMainWindow):
             self.ui.Fname.setFocus()
         if not self.ui.Lname.text().strip():
             errors.append("Last name is required")
+        if self.ui.Gender.currentText() not in {'Male', 'Female'}:
+            errors.append("Please select Male or Female")
 
         # Contact validation
         contact = self.ui.Contact.text().strip()
