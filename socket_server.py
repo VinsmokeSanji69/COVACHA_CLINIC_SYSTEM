@@ -77,7 +77,6 @@ class SocketServer:
         return normalized_mac == self.admin_mac.lower()
 
     def handle_doctor_staff(self, connection, address):
-        print("in handle request")
         # Import your models
         from Models.CheckUp import CheckUp
         from Models.Doctor import Doctor
@@ -89,7 +88,6 @@ class SocketServer:
         from Models.Admin import Admin
 
         ip, port = address
-        print(f"Connection received from {ip}:{port}")
 
         db_methods = {
             #LOGIN
@@ -173,7 +171,6 @@ class SocketServer:
                     client_info = json.loads(data.decode('utf-8', errors='ignore').strip())
                     client_mac = client_info.get("client_mac", "")
                     payload = client_info.get("command", "")
-                    print(client_info)
 
                     if not payload:
                         response = {"status": "error", "message": "Empty command"}
@@ -190,11 +187,9 @@ class SocketServer:
                         raise ValueError(f"Unknown command: {command}")
                     else:
                         method = db_methods[command]
-                        print("method", method)
                         if args_str:
                             try:
                                 args_data = json.loads(args_str)
-                                print(args_data)
                                 if command in {"CREATE_PATIENT", "UPDATE_OR_CREATE_PATIENT", "CREATE_CHECKUP", "ADD_DIAGNOSIS_NOTES"}:
                                     result = method(args_data)
                                 elif isinstance(args_data, dict):
@@ -300,7 +295,6 @@ class SocketServer:
                 # Send response
                 try:
                     encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
-                    print(f"Sending response: {response}")
                     connection.sendall(encoded_response)
                 except Exception as e:
                     logging.error(f"Failed to send response: {e}")
@@ -351,7 +345,6 @@ class SocketServer:
                                 "port": COMMAND_PORT,
                                 "name": "ClinicServer"
                             }
-
                             s.sendto(json.dumps(response).encode(), addr)
 
                     except json.JSONDecodeError:
@@ -414,5 +407,4 @@ class SocketServer:
             except Exception as e:
                 print(f"Discovery server shutdown signal: {e}")
             self.discovery_thread.join(timeout=2)
-
             print("Servers shut down successfully")

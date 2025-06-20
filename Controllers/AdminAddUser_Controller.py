@@ -189,7 +189,6 @@ class AdminAddUserController(QMainWindow):
             if not errors:  # Only set focus if first name is valid
                 self.ui.Lname.setFocus()
 
-
         # Email validation
         email = self.ui.Email.text().strip()
         if not email:
@@ -237,7 +236,7 @@ class AdminAddUserController(QMainWindow):
             "email": self.ui.Email.text().strip(),
             'contact': self.ui.Contact.text().strip(),
             'specialty': self.ui.Specialty.currentText() if self.ui.StaffType.currentText() == "Doctor" else None,
-            'license': int(self.ui.License.text().strip()) if self.ui.StaffType.currentText() == "Doctor" else None
+            'license': self.ui.License.text().strip() if self.ui.StaffType.currentText() == "Doctor" else None
         }
 
     def clear_form(self):
