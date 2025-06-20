@@ -79,7 +79,7 @@ class Doctor:
                     doc_id, doc_password, doc_license, doc_specialty, doc_gender, doc_dob,
                                doc_address, doc_contact, doc_joined_date, doc_lname, doc_fname,
                                doc_mname, doc_email
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
 
                 cursor.execute(query,(

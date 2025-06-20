@@ -1,5 +1,7 @@
 import base64
 import json
+import signal
+import sys
 import threading
 import socket
 import logging
@@ -26,7 +28,7 @@ DISCOVERY_PORT = 50000
 COMMAND_PORT = 6543
 
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
-ADMIN_MAC_ADDRESS = "74:04:F1:4E:E6:02"
+ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
 
 def _get_server_mac_address():
     try:
@@ -83,6 +85,7 @@ class SocketServer:
         return normalized_mac == self.admin_mac.lower()
 
     def handle_doctor_staff(self, connection, address):
+        print("in handle request")
         # Import your models
         from Models.CheckUp import CheckUp
         from Models.Doctor import Doctor
@@ -94,7 +97,6 @@ class SocketServer:
         from Models.Admin import Admin
 
         ip, port = address
-        is_admin = self.is_admin_connection(ip)
 
         db_methods = {
             #LOGIN
@@ -178,6 +180,7 @@ class SocketServer:
                     client_info = json.loads(data.decode('utf-8', errors='ignore').strip())
                     client_mac = client_info.get("client_mac", "")
                     payload = client_info.get("command", "")
+                    print(client_info)
 
                     if not payload:
                         response = {"status": "error", "message": "Empty command"}
@@ -194,10 +197,11 @@ class SocketServer:
                         raise ValueError(f"Unknown command: {command}")
                     else:
                         method = db_methods[command]
-
+                        print("method", method)
                         if args_str:
                             try:
                                 args_data = json.loads(args_str)
+                                print(args_data)
                                 if command in {"CREATE_PATIENT", "UPDATE_OR_CREATE_PATIENT", "CREATE_CHECKUP", "ADD_DIAGNOSIS_NOTES"}:
                                     result = method(args_data)
                                 elif isinstance(args_data, dict):
@@ -303,7 +307,7 @@ class SocketServer:
                 # Send response
                 try:
                     encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
-                    logging.debug(f"Sending response: {response}")
+                    print(f"Sending response: {response}")
                     connection.sendall(encoded_response)
                 except Exception as e:
                     logging.error(f"Failed to send response: {e}")
@@ -367,9 +371,13 @@ class SocketServer:
                         logging.error(f"Discovery error: {e}")
 
     def start(self):
-        """Start both servers"""
+        """Start both servers with signal handling"""
         if not self.running:
             self.running = True
+
+            # Set up signal handlers
+            signal.signal(signal.SIGINT, self._signal_handler)
+            signal.signal(signal.SIGTERM, self._signal_handler)
 
             # Start command server
             self.server_thread = threading.Thread(
@@ -385,18 +393,35 @@ class SocketServer:
             )
             self.discovery_thread.start()
 
+    def _signal_handler(self, signum, frame):
+        """Handle shutdown signals"""
+        print(f"\nReceived signal {signum}, shutting down gracefully...")
+        self.stop()
+        sys.exit(0)
 
     def stop(self):
         """Stop both servers gracefully"""
         if self.running:
             self.running = False
 
+            print("Shutting down servers...")
+
             # Stop command server
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.connect((self.host, COMMAND_PORT))
-            self.server_thread.join(timeout=1)
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    s.settimeout(1)
+                    s.connect((self.host, self.port))
+            except Exception as e:
+                print(f"Command server shutdown signal: {e}")
+            self.server_thread.join(timeout=2)
 
             # Stop discovery server
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-                s.sendto(b'', ('localhost', DISCOVERY_PORT))
-            self.discovery_thread.join(timeout=1)
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                    s.settimeout(1)
+                    s.sendto(b'SHUTDOWN', ('localhost', DISCOVERY_PORT))
+            except Exception as e:
+                print(f"Discovery server shutdown signal: {e}")
+            self.discovery_thread.join(timeout=2)
+
+            print("Servers shut down successfully")
