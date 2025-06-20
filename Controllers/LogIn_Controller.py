@@ -1,8 +1,15 @@
+import platform
+import re
+import socket
+import subprocess
+from functools import lru_cache
+
 from PyQt5.QtWidgets import QMessageBox
 
-from Controllers.ClientSocketController import DataRequest
 import hashlib
 import bcrypt
+
+ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
 
 def _verify_hashed_password(input_password, stored_hash):
     """Verify password against stored hash"""
@@ -19,6 +26,10 @@ def _verify_hashed_password(input_password, stored_hash):
     except Exception as e:
         return False
 
+def normalize_mac(mac):
+    """Normalize MAC to uppercase colon-separated format"""
+    mac = mac.replace('-', ':').replace('.', ':').upper()
+    return mac
 
 class LoginController:
     ADMIN_ID = "100000"
@@ -41,29 +52,70 @@ class LoginController:
             )
             return
 
-        conn = None
         try:
             # Check if the user is an admin
             if user_id == self.ADMIN_ID:
-                from Models.DB_Connection import DBConnection
-                conn = DBConnection.get_db_connection()
-                if not conn:
+                admin_mac_found = False
+                try:
+                    # Cross-platform MAC address detection
+                    if platform.system() == "Windows":
+                        # Windows implementation
+                        result = subprocess.check_output("getmac", shell=True).decode()
+                        macs = re.findall(r"([0-9A-F-]{17})", result.upper())
+                    else:
+                        # Linux/Mac implementation
+                        result = subprocess.check_output(
+                            ["ifconfig"] + (["-a"] if platform.system() != "Darwin" else []),
+                            stderr=subprocess.DEVNULL).decode()
+                        macs = re.findall(r"ether ([0-9a-f:]{17})", result.lower())
+                        macs = [m.upper() for m in macs]
+
+                    # Check if admin MAC is present
+                    admin_mac_found = any(
+                        normalize_mac(mac) == normalize_mac(ADMIN_MAC_ADDRESS)
+                        for mac in macs
+                    )
+                except Exception as e:
+                    print(f"MAC detection error: {e}")
+                    admin_mac_found = False
+
+                if not admin_mac_found:
                     QMessageBox.critical(
                         self.login_window,
-                        "Database Error",
-                        "Failed to connect to the admin database."
+                        "Access Denied",
+                        "Admin login only allowed from authorized devices.\n"
                     )
                     return
 
-                self._handle_admin_login(conn, password)
-                return
+                conn = None
+                try:
+                    from Models.DB_Connection import DBConnection
+                    conn = DBConnection.get_db_connection()
+                    if not conn:
+                        QMessageBox.critical(
+                            self.login_window,
+                            "Database Error",
+                            "Failed to connect to the admin database.\n\n"
+                            "Please ensure:\n"
+                            "1. The database server is running\n"
+                            "2. Your network connection is stable\n"
+                            "3. You have proper permissions"
+                        )
+                        return
 
-            # Check if the user is a doctor (5-digit ID)
+                    self._handle_admin_login(conn, password)
+                    return
+                finally:
+                    if conn:
+                        conn.close()
+
+                # Check if the user is a doctor (5-digit ID)
             if len(user_id) == 5 and user_id.isdigit():
+                from Controllers.ClientSocketController import DataRequest
                 doctor = DataRequest.send_command("GET_USER", ["doctor", user_id])
                 if not doctor:
                     QMessageBox.warning(
-                        self.login_window,
+                         self.login_window,
                         "Login Failed",
                         "Doctor ID not found."
                     )
@@ -81,7 +133,8 @@ class LoginController:
                     )
                     return
 
-            # Check if the user is a staff member
+                # Check if the user is a staff member
+            from Controllers.ClientSocketController import DataRequest
             staff = DataRequest.send_command("GET_USER", ["staff", user_id])
             if not staff:
                 QMessageBox.warning(
@@ -104,27 +157,21 @@ class LoginController:
                 )
                 return
 
-            # Fallback for invalid credentials
+                # Fallback for invalid credentials
             QMessageBox.warning(
                 self.login_window,
                 "Login Failed",
                 "Invalid credentials."
             )
 
-
         except Exception as e:
             QMessageBox.critical(
                 self.login_window,
-                "Connection Error",
-                "Could not connect to the admin database.\n\n"
-                "Please check:\n"
-                "1. Your network connection\n"
-                "2. The admin computer status\n"
+                "Login Error",
+                f"An error occurred during login: \n"
+                f"Please ensure the database server is running\n"
             )
 
-        finally:
-            if conn:
-                conn.close()
 
     def _handle_admin_login(self, conn, password):
         """Special handling for admin login with plaintext password"""

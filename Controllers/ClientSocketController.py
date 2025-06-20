@@ -1,6 +1,10 @@
 import base64
+import platform
+import re
 import socket
 import json
+import subprocess
+import time
 import uuid
 # import psutil
 from functools import lru_cache
@@ -10,11 +14,11 @@ import psutil
 
 PORT_DISCOVERY = 50000
 PORT_COMMAND = 6543
+COMMAND_PORT = 6543
 
 # Only allow these server's MAC addresses (uppercase, colon-separated)
 TRUSTED_SERVER_MACS = {
     "40:1A:58:BF:52:B8",
-    "74:04:F1:4E:E6:02"
 }
 
 class DateAwareJSONDecoder(json.JSONDecoder):
@@ -53,62 +57,138 @@ def normalize_mac(mac):
     mac = mac.replace('-', ':').replace('.', ':').upper()
     return mac
 
+
 def discover_server():
     """
-    Discover the server on the network by broadcasting a discovery request
-    and waiting for responses from trusted MAC addresses
+    Discover the server on the network by sending targeted requests to trusted MAC addresses.
+    Returns server IP if found, None otherwise.
     """
+    if not test_network_connectivity():
+        print("❌ No network connectivity detected")
+        return None
+
+    # Get local network information
+    local_ip = socket.gethostbyname(socket.gethostname())
+    network_prefix = '.'.join(local_ip.split('.')[:3]) + '.'  # Get first 3 octets
+
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.settimeout(5)  # Wait up to 5 seconds for a response
+        s.settimeout(5)
 
-        # Include our MAC address in the discovery request
+        # Get our MAC address
         client_mac = get_mac_address()
         discovery_msg = json.dumps({
             "type": "DISCOVERY_REQUEST",
             "client_mac": client_mac,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
+            "request_id": str(uuid.uuid4())
         })
-        print("discovery_msg", discovery_msg)
 
         try:
-            s.sendto(discovery_msg.encode(), ("<broadcast>", PORT_DISCOVERY))
-        except Exception as e:
-            print(f"❌ Failed to send discovery request: {e}")
-            return None
+            s.bind(('', 0))
+            # Try all possible IPs in local network for trusted MACs
+            for i in range(1, 255):  # Scan all IPs in subnet
+                target_ip = f"{network_prefix}{i}"
 
-        try:
-            while True:
+                # Skip our own IP
+                if target_ip == local_ip:
+                    continue
+
+                # Get MAC address for target IP
+                target_mac = None
                 try:
-                    data, addr = s.recvfrom(65535)
+                    target_mac = get_mac_from_ip(target_ip)
+                    if not target_mac:
+                        continue
+                except Exception:
+                    continue
+
+                # Check if this is a trusted server
+                if normalize_mac(target_mac) in TRUSTED_SERVER_MACS:
 
                     try:
-                        response = json.loads(data.decode())
-                        server_ip = addr[0]
-                        server_mac = normalize_mac(response.get("mac", ""))
-                        if not server_mac:
+                        s.sendto(discovery_msg.encode(), (target_ip, PORT_DISCOVERY))
+                        s.settimeout(1)  # Short timeout for targeted requests
+
+                        try:
+                            data, addr = s.recvfrom(65535)
+                            response = json.loads(data.decode())
+
+                            if (response.get("type") == "DISCOVERY_RESPONSE" and
+                                    response.get("mac") and
+                                    normalize_mac(response["mac"]) in TRUSTED_SERVER_MACS and
+                                    response.get("ip") and
+                                    response.get("port") == COMMAND_PORT and
+                                    response.get("name") == "ClinicServer"):
+                                return addr[0]
+
+                        except socket.timeout:
+                            continue
+                        except (json.JSONDecodeError, KeyError):
                             continue
 
-                        if server_mac in TRUSTED_SERVER_MACS:
-                            return server_ip
-                        else:
-                            print(f"⚠️ Untrusted server MAC: {server_mac} (trusted MACs: {TRUSTED_SERVER_MACS})")
-                    except (json.JSONDecodeError, KeyError) as e:
-                        print(f"Invalid discovery response: {e}")
+                    except Exception as e:
+                        print(f"⚠️ Discovery to {target_ip} failed: {e}")
                         continue
-
-                except socket.timeout:
-                    print("⌛ No response received within timeout period")
-                    break
-                except Exception as e:
-                    print(f"❌ Error receiving response: {e}")
-                    continue
 
         except Exception as e:
             print(f"❌ Discovery process failed: {e}")
 
-        print("❌ No trusted server found")
+        print("🔴 No trusted server found")
         return None
+
+@lru_cache(maxsize=32)
+def get_mac_from_ip(ip_address):
+    """Get MAC address for a given IP using ARP"""
+    try:
+        if platform.system() == "Windows":
+            arp_output = subprocess.check_output(["arp", "-a", ip_address]).decode('utf-8', errors='ignore')
+            mac_match = re.search(r"([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})", arp_output)
+        else:
+            arp_output = subprocess.check_output(["arp", "-n", ip_address]).decode('utf-8', errors='ignore')
+            mac_match = re.search(r"(([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2}))", arp_output)
+
+        if mac_match:
+            return mac_match.group(0).lower().replace('-', ':')
+        return None
+    except Exception as e:
+        print(f"Could not get MAC for {ip_address}: {str(e)}")
+        return None
+
+def test_network_connectivity():
+    """
+    Test basic network connectivity before attempting discovery
+    Returns True if basic network operations succeed
+    """
+    try:
+        # Test DNS resolution
+        socket.gethostbyname("google.com")
+
+        # Test local network interface
+        interfaces = psutil.net_if_addrs()
+        if not interfaces:
+            print("⚠️ No network interfaces found")
+            return False
+
+        # Test if any interface has an IP address
+        has_ip = False
+        for iface, addrs in interfaces.items():
+            for addr in addrs:
+                if addr.family == socket.AF_INET and addr.address != '127.0.0.1':
+                    has_ip = True
+                    break
+            if has_ip:
+                break
+
+        if not has_ip:
+            print("⚠️ No active IP addresses found")
+            return False
+
+        return True
+
+    except Exception as e:
+        print(f"❌ Network connectivity test failed: {e}")
+        return False
 
 def send_command(command, *args, **kwargs):
     server_ip = discover_server()
@@ -199,7 +279,6 @@ def send_command(command, *args, **kwargs):
         return {"status": "error", "message": f"Communication failed: {str(e)}"}
     except Exception as e:
         return {"status": "error", "message": f"Unexpected error: {str(e)}"}
-
 
 
 def verify_server_connection(ip):

@@ -1,5 +1,7 @@
 import base64
 import json
+import signal
+import sys
 import threading
 import socket
 import logging
@@ -28,19 +30,11 @@ COMMAND_PORT = 6543
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
 ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
 
-def _get_server_mac_address():
-    try:
-        interfaces = psutil.net_if_addrs()
-        for interface in ['Wi-Fi', 'Ethernet', 'eth0', 'wlan0']:
-            if interface in interfaces:
-                for addr in interfaces[interface]:
-                    if addr.family == psutil.AF_LINK:
-                        return addr.address.replace('-', ':').lower()
-        return "unknown"
-    except Exception as e:
-        logging.warning(f"Could not determine server MAC: {e}")
-        return "error"
-
+@lru_cache(maxsize=16)
+def normalize_mac(mac):
+    """Normalize MAC to uppercase colon-separated format"""
+    mac = mac.replace('-', ':').replace('.', ':').upper()
+    return mac
 
 class SocketServer:
     def __init__(self, host=HOST, port=COMMAND_PORT):
@@ -94,7 +88,6 @@ class SocketServer:
         from Models.Admin import Admin
 
         ip, port = address
-        is_admin = self.is_admin_connection(ip)
 
         db_methods = {
             #LOGIN
@@ -194,7 +187,6 @@ class SocketServer:
                         raise ValueError(f"Unknown command: {command}")
                     else:
                         method = db_methods[command]
-
                         if args_str:
                             try:
                                 args_data = json.loads(args_str)
@@ -303,7 +295,6 @@ class SocketServer:
                 # Send response
                 try:
                     encoded_response = json.dumps(response, cls=CustomJSONEncoder).encode('utf-8')
-                    logging.debug(f"Sending response: {response}")
                     connection.sendall(encoded_response)
                 except Exception as e:
                     logging.error(f"Failed to send response: {e}")
@@ -332,7 +323,7 @@ class SocketServer:
                 client_thread.start()
 
     def _run_discovery_server(self):
-        """Handle UDP discovery requests with fixed MAC address"""
+        """Handle UDP discovery requests only from trusted MAC addresses"""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             s.bind(('0.0.0.0', DISCOVERY_PORT))
@@ -345,9 +336,8 @@ class SocketServer:
                     try:
                         request = json.loads(data.decode())
                         if request.get("type") == "DISCOVERY_REQUEST":
-                            client_mac = request.get("client_mac", "unknown")
-                            logging.info(f"Discovery request from {ip} (Client MAC: {client_mac})")
 
+                            print(f"Discovery request from {ip}")
                             response = {
                                 "type": "DISCOVERY_RESPONSE",
                                 "mac": self.admin_mac,
@@ -355,21 +345,23 @@ class SocketServer:
                                 "port": COMMAND_PORT,
                                 "name": "ClinicServer"
                             }
-
                             s.sendto(json.dumps(response).encode(), addr)
-                            logging.debug(f"Sent discovery response to {addr}")
 
                     except json.JSONDecodeError:
                         logging.warning(f"Invalid discovery request from {addr}")
 
                 except Exception as e:
-                    if self.running:  # Only log if we didn't stop intentionally
+                    if self.running:
                         logging.error(f"Discovery error: {e}")
 
     def start(self):
-        """Start both servers"""
+        """Start both servers with signal handling"""
         if not self.running:
             self.running = True
+
+            # Set up signal handlers
+            signal.signal(signal.SIGINT, self._signal_handler)
+            signal.signal(signal.SIGTERM, self._signal_handler)
 
             # Start command server
             self.server_thread = threading.Thread(
@@ -385,18 +377,34 @@ class SocketServer:
             )
             self.discovery_thread.start()
 
+    def _signal_handler(self, signum, frame):
+        """Handle shutdown signals"""
+        print(f"\nReceived signal {signum}, shutting down gracefully...")
+        self.stop()
+        sys.exit(0)
 
     def stop(self):
         """Stop both servers gracefully"""
         if self.running:
             self.running = False
 
+            print("Shutting down servers...")
+
             # Stop command server
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.connect((self.host, COMMAND_PORT))
-            self.server_thread.join(timeout=1)
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    s.settimeout(1)
+                    s.connect((self.host, self.port))
+            except Exception as e:
+                print(f"Command server shutdown signal: {e}")
+            self.server_thread.join(timeout=2)
 
             # Stop discovery server
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-                s.sendto(b'', ('localhost', DISCOVERY_PORT))
-            self.discovery_thread.join(timeout=1)
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                    s.settimeout(1)
+                    s.sendto(b'SHUTDOWN', ('localhost', DISCOVERY_PORT))
+            except Exception as e:
+                print(f"Discovery server shutdown signal: {e}")
+            self.discovery_thread.join(timeout=2)
+            print("Servers shut down successfully")
