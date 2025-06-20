@@ -26,7 +26,7 @@ DISCOVERY_PORT = 50000
 COMMAND_PORT = 6543
 
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
-ADMIN_MAC_ADDRESS = "74:04:F1:4E:E6:02"
+ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
 
 def _get_server_mac_address():
     try:
