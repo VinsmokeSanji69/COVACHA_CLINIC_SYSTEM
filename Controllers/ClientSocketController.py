@@ -18,7 +18,7 @@ COMMAND_PORT = 6543
 
 # Only allow these server's MAC addresses (uppercase, colon-separated)
 TRUSTED_SERVER_MACS = {
-    "40:1A:58:BF:52:B8",
+    "74:04:F1:4E:E6:02",
 }
 
 class DateAwareJSONDecoder(json.JSONDecoder):
@@ -83,18 +83,11 @@ def discover_server():
             "timestamp": datetime.now().isoformat(),
             "request_id": str(uuid.uuid4())
         })
-
         try:
             s.bind(('', 0))
             # Try all possible IPs in local network for trusted MACs
             for i in range(1, 255):  # Scan all IPs in subnet
                 target_ip = f"{network_prefix}{i}"
-
-                # Skip our own IP
-                if target_ip == local_ip:
-                    continue
-
-                # Get MAC address for target IP
                 target_mac = None
                 try:
                     target_mac = get_mac_from_ip(target_ip)
@@ -105,7 +98,6 @@ def discover_server():
 
                 # Check if this is a trusted server
                 if normalize_mac(target_mac) in TRUSTED_SERVER_MACS:
-
                     try:
                         s.sendto(discovery_msg.encode(), (target_ip, PORT_DISCOVERY))
                         s.settimeout(1)  # Short timeout for targeted requests
@@ -139,21 +131,47 @@ def discover_server():
 
 @lru_cache(maxsize=32)
 def get_mac_from_ip(ip_address):
-    """Get MAC address for a given IP using ARP"""
+    """Get MAC address without showing console windows"""
     try:
+        # Windows-specific fix to hide subprocess console
         if platform.system() == "Windows":
-            arp_output = subprocess.check_output(["arp", "-a", ip_address]).decode('utf-8', errors='ignore')
-            mac_match = re.search(r"([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})", arp_output)
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            creationflags = subprocess.CREATE_NO_WINDOW
+            kwargs = {
+                'startupinfo': startupinfo,
+                'creationflags': creationflags,
+                'stdout': subprocess.PIPE,
+                'stderr': subprocess.PIPE,
+                'stdin': subprocess.PIPE
+            }
         else:
-            arp_output = subprocess.check_output(["arp", "-n", ip_address]).decode('utf-8', errors='ignore')
-            mac_match = re.search(r"(([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2}))", arp_output)
+            kwargs = {
+                'stdout': subprocess.PIPE,
+                'stderr': subprocess.PIPE,
+                'stdin': subprocess.PIPE
+            }
 
-        if mac_match:
-            return mac_match.group(0).lower().replace('-', ':')
-        return None
+        # First check if IP belongs to this machine
+        if ip_address in ["127.0.0.1", socket.gethostbyname(socket.gethostname())]:
+            return get_mac_address()
+
+        # Force ARP cache update (hidden)
+        ping_args = ["ping", "-n", "1", "-w", "500", ip_address] if platform.system() == "Windows" else ["ping", "-c", "1", "-W", "1", ip_address]
+        subprocess.call(ping_args, **kwargs)
+
+        # Get ARP table (hidden)
+        arp_args = ["arp", "-a", ip_address] if platform.system() == "Windows" else ["arp", "-n", ip_address]
+        arp_output = subprocess.check_output(arp_args, **kwargs).decode('utf-8', errors='ignore')
+
+        # Extract MAC
+        mac_match = re.search(r"([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})", arp_output)
+        return mac_match.group(0).lower().replace('-', ':') if mac_match else None
+
     except Exception as e:
-        print(f"Could not get MAC for {ip_address}: {str(e)}")
+        print(f"⚠️ Could not get MAC for {ip_address}: {str(e)}")
         return None
+
 
 def test_network_connectivity():
     """

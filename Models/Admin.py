@@ -49,7 +49,6 @@ class Admin:
     def get_user(table, user_id):
         conn = None
         try:
-            print("in db")
             conn = DBConnection.get_db_connection()
             if not conn:
                 return None
@@ -65,7 +64,6 @@ class Admin:
                     "SELECT doc_id, doc_fname, doc_lname, doc_specialty, doc_password FROM doctor WHERE doc_id = %s",
                     (user_id,)
                 )
-            print(cursor.fetchone())
             return cursor.fetchone()
 
         except Exception as e:
