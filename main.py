@@ -45,7 +45,6 @@ if __name__ == "__main__":
             print("✅ Socket server started (admin machine)")
         else:
             print("⚠️ Socket server not started - not admin machine")
-            print(f"Current MAC: {current_mac}, Admin MAC: {ADMIN_MAC_ADDRESS}")
 
         # Start the PyQt5 application
         app = QApplication(sys.argv)

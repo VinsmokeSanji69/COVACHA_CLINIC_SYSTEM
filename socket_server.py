@@ -30,19 +30,11 @@ COMMAND_PORT = 6543
 # Admin MAC address from your ipconfig (Wi-Fi adapter)
 ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
 
-def _get_server_mac_address():
-    try:
-        interfaces = psutil.net_if_addrs()
-        for interface in ['Wi-Fi', 'Ethernet', 'eth0', 'wlan0']:
-            if interface in interfaces:
-                for addr in interfaces[interface]:
-                    if addr.family == psutil.AF_LINK:
-                        return addr.address.replace('-', ':').lower()
-        return "unknown"
-    except Exception as e:
-        logging.warning(f"Could not determine server MAC: {e}")
-        return "error"
-
+@lru_cache(maxsize=16)
+def normalize_mac(mac):
+    """Normalize MAC to uppercase colon-separated format"""
+    mac = mac.replace('-', ':').replace('.', ':').upper()
+    return mac
 
 class SocketServer:
     def __init__(self, host=HOST, port=COMMAND_PORT):
@@ -97,6 +89,7 @@ class SocketServer:
         from Models.Admin import Admin
 
         ip, port = address
+        print(f"Connection received from {ip}:{port}")
 
         db_methods = {
             #LOGIN
@@ -336,7 +329,7 @@ class SocketServer:
                 client_thread.start()
 
     def _run_discovery_server(self):
-        """Handle UDP discovery requests with fixed MAC address"""
+        """Handle UDP discovery requests only from trusted MAC addresses"""
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             s.bind(('0.0.0.0', DISCOVERY_PORT))
@@ -349,9 +342,8 @@ class SocketServer:
                     try:
                         request = json.loads(data.decode())
                         if request.get("type") == "DISCOVERY_REQUEST":
-                            client_mac = request.get("client_mac", "unknown")
-                            logging.info(f"Discovery request from {ip} (Client MAC: {client_mac})")
 
+                            print(f"Discovery request from {ip}")
                             response = {
                                 "type": "DISCOVERY_RESPONSE",
                                 "mac": self.admin_mac,
@@ -361,13 +353,12 @@ class SocketServer:
                             }
 
                             s.sendto(json.dumps(response).encode(), addr)
-                            logging.debug(f"Sent discovery response to {addr}")
 
                     except json.JSONDecodeError:
                         logging.warning(f"Invalid discovery request from {addr}")
 
                 except Exception as e:
-                    if self.running:  # Only log if we didn't stop intentionally
+                    if self.running:
                         logging.error(f"Discovery error: {e}")
 
     def start(self):
