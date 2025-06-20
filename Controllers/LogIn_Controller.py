@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QMessageBox
 import hashlib
 import bcrypt
 
-ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
+ADMIN_MAC_ADDRESS = "74:04:F1:4E:E6:02"
 
 def _verify_hashed_password(input_password, stored_hash):
     """Verify password against stored hash"""
@@ -113,6 +113,7 @@ class LoginController:
             if len(user_id) == 5 and user_id.isdigit():
                 from Controllers.ClientSocketController import DataRequest
                 doctor = DataRequest.send_command("GET_USER", ["doctor", user_id])
+                print(doctor)
                 if not doctor:
                     QMessageBox.warning(
                          self.login_window,
@@ -136,6 +137,7 @@ class LoginController:
                 # Check if the user is a staff member
             from Controllers.ClientSocketController import DataRequest
             staff = DataRequest.send_command("GET_USER", ["staff", user_id])
+            print(staff)
             if not staff:
                 QMessageBox.warning(
                     self.login_window,

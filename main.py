@@ -35,7 +35,7 @@ class LogIn(QMainWindow):
 if __name__ == "__main__":
     try:
         # Check if this machine has the admin MAC address
-        ADMIN_MAC_ADDRESS = "40:1A:58:BF:52:B8"
+        ADMIN_MAC_ADDRESS = "74:04:F1:4E:E6:02"
         current_mac = get_mac_address()
 
         if current_mac and current_mac.upper() == ADMIN_MAC_ADDRESS.upper():
